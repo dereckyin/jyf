@@ -1,0 +1,33 @@
+/* 專案CSS */
+:root{    
+    --orange01:#EA631A;
+    --orange02:#f8c5aa;
+    --orange03:#feefea;
+    --red01:#A81B04;
+    --blue01:#4D576C;
+    --blue02:#7B89A3;
+    --blue03:#AAB3C1;
+    --blue04:#D1D2D3;
+}
+
+.logo {
+	font-family: Lato, Roboto, Arial, Helvetica, "Noto Sans TC", "LiHei Pro", 微軟正黑體, "Microsoft JhengHei", 新細明體, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	color: #FFF;
+	display: inline-block;
+	text-decoration: none;
+	cursor: pointer;
+	transition: .5s;
+	font-size: 22px;
+	font-weight: 500;
+	letter-spacing: 5px;
+	margin-left: 10px;
+	margin-top: 10px;
+	transition: .5s;
+}
+
+a ,a:link{/* color:var(--blue01); */transition:.5s;}
+a:hover{color:var(--orange01); text-decoration: none;}

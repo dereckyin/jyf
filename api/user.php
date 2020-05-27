@@ -1,0 +1,168 @@
+<?php
+
+error_reporting(E_ERROR | E_PARSE);
+
+ini_set('display_errors', 1);
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
+include_once 'config/core.php';
+include_once 'libs/php-jwt-master/src/BeforeValidException.php';
+include_once 'libs/php-jwt-master/src/ExpiredException.php';
+include_once 'libs/php-jwt-master/src/SignatureInvalidException.php';
+include_once 'libs/php-jwt-master/src/JWT.php';
+use \Firebase\JWT\JWT;
+if ( !isset( $jwt ) ) {
+    http_response_code(401);
+ 
+    echo json_encode(array("message" => "Access denied."));
+    die();
+}
+else
+{
+  try {
+          // decode jwt
+          $decoded = JWT::decode($jwt, $key, array('HS256'));
+          if(!$decoded->data->is_admin)
+          {
+            http_response_code(401);
+     
+            echo json_encode(array("message" => "Access denied."));
+            die();
+          }
+      }
+      // if decode fails, it means jwt is invalid
+      catch (Exception $e){
+      
+          http_response_code(401);
+     
+        echo json_encode(array("message" => "Access denied."));
+        die();
+      }
+}
+
+      header('Access-Control-Allow-Origin: *');  
+
+      require_once "db.php";
+
+      include_once 'config/database.php';
+      include_once 'objects/user.php';
+
+      $method = $_SERVER['REQUEST_METHOD'];
+
+      //$user = $decoded->data->username;
+
+      switch ($method) {
+          case 'GET':
+            $id = mysqli_real_escape_string($conn, (isset($_GET['id']) ?  $_GET['id'] : ""));
+            $page = mysqli_real_escape_string($conn, (isset($_GET['page']) ?  $_GET['page'] : ""));
+            $size = mysqli_real_escape_string($conn, (isset($_GET['size']) ?  $_GET['size'] : ""));
+            $keyword = mysqli_real_escape_string($conn, (isset($_GET['keyword']) ?  $_GET['keyword'] : ""));
+
+            $sql = "SELECT 0 as is_checked, id, username, email, status, is_admin, (SELECT login_time FROM login_history WHERE login_history.uid = user.id ORDER BY login_time desc LIMIT 1) login_time  FROM user where status <> -1 ".($id ? " and id=$id" : '');
+
+            if(!empty($_GET['page'])) {
+                $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
+                if(false === $page) {
+                    $page = 1;
+                }
+            }
+
+            $sql = $sql . " ORDER BY username ";
+
+            if(!empty($_GET['size'])) {
+                $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);
+                if(false === $size) {
+                    $size = 10;
+                }
+
+                $offset = ($page - 1) * $size;
+
+                $sql = $sql . " LIMIT " . $offset . "," . $size;
+            }
+
+            // run SQL statement
+            $result = mysqli_query($conn,$sql);
+
+            // die if SQL statement failed
+            if (!$result) {
+                  http_response_code(404);
+                  die(mysqli_error($conn));
+            }
+
+            if (!$id) echo '[';
+            for ($i=0 ; $i<mysqli_num_rows($result) ; $i++) {
+                  echo ($i>0?',':'').json_encode(mysqli_fetch_object($result), JSON_UNESCAPED_SLASHES);
+            }
+            if (!$id) echo ']';
+            elseif ($method == 'POST')
+                  echo json_encode($result);
+            else 
+                  echo mysqli_affected_rows($conn);
+            break;
+
+        case 'POST':
+            // get database connection
+            $database = new Database();
+            $db = $database->getConnection();
+             
+            // instantiate product object
+            $user = new User($db);
+
+            $username = stripslashes($_POST["username"]);
+            $email = stripslashes($_POST["email"]);
+            $password = stripslashes($_POST["password"]);
+            $status = stripslashes($_POST["status"]);
+            $is_admin = stripslashes($_POST["is_admin"]);
+
+
+            $crud = mysqli_real_escape_string($conn, $_POST["crud"]);
+            $id = mysqli_real_escape_string($conn, $_POST["id"]);
+
+            switch ($crud) 
+            {
+              case 'insert':
+            /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
+                $user->username = $username;
+                $user->email = $email;
+                $user->password = $password;
+                $user->status = $status;
+                $user->is_admin = $is_admin;
+
+                $user->create();
+
+                break;
+
+            case "update":
+                    $user->status = $status;
+                    $user->is_admin = $is_admin;
+                    $user->id = $id;
+
+                    $user->updateStatus();
+
+                break;
+
+            case 'del':
+                $ids = explode(",", $id);
+                foreach($ids as $item) {
+                    $user->id = trim($item);
+                    $user->delete();
+                }
+
+                if($query){
+                    $out['message'] = "Member Deleted Successfully";
+                }
+                else{
+                    $out['error'] = true;
+                    $out['message'] = "Could not delete Member";
+                }
+               
+                break;
+            }
+
+            break;
+      }
+
+      // Close connection
+      mysqli_close($conn);
+
+
+?>

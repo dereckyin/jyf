@@ -1,0 +1,124 @@
+<?php
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+
+$requestMethod = $_SERVER['REQUEST_METHOD'];
+
+switch($requestMethod) {
+
+    case 'POST':
+            require_once "db.php";
+
+            $salt = 'SAlt01';
+
+            $username = mysqli_real_escape_string($conn, (isset($_POST['username']) ?  $_POST['username'] : ""));
+            $password = mysqli_real_escape_string($conn, (isset($_POST['password']) ?  $_POST['password'] : ""));
+
+            if($username==''){
+                  $returnArray = array('error' => 'Invalid user ID or password.');
+                  $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
+                  echo $jsonEncodedReturnArray;
+            }
+            else if($password==''){
+                  $returnArray = array('error' => 'Invalid user ID or password.');
+                  $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
+                  echo $jsonEncodedReturnArray;
+            }
+            else{
+                  try 
+                  {
+                        $sql = "select * from user where username=? and password=?";
+                        $stmt = $conn->prepare($sql); 
+
+                        $pas = md5($password.$salt);
+
+                        $stmt->bind_param("ss", 
+                                                      $username, 
+                                                      $pas);
+                        $stmt->execute();
+                        $query = $stmt->get_result();
+
+                        if($query->num_rows>0){
+                              require_once('jwt.php');
+
+                              $row=$query->fetch_array();
+                              $userId = $row['username'];
+
+                              $serverKey = '5f2b5cdbe5194f10b3241568fe4e2b24';
+
+                              // create a token
+                              $payloadArray = array();
+                              $payloadArray['userId'] = $userId;
+                              if (isset($nbf)) {$payloadArray['nbf'] = $nbf;}
+                              if (isset($exp)) {$payloadArray['exp'] = $exp;}
+                              $token = JWT::encode($payloadArray, $serverKey);
+
+                              // return to caller
+                              $returnArray = array('token' => $token);
+                              $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
+                              echo $jsonEncodedReturnArray;
+                        }
+                        else{
+                              $returnArray = array('error' => 'Invalid user ID or password.');
+                              $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
+                              echo $jsonEncodedReturnArray;
+                        }
+
+                        $stmt->close();
+
+                        mysqli_close($conn);
+
+                        //die();
+                  }
+                  catch ( Exception $e ) 
+                  {
+                        $returnArray = array('error' => 'Invalid user ID or password.');
+                        $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
+                        echo $jsonEncodedReturnArray;
+
+                        mysqli_close($conn);
+
+                        //die(print_r($e));
+                  }
+            }
+
+             
+            //die();
+
+            break;
+      case 'GET':
+
+              $token = null;
+              
+              if (isset($_GET['token'])) {$token = $_GET['token'];}
+
+              if (!is_null($token)) {
+
+                  require_once('jwt.php');
+
+                  // Get our server-side secret key from a secure location.
+                  $serverKey = '5f2b5cdbe5194f10b3241568fe4e2b24';
+
+                  try {
+                      $payload = JWT::decode($token, $serverKey, array('HS256'));
+                      $returnArray = array('userId' => $payload->userId);
+                      if (isset($payload->exp)) {
+                          $returnArray['exp'] = date(DateTime::ISO8601, $payload->exp);;
+                      }
+                  }
+                  catch(Exception $e) {
+                      $returnArray = array('error' => $e->getMessage());
+                  }
+              } 
+              else {
+                  $returnArray = array('error' => 'You are not logged in with a valid token.');
+              }
+              
+              // return to caller
+              $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
+              echo $jsonEncodedReturnArray;
+
+              break;
+        }
+
+?>

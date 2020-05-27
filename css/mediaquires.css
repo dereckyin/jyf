@@ -1,0 +1,25 @@
+/* ------------------- mediaqueries ------------------- */
+@media screen and (max-height: 660px) {
+	/* NB height */
+}
+@media screen and (max-width: 640px) {
+	/* width */
+}
+@media screen and (orientation:portrait) {
+	/* 直式瀏覽 */
+}
+@media screen and (orientation:landscape) {
+	/* 橫式瀏覽 */
+}
+
+
+@media screen and (max-width: 640px) and (orientation:portrait) {
+	/* 行動裝置直式瀏覽
+	body::after{ content:""; display:block; width:100%; height:100%; position:fixed; z-index:999999; top:0; left:0;
+				 background:rgba(0,0,0,.8) url(rotate2.png) no-repeat center center; }*/ 
+}
+@media screen and (max-width: 640px) and (orientation:landscape) {
+	/* 行動裝置橫式瀏覽 
+	body::after{ content:""; display:block; width:100%; height:100%; position:fixed; z-index:999999; top:0; left:0;
+				 background:rgba(0,0,0,.8) url(rotate.png) no-repeat center center; }*/
+}

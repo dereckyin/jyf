@@ -1,0 +1,137 @@
+/* 專案CSS */
+:root{    
+    --orange01:#EA631A;
+    --orange02:#f8c5aa;
+    --orange03:#feefea;
+    --red01:#A81B04;
+    --blue01:#4D576C;
+    --blue02:#7B89A3;
+    --blue03:#AAB3C1;
+    --blue04:#D1D2D3;
+}
+
+body{ background-color: #E3E4E5;}
+header{ display: block; width: 100%; height: 60px; position: fixed; top: 0; left: 0; background-color: var(--blue01); color: #FFF; padding: 10px; box-shadow:2px 2px 2px rgba(0,0,0,.4); z-index: 9999;}
+ul, li{ display: inline-block; }
+
+eng{ display: inline-block;}
+body.cht eng{ display: none !important;}
+
+/* 基本table設定 */
+div.tablebox{ display:table; width:100%; line-height:18px;}
+div.tablebox > ul{ display:table-row; transition: .3s; background-color: #FFF;}
+div.tablebox > ul:nth-of-type(2n+1){ background-color:#DDD;}
+div.tablebox > ul > li{  width:auto; display:table-cell; padding:8px; text-align:center; font-size: 16px; transition: .3s; color: #333; min-width: 50px; vertical-align: middle;}
+div.tablebox > ul > li > eng{ font-size: 12px; margin-left: 5px;}
+div.tablebox > ul > li.right{ text-align: right !important;}
+div.tablebox.V > ul > li.header,
+div.tablebox > ul.header{ background-color:#BBB; pointer-events: none; font-weight:500; vertical-align: middle;}
+div.tablebox > .header eng{ display: block;}
+
+div.tablebox > ul:hover{ background-color: var(--orange01);}
+div.tablebox > ul:hover li.header{ background-color: #333;}
+div.tablebox > ul:hover > li{ color: #FFF;}
+div.tablebox > ul:hover li .btn{background-color: var(--orange01); border: 1px solid #FFF;}
+div.tablebox > ul:hover li .btn:hover{background-color: var(--red01);}
+div.tablebox > ul > li > input,
+div.tablebox > ul > li > textarea,
+div.tablebox > ul > li > select{ width: 100%;}
+div.tablebox > ul > li > textarea{ height: 150px;}
+
+div.tablebox.withbtn li > input{ width: calc(100% - 40px);}
+
+div.tablebox .btngroup{ float: right; margin: 0;}
+
+
+.g01 input.goods_name{width: calc(80% - 40px);}
+.g01 span{width: 80px; text-align: right; display: inline-block;}
+.g01 input.goods_num{width: calc(20% - 40px);}
+div.tablebox input.payment{ width: 40%; margin: 0 5px;}
+
+/* table cell 寬度定義 */
+div.tablebox.s01 ul li:nth-of-type(1){width: 12%;}
+div.tablebox.s01 ul li:nth-of-type(2){width: 12%; text-align: right;}
+div.tablebox.s01 ul li:nth-of-type(3){ text-align: left;}
+div.tablebox.s01 ul li:nth-of-type(4){width: 12%; text-align: right;}
+div.tablebox.s01 ul li:nth-of-type(5){ text-align: left;}
+
+div.tablebox.s03{ border: dashed 2px #333; margin: 10px 0;}
+div.tablebox.s03 ul li:nth-of-type(1),
+div.tablebox.s03 ul li:nth-of-type(3),
+div.tablebox.s03 ul li:nth-of-type(5){width: 12%; background-color: #BBB; color: #333;}
+
+div.tablebox.d01 ul li:nth-of-type(1),
+div.tablebox.d01 ul li:nth-of-type(3){width: 12%; min-width: 220px;}
+div.tablebox.d01 ul li:nth-of-type(4){}
+
+div.tablebox.lo01 ul li:nth-of-type(odd){width: 10%;}
+div.tablebox.lo01 ul li:nth-of-type(even){width: 15%;}
+
+div.tablebox.d01{ border-bottom: 1px solid #333;}
+div.tablebox.d01 + .btnbox{border-top: none;}
+
+.mainlist{ border-bottom: 1px solid #333; padding-bottom: 10px;}
+.mainlist .listheader{ width:100%; padding: 5px; font-size:16px; text-align: center;}
+.mainlist .listheader::after{content:'';display:block;clear:both;}
+.mainlist .listheader select{ padding: 3px 25px 3px 10px; border-radius: 3px; font-weight: 500; font-size: 12px;}
+.mainlist .pageblock{float:right;}
+.mainlist .pageblock a{ vertical-align: middle;}
+.mainlist .pageblock a:hover{ color: var(--orange01);}
+.mainlist .searchblock{ float: left;}
+.mainlist .searchblock input{ padding: 3px; margin-left: 5px; font-size: 12px; font-weight: 500;}
+
+/* botton */
+a:not([href]):not([tabindex]).btn{ color:#FFF; }
+a.btn {display:inline-block; padding:6px 20px; line-height: normal; background-color:var(--blue01); font-size:20px; color:#FFF; vertical-align: middle; border-radius:5px; transition:.5s; border: 1px solid var(--blue01);}
+a.btn eng{ font-size: 18px; margin-left: 4px;}
+a.btn.small{ font-size: 14px; padding: 5px 8px;}
+a.btn.small eng{ font-size: 12px;}
+a.btn.small::before,
+a.btn.small::after{ font-size: 20px; vertical-align: bottom;}
+a.btn.orange{ background-color:var(--orange01); border-color:var(--orange01);  color: #FFF;}
+a.btn:hover{background-color:var(--blue02); border-color:var(--blue02); color:#FFF;}
+a.btn.orange:hover{background-color:var(--red01); border-color:var(--red01);}
+a.btn .before-micons::before{ font-size: 24px; vertical-align: sub;}
+
+.btngroup{ display: inline-block;}
+.btngroup a.btn{ border-radius: 0; border-right: 1px solid #CCC; padding: 5px 12px; font-size: 16px;}
+.btngroup a.btn:first-child{ border-top-left-radius: 5px; border-bottom-left-radius: 5px; }
+.btngroup a.btn:last-child{ border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-right: none;}
+
+.btnbox{ display: inline-block; width: 100%; text-align: center; padding: 10px 0; border-top: 1px solid #333;}
+.btnbox a.btn{ margin: 0 5px; letter-spacing: 3px;}
+.btnbox a.btn eng{ letter-spacing: 0;}
+/* header */
+
+header a{color: #FFF;  display: inline-block;}
+header a.logo {font-size: 22px; font-weight:500; letter-spacing: 5px; margin-left: 10px;}
+header a.logo i{ font-size: 36px;}
+header nav{ float: right;}
+header nav a{ letter-spacing: 3px; padding: 0 10px; border-left: 1px solid #FFF; font-weight: 300; vertical-align: top;}
+header nav > a{ position: relative;}
+header nav a:first-child{ border-left: none;}
+header nav a > eng{ display: block; font-size: 12px; font-weight: 100; letter-spacing: 0;}
+header nav dl.sub{ display: inline-block;}
+header nav dl.sub dt{border-left: 1px solid #FFF; margin-bottom: 9px;}
+header nav dl.sub a{ display: block; position: relative; padding-right: 24px;}
+header nav dl.sub dt a::after{content: "arrow_drop_down"; display: inline-block; position: absolute; right: 0px; top: 30%; font-size: 24px;}
+header nav dl.sub dd{ display:none; background-color:var(--blue01); margin-bottom: 0; padding: 5px; border-bottom: 1px solid var(--blue02); box-shadow:2px 2px 2px rgba(0,0,0,.4); }
+header nav dl.sub dd:first-child{border-top: 1px solid var(--blue02); }
+header nav dl.sub:hover dd{ display: block;}
+
+/* content block */
+.mainContent{ width:100%; min-height: 100vh; padding: 60px 20px 20px; position:relative; z-index:0; display: block; }
+.mainContent::after{ content: ''; display: table; clear: both;}
+.mainContent > h6{ font-size: 32px; letter-spacing: 5px; width: 100%; padding: 20px 0 10px;}
+.mainContent > h6 > eng{ font-size: 24px; margin-left: 8px; opacity: .5; letter-spacing: 0;}
+
+.mainContent > .block{ display: block; width:100%; background-color: #FFF; border:2px solid var(--blue03); padding: 5px; margin: 8px 0; vertical-align: top; position: relative; transition: .5s;}
+.mainContent > .block:hover{ border-color: var(--blue01);}
+.mainContent > .block h6{ font-size: 18px; padding: 2px 0 5px; font-weight: 500; border-bottom: 1px solid var(--blue01); margin-bottom: 5px;}
+.mainContent > .block h6 > eng{ margin-left: 5px;}
+/* page */
+.mainContent .block.record{ display: none;}
+.mainContent .block.record.show{ display: block;}
+
+
+
