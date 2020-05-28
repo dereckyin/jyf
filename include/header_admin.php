@@ -45,6 +45,7 @@ if ( isset( $jwt ) ) {
      <dt><a href="" class="after-micons">查詢<eng>Inquire</eng></a></dt>
      <dd><a href="taiwanpay.php">台灣付與代墊<eng>Taiwan Pay/ Courier Money</eng></a></dd>
      <dd><a href="query_receive.php">收貨記錄查詢<eng>Query For Receiving Records</eng></a></dd>
+     <dd><a href="contact_us.php">聯絡我們<eng>Contact Us</eng></a></dd>
  </dl>
  
  

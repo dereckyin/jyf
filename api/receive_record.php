@@ -100,36 +100,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
             $id = mysqli_real_escape_string($conn, (isset($_GET['id']) ?  $_GET['id'] : ""));
             $page = mysqli_real_escape_string($conn, (isset($_GET['page']) ?  $_GET['page'] : ""));
             $size = mysqli_real_escape_string($conn, (isset($_GET['size']) ?  $_GET['size'] : ""));
-/*
-            $sql = "( SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user  FROM receive_record where batch_num = 0 and date_receive <> '' and status = '' ".($id ? " and id=$id" : ''); 
 
-            $sql = $sql . " ORDER BY date_receive, customer) ";
-
-            $sql = $sql . " union ";
-
-            $sql = $sql . " (SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user  FROM receive_record where batch_num = 0 and date_receive = '' and status = '' ".($id ? " and id=$id" : ''); 
-
-            $sql = $sql . " ORDER BY customer)";
-
-
-            if(!empty($_GET['page'])) {
-                $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
-                if(false === $page) {
-                    $page = 1;
-                }
-            }
-
-            if(!empty($_GET['size'])) {
-                $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);
-                if(false === $size) {
-                    $size = 10;
-                }
-
-                $offset = ($page - 1) * $size;
-
-                $sql = $sql . " LIMIT " . $offset . "," . $size;
-            }
-*/
               $subquery = "";
 
               $merged_results = array();
@@ -221,7 +192,6 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                     $hash = hash_hmac('sha256', $time, $key);
                     $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
                     $filename = $time . $hash . "." . $ext;
-                    // if (move_uploaded_file($_FILES["file"]["tmp_name"], "/var/www/html/img/" . $filename)) {
                     if (move_uploaded_file($_FILES["file"]["tmp_name"], $conf::$upload_path . $filename)) {
                         echo "done";
                     }
@@ -279,7 +249,6 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                     $hash = hash_hmac('sha256', $time, $key);
                     $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
                     $filename = $time . $hash . "." . $ext;
-                    // if (move_uploaded_file($_FILES["file"]["tmp_name"], "/var/www/html/img/" . $filename)) {
                     if (move_uploaded_file($_FILES["file"]["tmp_name"], $conf::$upload_path . $filename)) {
                         echo "done";
                     }
@@ -338,7 +307,6 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                     $hash = hash_hmac('sha256', $time, $key);
                     $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
                     $filename = $time . $hash . "." . $ext;
-                    // if (move_uploaded_file($_FILES["file"]["tmp_name"], "/var/www/html/img/" . $filename)) {
                     if (move_uploaded_file($_FILES["file"]["tmp_name"], $conf::$upload_path . $filename)) {
                         echo "done";
                     }
@@ -438,7 +406,6 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                     $hash = hash_hmac('sha256', $time, $key);
                     $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
                     $filename = $time . $hash . "." . $ext;
-                    // if (move_uploaded_file($_FILES["file"]["tmp_name"], "/var/www/html/img/" . $filename)) {
                     if (move_uploaded_file($_FILES["file"]["tmp_name"], $conf::$upload_path . $filename)) {
                         echo "done";
                     }
