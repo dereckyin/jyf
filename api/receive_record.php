@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 include_once 'config/core.php';
-include_once 'config/conf.inc';
+include_once 'config/conf.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
 include_once 'libs/php-jwt-master/src/ExpiredException.php';
 include_once 'libs/php-jwt-master/src/SignatureInvalidException.php';

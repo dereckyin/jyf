@@ -1,6 +1,6 @@
 <?php
 
-include_once 'config/conf.inc';
+include_once 'config/conf.php';
 
 try {
 
