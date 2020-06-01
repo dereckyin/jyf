@@ -69,7 +69,7 @@ $(function(){
                               <li>船公司<eng>Shipping Line Company</eng></li>
                               <li>結關日期<eng>Date Sent</eng></li>
                               <li>ETA</li>
-                              <li>貨櫃到達日期<eng>Date C/R</eng></li>
+                              <li>貨櫃到倉日期<eng>Date C/R</eng></li>
                          </ul>
                          <ul v-for='(record, index) in displayedLoading'>
                             <li>

@@ -95,7 +95,7 @@ $(function(){
                    <ul class="header">
                         <li><eng>Check</eng>勾選</li>
                         <li><eng>Date Encoded</eng>丈量日期</li>
-                        <li><eng>Date C/R</eng>貨櫃到達日期</li>
+                        <li><eng>Date C/R</eng>貨櫃到倉日期</li>
                         <li><eng>quantity of Containers</eng>貨櫃數量</li>
                         <li><eng>Container Number(s)</eng>櫃號</li>
                         <li><eng>Remark</eng>備註</li>
@@ -129,7 +129,7 @@ $(function(){
                        <li><date-encode id="date_encode"  @update-date="update_date_encode" v-model="date_encode" style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-encode>
                           <span class="text-danger" v-if="error_date_encode" v-text="error_date_encode"></span>
                         </li>
-					   <li>貨櫃到達日期<eng>Date C/R   (Or Date Container arrived Maila)</eng></li>
+					   <li>貨櫃到倉日期<eng>Date C/R   (Or Date Container arrived Maila)</eng></li>
 					   <li><date-cr id="date_cr"  @update-date="update_date_cr" v-model="date_cr" style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-cr>
                           <span class="text-danger" v-if="error_date_cr" v-text="error_date_cr"></span></li>
 					   <li>匯率<eng>Currency Rate</eng></li>

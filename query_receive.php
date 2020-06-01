@@ -134,7 +134,7 @@ $(function(){
 
               <li><eng>Container Number</eng> 櫃號</li>
               <li><eng>Date Sent</eng>結關日期</li>
-              <li><eng>Date C/R</eng> 貨櫃到達日期</li>
+              <li><eng>Date C/R</eng> 貨櫃到倉日期</li>
               <li><eng>Date Encoded</eng> 丈量日期</li>
               <li><eng>Date Pickup</eng> 提貨日期</li>
               <li><eng>Date Paid</eng> 付款日期</li>
@@ -224,6 +224,7 @@ $(function(){
             </table>
         </div>
             <div class="modal-footer">
+              <button type="button" class="btn orange" style="background-color: lightgrey;" onclick="toggleCheckbox();">全選 / 全取消</button>
               <button type="button" class="btn btn-primary" onclick="getCustomer()">Confirm / 確認</button>
             </div> 
           </div>
@@ -312,6 +313,19 @@ $(function(){
       document.getElementsByName('customer')[0].value = containers;
 
       $( "#cusModal" ).dialog('close');
+    };
+
+    function toggleCheckbox()
+    {
+        var checkboxes = document.querySelector("#c_contact").querySelectorAll('input');
+
+        for( var i = 0, element; element = checkboxes[i]; i++) {
+          element.checked = (element.checked == 1 ? 0 : 1);
+        }
+
+        element.checked = (element.checked == 1 ? 0 : 1);
+      //$(".alone").prop("checked", !this.clicked);
+      //this.clicked = !this.clicked;
     };
 
     </script> 
