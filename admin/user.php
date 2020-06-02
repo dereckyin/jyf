@@ -186,13 +186,13 @@ include 'menu.php';
 
                          <tbody>
 
-                            <tr v-for='(receive_record, index) in displayedPosts'>
-                                <td><input type="checkbox" name="record_id" class="alone" :value="receive_record.index" :true-value="1" v-model:checked="receive_record.is_checked"></td>
-                                <td> {{ receive_record.username }}</td>
-                                <td> {{ receive_record.email }}</td>
-								<td>{{ (receive_record.status == 1) ? "是 (yes)" : "否 (no)" }}</td>
-								<td>{{ (receive_record.is_admin == '1') ? "是 (yes)" : "否 (no)" }}</td>
-                                <td> {{ receive_record.login_time }}</td>
+                            <tr v-for='(rec, index) in receive_records'>
+                                <td><input type="checkbox" name="record_id" class="alone" :value="rec.index" :true-value="1" v-model:checked="rec.is_checked"></td>
+                                <td> {{ rec.username }}</td>
+                                <td> {{ rec.email }}</td>
+								<td>{{ (rec.status == '1') ? "是 (yes)" : "否 (no)" }}</td>
+								<td>{{ (rec.is_admin == '1') ? "是 (yes)" : "否 (no)" }}</td>
+                                <td> {{ rec.login_time }}</td>
                             </tr>
 
 

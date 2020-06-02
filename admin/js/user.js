@@ -54,7 +54,7 @@ var app = new Vue({
       displayedPosts () {
         console.log('Vue computed');
 
-        this.setPages();
+        //this.setPages();
         return this.paginate(this.receive_records);
       }
     },
@@ -62,17 +62,19 @@ var app = new Vue({
     watch: {
       receive_records () {
         console.log('Vue watch receive_records');
-        this.setPages();
-      }
+        //this.setPages();
+      },
+
     },
  
 	methods:{
 		getReceiveRecords: function(keyword) {
+        let _this = this;
           console.log("getReceiveRecords");
             axios.get('../api/user.php')
                 .then(function(response) {
                     console.log(response.data);
-                    app.receive_records = response.data;
+                    _this.receive_records = response.data;
 
                     console.log("getReceiveRecords");
 
@@ -80,6 +82,20 @@ var app = new Vue({
                 .catch(function(error) {
                     console.log(error);
                 });
+        },
+
+        paginate: function (posts) {
+          console.log('paginate');
+          if(this.page < 1)
+            this.page = 1;
+          if(this.page > this.pages.length)
+            this.page = this.pages.length;
+
+          let page = this.page;
+          let perPage = this.perPage.id;
+          let from = (page * perPage) - perPage;
+          let to = (page * perPage);
+          return  this.user_records.slice(from, to);
         },
 
 		getIndex(index) {
@@ -356,14 +372,14 @@ var app = new Vue({
                         //if (index !== -1) 
                         //    app.receive_records[index] = this.record;
                         
-                        app.resetForm();
-                      
                   }
                 })
                 .catch(function(response) {
                     //handle error
                     console.log(response)
                 });
+
+                app.resetForm();
         },
 
         createReceiveRecord: function() {

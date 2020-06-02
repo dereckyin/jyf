@@ -107,12 +107,14 @@ else
             // instantiate product object
             $user = new User($db);
 
-            $username = stripslashes($_POST["username"]);
-            $email = stripslashes($_POST["email"]);
-            $password = stripslashes($_POST["password"]);
-            $status = stripslashes($_POST["status"]);
-            $is_admin = stripslashes($_POST["is_admin"]);
+            $username = stripslashes(isset($_POST['username']) ?  $_POST['username'] : "");
+            $email = stripslashes(isset($_POST['email']) ?  $_POST['email'] : "");
+            $password = stripslashes(isset($_POST['password']) ?  $_POST['password'] : "" );
+            $status = stripslashes(isset($_POST['status']) ?  $_POST['status'] : 0 );
+            $is_admin = stripslashes(isset($_POST['is_admin']) ?  $_POST['is_admin'] : "");
 
+            if($is_admin == "null")
+                $is_admin = "0";
 
             $crud = mysqli_real_escape_string($conn, $_POST["crud"]);
             $id = mysqli_real_escape_string($conn, $_POST["id"]);

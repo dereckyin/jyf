@@ -238,7 +238,13 @@ class User{
         // execute the query
         if($stmt->execute()){
             return true;
-        }
+        }else
+            {
+                $arr = $stmt->errorInfo();
+                error_log($arr[2]);
+                error_log($this->is_admin);
+            }
+
     
         return false;
     }
