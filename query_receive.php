@@ -189,6 +189,7 @@ $(function(){
             </table>
         </div>
             <div class="modal-footer">
+              <button type="button" class="btn orange" style="background-color: lightgrey;" onclick="toggleCheckboxSupplier();">全選 / 全取消</button>
               <button type="button" class="btn btn-primary" onclick="getSupplier()">Confirm / 確認</button>
             </div> 
           </div>
@@ -318,6 +319,19 @@ $(function(){
     function toggleCheckbox()
     {
         var checkboxes = document.querySelector("#c_contact").querySelectorAll('input');
+
+        for( var i = 0, element; element = checkboxes[i]; i++) {
+          element.checked = (element.checked == 1 ? 0 : 1);
+        }
+
+        element.checked = (element.checked == 1 ? 0 : 1);
+      //$(".alone").prop("checked", !this.clicked);
+      //this.clicked = !this.clicked;
+    };
+
+    function toggleCheckboxSupplier()
+    {
+        var checkboxes = document.querySelector("#s_contact").querySelectorAll('input');
 
         for( var i = 0, element; element = checkboxes[i]; i++) {
           element.checked = (element.checked == 1 ? 0 : 1);

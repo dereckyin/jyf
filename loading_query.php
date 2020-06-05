@@ -70,6 +70,7 @@ $(function(){
                               <li>結關日期<eng>Date Sent</eng></li>
                               <li>ETA</li>
                               <li>貨櫃到倉日期<eng>Date C/R</eng></li>
+                              <li>領櫃人<eng>Broker</eng></li>
                          </ul>
                          <ul v-for='(record, index) in displayedLoading'>
                             <li>
@@ -81,6 +82,7 @@ $(function(){
                             <li>{{ record.date_sent }}</li>
                             <li>{{ record.eta_date }}</li>
                             <li>{{ record.date_arrive }}</li>
+                            <li>{{ record.broker }}</li>
                          </ul>
                      </div>
                  </div>

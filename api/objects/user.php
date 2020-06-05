@@ -190,16 +190,15 @@ class User{
     // update a user record
     public function delete(){
 
-        $query = "UPDATE " . $this->table_name . "
-                SET
-                    status = :status
+        $query = "delete from " . $this->table_name . "
+                
                 WHERE id = :id";
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
 
         // bind the values from the form
-        $stmt->bindParam(':status', $a = -1);
+        //$stmt->bindParam(':status', $a = -1);
 
         // unique ID of record to be edited
         $stmt->bindParam(':id', $this->id);
