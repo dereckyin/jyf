@@ -107,10 +107,12 @@ let mainState = {
     etd_date: '',
     ob_date: '',
     eta_date: '',
+    date_arrive:'',
     date_send_his: '',
     etd_date_his: '',
     ob_date_his: '',
     eta_date_his: '',
+    date_arrive_his:'',
     broker: '',
     remark: '',
     receive_records: [],
@@ -121,6 +123,7 @@ let mainState = {
     error_etd_date:'',
     error_ob_date:'',
     error_eta_date:'',
+    error_date_arrive:'',
 
     record: {},
     // paging
@@ -516,6 +519,7 @@ var app = new Vue({
             this.etd_date = document.querySelector("input[id=etd_date]").value;
             this.ob_date = document.querySelector("input[id=ob_date]").value;
             this.eta_date = document.querySelector("input[id=eta_date]").value;
+            this.date_arrive = document.querySelector("input[id=date_arrive]").value;
 
             if (this.validateForm()) {
 
@@ -551,6 +555,7 @@ var app = new Vue({
                 formData.append('etd_date', this.etd_date)
                 formData.append('ob_date', this.ob_date)
                 formData.append('eta_date', this.eta_date);
+                formData.append('date_arrive', this.date_arrive);
                 formData.append('broker', this.broker.name)
                 formData.append('remark', this.remark);
                 formData.append('record', favorite.toString());
@@ -638,7 +643,12 @@ var app = new Vue({
 
         updat_eta_date: function(date) {
           console.log("updat_eta_date");
-            this.eta_date = eta_date;
+            this.eta_date = date;
+        },
+
+        updat_date_arrive: function(date) {
+          console.log("updat_eta_date");
+            this.eta_date = date;
         },
 
         cancelReceiveRecord: function(event) {
@@ -785,6 +795,7 @@ var app = new Vue({
             this.etd_date = '';
             this.ob_date = '';
             this.eta_date = '';
+            this.date_arrive='';
             this.broker.name = '';
             this.remark = '';
             this.isEditing = false;
@@ -794,6 +805,7 @@ var app = new Vue({
             $('#etd_date').datepicker('setDate', "");
             $('#ob_date').datepicker('setDate', "");
             $('#eta_date').datepicker('setDate', "");
+            $('#date_arrive').datepicker('setDate', "");
 
             this.resetError();
 
@@ -806,7 +818,7 @@ var app = new Vue({
             this.error_etd_date = '';
             this.error_ob_date = '';
             this.error_eta_date = '';
-
+            this.error_date_arrive='';
         },
 
 
@@ -930,6 +942,17 @@ var app = new Vue({
             {
                 $('#eta_date').datepicker();
                 $('#eta_date').datepicker('setDate', null);
+            }
+
+            if(this.record.date_arrive != "")
+            {
+                $('#date_arrive').datepicker();
+                $('#date_arrive').datepicker('setDate', this.record.date_arrive);
+            }
+            else
+            {
+                $('#date_arrive').datepicker();
+                $('#date_arrive').datepicker('setDate', null);
             }
 
             //console.log(this.record.date_receive);
@@ -1063,6 +1086,13 @@ var app = new Vue({
           if (!this.isDate(this.eta_date) && !this.eta_date == "") 
           {
               this.error_eta_date = '必須是日期 (date required)';
+              $(window).scrollTop(0);
+              return false;
+          } 
+
+          if (!this.isDate(this.date_arrive) && !this.date_arrive == "") 
+          {
+              this.error_date_arrive = '必須是日期 (date required)';
               $(window).scrollTop(0);
               return false;
           } 

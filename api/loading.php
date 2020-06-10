@@ -53,9 +53,9 @@ else
               //$sql = "SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive, crt_time, crt_user  FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  status = '' ".($id ? " and lo.id=$id" : ''); 
               //$sql = $sql . " ORDER BY ship_company, date_sent ";
 
-              $sql = "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive, crt_time, crt_user, '9999/99/99' ords  FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' ".($id ? " and lo.id=$id" : ''). " AND lo.date_sent = '' ORDER BY lo.date_sent ) ";
+              $sql = "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, '9999/99/99' ords  FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' ".($id ? " and lo.id=$id" : ''). " AND lo.date_sent = '' ORDER BY lo.date_sent ) ";
               $sql = $sql . "UNION ";
-              $sql = $sql . "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive, crt_time, crt_user, lo.date_sent ords FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' ".($id ? " and lo.id=$id" : ''). " AND lo.date_sent <> '' ORDER BY lo.date_sent DESC ) ";
+              $sql = $sql . "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, lo.date_sent ords FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' ".($id ? " and lo.id=$id" : ''). " AND lo.date_sent <> '' ORDER BY lo.date_sent DESC ) ";
               $sql = $sql . "ORDER BY ords DESC, ship_company ";
             }
 
@@ -267,6 +267,7 @@ else
             $etd_date = mysqli_real_escape_string($conn, $_POST["etd_date"]);
             $ob_date = mysqli_real_escape_string($conn, $_POST["ob_date"]);
             $eta_date = mysqli_real_escape_string($conn, $_POST["eta_date"]);
+            $date_arrive = mysqli_real_escape_string($conn, $_POST["date_arrive"]);
             $broker = mysqli_real_escape_string($conn, $_POST["broker"]);
             $remark = stripslashes($_POST["remark"]);
             $record = stripslashes($_POST["record"]);
@@ -290,12 +291,13 @@ else
                 									  etd_date,
                 									  ob_date,
                 									  eta_date,
+                                    date_arrive,
                 									  broker,
                 									  remark,
                                                       crt_user) 
-                							values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                							values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql); 
-                $stmt->bind_param("sddsssssssssssss",
+                $stmt->bind_param("sddssssssssssssss",
                 					$shipping_mark,
                 					$estimate_weight,
                 					$actual_weight,
@@ -309,6 +311,7 @@ else
                 					$etd_date,
                 					$ob_date,
                 					$eta_date,
+                          $date_arrive,
                 					$broker,
                 					$remark,
                                     $user);
@@ -366,13 +369,14 @@ else
                                                           etd_date = ?,
                                                           ob_date = ?,
                                                           eta_date = ?,
+                                                          date_arrive = ?,
                                                           broker = ?,
                 									      remark = ?,
                                                           mdf_time = now(),
                                                           mdf_user = ?
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
-                    $stmt->bind_param("sddsssssssssssssd",
+                    $stmt->bind_param("sddssssssssssssssd",
                         $shipping_mark,
                         $estimate_weight,
                         $actual_weight,
@@ -386,6 +390,7 @@ else
                         $etd_date,
                         $ob_date,
                         $eta_date,
+                        $date_arrive,
                                         $broker,
                                         $remark,
                                         $user,

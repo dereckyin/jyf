@@ -108,14 +108,16 @@ $(function(){
                  </div>
                  <div class="tablebox lo01 withbtn">
                      <ul>
-                         <li>結關<eng>Date Sent</eng></li>
-                         <li><date-picker id="date_sent"  @update-date="update_date_sent" v-model="date_sent" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-picker><span class="text-danger" v-if="error_date_send" v-text="error_date_send"></span></li>
-                         <li>ETD</li>
-                         <li><etd-date-picker id="etd_date"  @update-date="update_etd_date" v-model="etd_date" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></etd-date-picker><span class="text-danger" v-if="error_etd_date" v-text="error_etd_date"></span></li>
-                         <li>O/B</li>
-                         <li><ob-date-picker id="ob_date"  @update-date="update_ob_date" v-model="ob_date" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></ob-date-picker><span class="text-danger" v-if="error_ob_date" v-text="error_ob_date"></span></li>
-                         <li>ETA</li>
-                         <li><eta-date-picker id="eta_date"  @update-date="updat_eta_date" v-model="eta_date" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></eta-date-picker><span class="text-danger" v-if="error_eta_date" v-text="error_eta_date"></span></li>
+                         <li style="width: 5%">結關<eng>Date Sent</eng></li>
+                         <li style="width: 14%"><date-picker id="date_sent"  @update-date="update_date_sent" v-model="date_sent" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-picker><span class="text-danger" v-if="error_date_send" v-text="error_date_send"></span></li>
+                         <li style="width: 5%">ETD</li>
+                         <li style="width: 14%"><etd-date-picker id="etd_date"  @update-date="update_etd_date" v-model="etd_date" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></etd-date-picker><span class="text-danger" v-if="error_etd_date" v-text="error_etd_date"></span></li>
+                         <li style="width: 5%">O/B</li>
+                         <li style="width: 14%"><ob-date-picker id="ob_date"  @update-date="update_ob_date" v-model="ob_date" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></ob-date-picker><span class="text-danger" v-if="error_ob_date" v-text="error_ob_date"></span></li>
+                         <li style="width: 5%">ETA</li>
+                         <li style="width: 14%"><eta-date-picker id="eta_date"  @update-date="updat_eta_date" v-model="eta_date" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></eta-date-picker><span class="text-danger" v-if="error_eta_date" v-text="error_eta_date"></span></li>
+                         <li style="width: 5%">到倉日期<eng>Date C/R</eng></li>
+                         <li style="width: 14%"><date-arrive-picker id="date_arrive"  @update-date="updat_date_arrive" v-model="date_arrive" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-arrive-picker><span class="text-danger" v-if="error_date_arrive" v-text="error_date_arrive"></span></li>
                      </ul>
                  </div>  
                  <div class="tablebox d01">

@@ -88,7 +88,7 @@ foreach ($batch_nums as $num)
                 array_push($key, $row['customer']);
             }
 
-            $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date,rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive <> '' and rr.customer = '" . $row['customer']. "' ORDER BY rr.date_receive  ";
+            $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive <> '' and rr.customer = '" . $row['customer']. "' ORDER BY rr.date_receive  ";
 
             $result1 = mysqli_query($conn,$subquery);
 
@@ -97,7 +97,7 @@ foreach ($batch_nums as $num)
         }
     }
 
-    $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date,rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive = ''  ORDER BY rr.customer  ";
+    $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive = ''  ORDER BY rr.customer  ";
 
     $result1 = mysqli_query($conn,$subquery);
     while($row = mysqli_fetch_assoc($result1))
@@ -132,6 +132,7 @@ foreach ($batch_nums as $num)
     $date_sent = '';
     $etd = '';
     $ob = '';
+    $cr = '';
     $eta = '';
     $broker = '';
 
@@ -166,6 +167,7 @@ foreach ($batch_nums as $num)
         $etd = $row['etd_date'];
         $ob = $row['ob_date'];
         $eta = $row['eta_date'];
+        $cr = $row['date_arrive'];
         $broker = $row['broker'];
     }
     $sheet->getStyle('A1:' . 'J1')->getFont()->setBold(true);
@@ -208,11 +210,14 @@ foreach ($batch_nums as $num)
     $sheet->setCellValue('A'  . ($i + 14), 'ETA');
     $sheet->setCellValue('B'  . ($i + 14), $eta);
 
-    $sheet->setCellValue('A'  . ($i + 15), '領櫃人 Broker');
-    $sheet->setCellValue('B'  . ($i + 15), $broker);
+    $sheet->setCellValue('A'  . ($i + 15), 'C/R');
+    $sheet->setCellValue('B'  . ($i + 15), $cr);
 
-    $sheet->getStyle('A' . ($i + 3) . ':' . 'A' . ($i + 15))->getFont()->setBold(true);
-    $sheet->getStyle('A' . ($i + 3) . ':' . 'B' . ($i + 15))->applyFromArray($styleArray);
+    $sheet->setCellValue('A'  . ($i + 16), '領櫃人 Broker');
+    $sheet->setCellValue('B'  . ($i + 16), $broker);
+
+    $sheet->getStyle('A' . ($i + 3) . ':' . 'A' . ($i + 16))->getFont()->setBold(true);
+    $sheet->getStyle('A' . ($i + 3) . ':' . 'B' . ($i + 16))->applyFromArray($styleArray);
 
     $sheet->setTitle($container . " ");
 

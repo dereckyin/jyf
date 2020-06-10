@@ -69,6 +69,7 @@ $(function(){
                               <li>船公司<eng>Shipping Line Company</eng></li>
                               <li>結關日期<eng>Date Sent</eng></li>
                               <li>ETA</li>
+                              <li>到倉日期<eng>Date C/R</eng></li>
                          </ul>
                          <ul v-for='(record, index) in displayedLoading'>
                             <li>
@@ -79,6 +80,7 @@ $(function(){
                             <li>{{ record.ship_company }}</li>
                             <li>{{ record.date_sent }}</li>
                             <li>{{ record.eta_date }}</li>
+                            <li>{{ record.date_arrive }}</li>
                          </ul>
                      </div>
                  </div>
@@ -139,12 +141,14 @@ $(function(){
                          <li>ETD</li>
                          <li>O/B</li>
                          <li>ETA</li>
+
                      </ul>
                      <ul style="white-space: pre-wrap;">
                         <li> {{ (typeof record.date_send_his !== 'undefined' && record.date_send_his !== null) ? record.date_send_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
                         <li>{{ (typeof record.etd_date_his !== 'undefined' && record.etd_date_his !== null) ? record.etd_date_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
                         <li>{{ (typeof record.ob_date_his !== 'undefined' && record.ob_date_his !== null) ? record.ob_date_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
                         <li>{{ (typeof record.eta_date_his !== 'undefined' && record.eta_date_his !== null) ? record.eta_date_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
+                     
                      </ul>
                  </div>
                  <div class="tablebox d01">
@@ -157,6 +161,8 @@ $(function(){
                          <li><ob-date-picker id="ob_date"  @update-date="update_ob_date" v-model="record.ob_date" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></ob-date-picker><span class="text-danger" v-if="error_ob_date" v-text="error_ob_date"></span></li>
                          <li>ETA</li>
                          <li><eta-date-picker id="eta_date"  @update-date="updat_eta_date" v-model="record.eta_date" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></eta-date-picker><span class="text-danger" v-if="error_eta_date" v-text="error_eta_date"></span></li>
+                         <li>到倉日期<eng>Date C/R</eng></li>
+                         <li><date_arrive-picker id="date_arrive"  @update-date="updat_date_arrive" v-model="date_arrive" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date_arrive-picker><span class="text-danger" v-if="error_date_arrive" v-text="error_date_arrive"></span></li>
                      </ul>
                  </div>  
                  <div class="tablebox lo01">

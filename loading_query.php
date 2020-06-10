@@ -141,12 +141,14 @@ $(function(){
                          <li>ETD</li>
                          <li>O/B</li>
                          <li>ETA</li>
+                         <li>C/R</li>
                      </ul>
                      <ul style="white-space: pre-wrap;">
                         <li> {{ (typeof record.date_send_his !== 'undefined') ? record.date_send_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
                         <li>{{ (typeof record.etd_date_his !== 'undefined') ? record.etd_date_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
                         <li>{{ (typeof record.ob_date_his !== 'undefined') ? record.ob_date_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
                         <li>{{ (typeof record.eta_date_his !== 'undefined') ? record.eta_date_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
+                        <li>{{ (typeof record.date_arrive_his !== 'undefined') ? record.date_arrive_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
                      </ul>
                  </div>
                  <div class="tablebox d01 withbtn">
@@ -159,6 +161,8 @@ $(function(){
                          <li><input type="text" name="neck_cabinet" v-model="record.ob_date"></li>
                          <li>ETA</li>
                          <li><input type="text" name="neck_cabinet" v-model="record.eta_date"></li>
+                         <li>C/R</li>
+                         <li><input type="text" name="neck_cabinet" v-model="record.date_arrive"></li>
                      </ul>
                  </div>  
                  <div class="tablebox lo01">
