@@ -141,14 +141,14 @@ $(function(){
                          <li>ETD</li>
                          <li>O/B</li>
                          <li>ETA</li>
-
+                          <li>到倉日期<eng>C/R</eng></li>
                      </ul>
                      <ul style="white-space: pre-wrap;">
                         <li> {{ (typeof record.date_send_his !== 'undefined' && record.date_send_his !== null) ? record.date_send_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
                         <li>{{ (typeof record.etd_date_his !== 'undefined' && record.etd_date_his !== null) ? record.etd_date_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
                         <li>{{ (typeof record.ob_date_his !== 'undefined' && record.ob_date_his !== null) ? record.ob_date_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
                         <li>{{ (typeof record.eta_date_his !== 'undefined' && record.eta_date_his !== null) ? record.eta_date_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
-                     
+                     <li>{{ (typeof record.date_arrive_his !== 'undefined' && record.date_arrive_his !== null) ? record.date_arrive_his.replace(/(?:\r\n|\r|\n|,)/g, '\n') : "" }}</li>
                      </ul>
                  </div>
                  <div class="tablebox d01">
