@@ -117,13 +117,13 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
             while ($row = mysqli_fetch_array($result)){
                 if (isset($row)){
 
-                    if (in_array($row['customer'],$key))
+                    if (in_array(strtolower($row['customer']),$key))
                     {
                         continue;
                     }
                     else
                     {
-                        array_push($key, $row['customer']);
+                        array_push($key, strtolower($row['customer']));
                     }
 
                         $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = '" . $row['customer']. "' ORDER BY date_receive  ";

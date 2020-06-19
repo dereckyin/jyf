@@ -285,13 +285,13 @@ class ReceiveRecord{
         foreach  ($data as $row){
             if (isset($row)){
 
-                if (in_array($row['customer'],$key))
+                if (in_array(strtolower($row['customer']),$key))
                 {
                     continue;
                 }
                 else
                 {
-                    array_push($key, $row['customer']);
+                    array_push($key, strtolower($row['customer']));
                 }
 
                    $query = "SELECT r.id, 
@@ -460,13 +460,13 @@ class ReceiveRecord{
         foreach  ($data as $row){
             if (isset($row)){
 
-                if (in_array($row['customer'],$key))
+                if (in_array(strtolower($row['customer']),$key))
                 {
                     continue;
                 }
                 else
                 {
-                    array_push($key, $row['customer']);
+                    array_push($key, strtolower($row['customer']));
                 }
 
                    $query = "SELECT r.id, 
