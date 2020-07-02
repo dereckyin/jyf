@@ -39,7 +39,55 @@ require '../PHPMailer-master/src/Exception.php';
 require '../PHPMailer-master/src/PHPMailer.php';
 require '../PHPMailer-master/src/SMTP.php';
 
+require_once "db.php";
+
 $conf = new Conf();
+
+function insertContactor($customer, $supplier, $user, $conn) {
+    $have_cust = 0;
+    $have_sup = 0;
+
+    $sql = "select customer from contactor where customer = ?";
+    $stmt = $conn->prepare($sql); 
+    $stmt->bind_param("s", trim($customer));
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    while ($row = mysqli_fetch_array($result)){
+        $have_cust = 1;
+    }
+
+    $sql = "select supplier from contactor where supplier = ?";
+    $stmt = $conn->prepare($sql); 
+    $stmt->bind_param("s", trim($supplier));
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    while ($row = mysqli_fetch_array($result)){
+        $have_sup = 1;
+    }
+
+    if($have_cust == 0)
+    {
+        $sql = "insert into contactor (customer, crt_user) 
+                                    values (?, ?)";
+        $stmt = $conn->prepare($sql); 
+        $stmt->bind_param("ss", trim($customer), $user);
+        $stmt->execute();
+
+        $last_id = mysqli_insert_id($conn);
+    }
+
+    if($have_sup == 0)
+    {
+        $sql = "insert into contactor (supplier, crt_user) 
+                                    values (?, ?)";
+        $stmt = $conn->prepare($sql); 
+        $stmt->bind_param("ss", trim($supplier), $user);
+        $stmt->execute();
+
+        $last_id = mysqli_insert_id($conn);
+    }
+
+}
 
 function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
     $mail = new PHPMailer();
@@ -88,8 +136,6 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
 }
 
       header('Access-Control-Allow-Origin: *');  
-
-      require_once "db.php";
 
       $method = $_SERVER['REQUEST_METHOD'];
 
@@ -234,6 +280,8 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
 
                 $last_id = mysqli_insert_id($conn);
 
+                insertContactor($customer, $supplier, $user, $conn);
+
                 echo $last_id;
 
                 break;
@@ -293,6 +341,8 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                     sendMail($email, $date_receive, $customer, $description, $quantity, $supplier, $filename);
 
                 $last_id = mysqli_insert_id($conn);
+
+                insertContactor($customer, $supplier, $user, $conn);
 
                 echo $last_id;
 
