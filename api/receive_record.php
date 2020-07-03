@@ -47,23 +47,33 @@ function insertContactor($customer, $supplier, $user, $conn) {
     $have_cust = 0;
     $have_sup = 0;
 
-    $sql = "select customer from contactor where customer = ?";
-    $stmt = $conn->prepare($sql); 
-    $stmt->bind_param("s", trim($customer));
+    if(trim($customer) != '')
+    {
+        $sql = "select customer from contactor where customer = ?";
+        $stmt = $conn->prepare($sql); 
+        $stmt->bind_param("s", trim($customer));
 
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    while ($row = mysqli_fetch_array($result)){
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        while ($row = mysqli_fetch_array($result)){
+            $have_cust = 1;
+        }
+    }
+    else
         $have_cust = 1;
+
+    if(trim($supplier) != '')
+    {
+        $sql = "select supplier from contactor where supplier = ?";
+        $stmt = $conn->prepare($sql); 
+        $stmt->bind_param("s", trim($supplier));
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        while ($row = mysqli_fetch_array($result)){
+            $have_sup = 1;
+        }
     }
-
-    $sql = "select supplier from contactor where supplier = ?";
-    $stmt = $conn->prepare($sql); 
-    $stmt->bind_param("s", trim($supplier));
-
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    while ($row = mysqli_fetch_array($result)){
+    else
         $have_sup = 1;
-    }
 
     if($have_cust == 0)
     {
