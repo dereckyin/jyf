@@ -44,54 +44,45 @@ require_once "db.php";
 $conf = new Conf();
 
 function insertContactor($customer, $supplier, $user, $conn) {
-    $have_cust = 0;
-    $have_sup = 0;
+    $needToInsert = 0;
 
-    if(trim($customer) != '')
+   if(trim($customer) != '')
     {
         $sql = "select customer from contactor where customer = ?";
-        $stmt = $conn->prepare($sql); 
+        $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", trim($customer));
 
+        $hadData = 0;
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         while ($row = mysqli_fetch_array($result)){
-            $have_cust = 1;
+            $hadData = 1;
         }
+        if(!$hadData)
+            $needToInsert = 1;
     }
-    else
-        $have_cust = 1;
 
     if(trim($supplier) != '')
     {
         $sql = "select supplier from contactor where supplier = ?";
-        $stmt = $conn->prepare($sql); 
+        $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", trim($supplier));
 
+        $hadData = 0;
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         while ($row = mysqli_fetch_array($result)){
-            $have_sup = 1;
+            $hadData = 1;
         }
-    }
-    else
-        $have_sup = 1;
-
-    if($have_cust == 0)
-    {
-        $sql = "insert into contactor (customer, crt_user) 
-                                    values (?, ?)";
-        $stmt = $conn->prepare($sql); 
-        $stmt->bind_param("ss", trim($customer), $user);
-        $stmt->execute();
-
-        $last_id = mysqli_insert_id($conn);
+        if(!$hadData)
+            $needToInsert = 1;
     }
 
-    if($have_sup == 0)
+
+    if($needToInsert == 1)
     {
-        $sql = "insert into contactor (supplier, crt_user) 
-                                    values (?, ?)";
-        $stmt = $conn->prepare($sql); 
-        $stmt->bind_param("ss", trim($supplier), $user);
+        $sql = "insert into contactor (customer, supplier, crt_user) 
+                                    values (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sss", trim($customer), trim($supplier), $user);
         $stmt->execute();
 
         $last_id = mysqli_insert_id($conn);
