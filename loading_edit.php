@@ -80,8 +80,8 @@ $(function(){
                             <li>{{ record.so }}</li>
                             <li>{{ record.ship_company }}</li>
                             <li>{{ record.date_sent }}</li>
-                            <li :style="[record.ob_date_his ? {'color': 'red'} : {'color': 'black'}]">{{ record.ob_date }}</li>
-                            <li :style="[record.eta_date_his ? {'color': 'red'} : {'color': 'black'}]">{{ record.eta_date }}</li>
+                            <li :style="[record.ob_date_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ record.ob_date }}</li>
+                            <li :style="[record.eta_date_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ record.eta_date }}</li>
                             <li>{{ record.date_arrive }}</li>
                          </ul>
                      </div>
