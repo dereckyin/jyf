@@ -479,10 +479,13 @@ class ReceiveRecord{
                     l.container_number,
                     l.date_sent,
                     m.date_arrive,
-                    m.date_encode
+                    m.date_encode,
+                    l.eta_date,
+                    ld.eta_date eta_date_his
                     FROM receive_record r LEFT JOIN loading l 
                     ON r.batch_num = l.id 
                     LEFT JOIN measure m on l.measure_num = m.id
+                    LEFT JOIN loading_date_history ld ON l.id = ld.loading_id 
                     where r.status = ''
                     and r.date_receive <> '' 
                     and r.customer = '" . $row['customer']. "' ";
@@ -523,10 +526,13 @@ class ReceiveRecord{
                         l.container_number,
                         l.date_sent,
                         m.date_arrive,
-                        m.date_encode 
+                        m.date_encode,
+                        l.eta_date,
+                        ld.eta_date eta_date_his 
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id
                         LEFT JOIN measure m on l.measure_num = m.id
+                        LEFT JOIN loading_date_history ld ON l.id = ld.loading_id 
                         where r.status = '' 
                         and r.date_receive = '' ";
 

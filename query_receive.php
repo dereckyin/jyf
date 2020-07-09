@@ -132,8 +132,9 @@ $(function(){
               <li><eng>Supplier</eng> 寄貨人</li>
               <li><eng>Remark</eng> 備註</li>
 
-              <li><eng>Container Number</eng> 櫃號</li>
+
               <li><eng>Date Sent</eng>結關日期</li>
+              <li><eng>ETA</eng></li>
               <li><eng>Date C/R</eng> 貨櫃到倉日期</li>
               <li><eng>Date Encoded</eng> 丈量日期</li>
               <li><eng>Date Pickup</eng> 提貨日期</li>
@@ -146,8 +147,10 @@ $(function(){
               <li>{{ receive_record.quantity }}</li>
               <li>{{ receive_record.supplier }}</li>
               <li><p v-html="receive_record.remark.replace(/(?:\r\n|\r|\n)/g, '&nbsp')"></p></li>
-              <li>{{ receive_record.container_number }}</li>
+         
+
               <li>{{ receive_record.date_sent }}</li>
+              <li :style="[receive_record.eta_date_his ? {'color': 'red'} : {'color': 'black'}]">{{ receive_record.eta_date }}</li>
               <li>{{ receive_record.date_arrive }}</li>
               <li>{{ receive_record.date_encode }}</li>
               <li></li>

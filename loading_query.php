@@ -68,6 +68,7 @@ $(function(){
                               <li>S/O</li>
                               <li>船公司<eng>Shipping Line Company</eng></li>
                               <li>結關日期<eng>Date Sent</eng></li>
+                              <li>O/B</li>
                               <li>ETA</li>
                               <li>貨櫃到倉日期<eng>Date C/R</eng></li>
                               <li>領櫃人<eng>Broker</eng></li>
@@ -79,8 +80,9 @@ $(function(){
                             <li>{{ record.container_number }}</li>
                             <li>{{ record.so }}</li>
                             <li>{{ record.ship_company }}</li>
-                            <li>{{ record.date_sent }}</li>
-                            <li>{{ record.eta_date }}</li>
+                            <li >{{ record.date_sent }}</li>
+                            <li :style="[record.ob_date_his ? {'color': 'red'} : {'color': 'black'}]">{{ record.ob_date }}</li>
+                            <li :style="[record.eta_date_his ? {'color': 'red'} : {'color': 'black'}]">{{ record.eta_date }}</li>
                             <li>{{ record.date_arrive }}</li>
                             <li>{{ record.broker }}</li>
                          </ul>
