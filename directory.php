@@ -52,7 +52,7 @@ $(function(){
               <eng>Company/Customer</eng>
             </li>
             <li>
-              <input type="text" name="customer" v-model="customer" maxlength="128">
+              <input type="text" name="customer" v-model="customer" maxlength="256">
               <span class="text-danger" v-if="error_customer" v-text="error_customer"></span></li>
           </ul>
           <ul>
@@ -87,7 +87,7 @@ $(function(){
               <eng>Supplier</eng>
             </li>
             <li>
-              <input type="text" name="supplier" v-model="supplier" maxlength="128">
+              <input type="text" name="supplier" v-model="supplier" maxlength="256">
               <span class="text-danger" v-if="error_supplier" v-text="error_supplier"></span></li>
           </ul>
           <ul>
@@ -161,7 +161,7 @@ $(function(){
               <eng>Company/Customer</eng>
             </li>
             <li>
-              <input type="text" name="customer" v-model="record.customer" maxlength="128">
+              <input type="text" name="customer" v-model="record.customer" maxlength="256">
               <span class="text-danger" v-if="error_customer" v-text="error_customer"></span></li>
           </ul>
           <ul>
@@ -196,7 +196,7 @@ $(function(){
               <eng>Supplier</eng>
             </li>
             <li>
-              <input type="text" name="supplier" v-model="record.supplier" maxlength="128">
+              <input type="text" name="supplier" v-model="record.supplier" maxlength="256">
               <span class="text-danger" v-if="error_supplier" v-text="error_supplier"></span></li>
           </ul>
           <ul>

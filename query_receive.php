@@ -75,7 +75,7 @@ $(function(){
 			  <li class="header"></li>
             <li>收件人 <eng>Company / Customer</eng></li>
             <li>
-                  <input type="text" class="goods_num" id="customer"  name="customer" v-model="customer" style="width: calc(80% - 40px);"> 
+                  <input type="text" class="goods_num" id="customer" maxlength="256" name="customer" v-model="customer" style="width: calc(80% - 40px);"> 
               <button type="button" class="btn btn-primary" id="create-customer"><i class="fas fa-address-card"></i></button>
             </li>
           </ul>
@@ -83,7 +83,7 @@ $(function(){
 			  <li class="header"></li>
             <li>寄貨人 <eng>Supplier</eng></li>
             <li>
-              <input type="text" class="goods_num" id="supplier"  name="supplier" v-model="supplier" style="width: calc(80% - 40px);"> 
+              <input type="text" class="goods_num" id="supplier" maxlength="256" name="supplier" v-model="supplier" style="width: calc(80% - 40px);"> 
               <button type="button" class="btn btn-primary" id="create-supplier"><i class="fas fa-address-card"></i></button>
             </li>
           </ul>

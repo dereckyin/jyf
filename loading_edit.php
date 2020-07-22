@@ -211,7 +211,7 @@ $(function(){
                             </div>
                               <input name="customer" 
                                    v-show = "receive_record.is_edited == 0" 
-                                   v-model = "customer" maxlength="128">
+                                   v-model = "customer" maxlength="256">
                         </li>
                         <li><div v-show = "receive_record.is_edited == 1">
                               <label> {{receive_record.description}}</label>
@@ -232,7 +232,7 @@ $(function(){
                             </div>
                               <input name="supplier" 
                                    v-show = "receive_record.is_edited == 0" 
-                                   v-model = "supplier" maxlength="128">
+                                   v-model = "supplier" maxlength="256">
                         </li>
                         <li><div v-show = "receive_record.is_edited == 1">
                               <label> {{ (receive_record.kilo == 0) ? "" : receive_record.kilo }}</label>

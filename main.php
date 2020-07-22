@@ -71,7 +71,7 @@ $(function(){
             <li class="header"></li>
             <li>收件人 <eng>Company/customer</eng></li>
             <li>
-              <input type="text" name="customer" v-model="customer" style="width: calc(65% - 40px);">
+              <input type="text" name="customer" v-model="customer" maxlength="256" style="width: calc(65% - 40px);">
               <button type="button" class="btn btn-primary" id="create-user"><i class="fas fa-address-card"></i></button>
             </li>
             <li>E-Mail</li>
@@ -98,7 +98,7 @@ $(function(){
             <li class="header">寄件人資訊</li>
             <li>寄件人 <eng>Supplier</eng></li>
             <li>
-              <input type="text" name="supplier" v-model="supplier" style="width: calc(80% - 40px);">
+              <input type="text" name="supplier" v-model="supplier" maxlength="256" style="width: calc(80% - 40px);">
               <button type="button" class="btn btn-primary" id="create-supplier"><i class="fas fa-address-card"></i></button>
               <span class="text-danger" v-if="error_customer" v-text="error_customer"></span>
             </li>
@@ -168,7 +168,7 @@ $(function(){
             <li class="header"></li>
             <li>收件人 <eng>Company/customer</eng></li>
             <li>
-              <input type="text" name="customer"  v-model="record.customer" style="width: calc(65% - 40px);">
+              <input type="text" name="customer" maxlength="256" v-model="record.customer" style="width: calc(65% - 40px);">
               <button type="button" class="btn btn-primary" id="create-user1"><i class="fas fa-address-card"></i></button>
             </li>
             <li>E-Mail</li>
@@ -195,7 +195,7 @@ $(function(){
             <li class="header">寄件人資訊</li>
             <li>寄件人 <eng>Supplier</eng></li>
             <li>
-              <input type="text" name="supplier" v-model="record.supplier" style="width: calc(80% - 40px);">
+              <input type="text" name="supplier" maxlength="256" v-model="record.supplier" style="width: calc(80% - 40px);">
               <button type="button" class="btn btn-primary" id="create-supplier1"><i class="fas fa-address-card"></i></button>
               <span class="text-danger" v-if="error_customer" v-text="error_customer"></span>
             </li>
