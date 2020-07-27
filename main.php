@@ -298,13 +298,13 @@ $(function(){
                 <input type="checkbox" name="record_id" class="alone" :value="receive_record.index" :true-value="1" v-model:checked="receive_record.is_checked">
               </li>
               <li>{{ receive_record.date_receive }}</li>
-              <li>{{ receive_record.customer }}</li>
+              <li>{{ receive_record.customer.replace(/\\/g, '') }}</li>
               <li><i class="fas fa-image" v-if="receive_record.picname" @click="zoom(receive_record.picname)"></i></li>
               <li>{{ receive_record.description }}</li>
               <li>{{ receive_record.quantity }}</li>
               <li>{{ (receive_record.kilo == 0) ? "" : receive_record.kilo }}</li>
               <li>{{ (receive_record.cuft == 0) ? "" : receive_record.cuft }}</li>
-              <li>{{ receive_record.supplier }}</li>
+              <li>{{ receive_record.supplier.replace(/\\/g, '') }}</li>
               <li>{{ (receive_record.taiwan_pay == 1) ? "是 (yes)" : "否 (no)" }}</li>
               <li>{{ (receive_record.courier_money == 0) ? "" : receive_record.courier_money }}</li>
               <li><p v-html="receive_record.remark.replace(/(?:\r\n|\r|\n)/g, '&nbsp')"></p></li>

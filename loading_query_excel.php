@@ -88,7 +88,7 @@ foreach ($batch_nums as $num)
                 array_push($key, $row['customer']);
             }
 
-            $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive <> '' and rr.customer = '" . $row['customer']. "' ORDER BY rr.date_receive  ";
+            $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark, lo.estimate_weight  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive <> '' and rr.customer = '" . $row['customer']. "' ORDER BY rr.date_receive  ";
 
             $result1 = mysqli_query($conn,$subquery);
 
@@ -97,7 +97,7 @@ foreach ($batch_nums as $num)
         }
     }
 
-    $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive = ''  ORDER BY rr.customer  ";
+    $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark, lo.estimate_weight  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive = ''  ORDER BY rr.customer  ";
 
     $result1 = mysqli_query($conn,$subquery);
     while($row = mysqli_fetch_assoc($result1))
@@ -156,6 +156,7 @@ foreach ($batch_nums as $num)
         $i++;
 
         $mark = $row['shipping_mark'];
+        $es_weight = $row['estimate_weight'];
         $weight = $row['actual_weight'];
         $container = $row['container_number'];
         $seal = $row['seal'];
@@ -177,47 +178,50 @@ foreach ($batch_nums as $num)
     $sheet->setCellValue('A'  . ($i + 3), '嘜頭 Shopping Mark');
     $sheet->setCellValue('B'  . ($i + 3), $mark);
 
-    $sheet->setCellValue('A'  . ($i + 4), '櫃重 Actual Weight');
-    $sheet->setCellValue('B'  . ($i + 4), $weight);
+    $sheet->setCellValue('A'  . ($i + 4), '空櫃重 Empty Container Weight');
+    $sheet->setCellValue('B'  . ($i + 4), $es_weight);
 
-    $sheet->setCellValue('A'  . ($i + 5), '櫃號 Container Number');
-    $sheet->setCellValue('B'  . ($i + 5), $container);
+    $sheet->setCellValue('A'  . ($i + 5), '櫃重 Actual Weight');
+    $sheet->setCellValue('B'  . ($i + 5), $weight);
 
-    $sheet->setCellValue('A'  . ($i + 6), '封條 Seal');
-    $sheet->setCellValue('B'  . ($i + 6), $seal);
+    $sheet->setCellValue('A'  . ($i + 6), '櫃號 Container Number');
+    $sheet->setCellValue('B'  . ($i + 6), $container);
 
-    $sheet->setCellValue('A'  . ($i + 7), 'S/O');
-    $sheet->setCellValue('B'  . ($i + 7), $so);
+    $sheet->setCellValue('A'  . ($i + 7), '封條 Seal');
+    $sheet->setCellValue('B'  . ($i + 7), $seal);
 
-    $sheet->setCellValue('A'  . ($i + 8), '船公司 Shipping Line Company');
-    $sheet->setCellValue('B'  . ($i + 8), $company);
+    $sheet->setCellValue('A'  . ($i + 8), 'S/O');
+    $sheet->setCellValue('B'  . ($i + 8), $so);
 
-    $sheet->setCellValue('A'  . ($i + 9), '船名航次 Shipping Line Boat');
-    $sheet->setCellValue('B'  . ($i + 9), $boat);
+    $sheet->setCellValue('A'  . ($i + 9), '船公司 Shipping Line Company');
+    $sheet->setCellValue('B'  . ($i + 9), $company);
 
-    $sheet->setCellValue('A'  . ($i + 10), '領櫃 Neck Cabinet');
-    $sheet->setCellValue('B'  . ($i + 10), $cabinet);
+    $sheet->setCellValue('A'  . ($i + 10), '船名航次 Shipping Line Boat');
+    $sheet->setCellValue('B'  . ($i + 10), $boat);
 
-    $sheet->setCellValue('A'  . ($i + 11), '結關 Date Sent');
-    $sheet->setCellValue('B'  . ($i + 11), $date_sent);
+    $sheet->setCellValue('A'  . ($i + 11), '領櫃 Neck Cabinet');
+    $sheet->setCellValue('B'  . ($i + 11), $cabinet);
 
-    $sheet->setCellValue('A'  . ($i + 12), 'ETD');
-    $sheet->setCellValue('B'  . ($i + 12), $etd);
+    $sheet->setCellValue('A'  . ($i + 12), '結關 Date Sent');
+    $sheet->setCellValue('B'  . ($i + 12), $date_sent);
 
-    $sheet->setCellValue('A'  . ($i + 13), 'O/B');
-    $sheet->setCellValue('B'  . ($i + 13), $ob);
+    $sheet->setCellValue('A'  . ($i + 13), 'ETD');
+    $sheet->setCellValue('B'  . ($i + 13), $etd);
 
-    $sheet->setCellValue('A'  . ($i + 14), 'ETA');
-    $sheet->setCellValue('B'  . ($i + 14), $eta);
+    $sheet->setCellValue('A'  . ($i + 14), 'O/B');
+    $sheet->setCellValue('B'  . ($i + 14), $ob);
 
-    $sheet->setCellValue('A'  . ($i + 15), 'C/R');
-    $sheet->setCellValue('B'  . ($i + 15), $cr);
+    $sheet->setCellValue('A'  . ($i + 15), 'ETA');
+    $sheet->setCellValue('B'  . ($i + 15), $eta);
 
-    $sheet->setCellValue('A'  . ($i + 16), '領櫃人 Broker');
-    $sheet->setCellValue('B'  . ($i + 16), $broker);
+    $sheet->setCellValue('A'  . ($i + 16), 'C/R');
+    $sheet->setCellValue('B'  . ($i + 16), $cr);
 
-    $sheet->getStyle('A' . ($i + 3) . ':' . 'A' . ($i + 16))->getFont()->setBold(true);
-    $sheet->getStyle('A' . ($i + 3) . ':' . 'B' . ($i + 16))->applyFromArray($styleArray);
+    $sheet->setCellValue('A'  . ($i + 17), '領櫃人 Broker');
+    $sheet->setCellValue('B'  . ($i + 17), $broker);
+
+    $sheet->getStyle('A' . ($i + 3) . ':' . 'A' . ($i + 17))->getFont()->setBold(true);
+    $sheet->getStyle('A' . ($i + 3) . ':' . 'B' . ($i + 17))->applyFromArray($styleArray);
 
     $sheet->setTitle($container . " ");
 

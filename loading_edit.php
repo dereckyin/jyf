@@ -207,7 +207,7 @@ $(function(){
                                    v-model = "date_receive" maxlength="10">
                         </li>
                         <li><div v-show = "receive_record.is_edited == 1">
-                              <label> {{receive_record.customer}}</label>
+                              <label> {{receive_record.customer.replace(/\\/g, '')}}</label>
                             </div>
                               <input name="customer" 
                                    v-show = "receive_record.is_edited == 0" 
@@ -228,7 +228,7 @@ $(function(){
                                    v-model = "quantity" maxlength="128">
                         </li>
                         <li><div v-show = "receive_record.is_edited == 1">
-                              <label> {{receive_record.supplier}}</label>
+                              <label> {{receive_record.supplier.replace(/\\/g, '')}}</label>
                             </div>
                               <input name="supplier" 
                                    v-show = "receive_record.is_edited == 0" 
