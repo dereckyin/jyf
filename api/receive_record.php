@@ -211,11 +211,11 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
 
           case 'POST':
             $date_receive = mysqli_real_escape_string($conn, $_POST["date_receive"]);
-            $customer = mysqli_real_escape_string($conn, $_POST["customer"]);
+            $customer = stripslashes($_POST["customer"]);
             $email = mysqli_real_escape_string($conn, $_POST["email"]);
             $description = mysqli_real_escape_string($conn, $_POST["description"]);
             $quantity = mysqli_real_escape_string($conn, $_POST["quantity"]);
-            $supplier = mysqli_real_escape_string($conn, $_POST["supplier"]);
+            $supplier = stripslashes($_POST["supplier"]);
             $kilo = mysqli_real_escape_string($conn, $_POST["kilo"]);
             $cuft = mysqli_real_escape_string($conn, $_POST["cuft"]);
             $taiwan_pay = mysqli_real_escape_string($conn, $_POST["taiwan_pay"]);
