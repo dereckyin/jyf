@@ -481,7 +481,7 @@ class ReceiveRecord{
                     m.date_arrive,
                     m.date_encode,
                     l.eta_date,
-                    ld.eta_date eta_date_his
+                    COALESCE(ld.eta_date, '') eta_date_his
                     FROM receive_record r LEFT JOIN loading l 
                     ON r.batch_num = l.id 
                     LEFT JOIN measure m on l.measure_num = m.id
@@ -528,7 +528,7 @@ class ReceiveRecord{
                         m.date_arrive,
                         m.date_encode,
                         l.eta_date,
-                        ld.eta_date eta_date_his 
+                        COALESCE(ld.eta_date, '') eta_date_his 
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id
                         LEFT JOIN measure m on l.measure_num = m.id

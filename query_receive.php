@@ -327,7 +327,7 @@ $(function(){
           element.checked = (element.checked == 1 ? 0 : 1);
         }
 
-        element.checked = (element.checked == 1 ? 0 : 1);
+        //element.checked = (element.checked == 1 ? 0 : 1);
       //$(".alone").prop("checked", !this.clicked);
       //this.clicked = !this.clicked;
     };
@@ -340,7 +340,7 @@ $(function(){
           element.checked = (element.checked == 1 ? 0 : 1);
         }
 
-        element.checked = (element.checked == 1 ? 0 : 1);
+        //element.checked = (element.checked == 1 ? 0 : 1);
       //$(".alone").prop("checked", !this.clicked);
       //this.clicked = !this.clicked;
     };
