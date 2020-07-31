@@ -142,7 +142,7 @@ class ReceiveRecord{
         if(!empty($container_number)) {
             $container_number = rtrim($container_number, ',');
             $container = explode(",", $container_number);
-            $container_str = "'".implode("','",trim($container))."'";
+            $container_str = "'".implode("','",array_map("trim",array_filter($container)))."'";
 
             $sql = $sql . " and l.container_number in($container_str) ";
         }
@@ -191,7 +191,7 @@ class ReceiveRecord{
                     if(!empty($container_number)) {
                         $container_number = rtrim($container_number, ',');
                         $container = explode(",", $container_number);
-                        $container_str = "'".implode("','",trim($container))."'";
+                        $container_str = "'".implode("','",array_map("trim",array_filter($container)))."'";
 
                         $query = $query . " and l.container_number in($container_str) ";
                     }
@@ -229,7 +229,7 @@ class ReceiveRecord{
         if(!empty($container_number)) {
             $container_number = rtrim($container_number, ',');
             $container = explode(",", $container_number);
-            $container_str = "'".implode("','",trim($container))."'";
+            $container_str = "'".implode("','",array_map("trim",array_filter($container)))."'";
 
             $query = $query . " and l.container_number in($container_str) ";
         }
@@ -269,7 +269,7 @@ class ReceiveRecord{
         if(!empty($container_number)) {
             $container_number = rtrim($container_number, ',');
             $container = explode(",", $container_number);
-            $container_str = "'".implode("','",trim($container))."'";
+            $container_str = "'".implode("','",array_map("trim",array_filter($container)))."'";
 
             $sql = $sql . " and l.container_number in($container_str) ";
         }
@@ -319,7 +319,7 @@ class ReceiveRecord{
                     if(!empty($container_number)) {
                         $container_number = rtrim($container_number, ',');
                         $container = explode(",", $container_number);
-                        $container_str = "'".implode("','",trim($container))."'";
+                        $container_str = "'".implode("','",array_map("trim",array_filter($container)))."'";
 
                         $query = $query . " and l.container_number in($container_str) ";
                     }
@@ -358,7 +358,7 @@ class ReceiveRecord{
         if(!empty($container_number)) {
             $container_number = rtrim($container_number, ',');
             $container = explode(",", $container_number);
-            $container_str = "'".implode("','",trim($container))."'";
+            $container_str = "'".implode("','",array_map("trim",array_filter($container)))."'";
 
             $query = $query . " and l.container_number in($container_str) ";
         }
@@ -436,7 +436,7 @@ class ReceiveRecord{
         if(!empty($customer)) {
             $customer = rtrim($customer, ',');
             $cust = explode(",", $customer);
-            $cus_str = "'".implode("','",trim($cust))."'";
+            $cus_str = "'".implode("','",array_map("trim",array_filter($cust)))."'";
 
             $sql = $sql . " and r.customer in($cus_str) ";
         }
@@ -444,7 +444,7 @@ class ReceiveRecord{
         if(!empty($supplier)) {
             $supplier = rtrim($supplier, ',');
             $sup = explode(",", $supplier);
-            $sup_str = "'".implode("','",trim($sup))."'";
+            $sup_str = "'".implode("','",array_map("trim",array_filter($sup)))."'";
 
             $sql = $sql . " and r.supplier in($sup_str) ";
         }
