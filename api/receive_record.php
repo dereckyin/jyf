@@ -191,8 +191,11 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
             $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY customer";
 
               $result1 = mysqli_query($conn,$subquery);
+              if($result1 != null)
+                            {
               while($row = mysqli_fetch_assoc($result1))
                   $merged_results[] = $row;
+          }
 
             // die if SQL statement failed
             if (!$merged_results) {

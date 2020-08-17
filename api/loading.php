@@ -98,8 +98,11 @@ else
 
                             $result1 = mysqli_query($conn,$subquery);
 
+if($result1 != null)
+                            {
                     while($row = mysqli_fetch_assoc($result1))
                         $merged_results[] = $row;
+                    }
 
 
 
@@ -109,8 +112,11 @@ else
             $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited  FROM receive_record where batch_num = $record and date_receive = '' and status = ''  ORDER BY customer";
 
               $result1 = mysqli_query($conn,$subquery);
+              if($result1 != null)
+                            {
               while($row = mysqli_fetch_assoc($result1))
                   $merged_results[] = $row;
+              }
 
               // for batchnum = 0
                 $subquery = "";
@@ -153,8 +159,11 @@ else
             $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY customer";
 
               $result1 = mysqli_query($conn,$subquery);
+              if($result1 != null)
+                            {
               while($row = mysqli_fetch_assoc($result1))
                   $merged_results[] = $row;
+              }
 
 
 
@@ -198,8 +207,11 @@ else
 
                             $result1 = mysqli_query($conn,$subquery);
 
+if($result1 != null)
+                            {
                     while($row = mysqli_fetch_assoc($result1))
                         $merged_results[] = $row;
+                    }
 
 
 
