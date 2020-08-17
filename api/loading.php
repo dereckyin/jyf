@@ -140,9 +140,11 @@ else
 
                             $result1 = mysqli_query($conn,$subquery);
 
+                   if($result1 != null)
+                  {
                     while($row = mysqli_fetch_assoc($result1))
                         $merged_results[] = $row;
-
+                  }
 
 
                 }
