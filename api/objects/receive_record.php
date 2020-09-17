@@ -478,7 +478,7 @@ class ReceiveRecord{
                     r.remark, 
                     l.container_number,
                     l.date_sent,
-                    m.date_arrive,
+                    l.date_arrive,
                     m.date_encode,
                     l.eta_date,
                     COALESCE(ld.eta_date, '') eta_date_his
@@ -525,7 +525,7 @@ class ReceiveRecord{
                         r.remark, 
                         l.container_number,
                         l.date_sent,
-                        m.date_arrive,
+                        l.date_arrive,
                         m.date_encode,
                         l.eta_date,
                         COALESCE(ld.eta_date, '') eta_date_his 
