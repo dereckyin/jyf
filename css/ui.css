@@ -67,7 +67,7 @@ footer{}
 .bodybox{overflow:hidden; min-height:100%; position: relative;}
 .mainContent {min-height:100%;}
 
-.svg-icon{width: 30px; height: 30px; background: url(../Images/ui/icon.svg) no-repeat -30px -30px; background-size: 1000%;}
+.svg-icon{width: 30px; height: 30px; background: url(../images/ui/icon.svg) no-repeat -30px -30px; background-size: 1000%;}
 
 /* mobile menu */
 a.mobilemenu,
@@ -213,7 +213,7 @@ input.alone[type=checkbox]::before {content: "check_box_outline_blank";}
 input.alone[type=checkbox]:checked::before {content: "check_box";}
 
 select {
-    background-image: url(../Images/ui/icon_form_select_arrow.svg);
+    background-image: url(../images/ui/icon_form_select_arrow.svg);
     background-size: auto 100%;
     background-position: 100% center;
     background-repeat: no-repeat;

@@ -9,6 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // files needed to connect to database
 include_once 'config/database.php';
 include_once 'objects/contact_us.php';
+include_once 'config/conf.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -59,6 +60,7 @@ else{
 
 
 function sendMail($gender, $customer,  $emailinfo, $telinfo) {
+    $conf = new Conf();
     $mail = new PHPMailer();
     $mail->IsSMTP();
     $mail->Mailer = "smtp";
@@ -80,10 +82,10 @@ function sendMail($gender, $customer,  $emailinfo, $telinfo) {
 
     $mail->IsHTML(true);
     $mail->AddAddress("jyf_lu@hotmail.com", "jyf_lu");
-    //$mail->Subject = "=?utf-8?B?" . base64_encode("信件標題") . "?=";
+    
     $mail->SetFrom("servictoryshipment@gmail.com", "servictoryshipment");
     $mail->AddReplyTo("servictoryshipment@gmail.com", "servictoryshipment");
-    // $mail->AddCC("tryhelpbuy@gmail.com", "tryhelpbuy");
+
     $mail->Subject = "客戶聯絡資訊 from 中亞菲Google廣告";
     $content = "<p>稱謂：" . $gender . "</p>";
     $content = $content . "<p>姓名：" . $customer . "</p>";
