@@ -9,6 +9,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // files needed to connect to database
 include_once 'config/database.php';
 include_once 'objects/contact_us.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require '../PHPMailer-master/src/Exception.php';
+require '../PHPMailer-master/src/PHPMailer.php';
+require '../PHPMailer-master/src/SMTP.php';
  
 // get database connection
 $database = new Database();
@@ -34,6 +40,8 @@ if(
  
     // set response code
     http_response_code(200);
+
+    sendMail($data->gender, $data->customer, $data->emailinfo, $data->telinfo);
  
     // display message: user was created
     echo json_encode(array("message" => "User was created."));
@@ -47,5 +55,48 @@ else{
  
     // display message: unable to create user
     echo json_encode(array("message" => "Unable to create user."));
+}
+
+
+function sendMail($gender, $customer,  $emailinfo, $telinfo) {
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->Mailer = "smtp";
+    $mail->CharSet = 'UTF-8';
+    $mail->Encoding = 'base64';
+
+    $mail->SMTPDebug  = 2;
+    $mail->SMTPAuth   = true;
+    $mail->SMTPSecure = "ssl";
+    $mail->Port       = 465;
+    $mail->SMTPKeepAlive = true;
+    $mail->Host       = $conf::$mail_Host;
+    $mail->Username   = $conf::$mail_Username;
+    $mail->Password   = $conf::$mail_Password;
+
+    $tz_object = new DateTimeZone("Asia/Taipei");
+    $datetime = new DateTime();
+    $datetime->setTimezone($tz_object);
+
+    $mail->IsHTML(true);
+    $mail->AddAddress("jyf_lu@hotmail.com", "jyf_lu");
+    //$mail->Subject = "=?utf-8?B?" . base64_encode("信件標題") . "?=";
+    $mail->SetFrom("servictoryshipment@gmail.com", "servictoryshipment");
+    $mail->AddReplyTo("servictoryshipment@gmail.com", "servictoryshipment");
+    // $mail->AddCC("tryhelpbuy@gmail.com", "tryhelpbuy");
+    $mail->Subject = "客戶聯絡資訊 from 中亞菲Google廣告";
+    $content = "<p>稱謂：" . $gender . "</p>";
+    $content = $content . "<p>姓名：" . $customer . "</p>";
+    $content = $content . "<p>電子信箱：" . $emailinfo . "</p>";
+    $content = $content . "<p>連絡電話：" . $telinfo . "</p>";
+    $content = $content . "<p>登記日期：" . $datetime->format('Y\-m\-d\ h:i:s') . "</p>";
+
+    $mail->MsgHTML($content);
+    if(!$mail->Send()) {
+        echo "Error while sending Email.";
+        var_dump($mail);
+    } else {
+        echo "Email sent successfully";
+    }
 }
 ?>
