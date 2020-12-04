@@ -67,14 +67,15 @@ function sendMail($gender, $customer,  $emailinfo, $telinfo) {
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    $mail->SMTPDebug  = 2;
+    $mail->SMTPDebug  = false;
     $mail->SMTPAuth   = true;
     $mail->SMTPSecure = "ssl";
     $mail->Port       = 465;
     $mail->SMTPKeepAlive = true;
-    $mail->Host       = $conf::$mail_Host;
-    $mail->Username   = $conf::$mail_Username;
-    $mail->Password   = $conf::$mail_Password;
+    $mail->Host       = "smtp.gmail.com";
+    $mail->Username   = "feliix.it@gmail.com";
+    $mail->Password   = "+886feliix";
+    $mail->do_debug   = 0;
 
     $tz_object = new DateTimeZone("Asia/Taipei");
     $datetime = new DateTime();
@@ -86,19 +87,19 @@ function sendMail($gender, $customer,  $emailinfo, $telinfo) {
     $mail->SetFrom("servictoryshipment@gmail.com", "servictoryshipment");
     $mail->AddReplyTo("servictoryshipment@gmail.com", "servictoryshipment");
 
-    $mail->Subject = "«È¤áÁpµ¸¸ê°T from ¤¤¨ÈµáGoogle¼s§i";
-    $content = "<p>ºÙ¿×¡G" . $gender . "</p>";
-    $content = $content . "<p>©m¦W¡G" . $customer . "</p>";
-    $content = $content . "<p>¹q¤l«H½c¡G" . $emailinfo . "</p>";
-    $content = $content . "<p>³sµ¸¹q¸Ü¡G" . $telinfo . "</p>";
-    $content = $content . "<p>µn°O¤é´Á¡G" . $datetime->format('Y\-m\-d\ h:i:s') . "</p>";
+    $mail->Subject = "å®¢æˆ¶è¯çµ¡è³‡è¨Š from ä¸­äºè²Googleå»£å‘Š";
+    $content = "<p>ç¨±è¬‚ï¼š" . $gender . "</p>";
+    $content = $content . "<p>å§“åï¼š" . $customer . "</p>";
+    $content = $content . "<p>é›»å­ä¿¡ç®±ï¼š" . $emailinfo . "</p>";
+    $content = $content . "<p>é€£çµ¡é›»è©±ï¼š" . $telinfo . "</p>";
+    $content = $content . "<p>ç™»è¨˜æ—¥æœŸï¼š" . $datetime->format('Y\-m\-d\ h:i:s') . "</p>";
 
     $mail->MsgHTML($content);
     if(!$mail->Send()) {
-        echo "Error while sending Email.";
-        var_dump($mail);
+       // echo "Error while sending Email.";
+       // var_dump($mail);
     } else {
-        echo "Email sent successfully";
+       // echo "Email sent successfully";
     }
 }
 ?>
