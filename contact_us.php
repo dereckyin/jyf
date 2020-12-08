@@ -96,6 +96,7 @@ $(function(){
                               <th>Check 勾選</th>
                                 <th>稱謂</th>
                                 <th>姓名</th>
+                                <th>貨品件數</th>
                                 <th>聯絡方式1</th>
                                 <th>聯絡方式2</th>
                                 <th>登記日期</th>
@@ -109,6 +110,7 @@ $(function(){
                                 <td><input type="checkbox" name="record_id" class="alone" :value="receive_record.index" :true-value="1" v-model:checked="receive_record.is_checked"></td>
                                 <td>{{ (receive_record.gender == 'M') ? "先生" : "女士" }}</td>
                                 <td>{{ receive_record.customer }}</td>
+                                <td>{{ (receive_record.number == 0) ? "" : receive_record.number }}</td>
                 <td>{{ receive_record.emailinfo }}</td>
                 <td>{{ receive_record.telinfo }}</td>
                                 <td>{{ receive_record.crt_time }}</td>
