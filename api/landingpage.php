@@ -32,6 +32,7 @@ $contact_us->gender = $data->gender;
 $contact_us->customer = $data->customer;
 $contact_us->emailinfo = $data->emailinfo;
 $contact_us->telinfo = $data->telinfo;
+$contact_us->number = $data->number;
  
 // create the user
 if(
@@ -42,7 +43,7 @@ if(
     // set response code
     http_response_code(200);
 
-    sendMail($data->gender, $data->customer, $data->emailinfo, $data->telinfo);
+    sendMail($data->gender, $data->customer, $data->emailinfo, $data->telinfo, $data->number);
  
     // display message: user was created
     echo json_encode(array("message" => "User was created."));
@@ -59,8 +60,7 @@ else{
 }
 
 
-function sendMail($gender, $customer,  $emailinfo, $telinfo) {
-    $conf = new Conf();
+function sendMail($gender, $customer,  $emailinfo, $telinfo, $number) {
     $mail = new PHPMailer();
     $mail->IsSMTP();
     $mail->Mailer = "smtp";
@@ -90,6 +90,7 @@ function sendMail($gender, $customer,  $emailinfo, $telinfo) {
     $mail->Subject = "客戶聯絡資訊 from 中亞菲Google廣告";
     $content = "<p>稱謂：" . $gender . "</p>";
     $content = $content . "<p>姓名：" . $customer . "</p>";
+    $content = $content . "<p>貨品件數：" . $number . "</p>";
     $content = $content . "<p>電子信箱：" . $emailinfo . "</p>";
     $content = $content . "<p>連絡電話：" . $telinfo . "</p>";
     $content = $content . "<p>登記日期：" . $datetime->format('Y\-m\-d\ h:i:s') . "</p>";

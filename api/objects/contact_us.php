@@ -14,6 +14,7 @@ class ContactUs{
     public $telinfo;
     public $crt_time;
     public $status;
+    public $number;
 
     // constructor
     public function __construct($db){
@@ -30,6 +31,7 @@ class ContactUs{
                     customer = :customer,
                     emailinfo = :emailinfo,
                     telinfo = :telinfo,
+                    number = :number,
                     crt_time = now()";
     
         // prepare the query
@@ -40,13 +42,14 @@ class ContactUs{
         $this->customer=htmlspecialchars(strip_tags($this->customer));
         $this->emailinfo=htmlspecialchars(strip_tags($this->emailinfo));
         $this->telinfo=htmlspecialchars(strip_tags($this->telinfo));
+        $this->number=htmlspecialchars(strip_tags($this->number));
     
         // bind the values
         $stmt->bindParam(':gender', $this->gender);
         $stmt->bindParam(':customer', $this->customer);
         $stmt->bindParam(':emailinfo', $this->emailinfo);
         $stmt->bindParam(':telinfo', $this->telinfo);
-    
+        $stmt->bindParam(':number', $this->number);
 
         // execute the query, also check if query was successful
         if($stmt->execute()){
