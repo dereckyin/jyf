@@ -61,6 +61,7 @@ else{
 
 
 function sendMail($gender, $customer,  $emailinfo, $telinfo, $number) {
+    $conf = new Conf();
     $mail = new PHPMailer();
     $mail->IsSMTP();
     $mail->Mailer = "smtp";
@@ -72,9 +73,9 @@ function sendMail($gender, $customer,  $emailinfo, $telinfo, $number) {
     $mail->SMTPSecure = "ssl";
     $mail->Port       = 465;
     $mail->SMTPKeepAlive = true;
-    $mail->Host       = "smtp.gmail.com";
-    $mail->Username   = "feliix.it@gmail.com";
-    $mail->Password   = "+886feliix";
+    $mail->Host       = $conf::$mail_Host;
+    $mail->Username   = $conf::$mail_Username;
+    $mail->Password   = $conf::$mail_Password;
     $mail->do_debug   = 0;
 
     $tz_object = new DateTimeZone("Asia/Taipei");
