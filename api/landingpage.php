@@ -84,17 +84,18 @@ function sendMail($gender, $customer,  $emailinfo, $telinfo, $number) {
 
     $mail->IsHTML(true);
     $mail->AddAddress("jyf_lu@hotmail.com", "jyf_lu");
+    $mail->AddAddress("servictoryshipment@gmail.com", "JYF System");
     
-    $mail->SetFrom("servictoryshipment@gmail.com", "servictoryshipment");
-    $mail->AddReplyTo("servictoryshipment@gmail.com", "servictoryshipment");
+    $mail->SetFrom("servictoryshipment@gmail.com", "JYF System");
+    $mail->AddReplyTo("servictoryshipment@gmail.com", "JYF System");
 
-    $mail->Subject = "客戶聯絡資訊 from 中亞菲Google廣告";
-    $content = "<p>稱謂：" . $gender . "</p>";
-    $content = $content . "<p>姓名：" . $customer . "</p>";
-    $content = $content . "<p>貨品件數：" . $number . "</p>";
-    $content = $content . "<p>電子信箱：" . $emailinfo . "</p>";
-    $content = $content . "<p>連絡電話：" . $telinfo . "</p>";
-    $content = $content . "<p>登記日期：" . $datetime->format('Y\-m\-d\ h:i:s') . "</p>";
+    $mail->Subject = "客戶聯絡資訊(Customer Contact) from JYF Google Ads";
+    $content = "<p>稱謂(Male/Female)：" . $gender . "</p>";
+    $content = $content . "<p>姓名(Name)：" . $customer . "</p>";
+    $content = $content . "<p>貨品件數(Piece of Goods)：" . $number . "</p>";
+    $content = $content . "<p>電子信箱(Email)：" . $emailinfo . "</p>";
+    $content = $content . "<p>連絡電話(Contact Number)：" . $telinfo . "</p>";
+    $content = $content . "<p>登記日期(Submitting Time)：" . $datetime->format('Y\-m\-d\ h:i:s') . "</p>";
 
     $mail->MsgHTML($content);
     if(!$mail->Send()) {
