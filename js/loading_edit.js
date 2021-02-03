@@ -161,15 +161,15 @@ let mainState = {
     ],
 
     inventory: [
-        {name: '10', id: 10},
+        {name: '12', id: 12},
         {name: '25', id: 25},
         {name: '50', id: 50},
         {name: '100', id: 100},
         {name: 'All', id: 10000}
       ],
 
-    perPage: 10000,
-    perPage_loading: 10000,
+    perPage: 12,
+    perPage_loading: 12,
 
     // searching
     keyword: '',

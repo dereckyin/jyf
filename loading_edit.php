@@ -60,6 +60,29 @@ $(function(){
                  <h6>當前貨櫃紀錄<eng>Current Container Records</eng></h6>
                  <!-- list -->
                  <div class="mainlist">
+
+                 <div class="listheader">
+                  <div class="pageblock" style="float:right;"> Page Size: 
+                    <select v-model="perPage_loading">
+                      <option v-for="item in inventory" :value="item" :key="item.id">
+                        {{ item.name }}
+                      </option>
+                    </select> Page: 
+                    <div class="pageblock">
+                      <a class="first micons" @click="page_loading=1">first_page</a>
+                      <a class="prev micons" :disabled="page_loading == 1" @click="page_loading < 1 ? page_loading = 1 : page_loading--">chevron_left</a>
+                      <select v-model="page_loading">
+                        <option v-for="pg in pages_loading" :value="pg">
+                          {{ pg }}
+                        </option>
+                      </select>
+
+                      <a class="next micons" :disabled="page_loading == pages_loading.length" @click="page_loading++">chevron_right</a>
+                      <a class="last micons" @click="page_loading=pages_loading.length">last_page</a>
+                    </div>
+                  </div>
+                    <!-- <div class="searchblock" style="float:left;">搜尋<input type="text"></div> -->
+                </div>
                      
                      <div class="tablebox d02">
                          <ul class="header">
