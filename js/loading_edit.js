@@ -168,7 +168,7 @@ let mainState = {
         {name: 'All', id: 10000}
       ],
 
-    perPage: 12,
+    perPage: 10000,
     perPage_loading: 12,
 
     // searching
