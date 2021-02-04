@@ -61,7 +61,7 @@ $(function(){
             <li>收貨日期 <eng>Date Receive</eng></li>
             <li>
               <!--<input type="text" id="datepicker" name="datepicker" style="width: calc(40% - 40px);" > -->
-              <date-picker id="adddate"  @update-date="updateDate" v-model="date_receive" style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-picker>
+              <date-picker id="adddate"  @update-date="updateDate" v-model.lazy="date_receive" style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-picker>
               <span class="text-danger" v-if="error_date_receive" v-text="error_date_receive"></span>
             </li>
             <li></li>
@@ -71,12 +71,12 @@ $(function(){
             <li class="header"></li>
             <li>收件人 <eng>Company/customer</eng></li>
             <li>
-              <input type="text" name="customer" v-model="customer" maxlength="256" style="width: calc(65% - 40px);">
+              <input type="text" name="customer" v-model.lazy="customer" maxlength="256" style="width: calc(65% - 40px);">
               <button type="button" class="btn btn-primary" id="create-user"><i class="fas fa-address-card"></i></button>
             </li>
             <li>E-Mail</li>
             <li>
-              <input type="text" name="email" v-model="email">
+              <input type="text" name="email" v-model.lazy="email">
               <span class="text-danger" v-if="error_email" v-text="error_email"></span>
             </li>
           </ul>
@@ -86,9 +86,9 @@ $(function(){
             <li class="header"></li>
             <li>貨品名稱 <eng>Description</eng></li>
             <li class="g01">
-              <input type="text" class="goods_name"  name="description" v-model="description" style="width: calc(70% - 40px);">
+              <input type="text" class="goods_name"  name="description" v-model.lazy="description" style="width: calc(70% - 40px);">
               <span>件數 <eng>Quantity</eng></span>
-              <input type="text" class="goods_num"  name="quantity" v-model="quantity">
+              <input type="text" class="goods_num"  name="quantity" v-model.lazy="quantity">
               <span class="text-danger" v-if="error_quantity" v-text="error_quantity"></span>
             </li>
           </ul>
@@ -98,7 +98,7 @@ $(function(){
             <li class="header">寄件人資訊</li>
             <li>寄件人 <eng>Supplier</eng></li>
             <li>
-              <input type="text" name="supplier" v-model="supplier" maxlength="256" style="width: calc(80% - 40px);">
+              <input type="text" name="supplier" v-model.lazy="supplier" maxlength="256" style="width: calc(80% - 40px);">
               <button type="button" class="btn btn-primary" id="create-supplier"><i class="fas fa-address-card"></i></button>
               <span class="text-danger" v-if="error_customer" v-text="error_customer"></span>
             </li>
@@ -111,12 +111,12 @@ $(function(){
             <li class="header"></li>
             <li>重量 <eng>Kilo</eng></li>
             <li>
-              <input type="text" name="kilo" v-model="kilo">
+              <input type="text" name="kilo" v-model.lazy="kilo">
               <span class="text-danger" v-if="error_kilo" v-text="error_kilo"></span>
             </li>
             <li>材積 <eng>Cuft</eng></li>
             <li>
-              <input type="text" name="cuft" v-model="cuft">
+              <input type="text" name="cuft" v-model.lazy="cuft">
               <span class="text-danger" v-if="error_cuft" v-text="error_cuft"></span>
             </li>
           </ul>
@@ -129,7 +129,7 @@ $(function(){
             </li>
             <li>代墊 <eng>Courier/payment</eng></li>
             <li>
-              <input type="text" class="payment" name="courier_money" v-model="courier_money">
+              <input type="text" class="payment" name="courier_money" v-model.lazy="courier_money">
               元(NT.)</li>
               <span class="text-danger" v-if="error_courier_money" v-text="error_courier_money"></span>
           </ul>
@@ -142,7 +142,7 @@ $(function(){
             <li class="header"></li>
             <li>備註 <eng>Remark</eng></li>
             <li>
-              <textarea name="" id="" name="remark" v-model="remark">
+              <textarea name="" id="" name="remark" v-model.lazy="remark">
               </textarea>
             </li>
           </ul>
@@ -158,7 +158,7 @@ $(function(){
             <li class="header">送件資訊</li>
             <li>收貨日期 <eng>Date Receive</eng></li>
             <li>
-              <edit-date-picker id="adddate1" @update-date="updateDate"  v-model="record.date_receive"  style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></edit-date-picker>
+              <edit-date-picker id="adddate1" @update-date="updateDate"  v-model.lazy="record.date_receive"  style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></edit-date-picker>
               <span class="text-danger" v-if="error_date_receive" v-text="error_date_receive"></span>
             </li>
             <li></li>
@@ -168,12 +168,12 @@ $(function(){
             <li class="header"></li>
             <li>收件人 <eng>Company/customer</eng></li>
             <li>
-              <input type="text" name="customer" maxlength="256" v-model="record.customer" style="width: calc(65% - 40px);">
+              <input type="text" name="customer" maxlength="256" v-model.lazy="record.customer" style="width: calc(65% - 40px);">
               <button type="button" class="btn btn-primary" id="create-user1"><i class="fas fa-address-card"></i></button>
             </li>
             <li>E-Mail</li>
             <li>
-              <input type="text" name="email"  v-model="record.email">
+              <input type="text" name="email"  v-model.lazy="record.email">
             </li>
           </ul>
         </div>
@@ -182,10 +182,10 @@ $(function(){
             <li class="header"></li>
             <li>貨品名稱 <eng>Description</eng></li>
             <li class="g01">
-              <input type="text" class="goods_name"  name="description" v-model="record.description" style="width: calc(70% - 40px);">
+              <input type="text" class="goods_name"  name="description" v-model.lazy="record.description" style="width: calc(70% - 40px);">
               <span class="text-danger" v-if="error_email" v-text="error_email"></span>
               <span>件數 <eng>Quantity</eng></span>
-              <input type="text" class="goods_num"  name="quantity" v-model="record.quantity">
+              <input type="text" class="goods_num"  name="quantity" v-model.lazy="record.quantity">
               <span class="text-danger" v-if="error_quantity" v-text="error_quantity"></span>
             </li>
           </ul>
@@ -195,7 +195,7 @@ $(function(){
             <li class="header">寄件人資訊</li>
             <li>寄件人 <eng>Supplier</eng></li>
             <li>
-              <input type="text" name="supplier" maxlength="256" v-model="record.supplier" style="width: calc(80% - 40px);">
+              <input type="text" name="supplier" maxlength="256" v-model.lazy="record.supplier" style="width: calc(80% - 40px);">
               <button type="button" class="btn btn-primary" id="create-supplier1"><i class="fas fa-address-card"></i></button>
               <span class="text-danger" v-if="error_customer" v-text="error_customer"></span>
             </li>
@@ -208,12 +208,12 @@ $(function(){
             <li class="header"></li>
             <li>重量 <eng>Kilo</eng></li>
             <li>
-              <input type="text" name="kilo" v-model="record.kilo">
+              <input type="text" name="kilo" v-model.lazy="record.kilo">
               <span class="text-danger" v-if="error_kilo" v-text="error_kilo"></span>
             </li>
             <li>材積 <eng>Cuft</eng></li>
             <li>
-              <input type="text" name="cuft" v-model="record.cuft">
+              <input type="text" name="cuft" v-model.lazy="record.cuft">
               <span class="text-danger" v-if="error_cuft" v-text="error_cuft"></span>
             </li>
           </ul>
@@ -226,7 +226,7 @@ $(function(){
             </li>
             <li>代墊 <eng>Courier/payment</eng></li>
             <li>
-              <input type="text" class="payment" name="courier_money" v-model="record.courier_money">
+              <input type="text" class="payment" name="courier_money" v-model.lazy="record.courier_money">
               元(NT.)</li>
               <span class="text-danger" v-if="error_courier_money" v-text="error_courier_money"></span>
           </ul>
@@ -239,7 +239,7 @@ $(function(){
             <li class="header"></li>
             <li>備註 <eng>Remark</eng></li>
             <li>
-              <textarea name="" name="remark" v-model="record.remark">
+              <textarea name="" name="remark" v-model.lazy="record.remark">
                             </textarea>
             </li>
           </ul>
