@@ -33,7 +33,7 @@ $excel_header = $excel_content = $excel_file = '';
 $n = "\n";
 $data = array();
 
-$id = mysqli_real_escape_string($conn, (isset($_GET['id']) ?  $_GET['id'] : ""));
+$id = stripslashes((isset($_GET['id']) ?  $_GET['id'] : ""));
 
 $sql = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user  FROM receive_record where status = ''  and batch_num in ($id) ";
 

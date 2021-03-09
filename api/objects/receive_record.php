@@ -178,7 +178,7 @@ class ReceiveRecord{
                     ON r.batch_num = l.id where taiwan_pay=1 
                     and r.status = ''
                     and r.date_receive <> '' 
-                    and r.customer = '" . $row['customer']. "' ";
+                    and r.customer = :customer ";
 
                     if(!empty($date_start)) {
                         $query = $query . " and r.date_receive >= '$date_start' ";
@@ -199,6 +199,7 @@ class ReceiveRecord{
                     $query = $query . " order by r.customer, r.date_receive ";
 
                     $stmt = $this->conn->prepare( $query );
+                    $stmt->bindParam(':customer', $row['customer']);
                     $stmt->execute();
 
                     while($row = $stmt->fetch(PDO::FETCH_ASSOC))
@@ -306,7 +307,7 @@ class ReceiveRecord{
                     ON r.batch_num = l.id where r.courier_money <> 0 
                     and r.status = ''
                     and r.date_receive <> '' 
-                    and r.customer = '" . $row['customer']. "' ";
+                    and r.customer = :customer ";
 
                     if(!empty($date_start)) {
                         $query = $query . " and r.date_receive >= '$date_start' ";
@@ -327,6 +328,7 @@ class ReceiveRecord{
                     $query = $query . " order by r.customer, r.date_receive ";
 
                     $stmt = $this->conn->prepare( $query );
+                    $stmt->bindParam(':customer', $row['customer']);
                     $stmt->execute();
 
                     while($row = $stmt->fetch(PDO::FETCH_ASSOC))
@@ -488,7 +490,7 @@ class ReceiveRecord{
                     LEFT JOIN loading_date_history ld ON l.id = ld.loading_id 
                     where r.status = ''
                     and r.date_receive <> '' 
-                    and r.customer = '" . $row['customer']. "' ";
+                    and r.customer = :customer ";
 
                     if(!empty($date_start)) {
                         $query = $query . " and r.date_receive >= '$date_start' ";
@@ -509,6 +511,7 @@ class ReceiveRecord{
                     $query = $query . " order by r.customer, r.date_receive ";
 
                     $stmt = $this->conn->prepare( $query );
+                    $stmt->bindParam(':customer', $row['customer']);
                     $stmt->execute();
 
                     while($row = $stmt->fetch(PDO::FETCH_ASSOC))

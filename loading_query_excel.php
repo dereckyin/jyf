@@ -31,7 +31,7 @@ catch (Exception $e){
 }
 
 
-$id = mysqli_real_escape_string($conn, (isset($_GET['id']) ?  $_GET['id'] : ""));
+$id = stripslashes((isset($_GET['id']) ?  $_GET['id'] : ""));
 
 if($id == "")
 {
@@ -88,12 +88,21 @@ foreach ($batch_nums as $num)
                 array_push($key, $row['customer']);
             }
 
-            $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark, lo.estimate_weight  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive <> '' and rr.customer = '" . $row['customer']. "' ORDER BY rr.date_receive  ";
+            $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark, lo.estimate_weight  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive <> '' and rr.customer = ? ORDER BY rr.date_receive  ";
 
-            $result1 = mysqli_query($conn,$subquery);
+            if ($stmt = mysqli_prepare($conn, $subquery)) {
 
-            while($row = mysqli_fetch_assoc($result1))
-                $merged_results[] = $row;
+                mysqli_stmt_bind_param($stmt, "s", $row['customer']);
+            
+                /* execute query */
+                mysqli_stmt_execute($stmt);
+
+                $result1 = mysqli_stmt_get_result($stmt);
+
+                while($row = mysqli_fetch_assoc($result1)) {
+                    $merged_results[] = $row;
+                }
+            }
         }
     }
 

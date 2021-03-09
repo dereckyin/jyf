@@ -41,12 +41,12 @@ else
 
       switch ($method) {
           case 'GET':
-            $id = mysqli_real_escape_string($conn, (isset($_GET['id']) ?  $_GET['id'] : ""));
-            $page = mysqli_real_escape_string($conn, (isset($_GET['page']) ?  $_GET['page'] : ""));
-            $size = mysqli_real_escape_string($conn, (isset($_GET['size']) ?  $_GET['size'] : ""));
-            $loading = mysqli_real_escape_string($conn, (isset($_GET['loading']) ?  $_GET['loading'] : ""));
-            $record = mysqli_real_escape_string($conn, (isset($_GET['record']) ?  $_GET['record'] : ""));
-            $query = mysqli_real_escape_string($conn, (isset($_GET['query']) ?  $_GET['query'] : ""));
+            $id = stripslashes((isset($_GET['id']) ?  $_GET['id'] : ""));
+            $page = stripslashes((isset($_GET['page']) ?  $_GET['page'] : ""));
+            $size = stripslashes((isset($_GET['size']) ?  $_GET['size'] : ""));
+            $loading = stripslashes((isset($_GET['loading']) ?  $_GET['loading'] : ""));
+            $record = stripslashes((isset($_GET['record']) ?  $_GET['record'] : ""));
+            $query = stripslashes((isset($_GET['query']) ?  $_GET['query'] : ""));
 
             if($loading == "1")
             {
@@ -94,15 +94,21 @@ else
                         array_push($key, strtolower($row['customer']));
                     }
 
-                        $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited FROM receive_record where batch_num = $record and date_receive <> '' and status = ''  and customer = '" . $row['customer']. "' ORDER BY date_receive  ";
+                        $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited FROM receive_record where batch_num = $record and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
 
-                            $result1 = mysqli_query($conn,$subquery);
+                        if ($stmt = mysqli_prepare($conn, $subquery)) {
 
-if($result1 != null)
-                            {
-                    while($row = mysqli_fetch_assoc($result1))
-                        $merged_results[] = $row;
-                    }
+                            mysqli_stmt_bind_param($stmt, "s", $row['customer']);
+                        
+                            /* execute query */
+                            mysqli_stmt_execute($stmt);
+
+                            $result1 = mysqli_stmt_get_result($stmt);
+
+                            while($row = mysqli_fetch_assoc($result1)) {
+                                $merged_results[] = $row;
+                            }
+                        }
 
 
 
@@ -142,15 +148,21 @@ if($result1 != null)
                         array_push($key, strtolower($row['customer']));
                     }
 
-                        $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = '" . $row['customer']. "' ORDER BY date_receive  ";
+                        $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
 
-                            $result1 = mysqli_query($conn,$subquery);
+                        if ($stmt = mysqli_prepare($conn, $subquery)) {
 
-                   if($result1 != null)
-                  {
-                    while($row = mysqli_fetch_assoc($result1))
-                        $merged_results[] = $row;
-                  }
+                            mysqli_stmt_bind_param($stmt, "s", $row['customer']);
+                        
+                            /* execute query */
+                            mysqli_stmt_execute($stmt);
+
+                            $result1 = mysqli_stmt_get_result($stmt);
+
+                            while($row = mysqli_fetch_assoc($result1)) {
+                                $merged_results[] = $row;
+                            }
+                        }
 
 
                 }
@@ -203,18 +215,21 @@ if($result1 != null)
                         array_push($key, strtolower($row['customer']));
                     }
 
-                        $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user FROM receive_record where batch_num = $record and date_receive <> '' and status = ''  and customer = '" . $row['customer']. "' ORDER BY date_receive  ";
+                        $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user FROM receive_record where batch_num = $record and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
 
-                            $result1 = mysqli_query($conn,$subquery);
+                        if ($stmt = mysqli_prepare($conn, $subquery)) {
 
-if($result1 != null)
-                            {
-                    while($row = mysqli_fetch_assoc($result1))
-                        $merged_results[] = $row;
-                    }
+                            mysqli_stmt_bind_param($stmt, "s", $row['customer']);
+                        
+                            /* execute query */
+                            mysqli_stmt_execute($stmt);
 
+                            $result1 = mysqli_stmt_get_result($stmt);
 
-
+                            while($row = mysqli_fetch_assoc($result1)) {
+                                $merged_results[] = $row;
+                            }
+                        }
                 }
             }
 
@@ -268,25 +283,25 @@ if($result1 != null)
             break;
 
           case 'POST':
-            $shipping_mark = mysqli_real_escape_string($conn, $_POST["shipping_mark"]);
-            $estimate_weight = mysqli_real_escape_string($conn, $_POST["estimate_weight"]);
-            $actual_weight = mysqli_real_escape_string($conn, $_POST["actual_weight"]);
-            $container_number = mysqli_real_escape_string($conn, $_POST["container_number"]);
-            $seal = mysqli_real_escape_string($conn, $_POST["seal"]);
-            $so = mysqli_real_escape_string($conn, $_POST["so"]);
-            $ship_company = mysqli_real_escape_string($conn, $_POST["ship_company"]);
-            $ship_boat = mysqli_real_escape_string($conn, $_POST["ship_boat"]);
-            $neck_cabinet = mysqli_real_escape_string($conn, $_POST["neck_cabinet"]);
-            $date_sent = mysqli_real_escape_string($conn, $_POST["date_sent"]);
-            $etd_date = mysqli_real_escape_string($conn, $_POST["etd_date"]);
-            $ob_date = mysqli_real_escape_string($conn, $_POST["ob_date"]);
-            $eta_date = mysqli_real_escape_string($conn, $_POST["eta_date"]);
-            $date_arrive = mysqli_real_escape_string($conn, $_POST["date_arrive"]);
-            $broker = mysqli_real_escape_string($conn, $_POST["broker"]);
+            $shipping_mark = stripslashes($_POST["shipping_mark"]);
+            $estimate_weight = stripslashes($_POST["estimate_weight"]);
+            $actual_weight = stripslashes($_POST["actual_weight"]);
+            $container_number = stripslashes($_POST["container_number"]);
+            $seal = stripslashes($_POST["seal"]);
+            $so = stripslashes($_POST["so"]);
+            $ship_company = stripslashes($_POST["ship_company"]);
+            $ship_boat = stripslashes($_POST["ship_boat"]);
+            $neck_cabinet = stripslashes($_POST["neck_cabinet"]);
+            $date_sent = stripslashes($_POST["date_sent"]);
+            $etd_date = stripslashes($_POST["etd_date"]);
+            $ob_date = stripslashes($_POST["ob_date"]);
+            $eta_date = stripslashes($_POST["eta_date"]);
+            $date_arrive = stripslashes($_POST["date_arrive"]);
+            $broker = stripslashes($_POST["broker"]);
             $remark = stripslashes($_POST["remark"]);
             $record = stripslashes($_POST["record"]);
-            $crud = mysqli_real_escape_string($conn, $_POST["crud"]);
-            $id = mysqli_real_escape_string($conn, $_POST["id"]);
+            $crud = stripslashes($_POST["crud"]);
+            $id = stripslashes($_POST["id"]);
 
             switch ($crud) 
             {

@@ -152,10 +152,10 @@ $(function(){
                             <input type="checkbox" name="record_id" class="alone" @change="updateWeightAndCult" :value="receive_record.index" :true-value="1" v-model:checked="receive_record.is_checked">
                         </li>
                         <li>{{ receive_record.date_receive }}</li>
-                        <li>{{ receive_record.customer }}</li>
+                        <li>{{ (receive_record.customer !== 'undefined' ) ? receive_record.customer.replace(/\\/g, '') : "" }}</li>
                         <li>{{ receive_record.description }}</li>
                         <li>{{ receive_record.quantity }}</li>
-                        <li>{{ receive_record.supplier }}</li>
+                        <li>{{ (receive_record.supplier !== 'undefined') ? receive_record.supplier.replace(/\\/g, '') : "" }}</li>
                         <li>{{ (receive_record.kilo == 0) ? "" : receive_record.kilo }}</li>
                         <li>{{ (receive_record.cuft == 0) ? "" : receive_record.cuft }}</li>
                         <li>{{ (receive_record.taiwan_pay == 1) ? "是 (yes)" : "否 (no)" }}</li>

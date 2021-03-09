@@ -41,16 +41,17 @@ require '../PHPMailer-master/src/SMTP.php';
 
 require_once "db.php";
 
-$conf = new Conf();
-
 function insertContactor($customer, $supplier, $user, $conn) {
     $needToInsert = 0;
+
+    $customer =trim($customer);
+    $supplier = trim($supplier);
 
    if(trim($customer) != '')
     {
         $sql = "select customer from contactor where customer = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", trim($customer));
+        $stmt->bind_param("s", $customer);
 
         $hadData = 0;
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -65,7 +66,7 @@ function insertContactor($customer, $supplier, $user, $conn) {
     {
         $sql = "select supplier from contactor where supplier = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", trim($supplier));
+        $stmt->bind_param("s", $supplier);
 
         $hadData = 0;
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -82,7 +83,7 @@ function insertContactor($customer, $supplier, $user, $conn) {
         $sql = "insert into contactor (customer, supplier, crt_user) 
                                     values (?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", trim($customer), trim($supplier), $user);
+        $stmt->bind_param("sss", $customer, $supplier, $user);
         $stmt->execute();
 
         $last_id = mysqli_insert_id($conn);
@@ -91,6 +92,7 @@ function insertContactor($customer, $supplier, $user, $conn) {
 }
 
 function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
+    $conf = new Conf();
     $mail = new PHPMailer();
     $mail->IsSMTP();
     $mail->Mailer = "smtp";
@@ -144,9 +146,9 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
 
       switch ($method) {
           case 'GET':
-            $id = mysqli_real_escape_string($conn, (isset($_GET['id']) ?  $_GET['id'] : ""));
-            $page = mysqli_real_escape_string($conn, (isset($_GET['page']) ?  $_GET['page'] : ""));
-            $size = mysqli_real_escape_string($conn, (isset($_GET['size']) ?  $_GET['size'] : ""));
+            $id = stripslashes((isset($_GET['id']) ?  $_GET['id'] : ""));
+            $page = stripslashes((isset($_GET['page']) ?  $_GET['page'] : ""));
+            $size = stripslashes((isset($_GET['size']) ?  $_GET['size'] : ""));
 
               $subquery = "";
 
@@ -173,15 +175,28 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                         array_push($key, strtolower($row['customer']));
                     }
 
-                        $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = '" . $row['customer']. "' ORDER BY date_receive  ";
+                        $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
 
-                            $result1 = mysqli_query($conn,$subquery);
+                        if ($stmt = mysqli_prepare($conn, $subquery)) {
 
-                            if($result1 != null)
-                            {
-                    while($row = mysqli_fetch_assoc($result1))
-                        $merged_results[] = $row;
-                }
+                            mysqli_stmt_bind_param($stmt, "s", $row['customer']);
+                        
+                            /* execute query */
+                            mysqli_stmt_execute($stmt);
+
+                            $result1 = mysqli_stmt_get_result($stmt);
+
+                            while($row = mysqli_fetch_assoc($result1)) {
+                                $merged_results[] = $row;
+                            }
+                        }
+                    //         $result1 = mysqli_query($conn,$subquery);
+
+                    //         if($result1 != null)
+                    //         {
+                    // while($row = mysqli_fetch_assoc($result1))
+                    //     $merged_results[] = $row;
+                // }
 
 
 
@@ -216,23 +231,26 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
             break;
 
           case 'POST':
-            $date_receive = mysqli_real_escape_string($conn, $_POST["date_receive"]);
+            $date_receive = stripslashes($_POST["date_receive"]);
             $customer = stripslashes($_POST["customer"]);
-            $email = mysqli_real_escape_string($conn, $_POST["email"]);
-            $description = mysqli_real_escape_string($conn, $_POST["description"]);
-            $quantity = mysqli_real_escape_string($conn, $_POST["quantity"]);
+            $email = stripslashes($_POST["email"]);
+            $description = stripslashes($_POST["description"]);
+            $quantity = stripslashes($_POST["quantity"]);
             $supplier = stripslashes($_POST["supplier"]);
-            $kilo = mysqli_real_escape_string($conn, $_POST["kilo"]);
-            $cuft = mysqli_real_escape_string($conn, $_POST["cuft"]);
-            $taiwan_pay = mysqli_real_escape_string($conn, $_POST["taiwan_pay"]);
-            $courier_pay = mysqli_real_escape_string($conn, $_POST["courier_pay"]);
-            $courier_money = mysqli_real_escape_string($conn, $_POST["courier_money"]);
+            $kilo = stripslashes($_POST["kilo"]);
+            $cuft = stripslashes($_POST["cuft"]);
+            $taiwan_pay = stripslashes($_POST["taiwan_pay"]);
+            $courier_pay = stripslashes($_POST["courier_pay"]);
+            $courier_money = stripslashes($_POST["courier_money"]);
             $remark = stripslashes($_POST["remark"]);
-            $crud = mysqli_real_escape_string($conn, $_POST["crud"]);
-            $id = mysqli_real_escape_string($conn, $_POST["id"]);
+            $crud = stripslashes($_POST["crud"]);
+            $id = stripslashes($_POST["id"]);
 
             $taiwan_pay = ($taiwan_pay ? $taiwan_pay : 0);
             $courier_pay = ($courier_pay ? $courier_pay : 0);
+
+            $date_receive = trim($date_receive);
+            $customer = trim($customer);
 
             switch ($crud) 
             {
@@ -268,8 +286,8 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                 							values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql); 
                 $stmt->bind_param("sssssssddiiiss",
-                					trim($date_receive), 
-                					trim($customer), 
+                					$date_receive, 
+                					$customer, 
                 					$email, 
                 					$description, 
                 					$quantity, 
@@ -327,8 +345,8 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                                             values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql); 
                 $stmt->bind_param("sssssssddiiiss",
-                                    trim($date_receive), 
-                                    trim($customer), 
+                                    $date_receive, 
+                                    $customer, 
                                     $email, 
                                     $description, 
                                     $quantity, 
@@ -390,8 +408,8 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
                     $stmt->bind_param("sssssssddiiissd",
-                                        trim($date_receive), 
-                                        trim($customer), 
+                                        $date_receive, 
+                                        $customer, 
                                         $email, 
                                         $description, 
                                         $quantity, 
@@ -429,8 +447,8 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
                     $stmt->bind_param("ssssssddiiissd",
-                                        trim($date_receive), 
-                                        trim($customer),  
+                                        $date_receive, 
+                                        $customer,  
                                         $email, 
                                         $description, 
                                         $quantity, 
@@ -489,8 +507,8 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
                     $stmt->bind_param("sssssssddiiissd",
-                                        trim($date_receive), 
-                                        trim($customer), 
+                                        $date_receive, 
+                                        $customer, 
                                         $email, 
                                         $description, 
                                         $quantity, 
@@ -528,8 +546,8 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
                     $stmt->bind_param("ssssssddiiissd",
-                                        trim($date_receive), 
-                                        trim($customer), 
+                                        $date_receive, 
+                                        $customer, 
                                         $email, 
                                         $description, 
                                         $quantity, 

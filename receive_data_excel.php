@@ -33,7 +33,7 @@ $excel_header = $excel_content = $excel_file = '';
 $n = "\n";
 $data = array();
 
-$id = mysqli_real_escape_string($conn, (isset($_GET['id']) ?  $_GET['id'] : ""));
+$id = stripslashes((isset($_GET['id']) ?  $_GET['id'] : ""));
 
 
 $subquery = "";
@@ -61,12 +61,21 @@ $subquery = "";
                 array_push($key, $row['customer']);
             }
 
-            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user FROM receive_record where status = '' and date_receive <> '' and batch_num = 0 and customer = '" . $row['customer'] . "'  " .($id ? " and id in ($id)" : '') . "ORDER BY date_receive ";
+            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user FROM receive_record where status = '' and date_receive <> '' and batch_num = 0 and customer = ?  " .($id ? " and id in ($id)" : '') . "ORDER BY date_receive ";
 
-            $result1 = mysqli_query($conn,$subquery);
+            if ($stmt = mysqli_prepare($conn, $subquery)) {
 
-            while($row = mysqli_fetch_assoc($result1))
-                $merged_results[] = $row;
+                mysqli_stmt_bind_param($stmt, "s", $row['customer']);
+            
+                /* execute query */
+                mysqli_stmt_execute($stmt);
+
+                $result1 = mysqli_stmt_get_result($stmt);
+
+                while($row = mysqli_fetch_assoc($result1)) {
+                    $merged_results[] = $row;
+                }
+            }
         }
     }
 

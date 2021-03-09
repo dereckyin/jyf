@@ -52,10 +52,10 @@ else
 
       switch ($method) {
           case 'GET':
-            $id = mysqli_real_escape_string($conn, (isset($_GET['id']) ?  $_GET['id'] : ""));
-            $page = mysqli_real_escape_string($conn, (isset($_GET['page']) ?  $_GET['page'] : ""));
-            $size = mysqli_real_escape_string($conn, (isset($_GET['size']) ?  $_GET['size'] : ""));
-            $keyword = mysqli_real_escape_string($conn, (isset($_GET['keyword']) ?  $_GET['keyword'] : ""));
+            $id = stripslashes((isset($_GET['id']) ?  $_GET['id'] : ""));
+            $page = stripslashes((isset($_GET['page']) ?  $_GET['page'] : ""));
+            $size = stripslashes((isset($_GET['size']) ?  $_GET['size'] : ""));
+            $keyword = stripslashes((isset($_GET['keyword']) ?  $_GET['keyword'] : ""));
 
             $sql = "SELECT 0 as is_checked, id, username, email, status, is_admin, (SELECT login_time FROM login_history WHERE login_history.uid = user.id ORDER BY login_time desc LIMIT 1) login_time  FROM user where status <> -1 ".($id ? " and id=$id" : '');
 
@@ -116,8 +116,8 @@ else
             if($is_admin == "null")
                 $is_admin = "0";
 
-            $crud = mysqli_real_escape_string($conn, $_POST["crud"]);
-            $id = mysqli_real_escape_string($conn, $_POST["id"]);
+            $crud = stripslashes($_POST["crud"]);
+            $id = stripslashes($_POST["id"]);
 
             switch ($crud) 
             {
