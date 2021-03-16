@@ -120,92 +120,7 @@ class ReceiveRecord{
 
     function TaiwanPayQuery($date_start, $date_end, $container_number){
 
-        $key=array();
         $merged_results = array();
-
-        $sql = "SELECT r.customer 
-                FROM  receive_record r 
-                LEFT JOIN loading l 
-                ON r.batch_num = l.id
-                where r.taiwan_pay=1  
-                and r.status = '' 
-                and r.date_receive <> ''  ";
-
-        if(!empty($date_start)) {
-            $sql = $sql . " and r.date_receive >= '$date_start' ";
-        }
-
-        if(!empty($date_end)) {
-            $sql = $sql . " and r.date_receive <= '$date_end' ";
-        }
-
-        if(!empty($container_number)) {
-            $container_number = rtrim($container_number, ',');
-            $container = explode(",", $container_number);
-            $container_str = "'".implode("','",array_map("trim",array_filter($container)))."'";
-
-            $sql = $sql . " and l.container_number in($container_str) ";
-        }
-        
-        $sql = $sql . "  GROUP BY r.date_receive, r.customer ";
-
-        $sql = $sql . " order by  r.date_receive,  r.customer  ";
-
-
-        $data = $this->conn->query($sql)->fetchAll();
-
-        /* fetch data */
-        foreach  ($data as $row){
-            if (isset($row)){
-
-                if (in_array(strtolower($row['customer']),$key))
-                {
-                    continue;
-                }
-                else
-                {
-                    array_push($key, strtolower($row['customer']));
-                }
-
-                   $query = "SELECT r.id, 
-                    r.date_receive, 
-                    r.customer, 
-                    r.description, 
-                    r.quantity, 
-                    r.supplier, 
-                    r.remark 
-                    FROM receive_record r LEFT JOIN loading l 
-                    ON r.batch_num = l.id where taiwan_pay=1 
-                    and r.status = ''
-                    and r.date_receive <> '' 
-                    and r.customer = :customer ";
-
-                    if(!empty($date_start)) {
-                        $query = $query . " and r.date_receive >= '$date_start' ";
-                    }
-
-                    if(!empty($date_end)) {
-                        $query = $query . " and r.date_receive <= '$date_end' ";
-                    }
-
-                    if(!empty($container_number)) {
-                        $container_number = rtrim($container_number, ',');
-                        $container = explode(",", $container_number);
-                        $container_str = "'".implode("','",array_map("trim",array_filter($container)))."'";
-
-                        $query = $query . " and l.container_number in($container_str) ";
-                    }
-
-                    $query = $query . " order by r.customer, r.date_receive ";
-
-                    $stmt = $this->conn->prepare( $query );
-                    $stmt->bindParam(':customer', $row['customer']);
-                    $stmt->execute();
-
-                    while($row = $stmt->fetch(PDO::FETCH_ASSOC))
-                        $merged_results[] = $row;
-                }
-            }
 
         $query = "SELECT r.id, 
                         r.date_receive, 
@@ -217,7 +132,7 @@ class ReceiveRecord{
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id where taiwan_pay=1 
                         and r.status = '' 
-                        and r.date_receive = '' ";
+                        and r.date_receive <> '' ";
 
         if(!empty($date_start)) {
             $query = $query . " and r.date_receive >= '$date_start' ";
@@ -235,7 +150,46 @@ class ReceiveRecord{
             $query = $query . " and l.container_number in($container_str) ";
         }
 
-        $query = $query . " order by r.customer, r.date_receive ";
+        $query = $query . " order by r.date_receive ";
+
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+            $merged_results[] = $row;
+
+        
+        
+        // no date_receive
+        $query = "SELECT r.id, 
+            r.date_receive, 
+            r.customer, 
+            r.description, 
+            r.quantity, 
+            r.supplier, 
+            r.remark 
+            FROM receive_record r LEFT JOIN loading l 
+            ON r.batch_num = l.id where taiwan_pay=1 
+            and r.status = '' 
+            and r.date_receive = '' ";
+
+        if(!empty($date_start)) {
+        $query = $query . " and r.date_receive >= '$date_start' ";
+        }
+
+        if(!empty($date_end)) {
+        $query = $query . " and r.date_receive <= '$date_end' ";
+        }
+
+        if(!empty($container_number)) {
+        $container_number = rtrim($container_number, ',');
+        $container = explode(",", $container_number);
+        $container_str = "'".implode("','",array_map("trim",array_filter($container)))."'";
+
+        $query = $query . " and l.container_number in($container_str) ";
+        }
+
+        $query = $query . " order by r.id ";
 
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
@@ -248,23 +202,27 @@ class ReceiveRecord{
 
     function CourierPayQuery($date_start, $date_end, $container_number){
 
-        $key=array();
         $merged_results = array();
 
-        $sql = "SELECT r.customer 
-                FROM  receive_record r 
-                LEFT JOIN loading l 
-                ON r.batch_num = l.id
-                where r.courier_money <> 0 
-                and r.status = '' 
-                and r.date_receive <> ''  ";
+        $query = "SELECT r.id, 
+                        r.date_receive, 
+                        r.customer, 
+                        r.description, 
+                        r.quantity, 
+                        r.supplier, 
+                        r.remark,
+                        r.courier_money 
+                        FROM receive_record r LEFT JOIN loading l 
+                        ON r.batch_num = l.id where r.courier_money <> 0 
+                        and r.status = '' 
+                        and r.date_receive <> '' ";
 
         if(!empty($date_start)) {
-            $sql = $sql . " and r.date_receive >= '$date_start' ";
+            $query = $query . " and r.date_receive >= '$date_start' ";
         }
 
         if(!empty($date_end)) {
-            $sql = $sql . " and r.date_receive <= '$date_end' ";
+            $query = $query . " and r.date_receive <= '$date_end' ";
         }
 
         if(!empty($container_number)) {
@@ -272,70 +230,18 @@ class ReceiveRecord{
             $container = explode(",", $container_number);
             $container_str = "'".implode("','",array_map("trim",array_filter($container)))."'";
 
-            $sql = $sql . " and l.container_number in($container_str) ";
+            $query = $query . " and l.container_number in($container_str) ";
         }
-        
-        $sql = $sql . "  GROUP BY r.date_receive, r.customer ";
 
-        $sql = $sql . " order by  r.date_receive,  r.customer  ";
+        $query = $query . " order by r.date_receive ";
 
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
 
-        $data = $this->conn->query($sql)->fetchAll();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+            $merged_results[] = $row;
 
-        /* fetch data */
-        foreach  ($data as $row){
-            if (isset($row)){
-
-                if (in_array(strtolower($row['customer']),$key))
-                {
-                    continue;
-                }
-                else
-                {
-                    array_push($key, strtolower($row['customer']));
-                }
-
-                   $query = "SELECT r.id, 
-                    r.date_receive, 
-                    r.customer, 
-                    r.description, 
-                    r.quantity, 
-                    r.supplier, 
-                    r.remark,
-                    r.courier_money  
-                    FROM receive_record r LEFT JOIN loading l 
-                    ON r.batch_num = l.id where r.courier_money <> 0 
-                    and r.status = ''
-                    and r.date_receive <> '' 
-                    and r.customer = :customer ";
-
-                    if(!empty($date_start)) {
-                        $query = $query . " and r.date_receive >= '$date_start' ";
-                    }
-
-                    if(!empty($date_end)) {
-                        $query = $query . " and r.date_receive <= '$date_end' ";
-                    }
-
-                    if(!empty($container_number)) {
-                        $container_number = rtrim($container_number, ',');
-                        $container = explode(",", $container_number);
-                        $container_str = "'".implode("','",array_map("trim",array_filter($container)))."'";
-
-                        $query = $query . " and l.container_number in($container_str) ";
-                    }
-
-                    $query = $query . " order by r.customer, r.date_receive ";
-
-                    $stmt = $this->conn->prepare( $query );
-                    $stmt->bindParam(':customer', $row['customer']);
-                    $stmt->execute();
-
-                    while($row = $stmt->fetch(PDO::FETCH_ASSOC))
-                        $merged_results[] = $row;
-                }
-            }
-
+        // no date_receive
         $query = "SELECT r.id, 
                         r.date_receive, 
                         r.customer, 
@@ -365,7 +271,7 @@ class ReceiveRecord{
             $query = $query . " and l.container_number in($container_str) ";
         }
 
-        $query = $query . " order by r.customer, r.date_receive ";
+        $query = $query . " order by r.id ";
 
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
@@ -556,6 +462,106 @@ class ReceiveRecord{
         }
 
         $query = $query . " order by r.customer, r.date_receive ";
+
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+            $merged_results[] = $row;
+
+        return $merged_results;
+    }
+
+
+    function Query_Receive_Query_Simple($date_start, $date_end, $customer, $supplier){
+
+        $merged_results = array();
+
+        $cus_str = "";
+        $sup_str = "";
+
+        $query = "SELECT r.id, 
+                        r.date_receive, 
+                        r.customer, 
+                        r.description, 
+                        r.quantity, 
+                        r.supplier, 
+                        r.remark, 
+                        l.container_number,
+                        l.date_sent,
+                        l.date_arrive,
+                        m.date_encode,
+                        l.eta_date,
+                        COALESCE(ld.eta_date, '') eta_date_his 
+                        FROM receive_record r LEFT JOIN loading l 
+                        ON r.batch_num = l.id
+                        LEFT JOIN measure m on l.measure_num = m.id
+                        LEFT JOIN loading_date_history ld ON l.id = ld.loading_id 
+                        where r.status = '' 
+                        and r.date_receive <> '' ";
+
+        if(!empty($date_start)) {
+            $query = $query . " and r.date_receive >= '$date_start' ";
+        }
+
+        if(!empty($date_end)) {
+            $query = $query . " and r.date_receive <= '$date_end' ";
+        }
+
+        if(!empty($sup_str)) {
+            $query = $query . " and r.supplier in($sup_str) ";
+        }
+
+        if(!empty($cus_str)) {
+            $query = $query . " and r.customer in($cus_str) ";
+        }
+
+        $query = $query . " order by r.date_receive ";
+
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+            $merged_results[] = $row;
+
+        // no date_receive
+        $query = "SELECT r.id, 
+                        r.date_receive, 
+                        r.customer, 
+                        r.description, 
+                        r.quantity, 
+                        r.supplier, 
+                        r.remark, 
+                        l.container_number,
+                        l.date_sent,
+                        l.date_arrive,
+                        m.date_encode,
+                        l.eta_date,
+                        COALESCE(ld.eta_date, '') eta_date_his 
+                        FROM receive_record r LEFT JOIN loading l 
+                        ON r.batch_num = l.id
+                        LEFT JOIN measure m on l.measure_num = m.id
+                        LEFT JOIN loading_date_history ld ON l.id = ld.loading_id 
+                        where r.status = '' 
+                        and r.date_receive = '' ";
+
+        if(!empty($date_start)) {
+            $query = $query . " and r.date_receive >= '$date_start' ";
+        }
+
+        if(!empty($date_end)) {
+            $query = $query . " and r.date_receive <= '$date_end' ";
+        }
+
+        if(!empty($sup_str)) {
+            $query = $query . " and r.supplier in($sup_str) ";
+        }
+
+        if(!empty($cus_str)) {
+            $query = $query . " and r.customer in($cus_str) ";
+        }
+
+        $query = $query . " order by r.id ";
 
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();

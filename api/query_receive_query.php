@@ -50,7 +50,7 @@ if($jwt){
         // response in json format
             http_response_code(200);
 
-                $recode = $receive_record->Query_Receive_Query($date_start, $date_end, $customer, $supplier);
+                $recode = $receive_record->Query_Receive_Query_Simple($date_start, $date_end, $customer, $supplier);
             // response in json format
             echo json_encode(
                 $recode);
