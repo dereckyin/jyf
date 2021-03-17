@@ -480,6 +480,19 @@ class ReceiveRecord{
         $cus_str = "";
         $sup_str = "";
 
+        if(!empty($customer)) {
+            $customer = rtrim($customer, ',');
+            $cust = explode(",", $customer);
+            $cus_str = "'".implode("','",array_map("trim",array_filter($cust)))."'";
+        }
+
+        if(!empty($supplier)) {
+            $supplier = rtrim($supplier, ',');
+            $sup = explode(",", $supplier);
+            $sup_str = "'".implode("','",array_map("trim",array_filter($sup)))."'";
+
+        }
+
         $query = "SELECT r.id, 
                         r.date_receive, 
                         r.customer, 
