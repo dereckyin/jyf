@@ -115,7 +115,7 @@ else
                 }
             }
 
-            $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited  FROM receive_record where batch_num = $record and date_receive = '' and status = ''  ORDER BY customer";
+            $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited  FROM receive_record where batch_num = $record and date_receive = '' and status = ''  ORDER BY id";
 
               $result1 = mysqli_query($conn,$subquery);
               if($result1 != null)
@@ -168,7 +168,7 @@ else
                 }
             }
 
-            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY customer";
+            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY id";
 
               $result1 = mysqli_query($conn,$subquery);
               if($result1 != null)
@@ -233,7 +233,7 @@ else
                 }
             }
 
-            $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user  FROM receive_record where batch_num = $record and date_receive = '' and status = ''  ORDER BY customer";
+            $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user  FROM receive_record where batch_num = $record and date_receive = '' and status = ''  ORDER BY id";
 
               $result1 = mysqli_query($conn,$subquery);
               while($row = mysqli_fetch_assoc($result1))
