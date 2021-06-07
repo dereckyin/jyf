@@ -461,7 +461,7 @@ class ReceiveRecord{
             $query = $query . " and r.customer in($cus_str) ";
         }
 
-        $query = $query . " order by r.customer, r.date_receive ";
+        $query = $query . " order by r.crt_time ";
 
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
