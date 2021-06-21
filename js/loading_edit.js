@@ -124,6 +124,7 @@ let mainState = {
     ship_company: '',
     ship_boat: '',
     neck_cabinet: '',
+    shipper: 1,
     date_sent: '',
     etd_date: '',
     ob_date: '',
@@ -564,6 +565,7 @@ var app = new Vue({
                 formData.append('ship_company', this.ship_company)
                 formData.append('ship_boat', this.ship_boat)
                 formData.append('neck_cabinet', this.neck_cabinet)
+                formData.append('shipper', this.shipper)
                 formData.append('date_sent', this.date_sent)
                 formData.append('etd_date', this.etd_date)
                 formData.append('ob_date', this.ob_date)
@@ -717,6 +719,7 @@ var app = new Vue({
                 formData.append('ship_company', this.record.ship_company)
                 formData.append('ship_boat', this.record.ship_boat)
                 formData.append('neck_cabinet', this.record.neck_cabinet)
+                formData.append('shipper', this.record.shipper)
                 formData.append('date_sent', this.formatDate(this.record.date_sent))
                 formData.append('etd_date', this.formatDate(this.record.etd_date))
                 formData.append('ob_date', this.formatDate(this.record.ob_date))
@@ -795,6 +798,7 @@ var app = new Vue({
             formData.append('ship_company', "")
             formData.append('ship_boat', "")
             formData.append('neck_cabinet', "")
+            formData.append('shipper', 1)
             formData.append('date_sent', "")
             formData.append('etd_date', "")
             formData.append('ob_date', "")
@@ -846,6 +850,7 @@ var app = new Vue({
             formData.append('ship_company', "")
             formData.append('ship_boat', "")
             formData.append('neck_cabinet', "")
+            formData.append('shipper', 1)
             formData.append('date_sent', "")
             formData.append('etd_date', "")
             formData.append('ob_date', "")
@@ -893,6 +898,7 @@ var app = new Vue({
             this.ship_company = '';
             this.ship_boat = '';
             this.neck_cabinet = '';
+            this.shipper = 1;
             this.date_sent = '';
             this.etd_date = '';
             this.ob_date = '';

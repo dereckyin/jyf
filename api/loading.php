@@ -53,9 +53,9 @@ else
               //$sql = "SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive, crt_time, crt_user  FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  status = '' ".($id ? " and lo.id=$id" : ''); 
               //$sql = $sql . " ORDER BY ship_company, date_sent ";
 
-              $sql = "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.date_arrive date_arrive_his, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, '9999/99/99' ords  FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' ".($id ? " and lo.id=$id" : ''). " AND lo.date_sent = '' ORDER BY lo.date_sent ) ";
+              $sql = "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, shipper, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.date_arrive date_arrive_his, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, '9999/99/99' ords  FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' ".($id ? " and lo.id=$id" : ''). " AND lo.date_sent = '' ORDER BY lo.date_sent ) ";
               $sql = $sql . "UNION ";
-              $sql = $sql . "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.date_arrive date_arrive_his, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, lo.date_sent ords FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' ".($id ? " and lo.id=$id" : ''). " AND lo.date_sent <> '' ORDER BY lo.date_sent DESC ) ";
+              $sql = $sql . "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, shipper, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.date_arrive date_arrive_his, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, lo.date_sent ords FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' ".($id ? " and lo.id=$id" : ''). " AND lo.date_sent <> '' ORDER BY lo.date_sent DESC ) ";
               $sql = $sql . "ORDER BY ords DESC, ship_company ";
             }
 
@@ -292,6 +292,7 @@ else
             $ship_company = stripslashes($_POST["ship_company"]);
             $ship_boat = stripslashes($_POST["ship_boat"]);
             $neck_cabinet = stripslashes($_POST["neck_cabinet"]);
+            $shipper = stripslashes($_POST["shipper"]);
             $date_sent = stripslashes($_POST["date_sent"]);
             $etd_date = stripslashes($_POST["etd_date"]);
             $ob_date = stripslashes($_POST["ob_date"]);
@@ -316,6 +317,7 @@ else
                 									  ship_company,
                 									  ship_boat,
                 									  neck_cabinet,
+                                                      shipper,
                 									  date_sent,
                 									  etd_date,
                 									  ob_date,
@@ -324,9 +326,9 @@ else
                 									  broker,
                 									  remark,
                                                       crt_user) 
-                							values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                							values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql); 
-                $stmt->bind_param("sddssssssssssssss",
+                $stmt->bind_param("sddssssssdssssssss",
                 					$shipping_mark,
                 					$estimate_weight,
                 					$actual_weight,
@@ -336,6 +338,7 @@ else
                 					$ship_company,
                 					$ship_boat,
                 					$neck_cabinet,
+                                    $shipper,
                 					$date_sent,
                 					$etd_date,
                 					$ob_date,
@@ -394,6 +397,7 @@ else
                                                           ship_company = ?,
                                                           ship_boat = ?,
                                                           neck_cabinet = ?,
+                                                          shipper = ?,
                                                           date_sent = ?,
                                                           etd_date = ?,
                                                           ob_date = ?,
@@ -405,7 +409,7 @@ else
                                                           mdf_user = ?
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
-                    $stmt->bind_param("sddssssssssssssssd",
+                    $stmt->bind_param("sddssssssdssssssssd",
                         $shipping_mark,
                         $estimate_weight,
                         $actual_weight,
@@ -415,6 +419,7 @@ else
                         $ship_company,
                         $ship_boat,
                         $neck_cabinet,
+                        $shipper,
                         $date_sent,
                         $etd_date,
                         $ob_date,

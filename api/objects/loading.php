@@ -17,6 +17,7 @@ class Loading{
     public $ship_company;
     public $ship_boat;
     public $neck_cabinet;
+    public $shipper;
     public $date_sent;
     public $etd_date;
     public $ob_date;
@@ -44,6 +45,7 @@ class Loading{
                                   ship_company, 
                                   ship_boat, 
                                   neck_cabinet, 
+                                  shipper,
                                   date_sent, 
                                   etd_date, 
                                   ob_date, 

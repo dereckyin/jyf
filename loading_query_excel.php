@@ -30,6 +30,17 @@ catch (Exception $e){
     die();
 }
 
+function GetShipper($shipper_id){
+    $shipper = "";
+    if($shipper_id == 1)
+        $shipper = "盛盛";
+    if($shipper_id == 2)
+        $shipper = "中亞菲";
+    if($shipper_id == 3)
+        $shipper = "心心";
+    return $shipper;
+}
+
 
 $id = stripslashes((isset($_GET['id']) ?  $_GET['id'] : ""));
 
@@ -88,7 +99,7 @@ foreach ($batch_nums as $num)
                 array_push($key, $row['customer']);
             }
 
-            $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark, lo.estimate_weight  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive <> '' and rr.customer = ? ORDER BY rr.date_receive  ";
+            $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.shipper, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark, lo.estimate_weight  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive <> '' and rr.customer = ? ORDER BY rr.date_receive  ";
 
             if ($stmt = mysqli_prepare($conn, $subquery)) {
 
@@ -106,7 +117,7 @@ foreach ($batch_nums as $num)
         }
     }
 
-    $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark, lo.estimate_weight  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive = ''  ORDER BY rr.customer  ";
+    $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.shipper, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark, lo.estimate_weight  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive = ''  ORDER BY rr.customer  ";
 
     $result1 = mysqli_query($conn,$subquery);
     while($row = mysqli_fetch_assoc($result1))
@@ -138,7 +149,9 @@ foreach ($batch_nums as $num)
     $company = '';
     $boat = '';
     $cabinet = '';
+    $shipper = '';
     $date_sent = '';
+    $es_weight = '';
     $etd = '';
     $ob = '';
     $cr = '';
@@ -173,6 +186,7 @@ foreach ($batch_nums as $num)
         $company = $row['ship_company'];
         $boat = $row['ship_boat'];
         $cabinet = $row['neck_cabinet'];
+        $shipper = GetShipper($row['shipper']);
         $date_sent = $row['date_sent'];
         $etd = $row['etd_date'];
         $ob = $row['ob_date'];
@@ -229,8 +243,11 @@ foreach ($batch_nums as $num)
     $sheet->setCellValue('A'  . ($i + 17), '領櫃人 Broker');
     $sheet->setCellValue('B'  . ($i + 17), $broker);
 
-    $sheet->getStyle('A' . ($i + 3) . ':' . 'A' . ($i + 17))->getFont()->setBold(true);
-    $sheet->getStyle('A' . ($i + 3) . ':' . 'B' . ($i + 17))->applyFromArray($styleArray);
+    $sheet->setCellValue('A'  . ($i + 18), '出貨人 Shipper');
+    $sheet->setCellValue('B'  . ($i + 18), $shipper);
+
+    $sheet->getStyle('A' . ($i + 3) . ':' . 'A' . ($i + 18))->getFont()->setBold(true);
+    $sheet->getStyle('A' . ($i + 3) . ':' . 'B' . ($i + 18))->applyFromArray($styleArray);
 
     $sheet->setTitle($container . " ");
 
@@ -292,4 +309,6 @@ foreach ($batch_nums as $num)
     mysqli_close($conn);
 
     exit;
+
+    
 ?>

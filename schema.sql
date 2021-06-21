@@ -242,3 +242,7 @@ ADD COLUMN `date_arrive` varchar(10) DEFAULT '' AFTER eta_date;
 alter table receive_record change customer customer varchar(256);
 
 alter table receive_record change supplier supplier varchar(256);
+
+-- 修改欄位 2021/6/21
+ALTER TABLE loading
+ADD COLUMN `shipper` int(11) DEFAULT 0 AFTER neck_cabinet;

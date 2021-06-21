@@ -94,8 +94,16 @@ $(function(){
                          <li><input type="text" name="ship_boat" v-model="ship_boat"></li>
                      </ul>
                      <ul>
-                         <li>領櫃<eng>Neck Cabinet</eng></li>
-                         <li><input type="text" name="neck_cabinet" v-model="neck_cabinet"></li>
+                         <!-- <li>領櫃<eng>Neck Cabinet</eng></li>
+                         <li><input type="text" name="neck_cabinet" v-model="neck_cabinet"></li> -->
+                         <li>出貨人<eng>Shipper</eng></li>
+                         <li>
+                            <select v-model="shipper">
+                                <option value="1">盛盛</option>
+                                <option value="2">中亞菲</option>
+                                <option value="3">心心</option>
+                            </select>
+                        </li>
                          <li>領櫃人<eng>Broker</eng></li>
                          <li>
                              <select v-model="broker">
