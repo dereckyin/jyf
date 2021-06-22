@@ -124,7 +124,7 @@ let mainState = {
     ship_company: '',
     ship_boat: '',
     neck_cabinet: '',
-    shipper : 1,
+    shipper : 0,
     date_sent: '',
     etd_date: '',
     ob_date: '',
@@ -585,7 +585,7 @@ var app = new Vue({
             this.ship_company = '';
             this.ship_boat = '';
             this.neck_cabinet = '';
-            this.shipper = 1;
+            this.shipper = 0;
             this.date_sent = '';
             this.etd_date = '';
             this.ob_date = '';

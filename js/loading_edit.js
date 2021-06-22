@@ -124,7 +124,7 @@ let mainState = {
     ship_company: '',
     ship_boat: '',
     neck_cabinet: '',
-    shipper: 1,
+    shipper: 0,
     date_sent: '',
     etd_date: '',
     ob_date: '',
@@ -798,7 +798,7 @@ var app = new Vue({
             formData.append('ship_company', "")
             formData.append('ship_boat', "")
             formData.append('neck_cabinet', "")
-            formData.append('shipper', 1)
+            formData.append('shipper', 0)
             formData.append('date_sent', "")
             formData.append('etd_date', "")
             formData.append('ob_date', "")
@@ -850,7 +850,7 @@ var app = new Vue({
             formData.append('ship_company', "")
             formData.append('ship_boat', "")
             formData.append('neck_cabinet', "")
-            formData.append('shipper', 1)
+            formData.append('shipper', 0)
             formData.append('date_sent', "")
             formData.append('etd_date', "")
             formData.append('ob_date', "")

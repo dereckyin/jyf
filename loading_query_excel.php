@@ -32,6 +32,8 @@ catch (Exception $e){
 
 function GetShipper($shipper_id){
     $shipper = "";
+    if($shipper_id == 0)
+        $shipper = "";
     if($shipper_id == 1)
         $shipper = "盛盛";
     if($shipper_id == 2)

@@ -99,6 +99,7 @@ $(function(){
                          <li>出貨人<eng>Shipper</eng></li>
                          <li>
                             <select v-model="shipper">
+                                <option value="0"></option>
                                 <option value="1">盛盛</option>
                                 <option value="2">中亞菲</option>
                                 <option value="3">心心</option>
