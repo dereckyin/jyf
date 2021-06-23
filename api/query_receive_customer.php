@@ -32,6 +32,7 @@ $data = json_decode(file_get_contents("php://input"));
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 $keyword = (isset($_GET['keyword']) ?  $_GET['keyword'] : '');
+$keyword = urldecode($keyword);
 
 // if jwt is not empty
 if($jwt){

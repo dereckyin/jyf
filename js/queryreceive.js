@@ -85,7 +85,9 @@ var app = new Vue({
                 var contentJson = eval(json);
                 var container;
                 for (var i = 0; i < contentJson.length; i++) {
-                    container = contentJson[i].name;
+                    var container = contentJson[i].name.replace(/[\u00A0-\u9999<>\&]/g, function(i) {
+                        return '&#'+i.charCodeAt(0)+';';
+                     });
 
                     html += "<tr><td onclick='data(this)'>" + "<input type='checkbox' class='form-check-input' value='" + container + "'><label class='form-check-label'>&nbsp</label>" + "</td><td>" + container + "</td></tr>";
                     //$("#contact").append("<tr onclick='data(this)'><td>" + customer + "</td><td>" + c_phone + "</td><td>" + c_fax + "</td><td>" + c_email + "</td></tr>");
@@ -113,7 +115,9 @@ var app = new Vue({
                 var contentJson = eval(json);
                 var container;
                 for (var i = 0; i < contentJson.length; i++) {
-                    container = contentJson[i].name;
+                    var container = contentJson[i].name.replace(/[\u00A0-\u9999<>\&]/g, function(i) {
+                        return '&#'+i.charCodeAt(0)+';';
+                     });
 
                     html += "<tr><td onclick='data(this)'>" + "<input type='checkbox' class='form-check-input' value='" + container + "'><label class='form-check-label'>&nbsp</label>" + "</td><td>" + container + "</td></tr>";
                     //$("#contact").append("<tr onclick='data(this)'><td>" + customer + "</td><td>" + c_phone + "</td><td>" + c_fax + "</td><td>" + c_email + "</td></tr>");
@@ -199,7 +203,9 @@ var app = new Vue({
                 var contentJson = eval(json);
                 var container;
                 for (var i = 0; i < contentJson.length; i++) {
-                    container = contentJson[i].name;
+                    var container = contentJson[i].name.replace(/[\u00A0-\u9999<>\&]/g, function(i) {
+                        return '&#'+i.charCodeAt(0)+';';
+                     });
 
                     html += "<tr><td onclick='data(this)'>" + "<input type='checkbox' class='form-check-input' value='" + container + "'><label class='form-check-label'>&nbsp</label>" + "</td><td>" + container + "</td></tr>";
                     //$("#contact").append("<tr onclick='data(this)'><td>" + customer + "</td><td>" + c_phone + "</td><td>" + c_fax + "</td><td>" + c_email + "</td></tr>");
@@ -227,7 +233,10 @@ var app = new Vue({
                 var contentJson = eval(json);
                 var container;
                 for (var i = 0; i < contentJson.length; i++) {
-                    container = contentJson[i].name;
+        
+                    var container = contentJson[i].name.replace(/[\u00A0-\u9999<>\&]/g, function(i) {
+                        return '&#'+i.charCodeAt(0)+';';
+                     });
 
                     html += "<tr><td onclick='data(this)'>" + "<input type='checkbox' class='form-check-input' value='" + container + "'><label class='form-check-label'>&nbsp</label>" + "</td><td>" + container + "</td></tr>";
                     //$("#contact").append("<tr onclick='data(this)'><td>" + customer + "</td><td>" + c_phone + "</td><td>" + c_fax + "</td><td>" + c_email + "</td></tr>");

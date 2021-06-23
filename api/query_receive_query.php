@@ -36,7 +36,9 @@ $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 $date_start = (isset($_POST['date_start']) ?  $_POST['date_start'] : '');
 $date_end = (isset($_POST['date_end']) ?  $_POST['date_end'] : '');
 $customer = (isset($_POST['customer']) ?  $_POST['customer'] : '');
+$customer = urldecode($customer);
 $supplier = (isset($_POST['supplier']) ?  $_POST['supplier'] : '');
+$supplier = urldecode($supplier);
 
 // if jwt is not empty
 if($jwt){

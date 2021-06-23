@@ -44,10 +44,16 @@ else
             $id = stripslashes((isset($_GET['id']) ?  $_GET['id'] : ""));
             $page = stripslashes((isset($_GET['page']) ?  $_GET['page'] : ""));
             $size = stripslashes((isset($_GET['size']) ?  $_GET['size'] : ""));
-            $s_keyword = stripslashes((isset($_GET['s_keyword']) ?  $_GET['s_keyword'] : ""));
-            $c_keyword = stripslashes((isset($_GET['c_keyword']) ?  $_GET['c_keyword'] : ""));
 
-            $keyword = stripslashes((isset($_GET['keyword']) ?  $_GET['keyword'] : ""));
+            $s_keyword = (isset($_GET['s_keyword']) ?  $_GET['s_keyword'] : "");
+            $s_keyword = urldecode($s_keyword);
+
+            $c_keyword = (isset($_GET['c_keyword']) ?  $_GET['c_keyword'] : "");
+            $c_keyword = urldecode($c_keyword);
+
+            $keyword = (isset($_GET['keyword']) ?  $_GET['keyword'] : "");
+            $keyword = urldecode($keyword);
+
 
             $sql = "SELECT 0 as is_checked, id, shipping_mark, customer, COALESCE(c_phone, '') c_phone, COALESCE(c_fax, '') c_fax, c_email, supplier, COALESCE(s_phone, '') s_phone, COALESCE(s_fax, '') s_fax, s_email, company_title, vat_number, address, crt_time, crt_user  FROM contactor where status = '' ".($id ? " and id=$id" : ''); 
 
