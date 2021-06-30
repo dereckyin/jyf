@@ -1,6 +1,8 @@
 {
     "require": {
         "phpoffice/phpspreadsheet": "^1.10",
-        "phpmailer/phpmailer": "^6.1"
+        "phpmailer/phpmailer": "^6.1",
+	"sendgrid/sendgrid": "~7",
+        "google/cloud-storage": "^1.23"
     }
 }
