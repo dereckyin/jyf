@@ -195,6 +195,7 @@ var app = new Vue({
     this.getUserName();
     this.getRecords();
     this.getPayees();
+    this.get_today();
   },
   mounted() {},
 
@@ -1220,6 +1221,15 @@ var app = new Vue({
         });
     },
 
+    get_today: function() {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+      
+      this.paid_date = yyyy + '-' + mm + '-' + dd;
+    },
+
     reset: function() {
       this.id = 0;
       this.account = 1;
@@ -1362,6 +1372,8 @@ var app = new Vue({
       this.$refs.detail3.value = "";
       this.$refs.detail4.value = "";
       this.$refs.detail5.value = "";
+
+      this.get_today();
     },
     reload: function() {
       let _this = this;

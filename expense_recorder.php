@@ -336,7 +336,7 @@ try {
                             </td>
 
                             <td style="text-align: left;"><input type="date" class="form-control custom-control-inline"
-                                                                 style="width:15vw;" v-model="paid_date"></td>
+                                                                 style="width:15vw;" v-model="paid_date" id="todaysdate"></td>
 
                         </tr>
 
@@ -2017,6 +2017,8 @@ $(document).ready(function(){
     today = yyyy + '-' + mm + '-' + dd;
     $("#todays-date").attr("value", today);
     $("#todays_date").attr("value", today);
+    $("#todaysdate").attr("value", today);
+
 });
     
 </script>
