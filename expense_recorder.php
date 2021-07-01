@@ -141,12 +141,11 @@ try {
 
 
 <div id="app">
-<div style="background: rgb(2,106,167); padding: 0.5vh; height:7.5vh;">
-    <a href="default" style="margin-left:1vw; position: relative; top:-10%;" ><span style="color: white;">&#9776;</span></a>
+<div style="background: #1E6BA8; padding: 0.5vh; height:70px; display: flex; align-items: center; justify-content: space-between;">
 
-    <a href="default"><span style="margin-left:1vw; font-weight:700; font-size:xx-large; color: white;">FELIIX</span></a>
+    <a href="main.php" style="margin-left:25px; font-size: 25px;" ><span style="color: #FFFFFF;">&#9776;</span></a>
 
-    <button :class="[is_viewer == '1'? 'hide' : '']" style="border: none; margin-left:0.5vw; font-weight:700; font-size:x-large; background-color:rgb(2,106,167); color: white; padding: 0.5rem 0.5rem 0.5rem 0.5rem; float:right; margin-right:1rem;"
+    <button :class="[is_viewer == '1'? 'hide' : '']" style="border: none; margin-right: 25px; font-weight:700; font-size:x-large; background-color:#1E6BA8; color: #FFFFFF;"
             data-toggle="collapse" data-parent="#accordion" href="#collapseOne" @click="reset()"
                        aria-expanded="true" aria-controls="collapseOne"><i class="fas fa-plus-square fa-lg"></i></button>
 
@@ -240,22 +239,22 @@ try {
                                     <option>Credit Card</option>
                                     <option>Marketing</option>
                                     <option>Misc</option>
+                                    <option>NTD to PHP</option>
                                     <option>Office Needs</option>
                                     <option>Others</option>
+                                    <option>Payment for Container</option>
+                                    <option>Petty Cash</option>
                                     <option>Projects</option>
                                     <option>Rental</option>
                                     <option>Salary</option>
                                     <option>Sales Petty Cash</option>
                                     <option>Store</option>
                                     <option>Transportation Petty Cash</option>
-                                    <option>Payment for Container</option>
-                                    <option>NTD to PHP</option>
-                                    <option>Petty Cash</option>
                                 </select>
                             </td>
 
                         </tr>
-<!-- 
+
                         <tr v-if="category == 'Marketing' || category == 'Office Needs' || category == 'Others' || category ==  'Projects' || category == 'Store'">
                             <td>
                                 <label >Sub Category</label>
@@ -280,7 +279,7 @@ try {
                             </td>
 
                         </tr>
-
+<!-- 
                         <tr v-if="category == 'Projects'">
                             <td style="width: 15vw;">
                                 <label>Project Name</label>
@@ -468,7 +467,7 @@ try {
             <option value="2">Security Bank</option>
         </select> -->
 
-        <select style="width:10vw; margin-left:1vw;" v-model="category">
+        <select style="width:10vw; margin-left:1vw;" v-model="select_category">
             <option value="" seleted>All</option>
             <option>Accounting and govt payments</option>
             <option>Bills</option>
@@ -477,17 +476,17 @@ try {
             <option>Credit Card</option>
             <option>Marketing</option>
             <option>Misc</option>
+            <option>NTD to PHP</option>
             <option>Office Needs</option>
             <option>Others</option>
+            <option>Payment for Container</option>
+            <option>Petty Cash</option>
             <option>Projects</option>
             <option>Rental</option>
             <option>Salary</option>
             <option>Sales Petty Cash</option>
             <option>Store</option>
             <option>Transportation Petty Cash</option>
-            <option>Payment for Container</option>
-            <option>NTD to PHP</option>
-            <option>Petty Cash</option>
         </select>
 <!-- 
         <select style="width:10vw; margin-left:1vw;" v-if="category == 'Marketing' || category == 'Office Needs' || category == 'Others' || category ==  'Projects' || category == 'Store'" v-model="sub_category">
@@ -533,12 +532,6 @@ try {
 
             <thead class="thead-light">
 
-
-
-            <tr>
-
-                <th colspan="11" style="font-size:larger; font-weight:700;"></th>
-            </tr>
 
             <tr>
 
@@ -631,7 +624,7 @@ try {
             <thead class="thead-light">
 
             <tr>
-                <th colspan="5">Total</th>
+                <th colspan="4">Total</th>
                 <th style="text-align: center;" colspan="2"><!--Beginning Balance: 0.00--></th>
                 <th style="text-align: right;">{{accountOneCashIn.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
                 <th style="text-align: right;">{{accountOneCashOut.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
@@ -878,14 +871,14 @@ try {
         </table> -->
 
 <br><br>
-
+<!-- 
          <table class="table table-sm table-bordered table-hover" style="width:97vw;">
 
             <thead class="thead-light">
 
             <tr>
                 <th style="width:25vw; font-size:larger;">All Accounts</th>
-                <th style="text-align: center; width:18vw; font-size:larger;"><!--Beginning Balance: 0.00--></th>
+                <th style="text-align: center; width:18vw; font-size:larger;"><!--Beginning Balance: 0.00</th>
                 <th style="text-align: center; width:18vw; font-size:larger;">Cash In: {{allCashIn.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
                 <th style="text-align: center; width:18vw; font-size:larger;">Cash Out: {{allCashOut.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
                 <th style="text-align: center; width:18vw; font-size:larger;">
@@ -894,7 +887,7 @@ try {
 
             </thead>
 
-        </table>
+        </table> -->
 
 
 

@@ -27,6 +27,7 @@ var app = new Vue({
     remarks: "",
     keyword: "",
     select_date_type: 0,
+    select_category: '',
 
     is_locked: false,
     is_enabled: true,
@@ -1068,7 +1069,7 @@ var app = new Vue({
         _this.project_name = "";
       }
       const params = {
-        category: _this.category,
+        category: _this.select_category,
         sub_category: _this.sub_category,
         project_name: _this.project_name,
         start_date: _this.start_date,
