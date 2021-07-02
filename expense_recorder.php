@@ -488,8 +488,8 @@ try {
             <option>Store</option>
             <option>Transportation Petty Cash</option>
         </select>
-<!-- 
-        <select style="width:10vw; margin-left:1vw;" v-if="category == 'Marketing' || category == 'Office Needs' || category == 'Others' || category ==  'Projects' || category == 'Store'" v-model="sub_category">
+
+        <select style="width:10vw; margin-left:1vw;" v-if="select_category == 'Marketing' || select_category == 'Office Needs' || select_category == 'Others' || select_category ==  'Projects' || select_category == 'Store'" v-model="select_sub_category">
             <option>Allowance</option>
             <option>Commission</option>
             <option>Delivery</option>
@@ -503,7 +503,7 @@ try {
             <option>Supplies</option>
             <option>Tools and Materials</option>
             <option>Transportation</option>
-        </select> -->
+        </select>
         
         <input type="text" v-model="keyword" style="width:15vw; margin-left:1vw;" placeholder="Searching Keyword Here">
 

@@ -28,6 +28,7 @@ var app = new Vue({
     keyword: "",
     select_date_type: 0,
     select_category: '',
+    select_sub_category: "",
 
     is_locked: false,
     is_enabled: true,
@@ -256,6 +257,17 @@ var app = new Vue({
           } else {
             this.cash_out = this.amount;
           }
+
+          if (
+            this.category != "Marketing" &&
+            this.category != "Office Needs" &&
+            this.category != "Others" &&
+            this.category != "Projects" &&
+            this.category != "Store"
+          ) {
+            this.sub_category = "";
+          }
+
           form_Data.append("jwt", token);
           form_Data.append("account", this.account);
           form_Data.append("category", this.category);
@@ -574,6 +586,17 @@ var app = new Vue({
         this.cash_out = this.amount;
         this.cash_in = 0;
       }
+
+      if (
+        this.category != "Marketing" &&
+        this.category != "Office Needs" &&
+        this.category != "Others" &&
+        this.category != "Projects" &&
+        this.category != "Store"
+      ) {
+        this.sub_category = "";
+      }
+
       form_Data.append("jwt", token);
       form_Data.append("id", id);
       form_Data.append("account", this.account);
@@ -1056,13 +1079,13 @@ var app = new Vue({
       _this.accountThreeCashOut = 0.0;
       _this.accountThreeBalance = 0.0;
       if (
-        _this.category != "Marketing" &&
-        _this.category != "Office Needs" &&
-        _this.category != "Others" &&
-        _this.category != "Projects" &&
-        _this.category != "Store"
+        _this.select_category != "Marketing" &&
+        _this.select_category != "Office Needs" &&
+        _this.select_category != "Others" &&
+        _this.select_category != "Projects" &&
+        _this.select_category != "Store"
       ) {
-        _this.sub_category = "";
+        _this.select_sub_category = "";
       }
 
       if (_this.category != "Projects") {
@@ -1070,7 +1093,7 @@ var app = new Vue({
       }
       const params = {
         category: _this.select_category,
-        sub_category: _this.sub_category,
+        sub_category: _this.select_sub_category,
         project_name: _this.project_name,
         start_date: _this.start_date,
         end_date: _this.end_date,
@@ -1248,6 +1271,9 @@ var app = new Vue({
       this.cash_out = 0.0;
       this.remarks = "";
       this.filename = [];
+
+      this.select_category = "";
+      this.select_sub_category = "";
 
       this.is_locked = 0;
       this.is_enabled = 1;
