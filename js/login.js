@@ -37,9 +37,20 @@ var app = new Vue({
 						//localStorage.token = response.data['jwt'];
 						app.logDetails = {username: '', password:''};
 						app.successMessage = response.data['message'];
-						setTimeout(function(){
-							window.location.href="main.php";
-						},1000);
+
+						if(response.data['pg'] === "main")
+						{
+							setTimeout(function(){
+								window.location.href="main.php";
+							},1000);
+						}
+
+						if(response.data['pg'] === "other")
+						{
+							setTimeout(function(){
+								window.location.href="expense_recorder.php";
+							},1000);
+						}
  
 					}
 				});

@@ -15,6 +15,7 @@ let mainState = {
     password: '',
     password1: '',
     status: 0,
+    status_1: 0,
     is_admin: '',
 
         // paging
@@ -220,6 +221,7 @@ var app = new Vue({
             formData.append('username', this.record.username)
             formData.append('email', this.record.email)
             formData.append('status', this.record.status)
+            formData.append('status_1', this.record.status_1)
             formData.append('is_admin', this.record.is_admin)
             formData.append('crud', "del");
             formData.append('id', id);
@@ -294,6 +296,17 @@ var app = new Vue({
             }
         },
 
+        updateStatus_1: function(event) {
+          console.log("updateStatus_1");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.status_1 = 1;
+            } else {
+                this.status_1 = 0;
+            }
+        },
+
         updateIsAdmin: function(event) {
           console.log("updateIsAdmin");
             let checked = event.target.checked;
@@ -313,6 +326,17 @@ var app = new Vue({
                 this.record.status = 1;
             } else {
                 this.record.status = 0;
+            }
+        },
+
+        updateEditStatus_1: function(event) {
+          console.log("updateEditStatus");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.record.status_1 = 1;
+            } else {
+                this.record.status_1 = 0;
             }
         },
 
@@ -346,6 +370,7 @@ var app = new Vue({
             formData.append('username', this.record.username)
             formData.append('email', this.record.email)
             formData.append('status', this.record.status)
+            formData.append('status_1', this.record.status_1)
             formData.append('is_admin', this.record.is_admin)
            
             formData.append('crud', "update");
@@ -426,6 +451,7 @@ var app = new Vue({
             formData.append('email', this.email)
             formData.append('password', this.password)
             formData.append('status', this.status)
+            formData.append('status_1', this.status_1)
             formData.append('is_admin', this.is_admin)
             formData.append('crud', "insert");
             formData.append('id', '');
@@ -467,6 +493,7 @@ var app = new Vue({
             this.password = '';
             this.password1 = '';
             this.status = 0;
+            this.status_1 = 0;
             this.is_admin = '';
             this.isEditing = false;
             this.record = {};

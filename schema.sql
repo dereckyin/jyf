@@ -275,3 +275,7 @@ CREATE TABLE IF NOT EXISTS `price_record` (
   
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+
+-- 20210712
+ALTER TABLE user ADD COLUMN status_1 INT DEFAULT 0;

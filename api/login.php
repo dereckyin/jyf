@@ -59,7 +59,7 @@ include_once 'libs/php-jwt-master/src/JWT.php';
 use \Firebase\JWT\JWT;
  
 // check if email exists and if password is correct
-if($user_exists && password_verify($password, $user->password) && $cap == 1 && $user->status == 1){
+if($user_exists && password_verify($password, $user->password) && $cap == 1 && ($user->status == 1 || $user->status_1 == 1)){
  
     $token = array(
        "iss" => $iss,
@@ -70,7 +70,9 @@ if($user_exists && password_verify($password, $user->password) && $cap == 1 && $
            "id" => $user->id,
            "username" => $user->username,
            "email" => $user->email,
-           "is_admin" => $user->is_admin
+           "is_admin" => $user->is_admin,
+           "status" => $user->status,
+           "status_1" => $user->status_1,
        )
     );
 
@@ -87,14 +89,15 @@ if($user_exists && password_verify($password, $user->password) && $cap == 1 && $
             array(
                 "message" => "Successful login.",
                 "jwt" => $jwt,
-                "uid" => passport_encrypt(base64_encode($user->username))
+                "uid" => passport_encrypt(base64_encode($user->username)),
+                "pg" => ($user->status === "1" ? "main" : ($user->status_1 === "1" ? "other" : "")),
             )
         );
  
 }
 // login failed
 else{
-    if($user->status == 0)
+    if($user->status == 0 && $user->status_1 == 0)
     {
         if($login_history->uid !== 0)
         {
