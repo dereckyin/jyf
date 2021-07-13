@@ -1245,6 +1245,25 @@ var app = new Vue({
         });
     },
 
+    logout: function() {
+      Swal.fire({
+        title: "Logout",
+        text: "Are you sure to logout?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        if (result.value) {
+
+          setTimeout(function(){
+            window.location.href="index.php";
+          },500);
+        }
+      });
+    },
+
     get_today: function() {
       var today = new Date();
       var dd = String(today.getDate()).padStart(2, '0');

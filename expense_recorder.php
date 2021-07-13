@@ -39,7 +39,7 @@ try {
         }
         catch (Exception $e){
 
-            header( 'location:index' );
+            header( 'location:index.php' );
         }
 
 
@@ -49,7 +49,7 @@ try {
     // if decode fails, it means jwt is invalid
     catch (Exception $e){
     
-        header( 'location:index' );
+        header( 'location:index.php' );
     }
 
 ?>
@@ -144,7 +144,7 @@ try {
 <div id="app">
 <div style="background: #1E6BA8; padding: 0.5vh; height:70px; display: flex; align-items: center; justify-content: space-between;">
 
-    <a href="main.php" style="margin-left:25px; font-size: 25px;" ><span style="color: #FFFFFF;">&#9776;</span></a>
+    <a @click="logout()" style="margin-left:25px; font-size: 25px;" ><span style="color: #FFFFFF;">&#9776;</span></a>
 
     <button :class="[is_viewer == '1'? 'hide' : '']" style="border: none; margin-right: 25px; font-weight:700; font-size:x-large; background-color:#1E6BA8; color: #FFFFFF;"
             data-toggle="collapse" data-parent="#accordion" href="#collapseOne" @click="reset()"
