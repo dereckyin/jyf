@@ -34,11 +34,6 @@ $(function(){
   <!-- header -->
   <header> 
     <!-- 主選單 -->
-    <script>
-    $(function(){
-        $('header').load('include/header.htm');
-    })
-    </script>
 
     <script defer src="https://kit.fontawesome.com/a076d05399.js"></script> 
   </header>
