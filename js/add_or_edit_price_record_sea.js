@@ -258,6 +258,7 @@ var app = new Vue({
       var token = localStorage.getItem("token");
       var form_Data = new FormData();
       let _this = this;
+      this.paid_date = document.getElementById("todays-date").value;
       var paidat = this.sliceDate(this.paid_date).replace(/-/g, "/");
       var payee = this.payee.toString();
       if (edd == 1) {
@@ -588,6 +589,7 @@ var app = new Vue({
       var token = localStorage.getItem("token");
       var form_Data = new FormData();
       let _this = this;
+      this.paid_date = document.getElementById("todays-date").value;
       var paidat = this.sliceDate(this.paid_date).replace(/-/g, "/");
       var payee = this.payee.toString();
 
@@ -819,6 +821,8 @@ var app = new Vue({
           _this.pic_url = response.data[0].pic_url;
           _this.payee = response.data[0].payee.split(",");
           _this.paid_date = response.data[0].paid_date;
+
+          document.getElementById("todays-date").value = response.data[0].paid_date;
 
           if (response.data[0].cash_in != 0) {
             _this.amount = response.data[0].cash_in;
@@ -1254,22 +1258,22 @@ var app = new Vue({
     },
 
     logout: function() {
-      Swal.fire({
-        title: "Logout",
-        text: "Are you sure to logout?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes",
-      }).then((result) => {
-        if (result.value) {
+      // Swal.fire({
+      //   title: "Logout",
+      //   text: "Are you sure to logout?",
+      //   icon: "warning",
+      //   showCancelButton: true,
+      //   confirmButtonColor: "#3085d6",
+      //   cancelButtonColor: "#d33",
+      //   confirmButtonText: "Yes",
+      // }).then((result) => {
+      //   if (result.value) {
 
           setTimeout(function(){
-            window.location.href="index.php";
+            window.location.href="main.php";
           },500);
-        }
-      });
+      //   }
+      // });
     },
 
     get_today: function() {
@@ -1279,6 +1283,7 @@ var app = new Vue({
       var yyyy = today.getFullYear();
       
       this.paid_date = yyyy + '-' + mm + '-' + dd;
+      document.getElementById("todays-date").value = this.paid_date;
     },
 
     reset: function() {

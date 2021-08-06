@@ -33,7 +33,7 @@ var app = new Vue({
 					}
 					else{
 
-						if(response.data['pg'] === "other")
+                        if(response.data['pg'] === "main")
                         {
                             app.errorMessage = "Invalid User";
                             return;

@@ -13,6 +13,7 @@ class User{
     public $password;
     public $status;
     public $status_1;
+    public $sea_expense;
     public $is_admin;
  
     // constructor
@@ -31,6 +32,7 @@ class User{
                     password = :password,
                     status = :status,
                     status_1 = :status_1,
+                    sea_expense = :sea_expense,
                     is_admin = :is_admin";
     
         // prepare the query
@@ -47,6 +49,7 @@ class User{
         $stmt->bindParam(':email', $this->email);
         $stmt->bindParam(':status', $this->status);
         $stmt->bindParam(':status_1', $this->status_1);
+        $stmt->bindParam(':sea_expense', $this->sea_expense);
         $stmt->bindParam(':is_admin', $this->is_admin);
     
         // hash the password before saving to database
@@ -65,7 +68,7 @@ class User{
     function userExists(){
     
         // query to check if email exists
-        $query = "SELECT id, username, status, status_1, password
+        $query = "SELECT id, username, status, status_1, sea_expense, password
                 FROM " . $this->table_name . "
                 WHERE username = ?
                 LIMIT 0,1";
@@ -97,6 +100,7 @@ class User{
             $this->password = $row['password'];
             $this->status = $row['status'];
             $this->status_1 = $row['status_1'];
+            $this->sea_expense = $row['sea_expense'];
     
             // return true because email exists in the database
             return true;
@@ -108,7 +112,7 @@ class User{
 
     function userCanLogin(){
         // query to check if email exists
-        $query = "SELECT id, username, password, status, status_1, is_admin
+        $query = "SELECT id, username, password, status, status_1, is_admin, sea_expense
                 FROM " . $this->table_name . "
                 WHERE username = ? 
                 LIMIT 0,1";
@@ -140,6 +144,7 @@ class User{
             $this->password = $row['password'];
             $this->status = $row['status'];
             $this->status_1 = $row['status_1'];
+            $this->sea_expense = $row['sea_expense'];
             $this->is_admin = $row['is_admin'];
             // return true because email exists in the database
             return true;
@@ -223,6 +228,7 @@ class User{
                 SET
                     status = :status,
                     status_1 = :status_1,
+                    sea_expense = :sea_expense,
                     is_admin = :is_admin
                 WHERE id = :id";
     
@@ -236,6 +242,7 @@ class User{
         // bind the values from the form
         $stmt->bindParam(':status', $this->status);
         $stmt->bindParam(':status_1', $this->status_1);
+        $stmt->bindParam(':sea_expense', $this->sea_expense);
         $stmt->bindParam(':is_admin', $this->is_admin);
 
         // unique ID of record to be edited

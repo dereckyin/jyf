@@ -1,6 +1,61 @@
+<?php include 'check.php';?>
+<?php
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
+$uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
+if ( !isset( $jwt ) ) {
+  header( 'location:index' );
+}
+
+include_once 'api/config/core.php';
+include_once 'api/libs/php-jwt-master/src/BeforeValidException.php';
+include_once 'api/libs/php-jwt-master/src/ExpiredException.php';
+include_once 'api/libs/php-jwt-master/src/SignatureInvalidException.php';
+include_once 'api/libs/php-jwt-master/src/JWT.php';
+include_once 'api/config/database.php';
 
 
+use \Firebase\JWT\JWT;
 
+$test_manager = "0";
+
+try {
+        // decode jwt
+        try {
+            // decode jwt
+            $decoded = JWT::decode($jwt, $key, array('HS256'));
+            $user_id = $decoded->data->id;
+
+            if(!$decoded->data->sea_expense)
+                header( 'location:index.php' );
+            
+            // 可以存取Expense Recorder的人員名單如下：Dennis Lin(2), Glendon Wendell Co(4), Kristel Tan(6), Kuan(3), Mary Jude Jeng Articulo(9), Thalassa Wren Benzon(41), Stefanie Mika C. Santos(99)
+            // 為了測試先加上testmanager(87) by BB
+            // if($user_id == 1 || $user_id == 4 || $user_id == 6 || $user_id == 2 || $user_id == 41 || $user_id == 3 || $user_id == 9 || $user_id == 87 || $user_id == 99)
+            // {
+            //     $access3 = true;
+            // }
+            // else
+            // {
+            //     header( 'location:index' );
+            // }
+
+        }
+        catch (Exception $e){
+
+            header( 'location:index.php' );
+        }
+
+
+        //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
+        //    header( 'location:index.php' );
+    }
+    // if decode fails, it means jwt is invalid
+    catch (Exception $e){
+    
+        header( 'location:index.php' );
+    }
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -203,6 +258,11 @@
                                     <option>Gas - Avanza Grey</option>
                                     <option>Gas - Alphard</option>
                                     <option>Gas - Innova Grey</option>
+                                    <option>Car Maintenance - L300 1</option>
+                                    <option>Car Maintenance - L300 2</option>
+                                    <option>Car Maintenance - Avanza Grey</option>
+                                    <option>Car Maintenance - Alphard</option>
+                                    <option>Car Maintenance - Innova Grey</option>
                                     <option>Parking Fee</option>
                                     <option>Toll Fee</option>
                                     <option>Water Purified</option>
@@ -449,6 +509,11 @@
             <option>Gas - Avanza Grey</option>
             <option>Gas - Alphard</option>
             <option>Gas - Innova Grey</option>
+            <option>Car Maintenance - L300 1</option>
+            <option>Car Maintenance - L300 2</option>
+            <option>Car Maintenance - Avanza Grey</option>
+            <option>Car Maintenance - Alphard</option>
+            <option>Car Maintenance - Innova Grey</option>
             <option>Parking Fee</option>
             <option>Toll Fee</option>
             <option>Water Purified</option>
@@ -520,7 +585,7 @@
 
             <tbody >
              <tr v-for='item in items' v-if="item.account == 1" :class="[(item.is_marked == '1' ? 'red' : ''), (item.is_marked == '2' ? 'orange' : ''), (item.is_marked == '3' ? 'green' : ''), (item.is_marked == '4' ? 'blue' : '')]">
-                <td>{{item.created_at | dateString('YYYY-MM-DD')}}</td>
+                <td>{{item.paid_date}}</td>
 
                 <td>{{item.category}}<span v-if="item.sub_category != ''">>>{{item.sub_category}}</span></td>
 

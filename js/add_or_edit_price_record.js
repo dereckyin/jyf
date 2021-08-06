@@ -1258,7 +1258,7 @@ var app = new Vue({
         if (result.value) {
 
           setTimeout(function(){
-            window.location.href="index.php";
+            window.location.href="parts_index.php";
           },500);
         }
       });

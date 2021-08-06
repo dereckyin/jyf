@@ -24,6 +24,9 @@ try {
             // decode jwt
             $decoded = JWT::decode($jwt, $key, array('HS256'));
             $user_id = $decoded->data->id;
+
+            if(!$decoded->data->status_1)
+                header( 'location:parts_index.php' );
             
             // 可以存取Expense Recorder的人員名單如下：Dennis Lin(2), Glendon Wendell Co(4), Kristel Tan(6), Kuan(3), Mary Jude Jeng Articulo(9), Thalassa Wren Benzon(41), Stefanie Mika C. Santos(99)
             // 為了測試先加上testmanager(87) by BB
@@ -39,7 +42,7 @@ try {
         }
         catch (Exception $e){
 
-            header( 'location:index.php' );
+            header( 'location:parts_index.php' );
         }
 
 
@@ -49,7 +52,7 @@ try {
     // if decode fails, it means jwt is invalid
     catch (Exception $e){
     
-        header( 'location:index.php' );
+        header( 'location:parts_index.php' );
     }
 
 ?>

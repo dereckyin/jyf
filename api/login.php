@@ -73,6 +73,7 @@ if($user_exists && password_verify($password, $user->password) && $cap == 1 && (
            "is_admin" => $user->is_admin,
            "status" => $user->status,
            "status_1" => $user->status_1,
+           "sea_expense" => $user->sea_expense,
        )
     );
 
