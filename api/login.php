@@ -97,6 +97,20 @@ if($user_exists && password_verify($password, $user->password) && $cap == 1 && (
         );
  
 }
+else if($user_exists && !password_verify($password, $user->password))
+{
+    $returnArray = array('error' => 'Wrong Username or Paasword');
+    $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
+
+    echo $jsonEncodedReturnArray;
+}
+else if(!$user_exists)
+{
+    $returnArray = array('error' => 'Wrong Username or Paasword');
+    $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
+
+    echo $jsonEncodedReturnArray;
+}
 // login failed
 else{
     if($user->status == 0 && $user->status_1 == 0)
