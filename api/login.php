@@ -91,7 +91,8 @@ if($user_exists && password_verify($password, $user->password) && $cap == 1 && (
                 "message" => "Successful login.",
                 "jwt" => $jwt,
                 "uid" => passport_encrypt(base64_encode($user->username)),
-                "pg" => ($user->status === "1" ? "main" : ($user->status_1 === "1" ? "other" : "")),
+                "pg" => ($user->status === "1" ? "main" : ""),
+                "pg1" => ($user->status_1 === "1" ? "other" : ""),
             )
         );
  
@@ -122,7 +123,7 @@ else{
         $login_history->status = "Invalid user ID or password";
         $login_history->create();
 
-        $returnArray = array('error' => 'Invalid user ID or password.');
+        $returnArray = array('error' => 'Invalid user');
         $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
     }
 

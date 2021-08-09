@@ -33,9 +33,9 @@ var app = new Vue({
 					}
 					else{
 
-						if(response.data['pg'] === "other")
+						if(response.data['pg'] === "")
                         {
-                            app.errorMessage = "Invalid User";
+                            app.errorMessage = "Permission Denied";
                             return;
                         }
 
@@ -52,13 +52,6 @@ var app = new Vue({
 							},1000);
 						}
 
-						if(response.data['pg'] === "other")
-						{
-							setTimeout(function(){
-								window.location.href="expense_recorder.php";
-							},1000);
-						}
- 
 					}
 				});
 		},
