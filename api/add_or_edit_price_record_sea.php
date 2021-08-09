@@ -72,7 +72,7 @@ else
     if($action == 1){
         //select all
         try{
-            $query = "SELECT * from price_record_sea where is_enabled = true";
+            $query = "SELECT * from price_record_sea where is_enabled = true order by paid_date ";
 
             $stmt = $db->prepare( $query );
             $stmt->execute();
@@ -195,7 +195,7 @@ else
             if($sub_category!='') {
                 $query = $query . " and sub_category <= '$sub_category' ";
             }
-            $query = $query . " order by created_at desc ";
+            $query = $query . " order by paid_date ";
             $stmt = $db->prepare( $query );
             $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

@@ -349,6 +349,8 @@ var app = new Vue({
                 icon: "success",
                 confirmButtonText: "OK",
               });
+
+              this.reload();
             })
             .catch(function(response) {
               //handle error
@@ -359,7 +361,7 @@ var app = new Vue({
               });
             });
           this.upload();
-          this.reload();
+          
         } else {
           _this.spa.push(_this.split1);
           _this.spa.push(_this.split2);
@@ -565,6 +567,7 @@ var app = new Vue({
                     //    icon: 'success',
                     //    confirmButtonText: 'OK'
                     //});
+                    _this.reload();
                   })
                   .catch(function(response) {
                     //handle error
@@ -579,7 +582,7 @@ var app = new Vue({
             }
             _this.upload();
             _this.deleteRecord(_this.id);
-            _this.reload();
+            
           }
         }
       }

@@ -47,7 +47,7 @@ $sub_category = (isset($_GET['sub_category']) ?  $_GET['sub_category'] : '');
 $start_date = (isset($_GET['start_date']) ?  $_GET['start_date'] : '');
 $end_date = (isset($_GET['end_date']) ?  $_GET['end_date'] : '');
 $keyword = (isset($_GET['keyword']) ?  $_GET['keyword'] : '');
-$select_date_type =(isset($_GET['select_date_type']) ?  $_GET['select_date_type'] : 0);
+$select_date_type = 1;
 
 $page = (isset($_GET['page']) ?  $_GET['page'] : "");
 //$size = (isset($_GET['size']) ?  $_GET['size'] : "");
@@ -103,7 +103,7 @@ $sql3 = "";
                 $sql = $sql . " and details like '%$keyword%'";
             }
             
-            $query = $query.$sql.$sql2.$sql3." order by created_at asc";
+            $query = $query.$sql.$sql2.$sql3." order by paid_date asc";
 
 if(!empty($_GET['page'])) {
     $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);

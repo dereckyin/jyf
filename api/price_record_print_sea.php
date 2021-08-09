@@ -43,7 +43,7 @@ $sub_category = (isset($_POST['sub_category']) ?  $_POST['sub_category'] : '');
 
 $account = (isset($_POST['account']) ?  $_POST['account'] : 0);
 $keyword = (isset($_POST['keyword']) ?  $_POST['keyword'] : '');
-$select_date_type =(isset($_POST['select_date_type']) ?  $_POST['select_date_type'] : 0);
+$select_date_type = 1;
 // if jwt is not empty
 if($jwt){ 
  
