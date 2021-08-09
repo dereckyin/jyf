@@ -99,14 +99,14 @@ if($user_exists && password_verify($password, $user->password) && $cap == 1 && (
 }
 else if($user_exists && !password_verify($password, $user->password))
 {
-    $returnArray = array('error' => 'Wrong Username or Paasword');
+    $returnArray = array('error' => 'Wrong Username or Password');
     $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
 
     echo $jsonEncodedReturnArray;
 }
 else if(!$user_exists)
 {
-    $returnArray = array('error' => 'Wrong Username or Paasword');
+    $returnArray = array('error' => 'Wrong Username or Password');
     $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
 
     echo $jsonEncodedReturnArray;
