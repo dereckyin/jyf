@@ -17,7 +17,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> 
 <script type="text/javascript" src="js/rm/realmediaScript.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> 
-<script type="text/javascript" src="js/login.js" defer></script> 
+<script type="text/javascript" src="js/parts_login.js" defer></script> 
 <script src="js/axios.min.js"></script> 
 <script src='https://www.google.com/recaptcha/api.js'></script>
 
@@ -84,9 +84,7 @@ $(function(){
         
         <div class="btnbox"><a class="btn" @click="register();">新會員/Sign Up</a><a class="btn orange" @click="checkLogin();">登入/login</a></div>
       </div>
-      <div style="margin-top: 30px; text-align: right;">
-        <img src="images/container_ship.png" style="width: 600px;">
-      </div>
+      
     </div>
   </div>
  </div>

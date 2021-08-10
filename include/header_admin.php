@@ -47,8 +47,10 @@ if ( isset( $jwt ) ) {
      <dd><a href="query_receive.php">收貨記錄查詢<eng>Query For Receiving Records</eng></a></dd>
      <dd><a href="contact_us.php">聯絡我們<eng>Contact Us</eng></a></dd>
  </dl>
- 
- 
+ <?php
+ 	if($decoded->data->sea_expense)
+ 		echo "<a href='expense_recorder_sea.php'>支出記錄表<eng>Expense Recorder</eng></a>";
+ ?>
 </nav>	
 <!-- 主選單end -->
 

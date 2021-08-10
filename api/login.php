@@ -73,6 +73,7 @@ if($user_exists && password_verify($password, $user->password) && $cap == 1 && (
            "is_admin" => $user->is_admin,
            "status" => $user->status,
            "status_1" => $user->status_1,
+           "sea_expense" => $user->sea_expense,
        )
     );
 
@@ -87,13 +88,28 @@ if($user_exists && password_verify($password, $user->password) && $cap == 1 && (
     $jwt = JWT::encode($token, $key);
     echo json_encode(
             array(
-                "message" => "Successful login.",
+                "message" => "Success Login",
                 "jwt" => $jwt,
                 "uid" => passport_encrypt(base64_encode($user->username)),
-                "pg" => ($user->status === "1" ? "main" : ($user->status_1 === "1" ? "other" : "")),
+                "pg" => ($user->status === "1" ? "main" : ""),
+                "pg1" => ($user->status_1 === "1" ? "other" : ""),
             )
         );
  
+}
+else if($user_exists && !password_verify($password, $user->password))
+{
+    $returnArray = array('error' => 'Wrong Username or Password');
+    $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
+
+    echo $jsonEncodedReturnArray;
+}
+else if(!$user_exists)
+{
+    $returnArray = array('error' => 'Wrong Username or Password');
+    $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
+
+    echo $jsonEncodedReturnArray;
 }
 // login failed
 else{
@@ -113,7 +129,7 @@ else{
         }
 
 
-        $returnArray = array('error' => 'User is not activated.');
+        $returnArray = array('error' => 'Permission Denied');
         $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
     } else
     {
@@ -121,7 +137,7 @@ else{
         $login_history->status = "Invalid user ID or password";
         $login_history->create();
 
-        $returnArray = array('error' => 'Invalid user ID or password.');
+        $returnArray = array('error' => 'Wrong Username or Password');
         $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
     }
 
