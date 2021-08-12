@@ -350,7 +350,7 @@ var app = new Vue({
                 confirmButtonText: "OK",
               });
 
-              this.reload();
+              _this.reload();
             })
             .catch(function(response) {
               //handle error
