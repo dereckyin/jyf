@@ -235,7 +235,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/add_or_edit_price_record_sea.php",
+        url: "api/add_or_edit_price_record_sea_v2.php",
         data: form_Data,
       })
         .then(function(response) {
@@ -337,7 +337,7 @@ var app = new Vue({
             headers: {
               "Content-Type": "multipart/form-data",
             },
-            url: "api/add_or_edit_price_record_sea.php",
+            url: "api/add_or_edit_price_record_sea_v2.php",
             data: form_Data,
           })
             .then(function(response) {
@@ -555,7 +555,7 @@ var app = new Vue({
                   headers: {
                     "Content-Type": "multipart/form-data",
                   },
-                  url: "api/add_or_edit_price_record_sea.php",
+                  url: "api/add_or_edit_price_record_sea_v2.php",
                   data: form_Data,
                 })
                   .then(function(response) {
@@ -694,7 +694,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/add_or_edit_price_record_sea.php",
+        url: "api/add_or_edit_price_record_sea_v2.php",
         data: form_Data,
       })
         .then(function(response) {
@@ -735,7 +735,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/add_or_edit_price_record_sea.php",
+        url: "api/add_or_edit_price_record_sea_v2.php",
         data: form_Data,
       })
         .then(function(response) {
@@ -764,7 +764,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/add_or_edit_price_record_sea.php",
+        url: "api/add_or_edit_price_record_sea_v2.php",
         data: form_Data,
       })
         .then(function(response) {
@@ -796,7 +796,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/add_or_edit_price_record_sea.php",
+        url: "api/add_or_edit_price_record_sea_v2.php",
         data: form_Data,
       })
         .then(function(response) {
@@ -888,7 +888,7 @@ var app = new Vue({
             headers: {
               "Content-Type": "multipart/form-data",
             },
-            url: "api/add_or_edit_price_record_sea.php",
+            url: "api/add_or_edit_price_record_sea_v2.php",
             data: form_Data,
           })
             .then(function(response) {
@@ -933,7 +933,7 @@ var app = new Vue({
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          url: "api/add_or_edit_price_record_sea.php",
+          url: "api/add_or_edit_price_record_sea_v2.php",
           data: form_Data,
         })
           .then(function(response) {
@@ -970,7 +970,7 @@ var app = new Vue({
 
       axios({
         method: "post",
-        url: "api/price_record_print_sea.php",
+        url: "api/price_record_print_sea_v2.php",
         data: form_Data,
         responseType: "blob",
       })
@@ -1097,8 +1097,6 @@ var app = new Vue({
       _this.accountThreeCashIn = 0.0;
       _this.accountThreeCashOut = 0.0;
       _this.accountThreeBalance = 0.0;
-
-     
       if (
         _this.select_category != "Cash Expenses" 
       ) {
@@ -1123,7 +1121,7 @@ var app = new Vue({
       let token = localStorage.getItem("accessToken");
 
       axios
-        .get("api/price_record_page_sea.php", {
+        .get("api/price_record_page_sea_v2.php", {
           params,
           headers: { Authorization: `Bearer ${token}` },
         })
