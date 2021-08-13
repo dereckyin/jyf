@@ -17,6 +17,7 @@ let mainState = {
     status: 0,
     status_1: 0,
     sea_expense: 0,
+    sea_expense_v2: 0,
     is_admin: '',
 
         // paging
@@ -224,6 +225,7 @@ var app = new Vue({
             formData.append('status', this.record.status)
             formData.append('status_1', this.record.status_1)
             formData.append('sea_expense', this.record.sea_expense)
+            formData.append('sea_expense_v2', this.record.sea_expense_v2)
             formData.append('is_admin', this.record.is_admin)
             formData.append('crud', "del");
             formData.append('id', id);
@@ -319,6 +321,17 @@ var app = new Vue({
                 this.sea_expense = 0;
             }
         },
+        
+        updateSeaExpense_v2: function(event) {
+          console.log("updateSeaExpense_v2");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.sea_expense_v2 = 1;
+            } else {
+                this.sea_expense_v2 = 0;
+            }
+        },
 
         updateIsAdmin: function(event) {
           console.log("updateIsAdmin");
@@ -363,6 +376,17 @@ var app = new Vue({
                 this.record.sea_expense = 0;
             }
         },
+        
+        updateEditSeaExpense_v2: function(event) {
+          console.log("updateEditSeaExpense");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.record.sea_expense_v2 = 1;
+            } else {
+                this.record.sea_expense_v2 = 0;
+            }
+        },
 
         cancelReceiveRecord: function(event) {
             console.log("cancel edit receive_record!")
@@ -396,6 +420,7 @@ var app = new Vue({
             formData.append('status', this.record.status)
             formData.append('status_1', this.record.status_1)
             formData.append('sea_expense', this.record.sea_expense)
+            formData.append('sea_expense_v2', this.record.sea_expense_v2)
             formData.append('is_admin', this.record.is_admin)
            
             formData.append('crud', "update");
@@ -481,6 +506,7 @@ var app = new Vue({
             formData.append('status', this.status)
             formData.append('status_1', this.status_1)
             formData.append('sea_expense', this.sea_expense)
+            formData.append('sea_expense_v2', this.sea_expense_v2)
             formData.append('is_admin', this.is_admin)
             formData.append('crud', "insert");
             formData.append('id', '');
@@ -524,6 +550,7 @@ var app = new Vue({
             this.status = 0;
             this.status_1 = 0;
             this.sea_expense = 0;
+            this.sea_expense_v2 = 0;
             this.is_admin = '';
             this.isEditing = false;
             this.record = {};

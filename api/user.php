@@ -57,7 +57,7 @@ else
             $size = stripslashes((isset($_GET['size']) ?  $_GET['size'] : ""));
             $keyword = stripslashes((isset($_GET['keyword']) ?  $_GET['keyword'] : ""));
 
-            $sql = "SELECT 0 as is_checked, id, username, email, status, status_1, sea_expense, is_admin, (SELECT login_time FROM login_history WHERE login_history.uid = user.id ORDER BY login_time desc LIMIT 1) login_time  FROM user where status <> -1 ".($id ? " and id=$id" : '');
+            $sql = "SELECT 0 as is_checked, id, username, email, status, status_1, sea_expense, sea_expense_v2, is_admin, (SELECT login_time FROM login_history WHERE login_history.uid = user.id ORDER BY login_time desc LIMIT 1) login_time  FROM user where status <> -1 ".($id ? " and id=$id" : '');
 
             if(!empty($_GET['page'])) {
                 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -113,6 +113,7 @@ else
             $status = stripslashes(isset($_POST['status']) ?  $_POST['status'] : 0 );
             $status_1 = stripslashes(isset($_POST['status_1']) ?  $_POST['status_1'] : 0 );
             $sea_expense = stripslashes(isset($_POST['sea_expense']) ?  $_POST['sea_expense'] : 0 );
+            $sea_expense_v2 = stripslashes(isset($_POST['sea_expense_v2']) ?  $_POST['sea_expense_v2'] : 0 );
             $is_admin = stripslashes(isset($_POST['is_admin']) ?  $_POST['is_admin'] : "");
 
             if($is_admin == "null")
@@ -131,6 +132,7 @@ else
                 $user->status = $status;
                 $user->status_1 = $status_1;
                 $user->sea_expense = $sea_expense;
+                $user->sea_expense_v2 = $sea_expense_v2;
                 $user->is_admin = $is_admin;
 
                 $user->create();
@@ -141,6 +143,7 @@ else
                     $user->status = $status;
                     $user->status_1 = $status_1;
                     $user->sea_expense = $sea_expense;
+                    $user->sea_expense_v2 = $sea_expense_v2;
                     $user->is_admin = $is_admin;
                     $user->id = $id;
 
