@@ -1311,7 +1311,7 @@ var app = new Vue({
       this.company_name = "";
       this.filename = [];
 
-      this.select_category = "";
+      this.select_category = "All";
       this.select_sub_category = "";
 
       this.is_locked = 0;
