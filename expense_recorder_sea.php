@@ -497,6 +497,7 @@ try {
         </select> -->
 
         <select style="width:10vw; margin-left:1vw;" v-model="select_category">
+            <option>All</option>
             <option>Cash Expenses</option>
             <option>Cash on Hand </option>
             <option>Change for Customer</option>
@@ -656,11 +657,10 @@ try {
             <thead class="thead-light">
 
             <tr>
-                <th colspan="4">Total</th>
-                <th style="text-align: center;" colspan="2"><!--Beginning Balance: 0.00--></th>
+                <th colspan="5">Total</th>
                 <th style="text-align: right;">{{accountOneCashIn.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
                 <th style="text-align: right;">{{accountOneCashOut.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
-                <th style="text-align: center;" colspan="1">
+                <th style="text-align: center;" colspan="2">
                 Total Cash Remaining: {{accountOneBalance.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
             </tr>
 

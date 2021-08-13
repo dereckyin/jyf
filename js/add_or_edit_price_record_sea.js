@@ -1097,6 +1097,8 @@ var app = new Vue({
       _this.accountThreeCashIn = 0.0;
       _this.accountThreeCashOut = 0.0;
       _this.accountThreeBalance = 0.0;
+
+     
       if (
         _this.select_category != "Cash Expenses" 
       ) {
