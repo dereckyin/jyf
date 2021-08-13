@@ -29,7 +29,7 @@ var app = new Vue({
     company_name: "",
     keyword: "",
     select_date_type: 0,
-    select_category: '',
+    select_category: 'All',
     select_sub_category: "",
 
     is_locked: false,
@@ -1097,6 +1097,8 @@ var app = new Vue({
       _this.accountThreeCashIn = 0.0;
       _this.accountThreeCashOut = 0.0;
       _this.accountThreeBalance = 0.0;
+
+     
       if (
         _this.select_category != "Cash Expenses" 
       ) {

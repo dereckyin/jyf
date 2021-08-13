@@ -235,10 +235,13 @@ try {
 
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;" v-model="category">
-                                    <option>Change for Customer</option>
-                                    <option>Salary (9 Employees)</option>
-                                    <option>Helper Fees (8 or 2 or 1)</option>
                                     <option>Cash Expenses</option>
+                                    <option>Cash on Hand </option>
+                                    <option>Change for Customer</option>
+                                    <option>Helper Fees</option>
+                                    <option>Other</option>
+                                    <option>Petty</option>
+                                    <option>Salary</option>
                                 </select>
                             </td>
 
@@ -258,11 +261,13 @@ try {
                                     <option>Gas - Avanza Grey</option>
                                     <option>Gas - Alphard</option>
                                     <option>Gas - Innova Grey</option>
+                                    <option>Gas - Innova Black</option>
                                     <option>Car Maintenance - L300 1</option>
                                     <option>Car Maintenance - L300 2</option>
                                     <option>Car Maintenance - Avanza Grey</option>
                                     <option>Car Maintenance - Alphard</option>
                                     <option>Car Maintenance - Innova Grey</option>
+                                    <option>Car Maintenance - Innova Black</option>
                                     <option>Parking Fee</option>
                                     <option>Toll Fee</option>
                                     <option>Water Purified</option>
@@ -492,32 +497,37 @@ try {
         </select> -->
 
         <select style="width:10vw; margin-left:1vw;" v-model="select_category">
-            <option value="" seleted>All</option>
-            <option>Change for Customer</option>
-            <option>Salary (9 Employees)</option>
-            <option>Helper Fees (8 or 2 or 1)</option>
+            <option>All</option>
             <option>Cash Expenses</option>
+            <option>Cash on Hand </option>
+            <option>Change for Customer</option>
+            <option>Helper Fees</option>
+            <option>Other</option>
+            <option>Petty</option>
+            <option>Salary</option>
         </select>
 
 
         <select style="width:10vw; margin-left:1vw;" v-if="select_category == 'Cash Expenses'"
                 v-model="select_sub_category">
-            <option>Food</option>
-            <option>Rice</option>
-            <option>Gas - L300 1</option>
-            <option>Gas - L300 2</option>
-            <option>Gas - Avanza Grey</option>
-            <option>Gas - Alphard</option>
-            <option>Gas - Innova Grey</option>
-            <option>Car Maintenance - L300 1</option>
-            <option>Car Maintenance - L300 2</option>
-            <option>Car Maintenance - Avanza Grey</option>
-            <option>Car Maintenance - Alphard</option>
-            <option>Car Maintenance - Innova Grey</option>
-            <option>Parking Fee</option>
-            <option>Toll Fee</option>
-            <option>Water Purified</option>
-            <option>Office Expenses</option>
+                    <option>Food</option>
+                    <option>Rice</option>
+                    <option>Gas - L300 1</option>
+                    <option>Gas - L300 2</option>
+                    <option>Gas - Avanza Grey</option>
+                    <option>Gas - Alphard</option>
+                    <option>Gas - Innova Grey</option>
+                    <option>Gas - Innova Black</option>
+                    <option>Car Maintenance - L300 1</option>
+                    <option>Car Maintenance - L300 2</option>
+                    <option>Car Maintenance - Avanza Grey</option>
+                    <option>Car Maintenance - Alphard</option>
+                    <option>Car Maintenance - Innova Grey</option>
+                    <option>Car Maintenance - Innova Black</option>
+                    <option>Parking Fee</option>
+                    <option>Toll Fee</option>
+                    <option>Water Purified</option>
+                    <option>Office Expenses</option>
         </select>
         
         <input type="text" v-model="keyword" style="width:15vw; margin-left:1vw;" placeholder="Searching Keyword Here">
@@ -559,7 +569,7 @@ try {
 
                 <th class="text-nowrap" style="width:20vw;">Details</th>
 
-                <th class="text-nowrap" style="width:4vw;">Photos</th>
+                
 
                  <!--
                 <th class="text-nowrap" style="width:10vw;">Payee</th>
@@ -573,6 +583,8 @@ try {
                 <th class="text-nowrap" style="width:5vw;">Cash In</th>
 
                 <th class="text-nowrap" style="width:5vw;">Cash Out</th>
+
+                <th class="text-nowrap" style="width:4vw;">Photos</th>
 
                 <!--<th class="text-nowrap" style="width:12vw;">Remarks</th>　-->
 
@@ -593,6 +605,16 @@ try {
 
                 <td style="text-align: left;"><span v-html="item.details.replace('&lt;br&gt;', '<br />')"></span></td>
 
+                
+                
+                <td>{{item.staff_name}}</td>
+
+                <td>{{item.company_name}}</td>
+
+                <td style="text-align: right;">{{ item.cash_in.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }}</td>
+
+                <td style="text-align: right;">{{item.cash_out.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</td>
+
                 <td v-if="item.pic_url != ''" >
                     <a v-for="pic in item.pic_url" :href="`${mail_ip}${pic}`" target="_blank">
                         <i v-if="pic.endsWith('.jpg') || pic.endsWith('.png') || pic.endsWith('.jpeg')" class="fas fa-image fa-lg" style="display:block; margin: 0.5em;">
@@ -604,16 +626,6 @@ try {
                 
                 <td v-else>
                  </td>
-                
-                <td>{{item.staff_name}}</td>
-
-                <td>{{item.company_name}}</td>
-
-                <td style="text-align: right;">{{ item.cash_in.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }}</td>
-
-                <td style="text-align: right;">{{item.cash_out.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</td>
-
-
                  <!--
                 <td style="text-align: left;">{{item.remarks}}</td> -->
 
@@ -645,11 +657,10 @@ try {
             <thead class="thead-light">
 
             <tr>
-                <th colspan="4">Total</th>
-                <th style="text-align: center;" colspan="2"><!--Beginning Balance: 0.00--></th>
+                <th colspan="5">Total</th>
                 <th style="text-align: right;">{{accountOneCashIn.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
                 <th style="text-align: right;">{{accountOneCashOut.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
-                <th style="text-align: center;" colspan="1">
+                <th style="text-align: center;" colspan="2">
                 Total Cash Remaining: {{accountOneBalance.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
             </tr>
 

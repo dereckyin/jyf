@@ -41,6 +41,12 @@ $end_date = str_replace('-', '/', $end_date);
 $category = (isset($_POST['category']) ?  $_POST['category'] : '');
 $sub_category = (isset($_POST['sub_category']) ?  $_POST['sub_category'] : '');
 
+if($category == "All")
+{
+    $category = "";
+    $sub_category = "";
+}
+
 $account = (isset($_POST['account']) ?  $_POST['account'] : 0);
 $keyword = (isset($_POST['keyword']) ?  $_POST['keyword'] : '');
 $select_date_type = 1;
