@@ -51,6 +51,10 @@ if ( isset( $jwt ) ) {
  	if($decoded->data->sea_expense)
  		echo "<a href='expense_recorder_sea.php'>支出記錄表<eng>Expense Recorder</eng></a>";
  ?>
+ <?php
+ 	if($decoded->data->sea_expense_v2)
+ 		echo "<a href='expense_recorder_sea_v2.php'>支出記錄表2<eng>Expense Recorder2</eng></a>";
+ ?>
 </nav>	
 <!-- 主選單end -->
 

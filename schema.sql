@@ -346,3 +346,6 @@ CREATE TABLE IF NOT EXISTS `price_record_sea_v2` (
   
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20210806
+ALTER TABLE user ADD COLUMN sea_expense_v2 INT DEFAULT 0;

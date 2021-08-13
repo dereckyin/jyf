@@ -187,6 +187,15 @@ include 'menu.php';
                                            :true-value="1" v-model:checked="sea_expense" @change="updateSeaExpense"> 啟用海運支出記錄
                                 </li>
                             </ul>
+                            
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
+                                    <input class="form-check-input" type="checkbox" name="status" required id="A1"
+                                           :true-value="1" v-model:checked="sea_expense_v2" @change="updateSeaExpense_v2"> 啟用海運支出記錄
+                                </li>
+                            </ul>
 
                             <ul>
                                 <li>
@@ -265,6 +274,14 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
+                                    <input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.sea_expense_v2" @change="updateEditSeaExpense_v2" required> 啟用海運支出記錄2 
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
 								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.status_1" @change="updateEditStatus_1" required> 啟用零件網站
                                 </li>
                             </ul>
@@ -299,6 +316,7 @@ include 'menu.php';
                             <th>email</th>
                             <th>啟用海運網站</th>
                             <th>啟用海運支出記錄</th>
+                            <th>啟用海運支出記錄2</th>
                             <th>啟用零件網站</th>
                             <th>是否為管理者</th>
                             <th>上次登入日期</th>
@@ -312,6 +330,7 @@ include 'menu.php';
                             <td> {{ rec.email }}</td>
                             <td>{{ (rec.status == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.sea_expense == '1') ? "是 (yes)" : "否 (no)" }}</td>
+                            <td>{{ (rec.sea_expense_v2 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.status_1 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.is_admin == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td> {{ rec.login_time }}</td>
