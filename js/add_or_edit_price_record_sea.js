@@ -29,7 +29,7 @@ var app = new Vue({
     company_name: "",
     keyword: "",
     select_date_type: 0,
-    select_category: '',
+    select_category: 'All',
     select_sub_category: "",
 
     is_locked: false,
