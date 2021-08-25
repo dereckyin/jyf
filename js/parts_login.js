@@ -33,7 +33,7 @@ var app = new Vue({
 					}
 					else{
 
-                        if(response.data['pg1'] === "")
+                        if(response.data['pg1'] === "" && response.data['pg2'] === "" )
                         {
                             app.errorMessage = "Permission Denied";
                             return;
@@ -51,6 +51,13 @@ var app = new Vue({
 						{
 							setTimeout(function(){
 								window.location.href="expense_recorder.php";
+							},1000);
+						}
+
+						if(response.data['pg2'] === "other")
+						{
+							setTimeout(function(){
+								window.location.href="expense_recorder_v2.php";
 							},1000);
 						}
  

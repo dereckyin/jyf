@@ -59,7 +59,7 @@ include_once 'libs/php-jwt-master/src/JWT.php';
 use \Firebase\JWT\JWT;
  
 // check if email exists and if password is correct
-if($user_exists && password_verify($password, $user->password) && $cap == 1 && ($user->status == 1 || $user->status_1 == 1)){
+if($user_exists && password_verify($password, $user->password) && $cap == 1 && ($user->status == 1 || $user->status_1 == 1 || $user->status_2 == 1)){
  
     $token = array(
        "iss" => $iss,
@@ -73,6 +73,7 @@ if($user_exists && password_verify($password, $user->password) && $cap == 1 && (
            "is_admin" => $user->is_admin,
            "status" => $user->status,
            "status_1" => $user->status_1,
+           "status_2" => $user->status_2,
            "sea_expense" => $user->sea_expense,
            "sea_expense_v2" => $user->sea_expense_v2,
        )
@@ -94,6 +95,7 @@ if($user_exists && password_verify($password, $user->password) && $cap == 1 && (
                 "uid" => passport_encrypt(base64_encode($user->username)),
                 "pg" => ($user->status === "1" ? "main" : ""),
                 "pg1" => ($user->status_1 === "1" ? "other" : ""),
+                "pg2" => ($user->status_2 === "1" ? "other" : ""),
             )
         );
  
@@ -114,12 +116,12 @@ else if(!$user_exists)
 }
 // login failed
 else{
-    if($user->status == 0 && $user->status_1 == 0)
+    if($user->status == 0 && $user->status_1 == 0 && $user->status_2 == 0)
     {
         if($login_history->uid !== 0)
         {
             // write login log
-            $login_history->status = "not activated";
+            $login_history->status = "Wrong Username or Password";
             $login_history->create();
         }
         else

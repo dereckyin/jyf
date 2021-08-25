@@ -25,7 +25,7 @@ try {
             $decoded = JWT::decode($jwt, $key, array('HS256'));
             $user_id = $decoded->data->id;
 
-            if(!$decoded->data->status_1)
+            if(!$decoded->data->status_2)
                 header( 'location:parts_index.php' );
             
             // 可以存取Expense Recorder的人員名單如下：Dennis Lin(2), Glendon Wendell Co(4), Kristel Tan(6), Kuan(3), Mary Jude Jeng Articulo(9), Thalassa Wren Benzon(41), Stefanie Mika C. Santos(99)
@@ -2050,6 +2050,6 @@ $(document).ready(function(){
 
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script defer src="js/add_or_edit_price_record.js"></script>
+<script defer src="js/add_or_edit_price_record_v2.js"></script>
 
 </html>
