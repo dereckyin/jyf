@@ -143,6 +143,23 @@ try {
             border-right: none;
             margin-right: 20px;
         }
+
+        tr.deleted{
+            position: relative;
+        }
+
+        tr.deleted> td:first-of-type::before{
+            content: "";
+            width: 99%;
+            height: 1px;
+            background-color: red;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
         
     </style>
 
@@ -605,7 +622,7 @@ try {
             </thead>
 
             <tbody >
-             <tr v-for='item in items' v-if="item.account == 1" :class="[(item.is_marked == '1' ? 'red' : ''), (item.is_marked == '2' ? 'orange' : ''), (item.is_marked == '3' ? 'green' : ''), (item.is_marked == '4' ? 'blue' : '')]">
+             <tr v-for='item in items' v-if="item.account == 1" :class="[(item.is_enabled == '0' ? 'deleted' : ''), (item.is_marked == '1' ? 'red' : ''), (item.is_marked == '2' ? 'orange' : ''), (item.is_marked == '3' ? 'green' : ''), (item.is_marked == '4' ? 'blue' : '')]">
                 <td>{{item.created_at | dateString('YYYY-MM-DD')}}</td>
 
                 <td>{{item.category}}<span v-if="item.sub_category != ''">>>{{item.sub_category}}</span></td>
@@ -639,10 +656,10 @@ try {
 
 
                 <td class="text-nowrap" v-if="is_viewer == '1'">
-                    <button><i class="fas fa-lock" :class="[item.is_locked == '1'? 'red' : '']" v-on:click="lockRecord(item.id)"></i></button>
+                    <button v-if="1==0"><i class="fas fa-lock" :class="[item.is_locked == '1'? 'red' : '']" v-on:click="lockRecord(item.id)"></i></button>
                 </td>
                 <td class="text-nowrap" v-else-if="item.is_locked == '0'">
-                    <button data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                    <button v-if="1==0" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
                             aria-expanded="true" aria-controls="collapseOne" v-on:click="edit(item.id)"><i class="fas fa-edit"></i>
                     </button>
 
@@ -653,7 +670,7 @@ try {
 
 
 
-                    <button v-on:click="deleteRecord(item.id)"><i class="fas fa-times" ></i></button>
+                    <button v-if="item.is_enabled == 1" v-on:click="deleteRecord(item.id)"><i class="fas fa-times" ></i></button>
 
                 </td>
                 <td class="text-nowrap" v-else>
