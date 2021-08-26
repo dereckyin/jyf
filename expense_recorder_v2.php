@@ -136,13 +136,11 @@ try {
             padding: 0 20px;
             text-decoration: none;
             cursor: pointer;
-        }
-
-        a.nav_link:nth-of-type(1){
             border-right: 2px solid #FFFFFF;
         }
 
-        a.nav_link:nth-of-type(2){
+        a.nav_link:last-of-type{
+            border-right: none;
             margin-right: 20px;
         }
         
@@ -165,12 +163,28 @@ try {
         <a style="margin-left: 25px; font-size: 25px;"><span style="color: rgb(255, 255, 255); cursor: pointer">☰</span></a>
 
         <div>
+            <?php
+                if($decoded->data->status_1)
+                {
+            ?>
             <a class="nav_link" href="expense_recorder.php">
                 <eng>Expense Recorder</eng>
             </a>
+            <?php
+                }
+            ?>
+
+            <?php
+                if($decoded->data->status_2)
+                {
+            ?>
             <a class="nav_link" href="expense_recorder_v2.php">
                 <eng>Expense Recorder2</eng>
             </a>
+            <?php
+                }
+            ?>
+
             <button data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
                     aria-controls="collapseOne" class=""
                     style="border: none; margin-right: 25px; font-weight: 700; font-size: x-large; background-color: rgb(30, 107, 168); color: rgb(255, 255, 255);">

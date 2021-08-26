@@ -54,7 +54,7 @@ var app = new Vue({
 							},1000);
 						}
 
-						if(response.data['pg2'] === "other")
+						if(response.data['pg2'] === "other" && response.data['pg1'] !== "other")
 						{
 							setTimeout(function(){
 								window.location.href="expense_recorder_v2.php";
