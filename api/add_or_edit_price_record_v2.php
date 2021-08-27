@@ -27,8 +27,6 @@ $paid_date = (isset($_POST['paid_date']) ?  $_POST['paid_date'] : '');
 $cash_in = (isset($_POST['cash_in']) ?  $_POST['cash_in'] : 0);
 $cash_out = (isset($_POST['cash_out']) ?  $_POST['cash_out'] : 0);
 $remarks = (isset($_POST['remarks']) ?  $_POST['remarks'] : '');
-$staff_name = (isset($_POST['staff_name']) ?  $_POST['staff_name'] : '');
-$company_name = (isset($_POST['company_name']) ?  $_POST['company_name'] : '');
 $is_locked = (isset($_POST['is_locked']) ?  (int)$_POST['is_locked'] : 0);
 $is_enabled = (isset($_POST['is_enabled']) && $_POST['is_enabled'] === "true"? 1 : 0);
 $is_marked = (isset($_POST['is_marked']) ?  $_POST['is_marked'] : 0);
@@ -45,7 +43,7 @@ include_once 'libs/php-jwt-master/src/SignatureInvalidException.php';
 include_once 'libs/php-jwt-master/src/JWT.php';
 
 include_once 'config/database.php';
-include_once 'objects/add_or_edit_price_record_sea_v2.php';
+include_once 'objects/add_or_edit_price_record_v2.php';
 include_once 'config/conf.php';
 require_once '../vendor/autoload.php';
 
@@ -55,7 +53,7 @@ use Google\Cloud\Storage\StorageClient;
 $database = new Database();
 $db = $database->getConnection();
 
-$priceRecord = new PriceRecordSeaV2($db);
+$priceRecord = new PriceRecord($db);
 //$le = new Leave($db);
 
 $conf = new Conf();
@@ -72,7 +70,7 @@ else
     if($action == 1){
         //select all
         try{
-            $query = "SELECT * from price_record_sea_v2 where 1 = 1 order by paid_date ";
+            $query = "SELECT * from price_record_v2 where 1 = 1";
 
             $stmt = $db->prepare( $query );
             $stmt->execute();
@@ -107,8 +105,6 @@ else
             $priceRecord->cash_in = $cash_in;
             $priceRecord->cash_out = $cash_out;
             $priceRecord->remarks = $remarks;
-            $priceRecord->staff_name = $staff_name;
-            $priceRecord->company_name = $company_name;
             $priceRecord->is_locked = $is_locked;
             $priceRecord->is_enabled = $is_enabled;
             $priceRecord->is_marked = $is_marked;
@@ -146,8 +142,6 @@ else
             $priceRecord->cash_in = $cash_in;
             $priceRecord->cash_out = $cash_out;
             $priceRecord->remarks = $remarks;
-            $priceRecord->staff_name = $staff_name;
-            $priceRecord->company_name = $company_name;
             $priceRecord->is_marked = $is_marked;
             $priceRecord->updated_by = $updated_by;
             $arr = $priceRecord->update();
@@ -179,7 +173,7 @@ else
     }else if($action == 4) {
         //select by date
         try{
-            $query = "SELECT * from price_record_sea_v2 where 1 = 1 ";
+            $query = "SELECT * from price_record_v2 where 1 = 1 ";
             if($start_date!='') {
                 $query = $query . " and paid_date >= '$start_date' ";
             }
@@ -195,7 +189,7 @@ else
             if($sub_category!='') {
                 $query = $query . " and sub_category <= '$sub_category' ";
             }
-            $query = $query . " order by paid_date ";
+            $query = $query . " order by created_at desc ";
             $stmt = $db->prepare( $query );
             $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -236,7 +230,7 @@ else
     }else if($action == 6){
         //select by id
         try{
-            $query = "SELECT * from price_record_sea_v2 where id = ".$id;
+            $query = "SELECT * from price_record_v2 where id = ".$id;
             $stmt = $db->prepare( $query );
             $stmt->execute();
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

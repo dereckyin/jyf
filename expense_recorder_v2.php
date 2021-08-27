@@ -25,8 +25,8 @@ try {
             $decoded = JWT::decode($jwt, $key, array('HS256'));
             $user_id = $decoded->data->id;
 
-            if(!$decoded->data->sea_expense_v2)
-                header( 'location:index.php' );
+            if(!$decoded->data->status_2)
+                header( 'location:parts_index.php' );
             
             // 可以存取Expense Recorder的人員名單如下：Dennis Lin(2), Glendon Wendell Co(4), Kristel Tan(6), Kuan(3), Mary Jude Jeng Articulo(9), Thalassa Wren Benzon(41), Stefanie Mika C. Santos(99)
             // 為了測試先加上testmanager(87) by BB
@@ -42,7 +42,7 @@ try {
         }
         catch (Exception $e){
 
-            header( 'location:index.php' );
+            header( 'location:parts_index.php' );
         }
 
 
@@ -52,10 +52,11 @@ try {
     // if decode fails, it means jwt is invalid
     catch (Exception $e){
     
-        header( 'location:index.php' );
+        header( 'location:parts_index.php' );
     }
 
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -129,6 +130,20 @@ try {
             top: 0.75rem!important;
         }
 
+        a.nav_link{
+           color: #FFFFFF;
+            font-weight: bold;
+            padding: 0 20px;
+            text-decoration: none;
+            cursor: pointer;
+            border-right: 2px solid #FFFFFF;
+        }
+
+        a.nav_link:last-of-type{
+            border-right: none;
+            margin-right: 20px;
+        }
+
         tr.deleted{
             position: relative;
         }
@@ -161,15 +176,38 @@ try {
 
 
 <div id="app">
-<div style="background: #1E6BA8; padding: 0.5vh; height:70px; display: flex; align-items: center; justify-content: space-between;">
+<div style="background: rgb(30, 107, 168); padding: 0.5vh; height: 70px; display: flex; align-items: center; justify-content: space-between;">
+        <a @click="logout()" style="margin-left: 25px; font-size: 25px;"><span style="color: rgb(255, 255, 255); cursor: pointer">☰</span></a>
 
-    <a @click="logout()" style="margin-left:25px; font-size: 25px;" ><span style="color: #FFFFFF;">&#9776;</span></a>
+        <div>
+            <?php
+                if($decoded->data->status_1)
+                {
+            ?>
+            <a class="nav_link" href="expense_recorder.php">
+                <eng>Expense Recorder</eng>
+            </a>
+            <?php
+                }
+            ?>
 
-    <button :class="[is_viewer == '1'? 'hide' : '']" style="border: none; margin-right: 25px; font-weight:700; font-size:x-large; background-color:#1E6BA8; color: #FFFFFF;"
-            data-toggle="collapse" data-parent="#accordion" href="#collapseOne" @click="reset()"
-                       aria-expanded="true" aria-controls="collapseOne"><i class="fas fa-plus-square fa-lg"></i></button>
+            <?php
+                if($decoded->data->status_2)
+                {
+            ?>
+            <a class="nav_link" href="expense_recorder_v2.php">
+                <eng>Expense Recorder2</eng>
+            </a>
+            <?php
+                }
+            ?>
 
-</div>
+            <button data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+                    aria-controls="collapseOne" class=""
+                    style="border: none; margin-right: 25px; font-weight: 700; font-size: x-large; background-color: rgb(30, 107, 168); color: rgb(255, 255, 255);">
+                <i aria-hidden="true" class="fas fa-plus-square fa-lg"></i></button>
+        </div>
+    </div>
 
 
 
@@ -208,7 +246,7 @@ try {
                             </td>
 
                             <td style="text-align: left;"><input type="date" class="form-control custom-control-inline"
-                                                                 style="width:15vw;" id="todays-date"></td>
+                                                                 style="width:15vw;" id="todays-date" readonly></td>
 
                         </tr>
 
@@ -252,48 +290,49 @@ try {
 
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;" v-model="category">
-                                    <option>Food</option>
-                                    <option>Rice</option>
-                                    <option>Water Purified</option>
-                                    <option>Office Expenses</option>
-                                    <option>Parking Fee</option>
-                                    <option>Toll Fee</option>
-                                    <option>Gas - L300 1</option>
-                                    <option>Gas - L300 2</option>
-                                    <option>Gas - Avanza Grey</option>
-                                    <option>Gas - Alphard</option>
-                                    <option>Gas - Innova Grey</option>
-                                    <option>Gas - Innova Black</option>
+                                    <option>Accounting and govt payments</option>
+                                    <option>Bills</option>
+                                    <option>Client Refunds</option>
+                                    <option>Consignment</option>
+                                    <option>Credit Card</option>
+                                    <option>Marketing</option>
+                                    <option>Misc</option>
+                                    <option>NTD to PHP</option>
+                                    <option>Office Needs</option>
+                                    <option>Others</option>
+                                    <option>Payment for Container</option>
+                                    <option>Petty Cash</option>
+                                    <option>Projects</option>
+                                    <option>Rental</option>
+                                    <option>Salary</option>
+                                    <option>Sales Petty Cash</option>
+                                    <option>Store</option>
+                                    <option>Transportation Petty Cash</option>
                                 </select>
                             </td>
 
                         </tr>
 
-                        <tr v-if="category == 'no need'">
+                        <tr v-if="category == 'Marketing' || category == 'Office Needs' || category == 'Others' || category ==  'Projects' || category == 'Store'">
                             <td>
                                 <label >Sub Category</label>
                             </td>
 
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;"v-model="sub_category">
-                                    <option>Food</option>
-                                    <option>Rice</option>
-                                    <option>Gas - L300 1</option>
-                                    <option>Gas - L300 2</option>
-                                    <option>Gas - Avanza Grey</option>
-                                    <option>Gas - Alphard</option>
-                                    <option>Gas - Innova Grey</option>
-                                    <option>Gas - Innova Black</option>
-                                    <option>Car Maintenance - L300 1</option>
-                                    <option>Car Maintenance - L300 2</option>
-                                    <option>Car Maintenance - Avanza Grey</option>
-                                    <option>Car Maintenance - Alphard</option>
-                                    <option>Car Maintenance - Innova Grey</option>
-                                    <option>Car Maintenance - Innova Black</option>
-                                    <option>Parking Fee</option>
-                                    <option>Toll Fee</option>
-                                    <option>Water Purified</option>
-                                    <option>Office Expenses</option>
+                                    <option>Allowance</option>
+                                    <option>Commission</option>
+                                    <option>Delivery</option>
+                                    <option>Maintenance</option>
+                                    <option>Meals</option>
+                                    <option>Misc</option>
+                                    <option>Others</option>
+                                    <option>Outsource</option>
+                                    <option>Petty cash</option>
+                                    <option>Products</option>
+                                    <option>Supplies</option>
+                                    <option>Tools and Materials</option>
+                                    <option>Transportation</option>
                                 </select>
                             </td>
 
@@ -325,48 +364,22 @@ try {
 
                         </tr> -->
 
-<!--                    <tr id="payee">
+                        <tr id="payee">
                             <td>
-                                <label>Staff Name</label>
+                                <label>Payee</label>
                             </td>
 
                             <td style="text-align: left;">
 
                                 <div class="" style="width:15vw;">
-                                    <v-select v-model="payee"
+                                    <!-- <v-select v-model="payee"
                                               :options="payees"
                                               attach
                                               chips
                                               label="payeeName"
-                                              multiple></v-select>
-                                              <input type="text" class="form-control" style="width:25vw;" v-model="payee">
-                                </div>
-
-                            </td>
-
-                        </tr> -->
-
-
-<!--                        <tr>
-                            <td style="width:15vw;">
-                                <label>Paid/Received Date</label>
-                            </td>
-
-                            <td style="text-align: left;"><input type="date" class="form-control custom-control-inline"
-                                                                 style="width:15vw;" v-model="paid_date" id="todaysdate"></td>
-
-                        </tr> -->
-
-
-                        <tr>
-                            <td>
-                                <label>Staff Name</label>
-                            </td>
-
-                            <td style="text-align: left;">
-
-                                <div class="" style="width:15vw;">
-                                    <input type="text" class="form-control" style="width:25vw;" v-model="staff_name">
+                                              multiple></v-select> -->
+                                              <input type="text" class="form-control" style="width:25vw;" 
+                                   v-model="payee">
                                 </div>
 
                             </td>
@@ -374,18 +387,13 @@ try {
                         </tr>
 
 
-                        <tr style="display: none;">
-                            <td>
-                                <label>Company Name / Customer Name</label>
+                        <tr>
+                            <td style="width:15vw;">
+                                <label>Paid/Received Date</label>
                             </td>
 
-                            <td style="text-align: left;">
-
-                                <div class="" style="width:15vw;">
-                                    <input type="text" class="form-control" style="width:25vw;" v-model="company_name">
-                                </div>
-
-                            </td>
+                            <td style="text-align: left;"><input type="date" class="form-control custom-control-inline"
+                                                                 style="width:15vw;" v-model="paid_date" id="todaysdate"></td>
 
                         </tr>
 
@@ -412,7 +420,7 @@ try {
 
 
 
-<!--                        <tr>
+                        <tr>
                             <td>
                                 <label>Remarks</label>
                             </td>
@@ -420,7 +428,7 @@ try {
                             <td style="text-align: left;"><input type="text" class="form-control" style="width:77vw;" v-model="remarks">
                             </td>
 
-                        </tr> -->
+                        </tr>
 
                         <tr>
                             <td>
@@ -504,12 +512,11 @@ try {
     <div style="margin-top:2vh; margin-bottom:1vh;">
 
         <input type="date" v-model="start_date">&nbsp; to &nbsp;<input type="date" v-model="end_date">
-
-        <!-- 因為使用者只需要 Date 欄位不再需要 Paid/Received Date 欄位，因此這個 <select>　就不再需要了
+        
         <select style="width:10vw; margin-left:1vw;" v-model="select_date_type">
             <option value="0" seleted>Date</option>
             <option value="1">Paid/Received Date</option>
-        </select> -->
+        </select>
 <!--         
         <select style="width:10vw; margin-left:1vw;" v-model="account">
             <option value="0" seleted>All</option>
@@ -519,42 +526,41 @@ try {
         </select> -->
 
         <select style="width:10vw; margin-left:1vw;" v-model="select_category">
-            <option>All</option>
-            <option>Food</option>
-            <option>Rice</option>
-            <option>Water Purified</option>
-            <option>Office Expenses</option>
-            <option>Parking Fee</option>
-            <option>Toll Fee</option>
-            <option>Gas - L300 1</option>
-            <option>Gas - L300 2</option>
-            <option>Gas - Avanza Grey</option>
-            <option>Gas - Alphard</option>
-            <option>Gas - Innova Grey</option>
-            <option>Gas - Innova Black</option>
+            <option value="" seleted>All</option>
+            <option>Accounting and govt payments</option>
+            <option>Bills</option>
+            <option>Client Refunds</option>
+            <option>Consignment</option>
+            <option>Credit Card</option>
+            <option>Marketing</option>
+            <option>Misc</option>
+            <option>NTD to PHP</option>
+            <option>Office Needs</option>
+            <option>Others</option>
+            <option>Payment for Container</option>
+            <option>Petty Cash</option>
+            <option>Projects</option>
+            <option>Rental</option>
+            <option>Salary</option>
+            <option>Sales Petty Cash</option>
+            <option>Store</option>
+            <option>Transportation Petty Cash</option>
         </select>
 
-
-        <select style="width:10vw; margin-left:1vw;" v-if="select_category == 'no need'"
-                v-model="select_sub_category">
-                    <option>Food</option>
-                    <option>Rice</option>
-                    <option>Gas - L300 1</option>
-                    <option>Gas - L300 2</option>
-                    <option>Gas - Avanza Grey</option>
-                    <option>Gas - Alphard</option>
-                    <option>Gas - Innova Grey</option>
-                    <option>Gas - Innova Black</option>
-                    <option>Car Maintenance - L300 1</option>
-                    <option>Car Maintenance - L300 2</option>
-                    <option>Car Maintenance - Avanza Grey</option>
-                    <option>Car Maintenance - Alphard</option>
-                    <option>Car Maintenance - Innova Grey</option>
-                    <option>Car Maintenance - Innova Black</option>
-                    <option>Parking Fee</option>
-                    <option>Toll Fee</option>
-                    <option>Water Purified</option>
-                    <option>Office Expenses</option>
+        <select style="width:10vw; margin-left:1vw;" v-if="select_category == 'Marketing' || select_category == 'Office Needs' || select_category == 'Others' || select_category ==  'Projects' || select_category == 'Store'" v-model="select_sub_category">
+            <option>Allowance</option>
+            <option>Commission</option>
+            <option>Delivery</option>
+            <option>Maintenance</option>
+            <option>Meals</option>
+            <option>Misc</option>
+            <option>Others</option>
+            <option>Outsource</option>
+            <option>Petty cash</option>
+            <option>Products</option>
+            <option>Supplies</option>
+            <option>Tools and Materials</option>
+            <option>Transportation</option>
         </select>
         
         <input type="text" v-model="keyword" style="width:15vw; margin-left:1vw;" placeholder="Searching Keyword Here">
@@ -590,32 +596,25 @@ try {
 
                 <th class="text-nowrap" style="width:6vw;">Date</th>
 
-                <th class="text-nowrap" style="width:10vw;">Category</th>
+                <th class="text-nowrap" style="width:7vw;">Category</th>
 
                 <!-- <th class="text-nowrap" style="width:7vw;">Project Name</th> -->
 
                 <th class="text-nowrap" style="width:20vw;">Details</th>
 
-                
+                <th class="text-nowrap" style="width:4vw;">Photos</th>
 
-                 <!--
                 <th class="text-nowrap" style="width:10vw;">Payee</th>
 
-                <th style="width:8vw;">Paid / Received Date</th>　-->
-
-                <th class="text-nowrap" style="width:8vw;">Staff Name</th>
-
-                <!-- <th style="width:8vw;">Company Name / Customer Name</th> -->
+                <th style="width:8vw;">Paid / Received Date</th>
 
                 <th class="text-nowrap" style="width:5vw;">Cash In</th>
 
                 <th class="text-nowrap" style="width:5vw;">Cash Out</th>
 
-                <th class="text-nowrap" style="width:4vw;">Photos</th>
+                <th class="text-nowrap" style="width:12vw;">Remarks</th>
 
-                <!--<th class="text-nowrap" style="width:12vw;">Remarks</th>　-->
-
-                <th class="text-nowrap" style="width:14vw;">Actions</th>
+                <th class="text-nowrap" style="width:6vw;">Actions</th>
 
 
             </tr>
@@ -624,23 +623,13 @@ try {
 
             <tbody >
              <tr v-for='item in items' v-if="item.account == 1" :class="[(item.is_enabled == '0' ? 'deleted' : ''), (item.is_marked == '1' ? 'red' : ''), (item.is_marked == '2' ? 'orange' : ''), (item.is_marked == '3' ? 'green' : ''), (item.is_marked == '4' ? 'blue' : '')]">
-                <td>{{item.paid_date}}</td>
+                <td>{{item.created_at | dateString('YYYY-MM-DD')}}</td>
 
                 <td>{{item.category}}<span v-if="item.sub_category != ''">>>{{item.sub_category}}</span></td>
 
                 <!-- <td><span v-if="item.category == 'Projects'">{{item.project_name}}</span></td> -->
 
                 <td style="text-align: left;"><span v-html="item.details.replace('&lt;br&gt;', '<br />')"></span></td>
-
-                
-                
-                <td>{{item.staff_name}}</td>
-
-                <!-- <td>{{item.company_name}}</td> -->
-
-                <td style="text-align: right;">{{ item.cash_in.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }}</td>
-
-                <td style="text-align: right;">{{item.cash_out.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</td>
 
                 <td v-if="item.pic_url != ''" >
                     <a v-for="pic in item.pic_url" :href="`${mail_ip}${pic}`" target="_blank">
@@ -653,8 +642,17 @@ try {
                 
                 <td v-else>
                  </td>
-                 <!--
-                <td style="text-align: left;">{{item.remarks}}</td> -->
+                
+                <td>{{item.payee}}</td>
+
+                <td>{{item.paid_date}}</td>
+
+                <td style="text-align: right;">{{ item.cash_in.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }}</td>
+
+                <td style="text-align: right;">{{item.cash_out.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</td>
+
+
+                <td style="text-align: left;">{{item.remarks}}</td>
 
 
                 <td class="text-nowrap" v-if="is_viewer == '1'">
@@ -685,10 +683,11 @@ try {
 
             <tr>
                 <th colspan="4">Total</th>
+                <th style="text-align: center;" colspan="2"><!--Beginning Balance: 0.00--></th>
                 <th style="text-align: right;">{{accountOneCashIn.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
                 <th style="text-align: right;">{{accountOneCashOut.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
                 <th style="text-align: center;" colspan="2">
-                Total Cash Remaining: {{accountOneBalance.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
+                Net Cash Flow: {{accountOneBalance.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}</th>
             </tr>
 
             </thead>
@@ -2082,6 +2081,6 @@ $(document).ready(function(){
 
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script defer src="js/add_or_edit_price_record_sea_v2.js"></script>
+<script defer src="js/add_or_edit_price_record_v2.js"></script>
 
 </html>

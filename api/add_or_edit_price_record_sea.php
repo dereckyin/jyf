@@ -72,7 +72,7 @@ else
     if($action == 1){
         //select all
         try{
-            $query = "SELECT * from price_record_sea where is_enabled = true order by paid_date ";
+            $query = "SELECT * from price_record_sea where 1 = 1 order by paid_date ";
 
             $stmt = $db->prepare( $query );
             $stmt->execute();
@@ -179,7 +179,7 @@ else
     }else if($action == 4) {
         //select by date
         try{
-            $query = "SELECT * from price_record_sea where is_enabled = true ";
+            $query = "SELECT * from price_record_sea where 1 = 1 ";
             if($start_date!='') {
                 $query = $query . " and paid_date >= '$start_date' ";
             }

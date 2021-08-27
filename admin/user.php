@@ -193,7 +193,7 @@ include 'menu.php';
                                 </li>
                                 <li>
                                     <input class="form-check-input" type="checkbox" name="status" required id="A1"
-                                           :true-value="1" v-model:checked="sea_expense_v2" @change="updateSeaExpense_v2"> 啟用海運支出記錄
+                                           :true-value="1" v-model:checked="sea_expense_v2" @change="updateSeaExpense_v2"> 啟用海運支出記錄2
                                 </li>
                             </ul>
 
@@ -202,7 +202,16 @@ include 'menu.php';
                                 </li>
                                 <li>
 								<input class="form-check-input" type="checkbox" name="status_1" required id="A1"
-                                           :true-value="1" v-model:checked="status_1" @change="updateStatus_1"> 啟用零件網站
+                                           :true-value="1" v-model:checked="status_1" @change="updateStatus_1"> 啟用零件支出記錄
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
+								<input class="form-check-input" type="checkbox" name="status_2" required id="A1"
+                                           :true-value="1" v-model:checked="status_2" @change="updateStatus_2"> 啟用零件支出記錄2
                                 </li>
                             </ul>
 
@@ -282,7 +291,15 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
-								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.status_1" @change="updateEditStatus_1" required> 啟用零件網站
+								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.status_1" @change="updateEditStatus_1" required> 啟用零件支出記錄
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
+								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.status_2" @change="updateEditStatus_2" required> 啟用零件支出記錄2
                                 </li>
                             </ul>
 
@@ -317,7 +334,8 @@ include 'menu.php';
                             <th>啟用海運網站</th>
                             <th>啟用海運支出記錄</th>
                             <th>啟用海運支出記錄2</th>
-                            <th>啟用零件網站</th>
+                            <th>啟用零件支出記錄</th>
+                            <th>啟用零件支出記錄2</th>
                             <th>是否為管理者</th>
                             <th>上次登入日期</th>
                         </tr>
@@ -332,6 +350,7 @@ include 'menu.php';
                             <td>{{ (rec.sea_expense == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.sea_expense_v2 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.status_1 == '1') ? "是 (yes)" : "否 (no)" }}</td>
+                            <td>{{ (rec.status_2 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.is_admin == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td> {{ rec.login_time }}</td>
                         </tr>

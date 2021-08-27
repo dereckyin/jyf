@@ -57,7 +57,7 @@ $merged_results = array();
 
 
 
-$query = "SELECT *, 0 i1, 0 i2, 0 i3, 0 o1, 0 o2, 0 o3, 0 ai, 0 ao from price_record where 1 = 1 ";
+$query = "SELECT *, 0 i1, 0 i2, 0 i3, 0 o1, 0 o2, 0 o3, 0 ai, 0 ao from price_record_v2 where 1 = 1 ";
 $sql = "";
 $sql2 = "";
 $sql3 = "";

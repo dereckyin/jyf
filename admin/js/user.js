@@ -16,6 +16,7 @@ let mainState = {
     password1: '',
     status: 0,
     status_1: 0,
+    status_2: 0,
     sea_expense: 0,
     sea_expense_v2: 0,
     is_admin: '',
@@ -224,6 +225,7 @@ var app = new Vue({
             formData.append('email', this.record.email)
             formData.append('status', this.record.status)
             formData.append('status_1', this.record.status_1)
+            formData.append('status_2', this.record.status_2)
             formData.append('sea_expense', this.record.sea_expense)
             formData.append('sea_expense_v2', this.record.sea_expense_v2)
             formData.append('is_admin', this.record.is_admin)
@@ -311,6 +313,17 @@ var app = new Vue({
             }
         },
 
+        updateStatus_2: function(event) {
+          console.log("updateStatus_2");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.status_2 = 1;
+            } else {
+                this.status_2 = 0;
+            }
+        },
+
         updateSeaExpense: function(event) {
           console.log("updateSeaExpense");
             let checked = event.target.checked;
@@ -363,6 +376,17 @@ var app = new Vue({
                 this.record.status_1 = 1;
             } else {
                 this.record.status_1 = 0;
+            }
+        },
+
+        updateEditStatus_2: function(event) {
+          console.log("updateEditStatus");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.record.status_2 = 1;
+            } else {
+                this.record.status_2 = 0;
             }
         },
 
@@ -419,6 +443,7 @@ var app = new Vue({
             formData.append('email', this.record.email)
             formData.append('status', this.record.status)
             formData.append('status_1', this.record.status_1)
+            formData.append('status_2', this.record.status_2)
             formData.append('sea_expense', this.record.sea_expense)
             formData.append('sea_expense_v2', this.record.sea_expense_v2)
             formData.append('is_admin', this.record.is_admin)
@@ -505,6 +530,7 @@ var app = new Vue({
             formData.append('password', this.password)
             formData.append('status', this.status)
             formData.append('status_1', this.status_1)
+            formData.append('status_2', this.status_2)
             formData.append('sea_expense', this.sea_expense)
             formData.append('sea_expense_v2', this.sea_expense_v2)
             formData.append('is_admin', this.is_admin)
@@ -549,6 +575,7 @@ var app = new Vue({
             this.password1 = '';
             this.status = 0;
             this.status_1 = 0;
+            this.status_2 = 0;
             this.sea_expense = 0;
             this.sea_expense_v2 = 0;
             this.is_admin = '';

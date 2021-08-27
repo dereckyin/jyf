@@ -129,6 +129,37 @@ try {
         .custom-control-label::after {
             top: 0.75rem!important;
         }
+
+        a.nav_link{
+           color: #FFFFFF;
+            font-weight: bold;
+            padding: 0 20px;
+            text-decoration: none;
+            cursor: pointer;
+            border-right: 2px solid #FFFFFF;
+        }
+
+        a.nav_link:last-of-type{
+            border-right: none;
+            margin-right: 20px;
+        }
+
+        tr.deleted{
+            position: relative;
+        }
+
+        tr.deleted> td:first-of-type::before{
+            content: "";
+            width: 99%;
+            height: 1px;
+            background-color: red;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
         
     </style>
 
@@ -145,15 +176,37 @@ try {
 
 
 <div id="app">
-<div style="background: #1E6BA8; padding: 0.5vh; height:70px; display: flex; align-items: center; justify-content: space-between;">
+<div style="background: rgb(30, 107, 168); padding: 0.5vh; height: 70px; display: flex; align-items: center; justify-content: space-between;">
+        <a @click="logout()" style="margin-left: 25px; font-size: 25px;"><span style="color: rgb(255, 255, 255); cursor: pointer">☰</span></a>
 
-    <a @click="logout()" style="margin-left:25px; font-size: 25px;" ><span style="color: #FFFFFF;">&#9776;</span></a>
+        <div>
+        <?php
+                if($decoded->data->status_1)
+                {
+            ?>
+            <a class="nav_link" href="expense_recorder.php">
+                <eng>Expense Recorder</eng>
+            </a>
+            <?php
+                }
+            ?>
 
-    <button :class="[is_viewer == '1'? 'hide' : '']" style="border: none; margin-right: 25px; font-weight:700; font-size:x-large; background-color:#1E6BA8; color: #FFFFFF;"
-            data-toggle="collapse" data-parent="#accordion" href="#collapseOne" @click="reset()"
-                       aria-expanded="true" aria-controls="collapseOne"><i class="fas fa-plus-square fa-lg"></i></button>
-
-</div>
+            <?php
+                if($decoded->data->status_2)
+                {
+            ?>
+            <a class="nav_link" href="expense_recorder_v2.php">
+                <eng>Expense Recorder2</eng>
+            </a>
+            <?php
+                }
+            ?>
+            <button data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+                    aria-controls="collapseOne" class=""
+                    style="border: none; margin-right: 25px; font-weight: 700; font-size: x-large; background-color: rgb(30, 107, 168); color: rgb(255, 255, 255);">
+                <i aria-hidden="true" class="fas fa-plus-square fa-lg"></i></button>
+        </div>
+    </div>
 
 
 
@@ -568,7 +621,7 @@ try {
             </thead>
 
             <tbody >
-             <tr v-for='item in items' v-if="item.account == 1" :class="[(item.is_marked == '1' ? 'red' : ''), (item.is_marked == '2' ? 'orange' : ''), (item.is_marked == '3' ? 'green' : ''), (item.is_marked == '4' ? 'blue' : '')]">
+             <tr v-for='item in items' v-if="item.account == 1" :class="[(item.is_enabled == '0' ? 'deleted' : ''), (item.is_marked == '1' ? 'red' : ''), (item.is_marked == '2' ? 'orange' : ''), (item.is_marked == '3' ? 'green' : ''), (item.is_marked == '4' ? 'blue' : '')]">
                 <td>{{item.created_at | dateString('YYYY-MM-DD')}}</td>
 
                 <td>{{item.category}}<span v-if="item.sub_category != ''">>>{{item.sub_category}}</span></td>
@@ -602,10 +655,10 @@ try {
 
 
                 <td class="text-nowrap" v-if="is_viewer == '1'">
-                    <button><i class="fas fa-lock" :class="[item.is_locked == '1'? 'red' : '']" v-on:click="lockRecord(item.id)"></i></button>
+                    <button v-if="1==0"><i class="fas fa-lock" :class="[item.is_locked == '1'? 'red' : '']" v-on:click="lockRecord(item.id)"></i></button>
                 </td>
                 <td class="text-nowrap" v-else-if="item.is_locked == '0'">
-                    <button data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                    <button v-if="1==0" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
                             aria-expanded="true" aria-controls="collapseOne" v-on:click="edit(item.id)"><i class="fas fa-edit"></i>
                     </button>
 
@@ -616,7 +669,7 @@ try {
 
 
 
-                    <button v-on:click="deleteRecord(item.id)"><i class="fas fa-times" ></i></button>
+                    <button v-if="item.is_enabled == 1" v-on:click="deleteRecord(item.id)"><i class="fas fa-times" ></i></button>
 
                 </td>
                 <td class="text-nowrap" v-else>

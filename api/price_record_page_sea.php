@@ -62,7 +62,7 @@ if($category == "All")
 }
 
 
-$query = "SELECT *, 0 i1, 0 i2, 0 i3, 0 o1, 0 o2, 0 o3, 0 ai, 0 ao from price_record_sea where is_enabled = true ";
+$query = "SELECT *, 0 i1, 0 i2, 0 i3, 0 o1, 0 o2, 0 o3, 0 ai, 0 ao from price_record_sea where 1 = 1 ";
 $sql = "";
 $sql2 = "";
 $sql3 = "";
@@ -103,8 +103,8 @@ $sql3 = "";
             }
             
             if(!empty($keyword)) {
-                $sql2 = "or remarks like '%$keyword%' and is_enabled = true".$sql;
-                $sql3 = "or payee like '%$keyword%' and is_enabled = true".$sql;
+                $sql2 = "or remarks like '%$keyword%' and 1 = 1".$sql;
+                $sql3 = "or payee like '%$keyword%' and 1 = 1".$sql;
                 $sql = $sql . " and details like '%$keyword%'";
             }
             
@@ -159,28 +159,31 @@ $ao = 0.0;
 foreach ($merged_results as &$value) {
     $value['pic_array'] = GetPicArray($value['pic_url']);
 
-    if($value['account'] == 1)
+    if($value['is_enabled'] == true) 
     {
-        $i1 += $value['cash_in'];
-        $o1 += $value['cash_out'];
-    }
+        if($value['account'] == 1)
+        {
+            $i1 += $value['cash_in'];
+            $o1 += $value['cash_out'];
+        }
 
-    if($value['account'] == 2)
-    {
-        $i2 += $value['cash_in'];
-        $o2 += $value['cash_out'];
-    }
+        if($value['account'] == 2)
+        {
+            $i2 += $value['cash_in'];
+            $o2 += $value['cash_out'];
+        }
 
-    if($value['account'] == 3)
-    {
-        $i3 += $value['cash_in'];
-        $o3 += $value['cash_out'];
-    }
+        if($value['account'] == 3)
+        {
+            $i3 += $value['cash_in'];
+            $o3 += $value['cash_out'];
+        }
 
-    if($value['account'] == 1 || $value['account'] == 2 || $value['account'] == 3)
-    {
-        $ai += $value['cash_in'];
-        $ao += $value['cash_out'];
+        if($value['account'] == 1 || $value['account'] == 2 || $value['account'] == 3)
+        {
+            $ai += $value['cash_in'];
+            $ao += $value['cash_out'];
+        }
     }
 
     $_result[] = $value;
