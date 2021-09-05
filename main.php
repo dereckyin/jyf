@@ -30,6 +30,41 @@ p {
   padding:0;
 }
 
+.tablebox.V.s01 .photobox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.tablebox.V.s01 .photobox img{
+    max-width: 300px;
+    max-height: 300px;
+    border: 1px solid #999;
+    margin: 0 10px 5px 0;
+}
+
+#photoModal {
+  position: absolute;
+    height: auto;
+    width: 880px;
+    top: 240px;
+    left: 215px;
+    display: block;
+    z-index: 101;
+    display: none;
+}
+
+.bodybox .mask {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            top: 0;
+            z-index: 1;
+            display: none;
+        }
+
 
 </style>
 
@@ -45,6 +80,7 @@ $(function(){
 
 <body>
 <div class="bodybox"> 
+  <div class="mask" style="display:none" onclick="(function(){ $('.mask').toggle(); $('#photoModal').toggle(); return false;})();return false;"></div>
   <!-- header -->
   <header> 
   </header>
@@ -74,6 +110,16 @@ $(function(){
               <input type="text" name="customer" v-model.lazy="customer" maxlength="256" style="width: calc(65% - 40px);">
               <button type="button" class="btn btn-primary" id="create-user"><i class="fas fa-address-card"></i></button>
             </li>
+            <li></li>
+            <li>
+            </li>
+          </ul>
+          <ul>
+            <li class="header"></li>
+            <li>E-Mail的收件人 <eng>Company/customer in E-mail</eng></li>
+            <li>
+              <input type="text" name="customer" v-model.lazy="customer" maxlength="256" style="width: calc(65% - 40px);">
+            </li>
             <li>E-Mail</li>
             <li>
               <input type="text" name="email" v-model.lazy="email">
@@ -102,10 +148,8 @@ $(function(){
               <button type="button" class="btn btn-primary" id="create-supplier"><i class="fas fa-address-card"></i></button>
               <span class="text-danger" v-if="error_customer" v-text="error_customer"></span>
             </li>
-            <li>照片</li>
-            <li>
-              <input type="file" accept="image/*" id="file" ref="file" style="color: black;" v-on:change="onChangeFileUpload()">
-            </li>
+            <li></li>
+            <li></li>
           </ul>
           <ul>
             <li class="header"></li>
@@ -146,6 +190,24 @@ $(function(){
               </textarea>
             </li>
           </ul>
+        </div>
+        <div class="tablebox V s01">
+          <ul></ul>
+           <ul>
+               <li class="header"></li>
+               <li>照片
+                   <eng>Photo</eng>
+               </li>
+               <li style="display: flex; align-items: center; flex-wrap: wrap;">
+                  <div class="photobox" v-for="(item, index) in pic_receive">
+                       <img v-if="item.gcp_name" :src="url_ip + item.gcp_name">
+                        <input type="checkbox" class="alone" :value="item.is_checked" v-model="item.is_checked">
+                  </div>
+                 
+
+                   <button @click="get_photo_library()">Choose Photo</button>
+               </li>
+           </ul>
         </div>
         <div class="btnbox"><a class="btn" @click="createReceiveRecord()" style="color:white;">儲存 <eng>Save</eng></a><a class="btn orange" @click="createReceiveRecordMail()" style="color:white;">儲存 <eng>Save + </eng><i class="before-micons mail"></i></a></div>
       </div>
@@ -199,9 +261,10 @@ $(function(){
               <button type="button" class="btn btn-primary" id="create-supplier1"><i class="fas fa-address-card"></i></button>
               <span class="text-danger" v-if="error_customer" v-text="error_customer"></span>
             </li>
-            <li>照片</li>
+            
+            <li></li>
             <li>
-              <div><i class="fas fa-image" v-if="record.picname" @click="zoom(record.picname)"></i><input type="file" accept="image/*" id="file" ref="file" style="color: black;" v-on:change="onChangeFileUpload()"></div>
+              <div></div>
             </li>
           </ul>
           <ul>
@@ -243,6 +306,26 @@ $(function(){
                             </textarea>
             </li>
           </ul>
+        </div>
+
+        <div class="tablebox V s01">
+          <ul></ul>
+           <ul>
+               <li class="header"></li>
+               <li>照片
+                   <eng>Photo</eng>
+               </li>
+               <li style="display: flex; align-items: center; flex-wrap: wrap;">
+                  <div class="photobox" v-for="(item, index) in record.pic">
+                       <img v-if="item.type == 'FILE'" :src="'img/' + item.gcp_name">
+                       <img v-if="item.type == 'RECEIVE'" :src="url_ip + item.gcp_name">
+                        <input type="checkbox" class="alone" :value="item.is_checked" v-model="item.is_checked">
+                  </div>
+                 
+
+                   <button @click="get_photo_library()">Choose Photo</button>
+               </li>
+           </ul>
         </div>
 
         <div class="btnbox"><a class="btn" @click="cancelReceiveRecord($event)" style="color:white;">取消 <eng>Cancel</eng></a><a class="btn" @click="editReceiveRecord($event)" style="color:white;">儲存 <eng>Save</eng></a><a class="btn orange" @click="editReceiveRecordMail($event)" style="color:white;">儲存 <eng>Save + </eng><i class="before-micons mail"></i></a></div>
@@ -299,7 +382,7 @@ $(function(){
               </li>
               <li>{{ receive_record.date_receive }}</li>
               <li>{{ (receive_record.customer !== 'undefined' ) ? receive_record.customer.replace(/\\/g, '') : "" }}</li>
-              <li><i class="fas fa-image" v-if="receive_record.picname" @click="zoom(receive_record.picname)"></i></li>
+              <li><i class="fas fa-image" v-if="receive_record.pic.length > 0" @click="zoom(receive_record.id)"></i></li>
               <li>{{ receive_record.description }}</li>
               <li>{{ receive_record.quantity }}</li>
               <li>{{ (receive_record.kilo == 0) ? "" : receive_record.kilo }}</li>
@@ -443,27 +526,90 @@ $(function(){
       </div> -->
     </div>
   </div>
+
+  <div class="modal" id="photoModal">
+
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content"> 
+        
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">圖片庫</h4>
+        </div>
+        <div>
+          <input class="form-control"  placeholder="Search for...">
+        </div>
+
+        <!-- Modal body -->
+            <table class="table table-hover table-striped table-sm table-bordered" id="showPhoto">
+              <thead>
+                <tr>
+                  <th><input class="alone" type="checkbox" @click="bulk_toggle_library()" id="bulk_select_all_library"></th>
+                  <th><p>Photo</p>
+                    <p>照片</p></th>
+                  <th><p>Date Receive</p>
+                    <p>收貨日期</p></th>
+                  <th><p>Quantity</p>
+                    <p>件數</p></th>
+                  <th><p>Supplier</p>
+                    <p>寄件人</p></th>
+                  <th><p>Company/Customer</p>
+                    <p>收件人</p></th>
+                  <th><p>Remark</p>
+                    <p>備註</p></th>
+                </tr>
+              </thead>
+              <tbody id="">
+                <tr v-for="(item, index) in pic_lib">
+                  <td><input class="alone" type="checkbox" :value="item.is_checked" v-model="item.is_checked"></td>
+                  <td><img width="50%" v-if="item.gcp_name" :src="url_ip + item.gcp_name"></td>
+                  <td>{{ item.date_receive }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.supplier }}</td>
+                  <td>{{ item.customer }}</td>
+                  <td>{{ item.remark }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal" @click="delete_library()">刪除 Delete</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="choose_library()">選取 Select</button>
+        </div>
+
+          </div>
+
+          
+
+        </div>
+      </div>
   <!-- The Modal -->
-
-      
-    </div>
-  </div>
-  <!-- The Modal -->
-
-
-
-
-
-
-  </div>
 
   <div class="modal" id="imgModal">
     <div v-if="this.selectedImage" max-width="85vw">
      <!-- <img :src="this.selectedImage" alt="" width="100%" @click.stop="this.selectedImage = null"> -->
-     <img name="img_pre" class="img-responsive postimg" id="img_pre" alt="" width="100%">
-      <hr>
+     <template v-for="(item, index) in pic_preview">
+      <img v-if="item.type == 'FILE'" name="img_pre" class="img-responsive postimg" :src="'img/' + item.gcp_name" alt="" width="100%">
+      <img v-if="item.type == 'RECEIVE'" name="img_pre" class="img-responsive postimg" :src="url_ip + item.gcp_name" alt="" width="100%">
+        <hr>
+     </template>
     </div>
   </div>
+
+
+    </div>
+  </div>
+  <!-- The Modal -->
+
+
+
+
+
+
+  </div>
+
+  
 
 
 </div>
@@ -477,7 +623,7 @@ $(function(){
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script type="text/javascript" src="js/main.js" defer></script> 
-<script defer src="https://kit.fontawesome.com/a076d05399.js"></script> 
+<script defer src="js/a076d05399.js"></script> 
 
 <!-- jQuery和js載入 --> 
 <script>

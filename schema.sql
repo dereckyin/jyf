@@ -380,3 +380,59 @@ CREATE TABLE IF NOT EXISTS `price_record_v2` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
 
 ALTER TABLE user ADD COLUMN status_2 INT DEFAULT 0;
+
+
+
+-- 20210901 for sea take photo
+CREATE TABLE IF NOT EXISTS `gcp_storage_file` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `batch_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `batch_type` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `bucketname` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT 'feliiximg',
+  `filename` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `gcp_name` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `gcp_msg` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `status` int(11) DEFAULT 0,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+
+create table receive_library
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`date_receive` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`customer` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`email` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`description` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`quantity` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`supplier` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`picname` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`kilo` float DEFAULT 0,
+	`cuft` float DEFAULT 0,
+	`taiwan_pay` int(11) DEFAULT 0,
+	`courier_pay` int(11) DEFAULT 0,
+	`courier_money` int(11) DEFAULT 0,
+	`remark` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`batch_num` int(11) DEFAULT 0,
+	`status` varchar(2) DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+	`mdf_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`mdf_user` varchar(128) DEFAULT '',
+	`del_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`del_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE receive_record
+ADD COLUMN `photo` varchar(12) DEFAULT '' AFTER picname;
+
+ALTER TABLE receive_library
+ADD COLUMN `photo` varchar(12) DEFAULT '' AFTER picname;
+
+ALTER TABLE gcp_storage_file
+ADD COLUMN `batch_id_org` bigint(20)  DEFAULT 0  AFTER gcp_msg;

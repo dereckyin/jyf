@@ -2,7 +2,7 @@
 <!-- 主選單 -->
 <a href="" class="logo"><i class='fab fa-docker'></i>海運系統</a>
 <a class="mobilemenu"><span>行動裝置選單</span><b></b></a>
-<nav>
+<nav style="display: flex; align-items: flex-start;">
 
 <?php
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
@@ -38,7 +38,11 @@ if ( isset( $jwt ) ) {
 ?>
 
     <a href="directory.php">通訊錄<eng>Contactor</eng></a>
-<a href="main.php">收貨紀錄<eng>Receive Goods</eng></a>
+    <dl class="sub">
+     <dt><a href="" class="after-micons">收貨記錄<eng>Receive Goods</eng></a></dt>
+     <dd><a href="main.php">收貨記錄<eng>Receive Goods</eng></a></dd>
+     <dd><a href="sea_take_photo.php">手機照相<eng>Take Photo</eng></a></dd>
+    </dl>
  <a href="loading.php">貨物裝櫃<eng>Loading Goods into Container</eng></a>
  <a href="measure.php">到貨丈量、打單<eng>Measurement, Pickup/Payment</eng></a>
  <dl class="sub">
@@ -63,4 +67,4 @@ if ( isset( $jwt ) ) {
         toggleme($('a.mobilemenu'),$('body'),'MobileMenuOn');
     });
 </script>
-<script defer src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script defer src="js/a076d05399.js"></script>

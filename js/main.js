@@ -156,7 +156,14 @@ let mainState = {
     r_kilo : 0.0,
     n_kilo : 0.0,
     r_cuft : 0.0,
-    n_cuft : 0.0
+    n_cuft : 0.0,
+
+    // show photo
+    pic_lib : [],
+    pic_receive: [],
+    url_ip: "https://storage.googleapis.com/feliiximg/",
+
+    pic_preview: [],
 
 };
 
@@ -534,6 +541,146 @@ var app = new Vue({
     },
 
     methods: {
+        delete_library : function () {
+            let _this = this;
+            let delete_me = [];
+            for(var i = 0; i < this.pic_lib.length; i++) {
+                if(this.pic_lib[i].is_checked == true) {
+                    delete_me.push(this.pic_lib[i].pid);
+                }
+            }
+
+            if(delete_me.length > 0)
+            {
+                Swal.fire({
+                    title: "Submit",
+                    text: "確定要刪除? Are you sure to delete?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes",
+                  }).then((result) => {
+                    if (result.value) {
+                        var token = localStorage.getItem("token");
+                        var form_Data = new FormData();
+                        form_Data.append("jwt", token);
+                        form_Data.append("ids", delete_me.join());
+                        form_Data.append("crud", "del");
+
+                        axios({
+                            method: "post",
+                            headers: {
+                            "Content-Type": "multipart/form-data",
+                            },
+                            url: "api/receive_library_delete.php",
+                            data: form_Data,
+                        })
+                        .then(function(response) {
+                        //handle success
+                            Swal.fire({
+                                html: response.data.message,
+                                icon: "info",
+                                confirmButtonText: "OK",
+                            });
+
+                            window.jQuery(".mask").toggle();
+                            window.jQuery("#photoModal").toggle();
+                            _this.pic_lib = [];
+                            _this.getPicLibrary();
+                        })
+                        .catch(function(error) {
+                            //handle error
+                            Swal.fire({
+                                text: JSON.stringify(error),
+                                icon: "info",
+                                confirmButtonText: "OK",
+                            });
+
+                            window.jQuery(".mask").toggle();
+                            window.jQuery("#photoModal").toggle();
+                            
+                        });
+                    } else {
+                        return;
+                    }
+                });
+            }
+        },
+    
+
+        bulk_toggle_library: function(){
+            let toogle = document.getElementById('bulk_select_all_library').checked;
+            for(var i = 0; i < this.pic_lib.length; i++) {
+              this.pic_lib[i].is_checked = toogle;
+          }
+        },
+
+        choose_library: function (){
+            if(this.isEditing == true)
+            {
+                for (var i = 0; i < this.pic_lib.length; i++) {
+                    if(this.pic_lib[i].is_checked == true) {
+                        let pid = this.pic_lib[i].pid;
+                        var found = false;
+                        for(var j = 0; j < this.record.pic.length; j++) {
+                            if (this.record.pic[j].pid == pid) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if(found == false) {
+                            this.record.pic.push(this.shallowCopy(
+                                this.pic_lib.find((element) => element.pid == pid)
+                            ));
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                this.pic_receive = [];
+                for (var i = 0; i < this.pic_lib.length; i++) {
+                    if(this.pic_lib[i].is_checked == true) {
+                        let pid = this.pic_lib[i].pid;
+                        this.pic_receive.push(this.shallowCopy(
+                            this.pic_lib.find((element) => element.pid == pid)
+                        ));
+
+                        this.customer = this.pic_lib[i].customer;
+                        this.supplier = this.pic_lib[i].supplier;
+                        this.date_receive = this.pic_lib[i].date_receive;
+                        $('#adddate').datepicker('setDate', this.date_receive);
+                        this.quantity = this.pic_lib[i].quantity;
+                        this.remark = this.pic_lib[i].remark;
+                    }
+                }
+            }
+            
+
+              window.jQuery(".mask").toggle();
+              window.jQuery("#photoModal").toggle();
+
+        },
+
+        getPicLibrary: function(keyword) {
+            let _this = this;
+            if(this.pic_lib.length > 0) {
+                return;
+            }
+            console.log("getPicLibrary");
+              axios.get('api/get_pic_library.php')
+                  .then(function(response) {
+                      console.log(response.data);
+                      _this.pic_lib = response.data;
+
+                  })
+                  .catch(function(error) {
+                      console.log(error);
+                  });
+          },
+
         getReceiveRecords: function(keyword) {
           console.log("getReceiveRecords");
             axios.get('api/receive_record.php')
@@ -592,6 +739,12 @@ var app = new Vue({
           return  this.receive_records.slice(from, to);
         },
 
+        get_photo_library: function () {
+            this.getPicLibrary();
+            window.jQuery(".mask").toggle();
+            window.jQuery("#photoModal").toggle();
+        },
+
         createReceiveRecord: function() {
             console.log("createReceiveRecord");
 
@@ -628,6 +781,15 @@ var app = new Vue({
                 form_Data.append('crud', "insert");
                 form_Data.append('id', '');
 
+                let delete_me = [];
+                for(var i = 0; i < this.pic_receive.length; i++) {
+                    if(this.pic_receive[i].is_checked == true) {
+                        delete_me.push(this.pic_receive[i].pid);
+                    }
+                }
+
+                form_Data.append("photo", delete_me.join());
+           
                 var receive_record = {};
                 form_Data.forEach(function(value, key) {
                     receive_record[key] = value;
@@ -693,6 +855,15 @@ var app = new Vue({
                 form_Data.append('file', this.file);
                 form_Data.append('crud', "insert_mail");
                 form_Data.append('id', '');
+
+                let delete_me = [];
+                for(var i = 0; i < this.pic_receive.length; i++) {
+                    if(this.pic_receive[i].is_checked == true) {
+                        delete_me.push(this.pic_receive[i].pid);
+                    }
+                }
+
+                form_Data.append("photo", delete_me.join());
 
                 var receive_record = {};
                 form_Data.forEach(function(value, key) {
@@ -826,6 +997,8 @@ var app = new Vue({
             form_Data.append('crud', "update");
             form_Data.append('id', this.record.id);
 
+            form_Data.append('pic', JSON.stringify(this.record.pic))
+
             const token = sessionStorage.getItem('token');
 
             axios({
@@ -901,6 +1074,8 @@ var app = new Vue({
             form_Data.append('file', this.file);
             form_Data.append('crud', "update_mail");
             form_Data.append('id', this.record.id);
+
+            form_Data.append('pic', JSON.stringify(this.record.pic))
 
             const token = sessionStorage.getItem('token');
 
@@ -999,11 +1174,15 @@ var app = new Vue({
             this.isEditing = false;
             this.record = {};
 
+            this.pic_lib = [];
+            this.pic_receive = [];
+            this.pic_preview = [];
+
             $('#adddate').datepicker('setDate', "");
             $('#adddate1').datepicker('setDate', "");
 
             this.resetError();
-            this.resetFile();
+            // this.resetFile();
             
             if(!$('.block.record').hasClass('show')) 
               $('.block.record').addClass('show');
@@ -1075,8 +1254,9 @@ var app = new Vue({
             return result;
         },
 
-        zoom(url) {
-          this.selectedImage = "img/" + url;
+        zoom(id) {
+          this.selectedImage = "true";
+          this.pic_preview = this.shallowCopy(app.receive_records.find(element => element.id == id)['pic']);
 
           let imgdialog = $("#imgModal").dialog({
                 autoOpen: false,
@@ -1084,8 +1264,6 @@ var app = new Vue({
                 width: 640,
                 modal: true,
             });
-
-          $("#img_pre").attr('src', this.selectedImage);
 
          imgdialog.dialog("open");
           console.log("Zoom", this.selectedImage);

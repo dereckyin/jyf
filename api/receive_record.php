@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+error_reporting(0);
 ini_set('display_errors', 1);
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 include_once 'config/core.php';
@@ -41,38 +41,106 @@ require '../PHPMailer-master/src/SMTP.php';
 
 require_once "db.php";
 
+function GetPic($picname, $photo, $id, $conn){
+    $merged_results = array();
+
+    if($picname != "")
+    {
+        array_push($merged_results, array(
+            "pid" => $id,
+            "batch_id" => $id,
+            "is_checked" => true,
+            "customer" => "",
+            "date_receive" => "",
+            "type" => "FILE",
+            "quantity" => "",
+            "remark" => "",
+            "supplier" => "",
+            "gcp_name" => $picname,
+        ));
+        
+    }
+
+    if($photo == 'RECEIVE')
+    {
+        $sql = "SELECT id, gcp_name FROM gcp_storage_file WHERE batch_id = ? AND batch_type = 'RECEIVE' AND STATUS <> -1";
+        if ($stmt = mysqli_prepare($conn, $sql)) {
+
+            mysqli_stmt_bind_param($stmt, "i", $id);
+        
+            /* execute query */
+            mysqli_stmt_execute($stmt);
+
+            $result1 = mysqli_stmt_get_result($stmt);
+
+            while($row = mysqli_fetch_assoc($result1)) {
+                $filename = $row['gcp_name'];
+                $pid = $row['id'];
+                array_push($merged_results, array(
+                    "pid" => $pid,
+                    "batch_id" => $id,
+                    "is_checked" => true,
+                    "customer" => "",
+                    "date_receive" => "",
+                    "type" => "RECEIVE",
+                    "quantity" => "",
+                    "remark" => "",
+                    "supplier" => "",
+                    "gcp_name" => $filename,
+                ));
+            }
+        }
+    }
+
+    return $merged_results;
+}
+
 function insertContactor($customer, $supplier, $user, $conn) {
     $needToInsert = 0;
 
     $customer =trim($customer);
     $supplier = trim($supplier);
 
+    $hadData = 0;
    if(trim($customer) != '')
     {
         $sql = "select customer from contactor where customer = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $customer);
+        if ($stmt = mysqli_prepare($conn, $sql)) {
 
-        $hadData = 0;
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        while ($row = mysqli_fetch_array($result)){
-            $hadData = 1;
+            mysqli_stmt_bind_param($stmt, "s", $customer);
+        
+            /* execute query */
+            mysqli_stmt_execute($stmt);
+
+            $result1 = mysqli_stmt_get_result($stmt);
+
+            while($row = mysqli_fetch_assoc($result1)) {
+                $hadData = 1;
+            }
+
+            if(!$hadData)
+                $needToInsert = 1;
         }
-        if(!$hadData)
-            $needToInsert = 1;
     }
 
+    $hadData = 0;
     if(trim($supplier) != '')
     {
         $sql = "select supplier from contactor where supplier = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $supplier);
+        if ($stmt = mysqli_prepare($conn, $sql)) {
 
-        $hadData = 0;
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        while ($row = mysqli_fetch_array($result)){
-            $hadData = 1;
+            mysqli_stmt_bind_param($stmt, "s", $supplier);
+        
+            /* execute query */
+            mysqli_stmt_execute($stmt);
+
+            $result1 = mysqli_stmt_get_result($stmt);
+
+            while($row = mysqli_fetch_assoc($result1)) {
+                $hadData = 1;
+            }
         }
+
         if(!$hadData)
             $needToInsert = 1;
     }
@@ -91,7 +159,7 @@ function insertContactor($customer, $supplier, $user, $conn) {
 
 }
 
-function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
+function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mail_array) {
     $conf = new Conf();
     $mail = new PHPMailer();
     $mail->IsSMTP();
@@ -119,8 +187,8 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
     $content = $content . "<p>Greetings! Pls be advised that our taiwan office have already received your goods sent on :</p>";
     $content = $content . "<p>" . $date . " " . $customer . "</p>";
     $content = $content . "<p>" . $desc . " " . $amount . " " . $supplier . "</p>";
-    if($pic != '')
-        $content = $content . "<a href='https://webmatrix.myvnc.com/img/" . $pic . "'>" . "照片(picture)" . "</a>";
+    for($i=0; $i<count($pic_mail_array); $i++)
+        $content = $content . "<a href='" . $pic_mail_array[$i] . "'>" . "照片(picture)" . "</a>";
     $content = $content . "<p> </p>";
     $content = $content . "<p>Note:first in first out, priority will be given to early senders</p>";
     $content = $content . "<p>We will send another advisory for the</p>";
@@ -175,7 +243,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                         array_push($key, strtolower($row['customer']));
                     }
 
-                        $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
+                        $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, photo, crt_time, crt_user FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
 
                         if ($stmt = mysqli_prepare($conn, $subquery)) {
 
@@ -187,7 +255,51 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                             $result1 = mysqli_stmt_get_result($stmt);
 
                             while($row = mysqli_fetch_assoc($result1)) {
-                                $merged_results[] = $row;
+                                $is_checked = $row['is_checked'];
+                                $id = $row['id'];
+                                $date_receive = $row['date_receive'];
+                                $customer = $row['customer'];
+                                $email = $row['email'];
+                                $description = $row['description'];
+                                $quantity = $row['quantity'];
+                                $supplier = $row['supplier'];
+                                $kilo = $row['kilo'];
+                                $cuft = $row['cuft'];
+                                $taiwan_pay = $row['taiwan_pay'];
+                                $courier_pay = $row['courier_pay'];
+                                $courier_money = $row['courier_money'];
+                                $remark = $row['remark'];
+                                $picname = $row['picname'];
+                                $photo = $row['photo'];
+                                $crt_time = $row['crt_time'];
+                                $crt_user = $row['crt_user'];
+                                
+                                $pic = GetPic($picname, $photo, $id, $conn);
+
+                                $merged_results[] = array(
+                                    "is_checked" => $is_checked,
+                                    "id" => $id,
+                                    "date_receive" => $date_receive,
+                                    "customer" => $customer,
+                                    "email" => $email,
+                                    "description" => $description,
+                                    "quantity" => $quantity,
+                                    "supplier" => $supplier,
+                                    "kilo" => $kilo,
+                                    "cuft" => $cuft,
+                                    "taiwan_pay" => $taiwan_pay,
+                                    "courier_pay" => $courier_pay,
+                                    "courier_money" => $courier_money,
+                                    "remark" => $remark,
+                                    "picname" => $picname,
+                                    "photo" => $photo,
+                                    "crt_time" => $crt_time,
+                                    "crt_user" => $crt_user,
+
+                                    "pic" => $pic,
+                                
+                                );
+                                
                             }
                         }
                     //         $result1 = mysqli_query($conn,$subquery);
@@ -203,14 +315,60 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                 }
             }
 
-            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY id";
+            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, photo, crt_time, crt_user  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY id";
 
-              $result1 = mysqli_query($conn,$subquery);
-              if($result1 != null)
-                            {
-              while($row = mysqli_fetch_assoc($result1))
-                  $merged_results[] = $row;
-          }
+            $result1 = mysqli_query($conn,$subquery);
+            if($result1 != null)
+            {
+                while($row = mysqli_fetch_assoc($result1))
+                {
+                    $is_checked = $row['is_checked'];
+                    $id = $row['id'];
+                    $date_receive = $row['date_receive'];
+                    $customer = $row['customer'];
+                    $email = $row['email'];
+                    $description = $row['description'];
+                    $quantity = $row['quantity'];
+                    $supplier = $row['supplier'];
+                    $kilo = $row['kilo'];
+                    $cuft = $row['cuft'];
+                    $taiwan_pay = $row['taiwan_pay'];
+                    $courier_pay = $row['courier_pay'];
+                    $courier_money = $row['courier_money'];
+                    $remark = $row['remark'];
+                    $picname = $row['picname'];
+                    $photo = $row['photo'];
+                    $crt_time = $row['crt_time'];
+                    $crt_user = $row['crt_user'];
+                    
+                    $pic = GetPic($picname, $photo, $id, $conn);
+
+                    $merged_results[] = array(
+                        "is_checked" => $is_checked,
+                        "id" => $id,
+                        "date_receive" => $date_receive,
+                        "customer" => $customer,
+                        "email" => $email,
+                        "description" => $description,
+                        "quantity" => $quantity,
+                        "supplier" => $supplier,
+                        "kilo" => $kilo,
+                        "cuft" => $cuft,
+                        "taiwan_pay" => $taiwan_pay,
+                        "courier_pay" => $courier_pay,
+                        "courier_money" => $courier_money,
+                        "remark" => $remark,
+                        "picname" => $picname,
+                        "photo" => $photo,
+                        "crt_time" => $crt_time,
+                        "crt_user" => $crt_user,
+
+                        "pic" => $pic,
+                    
+                    );
+                }
+            
+            }
 
             // die if SQL statement failed
             if (!$merged_results) {
@@ -243,8 +401,13 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
             $courier_pay = stripslashes($_POST["courier_pay"]);
             $courier_money = stripslashes($_POST["courier_money"]);
             $remark = stripslashes($_POST["remark"]);
+            $photo = stripslashes($_POST["photo"]);
             $crud = stripslashes($_POST["crud"]);
             $id = stripslashes($_POST["id"]);
+
+            $pic = (isset($_POST['pic']) ?  $_POST['pic'] : '[]');
+
+            $pic_array = json_decode($pic,true);
 
             $taiwan_pay = ($taiwan_pay ? $taiwan_pay : 0);
             $courier_pay = ($courier_pay ? $courier_pay : 0);
@@ -268,6 +431,12 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                     }
                 }
 
+            $library = "";
+            if($photo != "")
+            {
+                $library = "RECEIVE";
+            }
+
           	/* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
                 $sql = "insert into receive_record (date_receive, 
                 									  customer, 
@@ -276,6 +445,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                 									  quantity,
                 									  supplier,
                 									  picname,
+                									  photo,
                 									  kilo,
                 									  cuft,
                 									  taiwan_pay,
@@ -283,9 +453,9 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                 									  courier_money,
                 									  remark,
                                                       crt_user) 
-                							values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                							values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql); 
-                $stmt->bind_param("sssssssddiiiss",
+                $stmt->bind_param("ssssssssddiiiss",
                 					$date_receive, 
                 					$customer, 
                 					$email, 
@@ -293,6 +463,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                 					$quantity, 
                 					$supplier,
                 					$filename,
+                					$library,
                 					$kilo, 
                 					$cuft, 
                 					$taiwan_pay, 
@@ -305,6 +476,48 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
 
                 $last_id = mysqli_insert_id($conn);
 
+                // update library
+                if($photo != "")
+                {
+                    $batch_id = $last_id;
+                    $query = "update gcp_storage_file
+                        SET
+                            batch_id = ?,
+                            batch_type = ?,
+        
+                            create_id = ?,
+                            created_at = now()
+                        where id in (?) and batch_type = 'LIBRARY'
+                    ";
+
+                    // prepare the query
+                    $stmt = $conn->prepare($query);
+
+                    // bind the values
+                    $stmt->bind_param(
+                        "isis",
+                        $batch_id,
+                        $library,
+                        $create_id,
+                        $photo,
+                    );
+
+                    try {
+                        // execute the query, also check if query was successful
+                        if ($stmt->execute()) {
+                            $last_id = mysqli_insert_id($conn);
+                        } else {
+                            error_log(mysqli_errno($conn));
+                        }
+                    } catch (Exception $e) {
+                        error_log($e->getMessage());
+                        mysqli_rollback($conn);
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                        die();
+                    }
+                }
+
                 insertContactor($customer, $supplier, $user, $conn);
 
                 echo $last_id;
@@ -313,7 +526,6 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
 
             case 'insert_mail':
 
-                
                 $filename = "";
 
                 if(isset($_FILES['file']['name'])) {
@@ -327,6 +539,24 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                     }
                 }
 
+                $pic_mail_array = array();
+
+                $library = "";
+                if($photo != "")
+                {
+                    $library = "RECEIVE";
+                    $sql = "SELECT gcp_name FROM  gcp_storage_file where id in (" . $photo . ")";
+
+                    $result = mysqli_query($conn,$sql);
+
+                    /* fetch data */
+                    while ($row = mysqli_fetch_array($result)){
+                        if (isset($row)){
+                            array_push($pic_mail_array, 'https://storage.googleapis.com/feliiximg/' . $row['gcp_name']);
+                        }
+                    }
+                }
+
             /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
                 $sql = "insert into receive_record (date_receive, 
                                                       customer, 
@@ -335,6 +565,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                                                       quantity,
                                                       supplier,
                                                       picname,
+                                                      photo,
                                                       kilo,
                                                       cuft,
                                                       taiwan_pay,
@@ -342,9 +573,9 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                                                       courier_money,
                                                       remark,
                                                       crt_user) 
-                                            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql); 
-                $stmt->bind_param("sssssssddiiiss",
+                $stmt->bind_param("ssssssssddiiiss",
                                     $date_receive, 
                                     $customer, 
                                     $email, 
@@ -362,10 +593,55 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                 $stmt->execute();
                 $stmt->close();
 
+                
+                
+
                 if($email != "")
-                    sendMail($email, $date_receive, $customer, $description, $quantity, $supplier, $filename);
+                    sendMail($email, $date_receive, $customer, $description, $quantity, $supplier, $pic_mail_array);
 
                 $last_id = mysqli_insert_id($conn);
+
+                // update library
+                if($photo != "")
+                {
+                    $batch_id = $last_id;
+                    $query = "update gcp_storage_file
+                        SET
+                            batch_id = ?,
+                            batch_type = ?,
+        
+                            create_id = ?,
+                            created_at = now()
+                        where id in (?) and batch_type = 'LIBRARY'
+                    ";
+
+                    // prepare the query
+                    $stmt = $conn->prepare($query);
+
+                    // bind the values
+                    $stmt->bind_param(
+                        "isis",
+                        $batch_id,
+                        $library,
+                        $create_id,
+                        $photo,
+                    );
+
+                    try {
+                        // execute the query, also check if query was successful
+                        if ($stmt->execute()) {
+                            $last_id = mysqli_insert_id($conn);
+                        } else {
+                            error_log(mysqli_errno($conn));
+                        }
+                    } catch (Exception $e) {
+                        error_log($e->getMessage());
+                        mysqli_rollback($conn);
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                        die();
+                    }
+                }
 
                 insertContactor($customer, $supplier, $user, $conn);
 
@@ -375,6 +651,32 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
 
             case "update":
                 $filename = "";
+                $pic_name = "";
+                $library = "";
+                $photo = "";
+                $stringarray = array();
+
+                for($i=0 ; $i < count($pic_array) ; $i++)
+                {
+                    if($pic_array[$i]['type'] == 'FILE'){
+                        if($pic_array[$i]['is_checked'] == true)
+                            $pic_name = $pic_array[$i]['gcp_name'];
+                        else
+                            $pic_name = "";
+                    }
+
+                    if($pic_array[$i]['type'] == 'RECEIVE'){
+                        if($pic_array[$i]['is_checked'] == true)
+                            array_push($stringarray,$pic_array[$i]['pid']);
+                    }
+                }
+
+                $photo = implode("','",$stringarray);
+                if($photo != "")
+                {
+                    $library = "RECEIVE";
+                }
+
 
                 if(isset($_FILES['file']['name'])) {
                     $key = "myKey";
@@ -397,6 +699,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                                                           quantity = ?,
                                                           supplier = ?,
                                                           picname = ?,
+                                                          photo = ?,
                                                           kilo = ?,
                                                           cuft = ?,
                                                           taiwan_pay = ?,
@@ -407,7 +710,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                                                           mdf_user = ?
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
-                    $stmt->bind_param("sssssssddiiissd",
+                    $stmt->bind_param("ssssssssddiiissd",
                                         $date_receive, 
                                         $customer, 
                                         $email, 
@@ -415,6 +718,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                                         $quantity, 
                                         $supplier,
                                         $filename,
+                                        $library,
                                         $kilo, 
                                         $cuft, 
                                         $taiwan_pay, 
@@ -436,6 +740,8 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                                                           description = ?, 
                                                           quantity = ?,
                                                           supplier = ?,
+                                                          picname = ?,
+                                                          photo = ?,
                                                           kilo = ?,
                                                           cuft = ?,
                                                           taiwan_pay = ?,
@@ -446,13 +752,232 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                                                           mdf_user = ?
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
-                    $stmt->bind_param("ssssssddiiissd",
+                    $stmt->bind_param("ssssssssddiiissd",
                                         $date_receive, 
                                         $customer,  
                                         $email, 
                                         $description, 
                                         $quantity, 
                                         $supplier,
+                                        $pic_name,
+                                        $library,
+                                        $kilo, 
+                                        $cuft, 
+                                        $taiwan_pay, 
+                                        $courier_pay, 
+                                        $courier_money, 
+                                        $remark,
+                                        $user,
+                                        $id);
+                    $stmt->execute();
+                    $affected_rows = mysqli_stmt_num_rows($stmt);
+                    $stmt->close();
+                }
+
+                $library = "LIBRARY";
+                $batch_id = $id;
+                $query = "update gcp_storage_file
+                    SET
+                        batch_id = batch_id_org,
+                        batch_type = ?
+    
+                    where batch_id = ? and batch_type = 'RECEIVE'
+                ";
+
+                // prepare the query
+                $stmt = $conn->prepare($query);
+
+                // bind the values
+                $stmt->bind_param(
+                    "si",
+                    $library,
+                    $batch_id,
+                );
+
+                try {
+                    // execute the query, also check if query was successful
+                    if ($stmt->execute()) {
+                        $last_id = mysqli_insert_id($conn);
+                    } else {
+                        error_log(mysqli_errno($conn));
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    mysqli_rollback($conn);
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
+                }
+
+                // update library
+                if($photo != "")
+                {
+                    $library = "RECEIVE";
+
+                    $batch_id = $id;
+                    $query = "update gcp_storage_file
+                        SET
+                            batch_id = ?,
+                            batch_type = ?,
+        
+                            create_id = ?,
+                            created_at = now()
+                        where id in (?) and batch_type = 'LIBRARY'
+                    ";
+
+                    // prepare the query
+                    $stmt = $conn->prepare($query);
+
+                    // bind the values
+                    $stmt->bind_param(
+                        "isis",
+                        $batch_id,
+                        $library,
+                        $create_id,
+                        $photo,
+                    );
+
+                    try {
+                        // execute the query, also check if query was successful
+                        if ($stmt->execute()) {
+                            $last_id = mysqli_insert_id($conn);
+                        } else {
+                            error_log(mysqli_errno($conn));
+                        }
+                    } catch (Exception $e) {
+                        error_log($e->getMessage());
+                        mysqli_rollback($conn);
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                        die();
+                    }
+                }
+
+                
+
+                echo $affected_rows;
+
+                break;
+
+              case "update_mail":
+                $filename = "";
+                $pic_name = "";
+                $library = "";
+                $photo = "";
+                $stringarray = array();
+
+                $pic_mail_array = array();
+
+                for($i=0 ; $i < count($pic_array) ; $i++)
+                {
+                    if($pic_array[$i]['type'] == 'FILE'){
+                        if($pic_array[$i]['is_checked'] == true)
+                        {
+                            $pic_name = $pic_array[$i]['gcp_name'];
+                            array_push($pic_mail_array, 'https://webmatrix.myvnc.com/img/' . $pic_name);
+                        }
+                        else
+                            $pic_name = "";
+                    }
+
+                    if($pic_array[$i]['type'] == 'RECEIVE'){
+                        if($pic_array[$i]['is_checked'] == true)
+                        {
+                            array_push($stringarray,$pic_array[$i]['pid']);
+                            array_push($pic_mail_array, 'https://storage.googleapis.com/feliiximg/' . $pic_array[$i]['gcp_name']);
+                        }
+                    }
+                }
+
+                $photo = implode("','",$stringarray);
+                if($photo != "")
+                {
+                    $library = "RECEIVE";
+                }
+
+                if(isset($_FILES['file']['name'])) {
+                    $key = "myKey";
+                    $time = time();
+                    $hash = hash_hmac('sha256', $time, $key);
+                    $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+                    $filename = $time . $hash . "." . $ext;
+                    if (move_uploaded_file($_FILES["file"]["tmp_name"], $conf::$upload_path . $filename)) {
+                        echo "done";
+                    }
+                }
+
+                if($filename != "")
+                    {
+                    /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
+                    $sql = "update receive_record set date_receive = ?, 
+                                                          customer = ?, 
+                                                          email = ?, 
+                                                          description = ?, 
+                                                          quantity = ?,
+                                                          supplier = ?,
+                                                          picname = ?,
+                                                          photo = ?,
+                                                          kilo = ?,
+                                                          cuft = ?,
+                                                          taiwan_pay = ?,
+                                                          courier_pay = ?,
+                                                          courier_money = ?,
+                                                          remark = ?,
+                                                          mdf_time = now(),
+                                                          mdf_user = ?
+                                                where id = ?";
+                    $stmt = $conn->prepare($sql); 
+                    $stmt->bind_param("ssssssssddiiissd",
+                                        $date_receive, 
+                                        $customer, 
+                                        $email, 
+                                        $description, 
+                                        $quantity, 
+                                        $supplier,
+                                        $filename,
+                                        $library,
+                                        $kilo, 
+                                        $cuft, 
+                                        $taiwan_pay, 
+                                        $courier_pay, 
+                                        $courier_money, 
+                                        $remark,
+                                        $user,
+                                        $id);
+                    $stmt->execute();
+                    $affected_rows = mysqli_stmt_num_rows($stmt);
+                    $stmt->close();
+                }
+                else
+                {
+                    /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
+                    $sql = "update receive_record set date_receive = ?, 
+                                                          customer = ?, 
+                                                          email = ?, 
+                                                          description = ?, 
+                                                          quantity = ?,
+                                                          supplier = ?,
+                                                          picname = ?,
+                                                          photo = ?,
+                                                          kilo = ?,
+                                                          cuft = ?,
+                                                          taiwan_pay = ?,
+                                                          courier_pay = ?,
+                                                          courier_money = ?,
+                                                          remark = ?,
+                                                          mdf_time = now(),
+                                                          mdf_user = ?
+                                                where id = ?";
+                    $stmt = $conn->prepare($sql); 
+                    $stmt->bind_param("ssssssssddiiissd",
+                                        $date_receive, 
+                                        $customer, 
+                                        $email, 
+                                        $description, 
+                                        $quantity, 
+                                        $supplier,
+                                        $pic_name,
+                                        $library,
                                         $kilo, 
                                         $cuft, 
                                         $taiwan_pay, 
@@ -467,106 +992,87 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic) {
                 }
 
                 
+                $library = "LIBRARY";
+                $batch_id = $id;
+                $query = "update gcp_storage_file
+                    SET
+                        batch_id = batch_id_org,
+                        batch_type = ?
+    
+                    where batch_id = ? and batch_type = 'RECEIVE'
+                ";
 
-                echo $affected_rows;
+                // prepare the query
+                $stmt = $conn->prepare($query);
 
-                break;
+                // bind the values
+                $stmt->bind_param(
+                    "si",
+                    $library,
+                    $batch_id,
+                );
 
-              case "update_mail":
-                $filename = "";
+                try {
+                    // execute the query, also check if query was successful
+                    if ($stmt->execute()) {
+                        $last_id = mysqli_insert_id($conn);
+                    } else {
+                        error_log(mysqli_errno($conn));
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    mysqli_rollback($conn);
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
+                }
 
-                if(isset($_FILES['file']['name'])) {
-                    $key = "myKey";
-                    $time = time();
-                    $hash = hash_hmac('sha256', $time, $key);
-                    $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-                    $filename = $time . $hash . "." . $ext;
-                    if (move_uploaded_file($_FILES["file"]["tmp_name"], $conf::$upload_path . $filename)) {
-                        echo "done";
+                // update library
+                if($photo != "")
+                {
+                    $library = "RECEIVE";
+
+                    $batch_id = $id;
+                    $query = "update gcp_storage_file
+                        SET
+                            batch_id = ?,
+                            batch_type = ?,
+        
+                            create_id = ?,
+                            created_at = now()
+                        where id in (?) and batch_type = 'LIBRARY'
+                    ";
+
+                    // prepare the query
+                    $stmt = $conn->prepare($query);
+
+                    // bind the values
+                    $stmt->bind_param(
+                        "isis",
+                        $batch_id,
+                        $library,
+                        $create_id,
+                        $photo,
+                    );
+
+                    try {
+                        // execute the query, also check if query was successful
+                        if ($stmt->execute()) {
+                            $last_id = mysqli_insert_id($conn);
+                        } else {
+                            error_log(mysqli_errno($conn));
+                        }
+                    } catch (Exception $e) {
+                        error_log($e->getMessage());
+                        mysqli_rollback($conn);
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                        die();
                     }
                 }
 
-                if($filename != "")
-                    {
-                    /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
-                    $sql = "update receive_record set date_receive = ?, 
-                                                          customer = ?, 
-                                                          email = ?, 
-                                                          description = ?, 
-                                                          quantity = ?,
-                                                          supplier = ?,
-                                                          picname = ?,
-                                                          kilo = ?,
-                                                          cuft = ?,
-                                                          taiwan_pay = ?,
-                                                          courier_pay = ?,
-                                                          courier_money = ?,
-                                                          remark = ?,
-                                                          mdf_time = now(),
-                                                          mdf_user = ?
-                                                where id = ?";
-                    $stmt = $conn->prepare($sql); 
-                    $stmt->bind_param("sssssssddiiissd",
-                                        $date_receive, 
-                                        $customer, 
-                                        $email, 
-                                        $description, 
-                                        $quantity, 
-                                        $supplier,
-                                        $filename,
-                                        $kilo, 
-                                        $cuft, 
-                                        $taiwan_pay, 
-                                        $courier_pay, 
-                                        $courier_money, 
-                                        $remark,
-                                        $user,
-                                        $id);
-                    $stmt->execute();
-                    $affected_rows = mysqli_stmt_num_rows($stmt);
-                    $stmt->close();
-                }
-                else
-                {
-                    /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
-                    $sql = "update receive_record set date_receive = ?, 
-                                                          customer = ?, 
-                                                          email = ?, 
-                                                          description = ?, 
-                                                          quantity = ?,
-                                                          supplier = ?,
-                                                          kilo = ?,
-                                                          cuft = ?,
-                                                          taiwan_pay = ?,
-                                                          courier_pay = ?,
-                                                          courier_money = ?,
-                                                          remark = ?,
-                                                          mdf_time = now(),
-                                                          mdf_user = ?
-                                                where id = ?";
-                    $stmt = $conn->prepare($sql); 
-                    $stmt->bind_param("ssssssddiiissd",
-                                        $date_receive, 
-                                        $customer, 
-                                        $email, 
-                                        $description, 
-                                        $quantity, 
-                                        $supplier,
-                                        $kilo, 
-                                        $cuft, 
-                                        $taiwan_pay, 
-                                        $courier_pay, 
-                                        $courier_money, 
-                                        $remark,
-                                        $user,
-                                        $id);
-                    $stmt->execute();
-                    $affected_rows = mysqli_stmt_num_rows($stmt);
-                    $stmt->close();
-                }
-
                 if($email != "")
-                    sendMail($email, $date_receive, $customer, $description, $quantity, $supplier, $filename);
+                    sendMail($email, $date_receive, $customer, $description, $quantity, $supplier, $pic_mail_array);
 
                 echo $affected_rows;
 
