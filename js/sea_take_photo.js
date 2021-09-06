@@ -165,10 +165,10 @@ var app = new Vue({
       var count = 0;
       for (var i = 0; i < this.pic_list.length; i++)
       {
-        if(this.pic_list[i].checked)
+        if(this.pic_list[i].check)
         {
+          form_Data.append("files" + count, this.pic_list[i].url);
           count = count + 1;
-          form_Data.append("files" + i, this.pic_list[i].url);
         }
       }
       form_Data.append("file_count", count);
@@ -237,10 +237,10 @@ var app = new Vue({
       var count = 0;
       for (var i = 0; i < this.pic_list.length; i++)
       {
-        if(this.pic_list[i].checked)
+        if(this.pic_list[i].check)
         {
+          form_Data.append("files" + count, this.pic_list[i].url);
           count = count + 1;
-          form_Data.append("files" + i, this.pic_list[i].url);
         }
       }
       form_Data.append("file_count", count);
@@ -343,7 +343,7 @@ var app = new Vue({
       else file = "";
 
       var obj = {
-        check: "checked",
+        check: '1',
         file: file,
         url: file,
       };

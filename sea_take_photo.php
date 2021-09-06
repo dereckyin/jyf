@@ -182,7 +182,7 @@
                         <input type="button" value="Photo is ok" @click="append_pic()" style="border-radius: 0.38rem; border: 0.06rem solid rgb(112, 112, 112); font-size: 15px; margin: 0.38rem 0rem 0.48rem 0rem;">
 
                         <div v-for="(item, index) in pic_list" class="photobox" >
-                            <input type="checkbox" class="alone" :checked="item.check">
+                            <input type="checkbox" class="alone" :value="item.check" v-model="item.check" >
                             <img :src="item.url">
                         </div>
 

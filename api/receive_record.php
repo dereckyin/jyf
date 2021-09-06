@@ -211,6 +211,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
       $method = $_SERVER['REQUEST_METHOD'];
 
     $user = $decoded->data->username;
+    $create_id = $decoded->data->id;
 
       switch ($method) {
           case 'GET':
@@ -671,7 +672,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                     }
                 }
 
-                $photo = implode("','",$stringarray);
+                $photo = implode(",",$stringarray);
                 if($photo != "")
                 {
                     $library = "RECEIVE";
@@ -822,7 +823,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
         
                             create_id = ?,
                             created_at = now()
-                        where id in (?) and batch_type = 'LIBRARY'
+                        where id in (" . $photo . ") and batch_type = 'LIBRARY'
                     ";
 
                     // prepare the query
@@ -830,11 +831,10 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
 
                     // bind the values
                     $stmt->bind_param(
-                        "isis",
+                        "isi",
                         $batch_id,
                         $library,
-                        $create_id,
-                        $photo
+                        $create_id
                     );
 
                     try {
@@ -889,7 +889,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                     }
                 }
 
-                $photo = implode("','",$stringarray);
+                $photo = implode(",",$stringarray);
                 if($photo != "")
                 {
                     $library = "RECEIVE";
@@ -1040,7 +1040,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
         
                             create_id = ?,
                             created_at = now()
-                        where id in (?) and batch_type = 'LIBRARY'
+                        where id in (" . $photo . ") and batch_type = 'LIBRARY'
                     ";
 
                     // prepare the query
@@ -1048,11 +1048,10 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
 
                     // bind the values
                     $stmt->bind_param(
-                        "isis",
+                        "isi",
                         $batch_id,
                         $library,
-                        $create_id,
-                        $photo
+                        $create_id
                     );
 
                     try {

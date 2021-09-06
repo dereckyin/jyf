@@ -612,8 +612,9 @@ var app = new Vue({
                                 confirmButtonText: "OK",
                             });
 
-                            window.jQuery(".mask").toggle();
-                            window.jQuery("#photoModal").toggle();
+                            //window.jQuery(".mask").toggle();
+                            //window.jQuery("#photoModal").toggle();
+                            $( "#photoModal" ).dialog('close');
                             _this.pic_lib = [];
                             _this.getPicLibrary();
                         })
@@ -625,8 +626,9 @@ var app = new Vue({
                                 confirmButtonText: "OK",
                             });
 
-                            window.jQuery(".mask").toggle();
-                            window.jQuery("#photoModal").toggle();
+                            //window.jQuery(".mask").toggle();
+                            //window.jQuery("#photoModal").toggle();
+                            $( "#photoModal" ).dialog('close');
                             
                         });
                     } else {
@@ -687,8 +689,9 @@ var app = new Vue({
             }
             
 
-              window.jQuery(".mask").toggle();
-              window.jQuery("#photoModal").toggle();
+              //window.jQuery(".mask").toggle();
+              //window.jQuery("#photoModal").toggle();
+              $( "#photoModal" ).dialog('close');
 
         },
 
@@ -769,8 +772,9 @@ var app = new Vue({
 
         get_photo_library: function () {
             this.getPicLibrary();
-            window.jQuery(".mask").toggle();
-            window.jQuery("#photoModal").toggle();
+            //window.jQuery(".mask").toggle();
+            //window.jQuery("#photoModal").toggle();
+            
         },
 
         createReceiveRecord: function() {
