@@ -499,7 +499,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                         $batch_id,
                         $library,
                         $create_id,
-                        $photo,
+                        $photo
                     );
 
                     try {
@@ -624,7 +624,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                         $batch_id,
                         $library,
                         $create_id,
-                        $photo,
+                        $photo
                     );
 
                     try {
@@ -791,7 +791,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                 $stmt->bind_param(
                     "si",
                     $library,
-                    $batch_id,
+                    $batch_id
                 );
 
                 try {
@@ -834,7 +834,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                         $batch_id,
                         $library,
                         $create_id,
-                        $photo,
+                        $photo
                     );
 
                     try {
@@ -1009,7 +1009,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                 $stmt->bind_param(
                     "si",
                     $library,
-                    $batch_id,
+                    $batch_id
                 );
 
                 try {
@@ -1052,7 +1052,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                         $batch_id,
                         $library,
                         $create_id,
-                        $photo,
+                        $photo
                     );
 
                     try {
