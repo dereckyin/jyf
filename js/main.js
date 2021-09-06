@@ -320,6 +320,8 @@ var app = new Vue({
             var dialog;
             var supdialog;
 
+            var photoModal;
+
             //    $('header').load('Include/header.htm');
             toggleme($('a.btn.detail'), $('.block.record'), 'show');
 
@@ -356,6 +358,18 @@ var app = new Vue({
                 height: 540,
                 width: 720,
                 modal: true,
+            });
+
+            photoModal = $("#photoModal").dialog({
+                autoOpen: false,
+                height: 540,
+                width: 720,
+                modal: true,
+            });
+
+            $("#get_photo_library_1").button().unbind('click').on("click", function() {
+                app.getPicLibrary();
+                photoModal.dialog("open");
             });
 
             $("#create-user1").button().unbind('click').on("click", function() {
@@ -426,6 +440,8 @@ var app = new Vue({
           var dialog;
           var supdialog;
 
+          var photoModal;
+
             //    $('header').load('Include/header.htm');
             toggleme($('a.btn.detail'), $('.block.record'), 'show');
 
@@ -466,6 +482,13 @@ var app = new Vue({
                 modal: true,
             });
 
+            photoModal = $("#photoModal").dialog({
+                autoOpen: false,
+                height: 540,
+                width: 720,
+                modal: true,
+            });
+
             $("#create-user").button().unbind('click').on("click", function() {
 
                 $.ajax({
@@ -496,6 +519,11 @@ var app = new Vue({
               });
 
                 dialog.dialog("open");
+            });
+
+            $("#get_photo_library").button().unbind('click').on("click", function() {
+                app.getPicLibrary();
+                photoModal.dialog("open");
             });
 
             $("#create-supplier").button().unbind('click').on("click", function() {
@@ -648,12 +676,12 @@ var app = new Vue({
                             this.pic_lib.find((element) => element.pid == pid)
                         ));
 
-                        this.customer = this.pic_lib[i].customer;
-                        this.supplier = this.pic_lib[i].supplier;
-                        this.date_receive = this.pic_lib[i].date_receive;
-                        $('#adddate').datepicker('setDate', this.date_receive);
-                        this.quantity = this.pic_lib[i].quantity;
-                        this.remark = this.pic_lib[i].remark;
+                        //this.customer = this.pic_lib[i].customer;
+                        //this.supplier = this.pic_lib[i].supplier;
+                        //this.date_receive = this.pic_lib[i].date_receive;
+                        //$('#adddate').datepicker('setDate', this.date_receive);
+                        //this.quantity = this.pic_lib[i].quantity;
+                        //this.remark = this.pic_lib[i].remark;
                     }
                 }
             }

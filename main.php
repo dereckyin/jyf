@@ -44,17 +44,6 @@ p {
     margin: 0 10px 5px 0;
 }
 
-#photoModal {
-  position: absolute;
-    height: auto;
-    width: 880px;
-    top: 240px;
-    left: 215px;
-    display: block;
-    z-index: 101;
-    display: none;
-}
-
 .bodybox .mask {
             position: fixed;
             background: rgba(0, 0, 0, 0.5);
@@ -205,7 +194,7 @@ $(function(){
                   </div>
                  
 
-                   <button @click="get_photo_library()">Choose Photo</button>
+                   <button id="get_photo_library">Choose Photo</button>
                </li>
            </ul>
         </div>
@@ -323,7 +312,7 @@ $(function(){
                   </div>
                  
 
-                   <button @click="get_photo_library()">Choose Photo</button>
+                   <button id="get_photo_library_1">Choose Photo</button>
                </li>
            </ul>
         </div>

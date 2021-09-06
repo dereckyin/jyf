@@ -161,11 +161,17 @@ var app = new Vue({
 
       var form_Data = new FormData();
 
-      form_Data.append("file_count", this.pic_list.length);
+      
+      var count = 0;
       for (var i = 0; i < this.pic_list.length; i++)
       {
-        form_Data.append("files" + i, this.pic_list[i].url);
+        if(this.pic_list[i].checked)
+        {
+          count = count + 1;
+          form_Data.append("files" + i, this.pic_list[i].url);
+        }
       }
+      form_Data.append("file_count", count);
 
       form_Data.append("date_receive", this.formatDate(document.querySelector("input[id=adddate]").value));
       form_Data.append("customer", this.customer);
@@ -228,11 +234,16 @@ var app = new Vue({
 
       var form_Data = new FormData();
 
-      form_Data.append("file_count", this.pic_list.length);
+      var count = 0;
       for (var i = 0; i < this.pic_list.length; i++)
       {
-        form_Data.append("files" + i, this.pic_list[i].url);
+        if(this.pic_list[i].checked)
+        {
+          count = count + 1;
+          form_Data.append("files" + i, this.pic_list[i].url);
+        }
       }
+      form_Data.append("file_count", count);
 
       form_Data.append("date_receive", this.formatDate(document.querySelector("input[id=adddate]").value));
       form_Data.append("customer", this.customer);
