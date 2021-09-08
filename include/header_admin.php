@@ -53,7 +53,11 @@ if ( isset( $jwt ) ) {
  </dl>
  <?php
  	if($decoded->data->sea_expense)
+	 {
+		echo "<a href='staff_list_sea.php'>員工通訊錄<eng>Staff List</eng></a>";
+		echo "<a href='salary_recorder_sea.php'>薪資記錄表<eng>Salary Recorder</eng></a>";
  		echo "<a href='expense_recorder_sea.php'>支出記錄表<eng>Expense Recorder</eng></a>";
+	 }
  ?>
  <?php
  	if($decoded->data->sea_expense_v2)

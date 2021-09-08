@@ -184,6 +184,13 @@ try {
                 if($decoded->data->status_1)
                 {
             ?>
+            <a class="nav_link" href="staff_list.php">
+                <eng>Staff List</eng>
+            </a>
+
+            <a class="nav_link" href="salary_recorder.php">
+                <eng>Salary Recorder</eng>
+            </a>
             <a class="nav_link" href="expense_recorder.php">
                 <eng>Expense Recorder</eng>
             </a>

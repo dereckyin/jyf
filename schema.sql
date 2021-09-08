@@ -436,3 +436,101 @@ ADD COLUMN `photo` varchar(12) DEFAULT '' AFTER picname;
 
 ALTER TABLE gcp_storage_file
 ADD COLUMN `batch_id_org` bigint(20)  DEFAULT 0  AFTER gcp_msg;
+
+
+-- 2021/09/07 staff list
+create table staff_list
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`staff` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`phone` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`email` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`address` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+  `mdf_time` timestamp NULL,
+	`mdf_user` varchar(128) DEFAULT '',
+  `del_time` timestamp NULL,
+	`del_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+create table staff_list_sea
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`staff` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`phone` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`email` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`address` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+  `mdf_time` timestamp NULL,
+	`mdf_user` varchar(128) DEFAULT '',
+  `del_time` timestamp NULL,
+	`del_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- salary record  09/07 
+CREATE TABLE IF NOT EXISTS `price_record_salary` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `account` int default 0,
+  `category` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `sub_category` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `project_name` varchar(1024)  COLLATE utf8mb4_unicode_ci  default '',
+  `related_account` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `details` varchar(4096) COLLATE utf8mb4_unicode_ci  default '',
+  `pic_url` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `gcp_url` varchar(1024)  COLLATE utf8mb4_unicode_ci  default '',
+  `payee` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `staff_name` varchar(256) COLLATE utf8mb4_unicode_ci  default '',
+  `paid_date` Date NULL DEFAULT NULL,
+  `cash_in` decimal(10, 2) default 0.0,
+  `cash_out` decimal(10, 2) default 0.0,
+  `remarks` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `company_name` varchar(256) COLLATE utf8mb4_unicode_ci  default '',
+  `is_locked` bool default false,
+  `is_enabled` bool default false,
+  `is_marked` bool default false,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `updated_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `deleted_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `price_record_salary_sea` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `account` int default 0,
+  `category` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `sub_category` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `project_name` varchar(1024)  COLLATE utf8mb4_unicode_ci  default '',
+  `related_account` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `details` varchar(4096) COLLATE utf8mb4_unicode_ci  default '',
+  `pic_url` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `gcp_url` varchar(1024)  COLLATE utf8mb4_unicode_ci  default '',
+  `payee` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `staff_name` varchar(256) COLLATE utf8mb4_unicode_ci  default '',
+  `paid_date` Date NULL DEFAULT NULL,
+  `cash_in` decimal(10, 2) default 0.0,
+  `cash_out` decimal(10, 2) default 0.0,
+  `remarks` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `company_name` varchar(256) COLLATE utf8mb4_unicode_ci  default '',
+  `is_locked` bool default false,
+  `is_enabled` bool default false,
+  `is_marked` bool default false,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `updated_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `deleted_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
