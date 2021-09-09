@@ -111,8 +111,8 @@ try {
 <div id="contactor">
     <div class="bodybox">
         <!-- header -->
-        <header>
-            <div style="background: rgb(30, 107, 168); padding: 0.5vh; height: 70px; display: flex; align-items: center; justify-content: space-between;">
+        <header style="background: rgb(30, 107, 168); height: 70px; display: flex; align-items: center; justify-content: space-between;">
+
                 <a @click="logout()" style="margin-left: 25px; font-size: 25px;"><span
                         style="color: rgb(255, 255, 255); cursor: pointer">☰</span></a>
 
@@ -145,11 +145,11 @@ try {
                     <?php
                         }
                     ?>
-                </div>
+
             </div>
         </header>
         <!-- header end -->
-        <div class="mainContent">
+        <div class="mainContent" style="padding-top: 70px;">
             <h6>Staff List</h6>
             <!-- add form -->
             <div class="block" v-if="!isEditing">

@@ -30,6 +30,30 @@ p {
   padding:0;
 }
 
+#photoModal .modal-dialog.modal-lg {
+  max-width: 100%;
+}
+
+#showPhoto tr td img{
+  width: initial;
+  max-width: 250px;
+  max-height: 250px;
+}
+
+#showPhoto tr th{
+  vertical-align: middle;
+}
+
+#showPhoto tr th:nth-of-type(1), #showPhoto tr td:nth-of-type(1) {
+  width: 50px;
+  text-align: center;
+}
+
+#showPhoto tr th:nth-of-type(2), #showPhoto tr td:nth-of-type(2) {
+  width: 270px;
+  text-align: center;
+}
+
 .tablebox.V.s01 .photobox{
     display: flex;
     flex-direction: column;

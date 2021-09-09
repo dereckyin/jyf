@@ -363,7 +363,7 @@ var app = new Vue({
             photoModal = $("#photoModal").dialog({
                 autoOpen: false,
                 height: 540,
-                width: 720,
+                width: 900,
                 modal: true,
             });
 
@@ -485,7 +485,7 @@ var app = new Vue({
             photoModal = $("#photoModal").dialog({
                 autoOpen: false,
                 height: 540,
-                width: 720,
+                width: 900,
                 modal: true,
             });
 
