@@ -20,8 +20,10 @@
     <script type="text/javascript" src="js/webcam.js"></script>
 
     <script language="JavaScript">
-
+      
         function take_snapshot() {
+
+            app.snap_me = true;
 
             var real_width = document.getElementsByTagName("video")[0].srcObject.getVideoTracks()[0].getSettings().width;
             var real_height = document.getElementsByTagName("video")[0].srcObject.getVideoTracks()[0].getSettings().height;

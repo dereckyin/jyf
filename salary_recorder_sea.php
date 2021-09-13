@@ -178,7 +178,7 @@ try {
 <div id="app">
     <div style="background: #1E6BA8; padding: 0.5vh; height:70px; display: flex; align-items: center; justify-content: space-between;">
 
-        <a @click="logout()" style="margin-left:25px; font-size: 25px;"><span style="color: #FFFFFF;">&#9776;</span></a>
+        <a href="main.php" style="margin-left:25px; font-size: 25px; cursor: pointer;"><span style="color: #FFFFFF;">&#9776;</span></a>
 
         <div>
                     <?php

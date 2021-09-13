@@ -128,17 +128,10 @@ if ( isset( $jwt ) ) {
             <eng>Contactor</eng>
         </a>
 
-        <dl class="sub">
-            <dt><a class="after-micons">收貨記錄
-                <eng>Receive Goods</eng>
-            </a></dt>
-            <dd><a href="main.php">收貨記錄
-                <eng>Receive Goods</eng>
-            </a></dd>
-            <dd><a href="sea_take_photo.php">手機照相
-                <eng>Take Photo</eng>
-            </a></dd>
-        </dl>
+        <a href="main.php">收貨記錄
+                <eng>Receive Goods</eng></a>
+        <a href="sea_take_photo.php">手機照相
+                <eng>Take Photo</eng></a>
 
         <a href="loading.php">貨物裝櫃
             <eng>Loading Goods into Container</eng>

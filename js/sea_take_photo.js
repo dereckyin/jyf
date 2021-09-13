@@ -99,6 +99,8 @@ let mainState = {
   // table
   clicked: 0,
 
+  snap_me:false,
+
   // data
   is_checked: false,
   date_receive: "",
@@ -336,6 +338,12 @@ var app = new Vue({
 
 
     append_pic() {
+      if(this.snap_me == true) {
+        this.snap_me = false;
+      }
+      else
+        return;
+
       var file;
 
       if (document.getElementById("base64image") !== null)
