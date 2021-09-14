@@ -94,6 +94,10 @@
             margin: -8px;
         }
 
+        .bodybox header > a{
+            color: #FFF;
+        }
+
         .block ul > li:nth-of-type(1) {
             min-width: 200px;
             font-size: 20px;
