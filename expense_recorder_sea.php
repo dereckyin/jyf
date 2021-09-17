@@ -148,6 +148,24 @@ try {
         
     </style>
 
+<style>
+        a.nav_link {
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 0 20px;
+            text-decoration: none;
+            cursor: pointer;
+            border-right: 2px solid #FFFFFF;
+            font-size: 16px;
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+        }
+
+        a.nav_link:last-of-type {
+            border-right: none;
+            margin-right: 90px;
+        }
+    </style>
+
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/hierarchy-select.min.js"></script>
@@ -163,11 +181,43 @@ try {
 <div id="app">
 <div style="background: #1E6BA8; padding: 0.5vh; height:70px; display: flex; align-items: center; justify-content: space-between;">
 
-    <a @click="logout()" style="margin-left:25px; font-size: 25px;" ><span style="color: #FFFFFF;">&#9776;</span></a>
+    <a href="main.php" style="margin-left:25px; font-size: 25px; cursor: pointer;" ><span style="color: #FFFFFF;">&#9776;</span></a>
 
-    <button :class="[is_viewer == '1'? 'hide' : '']" style="border: none; margin-right: 25px; font-weight:700; font-size:x-large; background-color:#1E6BA8; color: #FFFFFF;"
-            data-toggle="collapse" data-parent="#accordion" href="#collapseOne" @click="reset()"
-                       aria-expanded="true" aria-controls="collapseOne"><i class="fas fa-plus-square fa-lg"></i></button>
+    <div>
+                    <?php
+                        if($decoded->data->sea_expense)
+                        {
+                    ?>
+                    <a class="nav_link" href="staff_list_sea.php">
+                        <eng>Staff List</eng>
+                    </a>
+
+                    <a class="nav_link" href="salary_recorder_sea.php">
+                        <eng>Salary Recorder</eng>
+                    </a>
+
+                    <a class="nav_link" href="expense_recorder_sea.php">
+                        <eng>Expense Recorder</eng>
+                    </a>
+                    <?php
+                        }
+                    ?>
+                    <?php
+                        if($decoded->data->sea_expense_v2)
+                        {
+                    ?>
+                    <a class="nav_link" href="expense_recorder_sea_v2.php">
+                        <eng>Expense Recorder2</eng>
+                    </a>
+                    <?php
+                        }
+                    ?>
+
+            <button :class="[is_viewer == '1'? 'hide' : '']"
+                    style="border: none; margin-right: 25px; font-weight:700; font-size:x-large; background-color:#1E6BA8; color: #FFFFFF;"
+                    data-toggle="collapse" data-parent="#accordion" href="#collapseOne" @click="reset()"
+                    aria-expanded="true" aria-controls="collapseOne"><i class="fas fa-plus-square fa-lg"></i></button>
+        </div>
 
 </div>
 

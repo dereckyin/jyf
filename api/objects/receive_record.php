@@ -10,6 +10,7 @@ class ReceiveRecord{
     public $id;
     public $date_receive;
     public $customer;
+    public $email_customer;
     public $email;
     public $description;
     public $quantity;
@@ -40,6 +41,7 @@ class ReceiveRecord{
                 SET
                     date_receive = :date_receive,
                     customer = :customer,
+                    email_customer = :email_customer,
                     description = :description,
                     quantity = :quantity,
                     supplier = :supplier,
@@ -58,6 +60,7 @@ class ReceiveRecord{
         // bind the values
         $stmt->bindParam(':date_receive', $this->date_receive);
         $stmt->bindParam(':customer', $this->customer);
+        $stmt->bindParam(':email_customer', $this->email_customer);
         $stmt->bindParam(':description', $this->description);
         $stmt->bindParam(':quantity', $this->quantity);
         $stmt->bindParam(':supplier', $this->supplier);
@@ -85,6 +88,7 @@ class ReceiveRecord{
                                   id, 
                                   date_receive, 
                                   customer, 
+                                  email_customer, 
                                   email, 
                                   description, 
                                   quantity,
@@ -125,6 +129,7 @@ class ReceiveRecord{
         $query = "SELECT r.id, 
                         r.date_receive, 
                         r.customer, 
+                        r.email_customer, 
                         r.description, 
                         r.quantity, 
                         r.supplier, 
@@ -164,6 +169,7 @@ class ReceiveRecord{
         $query = "SELECT r.id, 
             r.date_receive, 
             r.customer, 
+            r.email_customer, 
             r.description, 
             r.quantity, 
             r.supplier, 
@@ -207,6 +213,7 @@ class ReceiveRecord{
         $query = "SELECT r.id, 
                         r.date_receive, 
                         r.customer, 
+                        r.email_customer, 
                         r.description, 
                         r.quantity, 
                         r.supplier, 
@@ -245,6 +252,7 @@ class ReceiveRecord{
         $query = "SELECT r.id, 
                         r.date_receive, 
                         r.customer, 
+                        r.email_customer, 
                         r.description, 
                         r.quantity, 
                         r.supplier, 
@@ -380,6 +388,7 @@ class ReceiveRecord{
                    $query = "SELECT r.id, 
                     r.date_receive, 
                     r.customer, 
+                    r.email_customer, 
                     r.description, 
                     r.quantity, 
                     r.supplier, 
@@ -428,6 +437,7 @@ class ReceiveRecord{
         $query = "SELECT r.id, 
                         r.date_receive, 
                         r.customer, 
+                        r.email_customer, 
                         r.description, 
                         r.quantity, 
                         r.supplier, 
@@ -496,6 +506,7 @@ class ReceiveRecord{
         $query = "SELECT r.id, 
                         r.date_receive, 
                         r.customer, 
+                        r.email_customer, 
                         r.description, 
                         r.quantity, 
                         r.supplier, 
@@ -541,6 +552,7 @@ class ReceiveRecord{
         $query = "SELECT r.id, 
                         r.date_receive, 
                         r.customer, 
+                        r.email_customer, 
                         r.description, 
                         r.quantity, 
                         r.supplier, 
