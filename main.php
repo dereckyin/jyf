@@ -131,7 +131,7 @@ $(function(){
             <li class="header"></li>
             <li>E-Mail的收件人 <eng>Company/customer in E-mail</eng></li>
             <li>
-              <input type="text" name="customer" v-model.lazy="customer" maxlength="256" style="width: calc(65% - 40px);">
+              <input type="text" name="email_customer" v-model.lazy="email_customer" maxlength="256" style="width: calc(65% - 40px);">
             </li>
             <li>E-Mail</li>
             <li>
@@ -222,7 +222,7 @@ $(function(){
                </li>
            </ul>
         </div>
-        <div class="btnbox"><a class="btn" @click="createReceiveRecord()" style="color:white;">儲存 <eng>Save</eng></a><a class="btn orange" @click="createReceiveRecordMail()" style="color:white;">儲存 <eng>Save + </eng><i class="before-micons mail"></i></a></div>
+        <div class="btnbox"><a class="btn" @click="createReceiveRecord()" style="color:white;">儲存 <eng>Save</eng></a><!-- <a class="btn orange" @click="createReceiveRecordMail()">儲存 <eng>Save + </eng><i class="before-micons mail"></i></a> --></div>
       </div>
 
 
@@ -245,6 +245,16 @@ $(function(){
             <li>
               <input type="text" name="customer" maxlength="256" v-model.lazy="record.customer" style="width: calc(65% - 40px);">
               <button type="button" class="btn btn-primary" id="create-user1"><i class="fas fa-address-card"></i></button>
+            </li>
+            <li></li>
+            <li>
+            </li>
+          </ul>
+          <ul>
+            <li class="header"></li>
+            <li>E-Mail的收件人 <eng>Company/customer in E-mail</eng></li>
+            <li>
+              <input type="text" name="email_customer" v-model.lazy="record.email_customer" maxlength="256" style="width: calc(65% - 40px);">
             </li>
             <li>E-Mail</li>
             <li>
@@ -341,7 +351,7 @@ $(function(){
            </ul>
         </div>
 
-        <div class="btnbox"><a class="btn" @click="cancelReceiveRecord($event)" style="color:white;">取消 <eng>Cancel</eng></a><a class="btn" @click="editReceiveRecord($event)" style="color:white;">儲存 <eng>Save</eng></a><a class="btn orange" @click="editReceiveRecordMail($event)" style="color:white;">儲存 <eng>Save + </eng><i class="before-micons mail"></i></a></div>
+        <div class="btnbox"><a class="btn" @click="cancelReceiveRecord($event)" style="color:white;">取消 <eng>Cancel</eng></a><a class="btn" @click="editReceiveRecord($event)" style="color:white;">儲存 <eng>Save</eng></a><!-- <a class="btn orange" @click="editReceiveRecordMail($event)" style="color:white;">儲存 <eng>Save + </eng><i class="before-micons mail"></i></a> --></div>
       </div>
 
 
@@ -670,14 +680,26 @@ $(function(){
         if(!mainState.isEditing)
         {
           //document.querySelector("input[name=customer]").value=e.querySelectorAll('td')[0].textContent;
-          mainState.customer = c_string.trim();
+          //if(mainState.customer.trim() == '')
+            mainState.customer = c_string.trim();
+          
+          //if(mainState.email_customer.trim() == '')
+            mainState.email_customer = c_string.trim();
           //document.querySelector("input[name=email]").value=e.querySelectorAll('td')[3].textContent;
-          mainState.email = e.querySelectorAll('td')[3].textContent;
+          //if(mainState.email.trim() == '')
+            mainState.email = e.querySelectorAll('td')[4].textContent;
         }
         else
         {
-          mainState.record.customer = c_string.trim();
-          mainState.record.email = e.querySelectorAll('td')[3].textContent;
+          //if(mainState.record.customer.trim() == '')
+            mainState.record.customer = c_string.trim();
+          
+          //if(mainState.record.email_customer.trim() == '')
+            mainState.record.email_customer = c_string.trim();
+
+         // mainState.record.customer = c_string.trim();
+         //if(mainState.record.email.trim() == '')
+          mainState.record.email = e.querySelectorAll('td')[4].textContent;
         }
 
         mainState.s_keyword = '';

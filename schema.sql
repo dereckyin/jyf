@@ -534,3 +534,7 @@ CREATE TABLE IF NOT EXISTS `price_record_salary_sea` (
   
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 2021/09/17
+ALTER TABLE receive_record
+ADD COLUMN `email_customer` varchar(256) DEFAULT '' AFTER customer;

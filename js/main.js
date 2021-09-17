@@ -106,6 +106,7 @@ let mainState = {
     is_checked: false,
     date_receive: '',
     customer: '',
+    email_customer: '',
     email: '',
     description: '',
     quantity: '',
@@ -799,6 +800,7 @@ var app = new Vue({
 
                 form_Data.append('date_receive', this.formatDate(this.date_receive))
                 form_Data.append('customer', this.customer)
+                form_Data.append('email_customer', this.email_customer)
                 form_Data.append('email', this.email)
                 form_Data.append('description', this.description)
                 form_Data.append('quantity', this.quantity)
@@ -874,6 +876,7 @@ var app = new Vue({
 
                 form_Data.append('date_receive', this.formatDate(this.date_receive))
                 form_Data.append('customer', this.customer)
+                form_Data.append('email_customer', this.email_customer)
                 form_Data.append('email', this.email)
                 form_Data.append('description', this.description)
                 form_Data.append('quantity', this.quantity)
@@ -1015,6 +1018,7 @@ var app = new Vue({
 
             form_Data.append('date_receive', this.formatDate(this.record.date_receive))
             form_Data.append('customer', this.record.customer)
+            form_Data.append('email_customer', this.record.email_customer)
             form_Data.append('email', this.record.email)
             form_Data.append('description', this.record.description)
             form_Data.append('quantity', this.record.quantity)
@@ -1093,6 +1097,7 @@ var app = new Vue({
 
             form_Data.append('date_receive', this.formatDate(this.record.date_receive))
             form_Data.append('customer', this.record.customer)
+            form_Data.append('email_customer', this.record.email_customer)
             form_Data.append('email', this.record.email)
             form_Data.append('description', this.record.description)
             form_Data.append('quantity', this.record.quantity)
@@ -1149,6 +1154,7 @@ var app = new Vue({
             //console.log(document.querySelector("input[name=datepicker1]").value)
             form_Data.append('date_receive', "")
             form_Data.append('customer', "")
+            form_Data.append('email_customer', "")
             form_Data.append('email', "")
             form_Data.append('description', "")
             form_Data.append('quantity', "")
@@ -1192,6 +1198,7 @@ var app = new Vue({
           console.log("resetForm");
             this.date_receive = '';
             this.customer = '';
+            this.email_customer = '';
             this.description = '';
             this.quantity = '';
             this.email = '';

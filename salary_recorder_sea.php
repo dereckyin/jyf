@@ -298,6 +298,16 @@ try {
 
                                 <td style="text-align: left;">
                                     <select class="form-control" style="width:25vw;" v-model="category">
+                                    <option>Salary</option>
+                                    <option>Overtime</option>
+                                    <option>Allowance</option>
+                                    <option>Incentive</option>
+                                    <option>Staff Borrow Money</option>
+                                    <option>Staff Return Money</option>
+                                    <option>Bonus</option>
+                                    <option>Separation pay</option>
+                                    <option>Other</option>
+<!--
                                         <option>Absent</option>
                                         <option>Bonus</option>
                                         <option>Borrow Money</option>
@@ -314,6 +324,7 @@ try {
                                         <option>Tax Deductions</option>
                                         <option>Undertime</option>
                                         <option>Other</option>
+                    -->
                                     </select>
                                 </td>
 
@@ -592,6 +603,17 @@ try {
                     </select> -->
 
             <select style="width:10vw; margin-left:1vw;" v-model="select_category">
+
+            <option>Salary</option>
+                                        <option>Overtime</option>
+                                        <option>Allowance</option>
+                                        <option>Incentive</option>
+                                        <option>Staff Borrow Money</option>
+                                        <option>Staff Return Money</option>
+                                        <option>Bonus</option>
+                                        <option>Separation pay</option>
+                                        <option>Other</option>
+                         <!--               
                 <option>All</option>
                 <option>Absent</option>
                 <option>Bonus</option>
@@ -608,7 +630,7 @@ try {
                 <option>SSS</option>
                 <option>Tax Deductions</option>
                 <option>Undertime</option>
-                <option>Other</option>
+                <option>Other</option> -->
             </select>
 
             <!--

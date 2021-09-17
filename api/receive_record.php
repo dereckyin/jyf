@@ -244,7 +244,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                         array_push($key, strtolower($row['customer']));
                     }
 
-                        $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, photo, crt_time, crt_user FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
+                        $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email_customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, photo, crt_time, crt_user FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
 
                         if ($stmt = mysqli_prepare($conn, $subquery)) {
 
@@ -260,6 +260,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                                 $id = $row['id'];
                                 $date_receive = $row['date_receive'];
                                 $customer = $row['customer'];
+                                $email_customer = $row['email_customer'];
                                 $email = $row['email'];
                                 $description = $row['description'];
                                 $quantity = $row['quantity'];
@@ -282,6 +283,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                                     "id" => $id,
                                     "date_receive" => $date_receive,
                                     "customer" => $customer,
+                                    "email_customer" => $email_customer,
                                     "email" => $email,
                                     "description" => $description,
                                     "quantity" => $quantity,
@@ -316,7 +318,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                 }
             }
 
-            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, photo, crt_time, crt_user  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY id";
+            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email_customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, photo, crt_time, crt_user  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY id";
 
             $result1 = mysqli_query($conn,$subquery);
             if($result1 != null)
@@ -327,6 +329,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                     $id = $row['id'];
                     $date_receive = $row['date_receive'];
                     $customer = $row['customer'];
+                    $email_customer = $row['email_customer'];
                     $email = $row['email'];
                     $description = $row['description'];
                     $quantity = $row['quantity'];
@@ -349,6 +352,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                         "id" => $id,
                         "date_receive" => $date_receive,
                         "customer" => $customer,
+                        "email_customer" => $email_customer,
                         "email" => $email,
                         "description" => $description,
                         "quantity" => $quantity,
@@ -392,6 +396,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
           case 'POST':
             $date_receive = (isset($_POST['date_receive']) ?  $_POST['date_receive'] : '');
             $customer = (isset($_POST['customer']) ?  $_POST['customer'] : '');
+            $email_customer = (isset($_POST['email_customer']) ?  $_POST['email_customer'] : '');
             $email = (isset($_POST['email']) ?  $_POST['email'] : '');
             $description = (isset($_POST['description']) ?  $_POST['description'] : '');
             $quantity = (isset($_POST['quantity']) ?  $_POST['quantity'] : '');
@@ -441,6 +446,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
           	/* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
                 $sql = "insert into receive_record (date_receive, 
                 									  customer, 
+                									  email_customer, 
                 									  email, 
                 									  description, 
                 									  quantity,
@@ -454,11 +460,12 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                 									  courier_money,
                 									  remark,
                                                       crt_user) 
-                							values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                							values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql); 
-                $stmt->bind_param("ssssssssddiiiss",
+                $stmt->bind_param("sssssssssddiiiss",
                 					$date_receive, 
                 					$customer, 
+                					$email_customer, 
                 					$email, 
                 					$description, 
                 					$quantity, 
@@ -560,6 +567,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
             /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
                 $sql = "insert into receive_record (date_receive, 
                                                       customer, 
+                                                      email_customer, 
                                                       email, 
                                                       description, 
                                                       quantity,
@@ -573,11 +581,12 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                                                       courier_money,
                                                       remark,
                                                       crt_user) 
-                                            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql); 
-                $stmt->bind_param("ssssssssddiiiss",
+                $stmt->bind_param("sssssssssddiiiss",
                                     $date_receive, 
                                     $customer, 
+                                    $email_customer, 
                                     $email, 
                                     $description, 
                                     $quantity, 
@@ -595,9 +604,16 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
 
                 
                 
-
-                if($email != "")
-                    sendMail($email, $date_receive, $customer, $description, $quantity, $supplier, $pic_mail_array);
+                if($email_customer != '')
+                {                
+                    if($email != "")
+                        sendMail($email, $date_receive, $email_customer, $description, $quantity, $supplier, $pic_mail_array);
+                }
+                else
+                {
+                    if($email != "")
+                        sendMail($email, $date_receive, $customer, $description, $quantity, $supplier, $pic_mail_array);
+                }
 
                 $last_id = mysqli_insert_id($conn);
 
@@ -693,6 +709,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                     /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
                     $sql = "update receive_record set date_receive = ?, 
                                                           customer = ?, 
+                                                          email_customer = ?, 
                                                           email = ?, 
                                                           description = ?, 
                                                           quantity = ?,
@@ -709,9 +726,10 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                                                           mdf_user = ?
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
-                    $stmt->bind_param("ssssssssddiiissd",
+                    $stmt->bind_param("sssssssssddiiissd",
                                         $date_receive, 
                                         $customer, 
+                                        $email_customer, 
                                         $email, 
                                         $description, 
                                         $quantity, 
@@ -735,6 +753,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                     /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
                     $sql = "update receive_record set date_receive = ?, 
                                                           customer = ?, 
+                                                          email_customer = ?, 
                                                           email = ?, 
                                                           description = ?, 
                                                           quantity = ?,
@@ -751,9 +770,10 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                                                           mdf_user = ?
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
-                    $stmt->bind_param("ssssssssddiiissd",
+                    $stmt->bind_param("sssssssssddiiissd",
                                         $date_receive, 
                                         $customer,  
+                                        $email_customer,  
                                         $email, 
                                         $description, 
                                         $quantity, 
@@ -909,6 +929,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                     /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
                     $sql = "update receive_record set date_receive = ?, 
                                                           customer = ?, 
+                                                          email_customer = ?, 
                                                           email = ?, 
                                                           description = ?, 
                                                           quantity = ?,
@@ -925,9 +946,10 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                                                           mdf_user = ?
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
-                    $stmt->bind_param("ssssssssddiiissd",
+                    $stmt->bind_param("sssssssssddiiissd",
                                         $date_receive, 
                                         $customer, 
+                                        $email_customer, 
                                         $email, 
                                         $description, 
                                         $quantity, 
@@ -951,6 +973,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                     /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
                     $sql = "update receive_record set date_receive = ?, 
                                                           customer = ?, 
+                                                          email_customer = ?, 
                                                           email = ?, 
                                                           description = ?, 
                                                           quantity = ?,
@@ -967,9 +990,10 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                                                           mdf_user = ?
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
-                    $stmt->bind_param("ssssssssddiiissd",
+                    $stmt->bind_param("sssssssssddiiissd",
                                         $date_receive, 
                                         $customer, 
+                                        $email_customer, 
                                         $email, 
                                         $description, 
                                         $quantity, 
@@ -1068,8 +1092,16 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                     }
                 }
 
-                if($email != "")
-                    sendMail($email, $date_receive, $customer, $description, $quantity, $supplier, $pic_mail_array);
+                if($email_customer != "")
+                {
+                    if($email != "")
+                        sendMail($email, $date_receive, $email_customer, $description, $quantity, $supplier, $pic_mail_array);
+                }
+                else
+                {
+                    if($email != "")
+                        sendMail($email, $date_receive, $customer, $description, $quantity, $supplier, $pic_mail_array);
+                }
 
                 echo $affected_rows;
 
