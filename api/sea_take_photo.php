@@ -56,22 +56,22 @@ $user = $decoded->data->username;
 switch ($method) {
 
     case 'POST':
-        $date_receive = stripslashes($_POST["date_receive"]);
-        $customer = stripslashes($_POST["customer"]);
-        $email = stripslashes($_POST["email"]);
-        $description = stripslashes($_POST["description"]);
-        $quantity = stripslashes($_POST["quantity"]);
-        $supplier = stripslashes($_POST["supplier"]);
-        $kilo = stripslashes($_POST["kilo"]);
-        $cuft = stripslashes($_POST["cuft"]);
-        $taiwan_pay = stripslashes($_POST["taiwan_pay"]);
-        $courier_pay = stripslashes($_POST["courier_pay"]);
-        $courier_money = stripslashes($_POST["courier_money"]);
-        $remark = stripslashes($_POST["remark"]);
-        $crud = stripslashes($_POST["crud"]);
-        $id = stripslashes($_POST["id"]);
+        $date_receive = (isset($_POST["date_receive"]) ?  $_POST["date_receive"] : "");
+        $customer = isset($_POST["customer"]) ? $_POST["customer"] : "";
+        $email = isset($_POST["email"]) ? $_POST["email"] : "";
+        $description = isset($_POST["description"]) ? $_POST["description"] : "";
+        $quantity = isset($_POST["quantity"]) ? $_POST["quantity"] : "";
+        $supplier = isset($_POST["supplier"]) ? $_POST["supplier"] : "";
+        $kilo = isset($_POST["kilo"]) ? $_POST["kilo"] : "";
+        $cuft = isset($_POST["cuft"]) ? $_POST["cuft"] : "";
+        $taiwan_pay = isset($_POST["taiwan_pay"]) ? $_POST["taiwan_pay"] : "";
+        $courier_pay = isset($_POST["courier_pay"]) ? $_POST["courier_pay"] : "";
+        $courier_money = isset($_POST["courier_money"]) ? $_POST["courier_money"] : "";
+        $remark = isset($_POST["remark"]) ? $_POST["remark"] : "";
+        $crud = isset($_POST["crud"]) ? $_POST["crud"] : "";
+        $id = isset($_POST["id"]) ? $_POST["id"] : "";
 
-        $file_count = stripslashes($_POST["file_count"]);
+        $file_count = isset($_POST["file_count"]) ? $_POST["file_count"] : 0;
 
         $taiwan_pay = ($taiwan_pay ? $taiwan_pay : 0);
         $courier_pay = ($courier_pay ? $courier_pay : 0);
