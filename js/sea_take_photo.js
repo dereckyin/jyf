@@ -164,7 +164,7 @@ var app = new Vue({
       var form_Data = new FormData();
 
       if(this.pic_list.length == 0) {
-        if (confirm('¨S¦³¥ô¦ó·Ó¤ù³QÀx¦s©Î¿ï¨ú¡A½T©w­nÄ~Äò¶Ü?')) {
+        if (confirm('æ²’æœ‰ä»»ä½•ç…§ç‰‡è¢«å„²å­˜æˆ–é¸å–ï¼Œç¢ºå®šè¦ç¹¼çºŒå—?')) {
           // Save it!
           console.log('continue');
         } else {
@@ -246,7 +246,7 @@ var app = new Vue({
       var form_Data = new FormData();
 
       if(this.pic_list.length == 0) {
-        if (confirm('¨S¦³¥ô¦ó·Ó¤ù³QÀx¦s©Î¿ï¨ú¡A½T©w­nÄ~Äò¶Ü?')) {
+        if (confirm('æ²’æœ‰ä»»ä½•ç…§ç‰‡è¢«å„²å­˜æˆ–é¸å–ï¼Œç¢ºå®šè¦ç¹¼çºŒå—?')) {
           // Save it!
           console.log('continue');
         } else {
