@@ -65,15 +65,17 @@
 
 
         function ShowCam() {
+
             Webcam.set({
                 width: 480,
                 height: 480,
                 image_format: 'jpeg',
                 jpeg_quality: 100,
-            });
-
-            Webcam.set('constraints',{
-                facingMode: "environment"
+                constraints: {
+                    width: 800,
+                    height: 600,
+                    facingMode: "environment"
+                }
             });
 
             Webcam.attach('#my_camera');
