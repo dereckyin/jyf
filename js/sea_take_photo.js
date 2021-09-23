@@ -163,7 +163,16 @@ var app = new Vue({
 
       var form_Data = new FormData();
 
-      
+      if(this.pic_list.length == 0) {
+        if (confirm('沒有任何照片被儲存或選取，確定要繼續嗎?')) {
+          // Save it!
+          console.log('continue');
+        } else {
+          // Do nothing!
+          return;
+        }
+      }
+
       var count = 0;
       for (var i = 0; i < this.pic_list.length; i++)
       {
@@ -235,6 +244,16 @@ var app = new Vue({
       let _this = this;
 
       var form_Data = new FormData();
+
+      if(this.pic_list.length == 0) {
+        if (confirm('沒有任何照片被儲存或選取，確定要繼續嗎?')) {
+          // Save it!
+          console.log('continue');
+        } else {
+          // Do nothing!
+          return;
+        }
+      }
 
       var count = 0;
       for (var i = 0; i < this.pic_list.length; i++)
