@@ -38,6 +38,11 @@ use PHPMailer\PHPMailer\Exception;
 require '../PHPMailer-master/src/Exception.php';
 require '../PHPMailer-master/src/PHPMailer.php';
 require '../PHPMailer-master/src/SMTP.php';
+require_once '../vendor/autoload.php';
+
+$conf = new Conf();
+
+use Google\Cloud\Storage\StorageClient;
 
 require_once "db.php";
 
@@ -413,6 +418,9 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
 
             $pic = (isset($_POST['pic']) ?  $_POST['pic'] : '[]');
 
+            $file_count = isset($_POST["file_count"]) ? $_POST["file_count"] : 0;
+            $f_file_count = isset($_POST["f_file_count"]) ? $_POST["f_file_count"] : 0;
+
             $pic_array = json_decode($pic,true);
 
             $taiwan_pay = ($taiwan_pay ? $taiwan_pay : 0);
@@ -438,7 +446,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                 }
 
             $library = "";
-            if($photo != "")
+            if($photo != "" || ($file_count + $f_file_count) > 0 )
             {
                 $library = "RECEIVE";
             }
@@ -512,7 +520,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                     try {
                         // execute the query, also check if query was successful
                         if ($stmt->execute()) {
-                            $last_id = mysqli_insert_id($conn);
+                            mysqli_insert_id($conn);
                         } else {
                             error_log(mysqli_errno($conn));
                         }
@@ -524,6 +532,147 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                         die();
                     }
                 }
+
+                // camera
+                $file_count = isset($_POST["file_count"]) ? $_POST["file_count"] : 0;
+                $batch_id = $last_id;
+                $batch_type = "RECEIVE";
+
+                try {
+                    $total = $file_count;
+                    // Loop through each file
+                    for ($i = 0; $i < $total; $i++) {
+
+                        if (isset($_POST['files' . $i])) {
+                            $img = !empty($_POST['files' . $i]) ? $_POST['files' . $i] : "";
+                            $img = str_replace('data:image/png;base64,', '', $img);
+                            $img = str_replace('data:image/jpeg;base64,', '', $img);
+                            $img = str_replace(' ', '+', $img);
+                            if ($img != "")
+                                $fileData = base64_decode($img);
+
+                            if (isset($fileData)) {
+                                $key = "myKey";
+                                $time = time();
+                                $hash = hash_hmac('sha256', $time . rand(1, 65536), $key);
+                                $ext = "jpg";
+                                $filename = $time . $hash . "." . $ext;
+
+                                file_put_contents($conf::$upload_path . $filename, $fileData);
+                            }
+
+                            $image_name = $filename;
+                            $valid_extensions = array("jpg", "jpeg", "png", "gif", "pdf", "docx", "doc", "xls", "xlsx", "ppt", "pptx", "zip", "rar", "7z", "txt", "dwg", "skp", "psd", "evo");
+                            $extension = pathinfo($image_name, PATHINFO_EXTENSION);
+                            if (in_array(strtolower($extension), $valid_extensions)) {
+                                //$upload_path = 'img/' . time() . '.' . $extension;
+
+                                $storage = new StorageClient([
+                                    'projectId' => 'predictive-fx-284008',
+                                    'keyFilePath' => $conf::$gcp_key
+                                ]);
+
+                                $bucket = $storage->bucket('feliiximg');
+
+                                $upload_name = time() . '_' . pathinfo($image_name, PATHINFO_FILENAME) . '.' . $extension;
+
+                                $file_size = filesize($conf::$upload_path . $filename);
+                                $size = 0;
+
+                                $obj = $bucket->upload(
+                                    fopen($conf::$upload_path . $filename, 'r'),
+                                    ['name' => $upload_name]
+                                );
+
+                                $info = $obj->info();
+                                $size = $info['size'];
+
+                                if ($size == $file_size && $file_size != 0 && $size != 0) {
+                                    $query = "INSERT INTO gcp_storage_file
+                                    SET
+                                        batch_id = ?,
+                                        batch_type = ?,
+                                        filename = ?,
+                                        gcp_name = ?,
+
+                                        create_id = ?,
+                                        created_at = now()";
+
+                                    // prepare the query
+                                    $stmt = $conn->prepare($query);
+
+                                    // bind the values
+                                    $stmt->bind_param(
+                                        "isssi",
+                                        $batch_id,
+                                        $batch_type,
+                                        $filename,
+                                        $upload_name,
+                                        $create_id
+                                    );
+
+                                    try {
+                                        // execute the query, also check if query was successful
+                                        if ($stmt->execute()) {
+                                            mysqli_insert_id($conn);
+                                        } else {
+                                            error_log(mysqli_errno($conn));
+                                        }
+                                    } catch (Exception $e) {
+                                        error_log($e->getMessage());
+                                        mysqli_rollback($conn);
+                                        http_response_code(501);
+                                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                                        die();
+                                    }
+
+
+                                    $message = 'Uploaded';
+                                    $code = 0;
+                                    $upload_id = $last_id;
+                                    $image = $image_name;
+
+                                    unlink($conf::$upload_path . $filename);
+                                } else {
+                                    $message = 'There is an error while uploading file';
+                                    mysqli_rollback($conn);
+                                    http_response_code(501);
+                                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                                    die();
+                                }
+                            } else {
+                                $message = 'Only Images or Office files allowed to upload';
+                                mysqli_rollback($conn);
+                                http_response_code(501);
+                                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                                die();
+                            }
+                        }
+                    }
+                } catch (Exception $e) {
+                    mysqli_rollback($conn);
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " Error uploading, Please use laptop to upload again."));
+                    die();
+                }
+
+
+                // files uploaded
+                $file_count = isset($_POST["f_file_count"]) ? $_POST["f_file_count"] : 0;
+                $batch_id = $last_id;
+                $batch_type = "RECEIVE";
+
+                $total = $file_count;
+                // Loop through each file
+                for ($i = 0; $i < $total; $i++) {
+                    $key = "f_files" . $i;
+                    if (array_key_exists($key, $_FILES))
+                    {
+                        $update_name = SaveImage($key, $batch_id, $batch_type, $create_id, $conn, $conf);
+                    }
+                }
+                
+
 
                 insertContactor($customer, $supplier, $user, $conn);
 
@@ -687,7 +836,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                 }
 
                 $photo = implode(",",$stringarray);
-                if($photo != "")
+                if($photo != "" || ($file_count + $f_file_count) > 0)
                 {
                     $library = "RECEIVE";
                 }
@@ -1130,4 +1279,115 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
       mysqli_close($conn);
 
 
+      function SaveImage($type, $batch_id, $batch_type, $user_id, $conn, $conf)
+    {
+        try {
+            if($_FILES[$type]['name'] == null)
+                return "";
+            // Loop through each file
+
+            if(isset($_FILES[$type]['name']))
+            {
+                $image_name = $_FILES[$type]['name'];
+                $valid_extensions = array("jpg","jpeg","png","gif","pdf","docx","doc","xls","xlsx","ppt","pptx","zip","rar","7z","txt","dwg","skp","psd","evo");
+                $extension = pathinfo($image_name, PATHINFO_EXTENSION);
+                if (in_array(strtolower($extension), $valid_extensions)) 
+                {
+                    //$upload_path = 'img/' . time() . '.' . $extension;
+
+                    $storage = new StorageClient([
+                        'projectId' => 'predictive-fx-284008',
+                        'keyFilePath' => $conf::$gcp_key
+                    ]);
+
+                    $bucket = $storage->bucket('feliiximg');
+
+                    $upload_name = time() . '_' . pathinfo($image_name, PATHINFO_FILENAME) . '.' . $extension;
+
+                    $file_size = filesize($_FILES[$type]['tmp_name']);
+                    $size = 0;
+
+                    $obj = $bucket->upload(
+                        fopen($_FILES[$type]['tmp_name'], 'r'),
+                        ['name' => $upload_name]);
+
+                    $info = $obj->info();
+                    $size = $info['size'];
+
+                    if($size == $file_size && $file_size != 0 && $size != 0)
+                    {
+                        $query = "INSERT INTO gcp_storage_file
+                        SET
+                            batch_id = ?,
+                            batch_type = ?,
+                            filename = ?,
+                            gcp_name = ?,
+
+                            create_id = ?,
+                            created_at = now()";
+
+                        // prepare the query
+                        $stmt = $conn->prepare($query);
+                    
+                        // bind the values
+                        $stmt->bind_param(
+                            "isssi",
+                            $batch_id,
+                            $batch_type,
+                            $image_name,
+                            $upload_name,
+                            $user_id
+                        );
+            
+
+                        try {
+                            // execute the query, also check if query was successful
+                            if ($stmt->execute()) {
+                                $last_id = mysqli_insert_id($conn);
+                            }
+                            else
+                            {
+                                $arr = $stmt->errorInfo();
+                                error_log($arr[2]);
+                            }
+                        }
+                        catch (Exception $e)
+                        {
+                            error_log($e->getMessage());
+                            $conn->rollback();
+                            http_response_code(501);
+                            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                            die();
+                        }
+
+                        return $upload_name;
+                    }
+                    else
+                    {
+                        $message = 'There is an error while uploading file';
+                        $conn->rollback();
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                        die();
+                        
+                    }
+                }
+                else
+                {
+                    $message = 'Only Images or Office files allowed to upload';
+                    $conn->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                    die();
+                }
+            }
+
+            
+        } catch (Exception $e) {
+            $conn->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " Error uploading, Please use laptop to upload again."));
+            die();
+        }
+    }
 ?>

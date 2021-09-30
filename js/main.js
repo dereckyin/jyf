@@ -162,9 +162,15 @@ let mainState = {
     // show photo
     pic_lib : [],
     pic_receive: [],
+    cam_receive: [],
+    file_receive: [],
     url_ip: "https://storage.googleapis.com/feliiximg/",
 
     pic_preview: [],
+ 
+    // pictures
+    snap_me:false,
+    pic_list: [],
 
 };
 
@@ -323,6 +329,8 @@ var app = new Vue({
 
             var photoModal;
 
+            var webcam;
+
             //    $('header').load('Include/header.htm');
             toggleme($('a.btn.detail'), $('.block.record'), 'show');
 
@@ -368,10 +376,23 @@ var app = new Vue({
                 modal: true,
             });
 
+            webcam = $("#webcam").dialog({
+                autoOpen: false,
+                height: 540,
+                width: 900,
+                modal: true,
+            });
+
             $("#get_photo_library_1").button().unbind('click').on("click", function() {
                 app.getPicLibrary();
                 photoModal.dialog("open");
             });
+
+            $("#web_cam_1").button().unbind('click').on("click", function() {
+          
+                webcam.dialog("open");
+            });
+
 
             $("#create-user1").button().unbind('click').on("click", function() {
 
@@ -443,6 +464,8 @@ var app = new Vue({
 
           var photoModal;
 
+          var webcam;
+
             //    $('header').load('Include/header.htm');
             toggleme($('a.btn.detail'), $('.block.record'), 'show');
 
@@ -490,6 +513,13 @@ var app = new Vue({
                 modal: true,
             });
 
+            webcam = $("#webcam").dialog({
+                autoOpen: false,
+                height: 540,
+                width: 900,
+                modal: true,
+            });
+
             $("#create-user").button().unbind('click').on("click", function() {
 
                 $.ajax({
@@ -525,6 +555,11 @@ var app = new Vue({
             $("#get_photo_library").button().unbind('click').on("click", function() {
                 app.getPicLibrary();
                 photoModal.dialog("open");
+            });
+
+            $("#web_cam").button().unbind('click').on("click", function() {
+             
+                webcam.dialog("open");
             });
 
             $("#create-supplier").button().unbind('click').on("click", function() {
@@ -570,6 +605,43 @@ var app = new Vue({
     },
 
     methods: {
+        download_pic : function (id) {
+            let _this = this;
+            this.takeASnap(id);
+        },
+
+        takeASnap : function (id) {
+            const canvas = document.getElementById('hello_kitty_' + id);
+
+            var dataURI = canvas.src;
+                var byteString;
+                if (dataURI.split(',')[0].indexOf('base64') >= 0)
+                    byteString = atob(dataURI.split(',')[1]);
+                else
+                    byteString = unescape(dataURI.split(',')[1]);
+
+                // separate out the mime component
+                var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+                // write the bytes of the string to a typed array
+                var ia = new Uint8Array(byteString.length);
+                for (var i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+
+            this.download(new Blob([ia], {type:mimeString}), id);
+            
+        },
+
+        download : function(blob, id) {
+            // uses the <a download> to download a Blob
+            let a = document.createElement('a'); 
+            a.href = URL.createObjectURL(blob);
+            a.download = 'screenshot' + id + '.jpg';
+            document.body.appendChild(a);
+            a.click();
+          },
+
         delete_library : function () {
             let _this = this;
             let delete_me = [];
@@ -696,6 +768,52 @@ var app = new Vue({
 
         },
 
+        choose_picture: function (){
+            if(this.isEditing == true)
+            {
+                for (var i = 0; i < this.pic_list.length; i++) {
+                    if(this.pic_list[i].is_checked == true) {
+                        let pid = this.pic_list[i].pid;
+                        var found = false;
+                        for(var j = 0; j < this.record.pic.length; j++) {
+                            if (this.record.pic[j].pid == pid) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if(found == false) {
+                            this.record.pic.push(this.shallowCopy(
+                                this.pic_lib.find((element) => element.pid == pid)
+                            ));
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+        
+                for (var i = 0; i < this.pic_list.length; i++) {
+
+                        this.cam_receive.push(this.pic_list[i]);
+
+                        //this.customer = this.pic_lib[i].customer;
+                        //this.supplier = this.pic_lib[i].supplier;
+                        //this.date_receive = this.pic_lib[i].date_receive;
+                        //$('#adddate').datepicker('setDate', this.date_receive);
+                        //this.quantity = this.pic_lib[i].quantity;
+                        //this.remark = this.pic_lib[i].remark;
+                    
+                }
+            }
+            
+
+              //window.jQuery(".mask").toggle();
+              //window.jQuery("#photoModal").toggle();
+              $( "#webcam" ).dialog('close');
+
+        },
+
         getPicLibrary: function(keyword) {
             let _this = this;
             if(this.pic_lib.length > 0) {
@@ -778,6 +896,69 @@ var app = new Vue({
             
         },
 
+        onFileChange(e) {
+            const file = e.target.files[0];
+            let _this = this;
+            var reader = new FileReader();
+
+            //Read the contents of Image File.
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+
+                //Initiate the JavaScript Image object.
+                var image = new Image();
+
+                //Set the Base64 string return from FileReader as source.
+                image.src = e.target.result;
+
+                //Validate the File Height and Width.
+                image.onload = function () {
+                    var height = this.height;
+                    var width = this.width;
+                    if (height > 800 || width > 800) {
+                        alert("圖片的長必須小於等於800個像素、圖片的寬必須小於等於800個像素");
+                        return false;
+                    }
+                    else
+                    {
+                        var obj = {
+                            check: '1',
+                            file: file,
+                            url: URL.createObjectURL(file),
+                          };
+                    
+                          _this.file_receive.push(obj);
+                    }
+                };
+            };
+
+
+            
+        
+        },
+
+        append_pic() {
+            if(this.snap_me == true) {
+              this.snap_me = false;
+            }
+            else
+              return;
+      
+            var file;
+      
+            if (document.getElementById("base64image") !== null)
+              file = document.getElementById("base64image").src;
+            else file = "";
+      
+            var obj = {
+              check: '1',
+              file: file,
+              url: file,
+            };
+      
+            this.pic_list.push(obj);
+          },
+
         createReceiveRecord: function() {
             console.log("createReceiveRecord");
 
@@ -823,6 +1004,33 @@ var app = new Vue({
                 }
 
                 form_Data.append("photo", delete_me.join());
+
+                // camera
+                var count = 0;
+                for (var i = 0; i < this.pic_list.length; i++)
+                {
+                    if(this.pic_list[i].check)
+                    {
+                    form_Data.append("files" + count, this.pic_list[i].url);
+                    count = count + 1;
+                    }
+                }
+                form_Data.append("file_count", count);
+                
+
+                var f_count = 0;
+                // files
+                for (var i = 0; i < this.file_receive.length; i++)
+                {
+                    if(this.file_receive[i].check)
+                    {
+                    form_Data.append("f_files" + f_count, this.file_receive[i].file);
+                    f_count = f_count + 1;
+                    }
+                }
+
+                form_Data.append("f_file_count", f_count);
+
            
                 var receive_record = {};
                 form_Data.forEach(function(value, key) {
@@ -1215,7 +1423,8 @@ var app = new Vue({
 
             this.pic_lib = [];
             this.pic_receive = [];
-            this.pic_preview = [];
+            this.cam_receive = [];
+            this.file_receive = [];
 
             $('#adddate').datepicker('setDate', "");
             $('#adddate1').datepicker('setDate', "");
@@ -1295,7 +1504,7 @@ var app = new Vue({
 
         zoom(id) {
           this.selectedImage = "true";
-          this.pic_preview = this.shallowCopy(app.receive_records.find(element => element.id == id)['pic']);
+          this.pic_preview = this.shallowCopy(this.receive_records.find(element => element.id == id)['pic']);
 
           let imgdialog = $("#imgModal").dialog({
                 autoOpen: false,
@@ -1306,6 +1515,8 @@ var app = new Vue({
 
          imgdialog.dialog("open");
           console.log("Zoom", this.selectedImage);
+    
+          //this.$forceUpdate();
         },
 
         editRecord() {
