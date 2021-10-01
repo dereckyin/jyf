@@ -164,6 +164,8 @@ let mainState = {
     pic_receive: [],
     cam_receive: [],
     file_receive: [],
+    cam_receive_1: [],
+    file_receive_1: [],
     url_ip: "https://storage.googleapis.com/feliiximg/",
 
     pic_preview: [],
@@ -633,6 +635,15 @@ var app = new Vue({
             
         },
 
+        download_lib : function(uri) {
+            // uses the <a download> to download a Blob
+            let a = document.createElement('a'); 
+            a.href = uri;
+            a.download = 'screenshot' + '.jpg';
+            document.body.appendChild(a);
+            a.click();
+          },
+
         download : function(blob, id) {
             // uses the <a download> to download a Blob
             let a = document.createElement('a'); 
@@ -772,22 +783,9 @@ var app = new Vue({
             if(this.isEditing == true)
             {
                 for (var i = 0; i < this.pic_list.length; i++) {
-                    if(this.pic_list[i].is_checked == true) {
-                        let pid = this.pic_list[i].pid;
-                        var found = false;
-                        for(var j = 0; j < this.record.pic.length; j++) {
-                            if (this.record.pic[j].pid == pid) {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if(found == false) {
-                            this.record.pic.push(this.shallowCopy(
-                                this.pic_lib.find((element) => element.pid == pid)
-                            ));
-                        }
 
-                    }
+                    this.cam_receive_1.push(this.pic_list[i]);
+                
                 }
             }
             else
@@ -894,6 +892,43 @@ var app = new Vue({
             //window.jQuery(".mask").toggle();
             //window.jQuery("#photoModal").toggle();
             
+        },
+
+        onFileChange_1(e) {
+            const file = e.target.files[0];
+            let _this = this;
+            var reader = new FileReader();
+
+            //Read the contents of Image File.
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+
+                //Initiate the JavaScript Image object.
+                var image = new Image();
+
+                //Set the Base64 string return from FileReader as source.
+                image.src = e.target.result;
+
+                //Validate the File Height and Width.
+                image.onload = function () {
+                    var height = this.height;
+                    var width = this.width;
+                    if (height > 800 || width > 800) {
+                        alert("圖片的長必須小於等於800個像素、圖片的寬必須小於等於800個像素");
+                        return false;
+                    }
+                    else
+                    {
+                        var obj = {
+                            check: '1',
+                            file: file,
+                            url: URL.createObjectURL(file),
+                          };
+                    
+                          _this.file_receive_1.push(obj);
+                    }
+                };
+            };
         },
 
         onFileChange(e) {
@@ -1108,6 +1143,32 @@ var app = new Vue({
 
                 form_Data.append("photo", delete_me.join());
 
+                // camera
+                var count = 0;
+                for (var i = 0; i < this.pic_list.length; i++)
+                {
+                    if(this.pic_list[i].check)
+                    {
+                    form_Data.append("files" + count, this.pic_list[i].url);
+                    count = count + 1;
+                    }
+                }
+                form_Data.append("file_count", count);
+                
+
+                var f_count = 0;
+                // files
+                for (var i = 0; i < this.file_receive.length; i++)
+                {
+                    if(this.file_receive[i].check)
+                    {
+                    form_Data.append("f_files" + f_count, this.file_receive[i].file);
+                    f_count = f_count + 1;
+                    }
+                }
+
+                form_Data.append("f_file_count", f_count);
+
                 var receive_record = {};
                 form_Data.forEach(function(value, key) {
                     receive_record[key] = value;
@@ -1243,6 +1304,32 @@ var app = new Vue({
 
             form_Data.append('pic', JSON.stringify(this.record.pic))
 
+            // camera
+            var count = 0;
+            for (var i = 0; i < this.cam_receive_1.length; i++)
+            {
+                if(this.cam_receive_1[i].check)
+                {
+                form_Data.append("files" + count, this.cam_receive_1[i].url);
+                count = count + 1;
+                }
+            }
+            form_Data.append("file_count", count);
+            
+
+            var f_count = 0;
+            // files
+            for (var i = 0; i < this.file_receive_1.length; i++)
+            {
+                if(this.file_receive_1[i].check)
+                {
+                form_Data.append("f_files" + f_count, this.file_receive_1[i].file);
+                f_count = f_count + 1;
+                }
+            }
+
+            form_Data.append("f_file_count", f_count);
+
             const token = sessionStorage.getItem('token');
 
             axios({
@@ -1321,6 +1408,32 @@ var app = new Vue({
             form_Data.append('id', this.record.id);
 
             form_Data.append('pic', JSON.stringify(this.record.pic))
+
+            // camera
+            var count = 0;
+            for (var i = 0; i < this.cam_receive_1.length; i++)
+            {
+                if(this.cam_receive_1[i].check)
+                {
+                form_Data.append("files" + count, this.cam_receive_1[i].url);
+                count = count + 1;
+                }
+            }
+            form_Data.append("file_count", count);
+            
+
+            var f_count = 0;
+            // files
+            for (var i = 0; i < this.file_receive_1.length; i++)
+            {
+                if(this.file_receive_1[i].check)
+                {
+                form_Data.append("f_files" + f_count, this.file_receive_1[i].file);
+                f_count = f_count + 1;
+                }
+            }
+
+            form_Data.append("f_file_count", f_count);
 
             const token = sessionStorage.getItem('token');
 
@@ -1422,9 +1535,15 @@ var app = new Vue({
             this.record = {};
 
             this.pic_lib = [];
+            this.pic_list = [];
+            this.snap_me = false;
+            document.getElementById('results').innerHTML = '';
+
             this.pic_receive = [];
             this.cam_receive = [];
             this.file_receive = [];
+            this.cam_receive_1 = [];
+            this.file_receive_1 = [];
 
             $('#adddate').datepicker('setDate', "");
             $('#adddate1').datepicker('setDate', "");

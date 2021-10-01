@@ -525,10 +525,20 @@
                                 <input type="checkbox" class="alone" :value="item.is_checked" v-model="item.is_checked">
                             </div>
 
+                            <div class="photobox" v-for="(item, index) in cam_receive_1">
+                                    <img :src="item.url">
+                                <input type="checkbox" class="alone" :value="item.check" v-model="item.check">
+                            </div>
+
+                            <div class="photobox" v-for="(item, index) in  file_receive_1">
+                                    <img :src="item.url">
+                                <input type="checkbox" class="alone" :value="item.check" v-model="item.check">
+                            </div>
+
                             <button id="get_photo_library_1">圖片庫</button>
                             <button id="web_cam_1">照相</button>
-                            <button id="" style="position: relative;">選取檔案
-                                <input type="file" accept="image/*" style="position: absolute; top: 0; left: 0;bottom: 0; right: 0; margin: auto; width: 100%; opacity: 0;">
+                            <button id="get_file_1" style="position: relative;">選取檔案
+                                <input type="file" accept="image/*" style="position: absolute; top: 0; left: 0;bottom: 0; right: 0; margin: auto; width: 100%; opacity: 0;" @change="onFileChange_1($event)">
                             </button>
                         </li>
                     </ul>
@@ -838,7 +848,7 @@
                         <tbody id="">
                         <tr v-for="(item, index) in pic_lib">
                             <td><input class="alone" type="checkbox" :value="item.is_checked" v-model="item.is_checked">
-                            <a :href="url_ip + item.gcp_name" download><button type="button" class="btn btn-secondary" data-dismiss="modal" >存成檔案 <br /> Save As File</button></a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="download_lib(url_ip + item.gcp_name)">存成檔案 <br /> Save As File</button>
                             </td>
                             <td><a href="url_ip + item.gcp_name" target="_blank"><img width="50%" v-if="item.gcp_name" :src="url_ip + item.gcp_name"></a></td>
                             <td>{{ item.date_receive }}</td>
