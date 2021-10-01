@@ -392,6 +392,7 @@ var app = new Vue({
 
             $("#web_cam_1").button().unbind('click').on("click", function() {
           
+                ShowCam();
                 webcam.dialog("open");
             });
 
@@ -560,7 +561,7 @@ var app = new Vue({
             });
 
             $("#web_cam").button().unbind('click').on("click", function() {
-             
+                ShowCam();
                 webcam.dialog("open");
             });
 
@@ -635,6 +636,30 @@ var app = new Vue({
             
         },
 
+        async download_lib(uri) {
+            const a = document.createElement("a");
+            a.href = await this.toDataURL(uri);
+            a.download = "screenshot.jpg";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+    },
+
+    toDataURL(url) {
+        let headers = new Headers();
+
+        return fetch(url, {
+            method : "GET",
+            mode: 'cors',
+            credentials: 'include',
+            headers: headers
+        }).then((response) => {
+                return response.blob();
+            }).then(blob => {
+                return URL.createObjectURL(blob);
+            });
+    },
+/*
         download_lib : function(uri) {
             // uses the <a download> to download a Blob
             let a = document.createElement('a'); 
@@ -643,7 +668,7 @@ var app = new Vue({
             document.body.appendChild(a);
             a.click();
           },
-
+*/
         download : function(blob, id) {
             // uses the <a download> to download a Blob
             let a = document.createElement('a'); 
@@ -784,7 +809,8 @@ var app = new Vue({
             {
                 for (var i = 0; i < this.pic_list.length; i++) {
 
-                    this.cam_receive_1.push(this.pic_list[i]);
+                    if(this.pic_list[i].check)
+                        this.cam_receive_1.push(this.pic_list[i]);
                 
                 }
             }
@@ -793,6 +819,7 @@ var app = new Vue({
         
                 for (var i = 0; i < this.pic_list.length; i++) {
 
+                    if(this.pic_list[i].check)
                         this.cam_receive.push(this.pic_list[i]);
 
                         //this.customer = this.pic_lib[i].customer;
@@ -805,10 +832,14 @@ var app = new Vue({
                 }
             }
             
+            this.pic_list = [];
+            this.snap_me = false;
+            document.getElementById('results').innerHTML = '';
 
               //window.jQuery(".mask").toggle();
               //window.jQuery("#photoModal").toggle();
               $( "#webcam" ).dialog('close');
+              HideCam();
 
         },
 
@@ -1042,11 +1073,11 @@ var app = new Vue({
 
                 // camera
                 var count = 0;
-                for (var i = 0; i < this.pic_list.length; i++)
+                for (var i = 0; i < this.cam_receive.length; i++)
                 {
-                    if(this.pic_list[i].check)
+                    if(this.cam_receive[i].check)
                     {
-                    form_Data.append("files" + count, this.pic_list[i].url);
+                    form_Data.append("files" + count, this.cam_receive[i].url);
                     count = count + 1;
                     }
                 }
@@ -1145,11 +1176,11 @@ var app = new Vue({
 
                 // camera
                 var count = 0;
-                for (var i = 0; i < this.pic_list.length; i++)
+                for (var i = 0; i < this.cam_receive.length; i++)
                 {
-                    if(this.pic_list[i].check)
+                    if(this.cam_receive[i].check)
                     {
-                    form_Data.append("files" + count, this.pic_list[i].url);
+                    form_Data.append("files" + count, this.cam_receive[i].url);
                     count = count + 1;
                     }
                 }

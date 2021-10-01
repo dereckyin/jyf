@@ -64,8 +64,11 @@
             });
         }
 
+        var HideCam = function() {
+            Webcam.reset('#my_camera');
+        }
 
-        function ShowCam() {
+        var ShowCam = function() {
 
             Webcam.set({
                 width: 480,
@@ -88,7 +91,7 @@
             var showup = document.getElementById("uploaded").src = image_return;
         }
 
-        window.onload = ShowCam;
+        // window.onload = ShowCam;
     </script>
 
 
@@ -107,13 +110,17 @@
             max-width: 100%;
         }
 
+        #webcam .modal-dialog.modal-lg {
+            max-width: 100%;
+        }
+
         #showPhoto tr td img {
             width: initial;
             max-width: 250px;
             max-height: 250px;
         }
 
-        #showPhoto tr th {
+        #showPhoto tr th, #showPhoto tr td {
             vertical-align: middle;
         }
 
@@ -127,6 +134,17 @@
         #showPhoto tr td:nth-of-type(2) {
             width: 270px;
             text-align: center;
+        }
+
+        #showPhoto tr th:last-of-type,
+        #showPhoto tr td:last-of-type {
+            width: 40px;
+            text-align: center;
+        }
+
+        #showPhoto tr td:last-of-type > button {
+            width: 36px;
+            height: 36px;
         }
 
         .tablebox.V.s01 .photobox {
@@ -176,12 +194,34 @@
         .block .camerabox .photobox img {
             max-width: 480px;
             max-height: 480px;
-            margin: 10px 0;
+            margin: 10px 20px;
+        }
+
+        .block .camerabox .photobox  button {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
         }
 
         .tablebox button.ui-button.ui-corner-all+button.ui-button.ui-corner-all {
             margin-left: 10px;
         }
+
+        #get_file, #get_file_1{
+            position: relative;
+        }
+
+        #get_file > input[type="file"], get_file_1 > input[type="file"]{
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            width: 100%;
+            opacity: 0;
+        }
+
     </style>
 
     <script>
@@ -194,7 +234,7 @@
 
 <body>
     <div class="bodybox">
-        <div class="mask" style="display:none" onclick="(function(){ $('.mask').toggle(); $('#webcam').toggle(); $('#photoModal').toggle(); return false;})();return false;"></div>
+        <div class="mask" style="display:none" onclick="(function(){ $('.mask').toggle(); $('#webcam').toggle(); HideCam(); $('#photoModal').toggle(); return false;})();return false;"></div>
         <!-- header -->
         <header>
         </header>
@@ -353,8 +393,8 @@
 
                                 <button id="get_photo_library">圖片庫</button>
                                 <button id="web_cam">照相</button>
-                                <button id="get_file" style="position: relative;">選取檔案
-                                    <input type="file" accept="image/*" style="position: absolute; top: 0; left: 0;bottom: 0; right: 0; margin: auto; width: 100%; opacity: 0;" @change="onFileChange($event)">
+                                <button id="get_file" class="ui-button ui-corner-all ui-widget">選取檔案
+                                    <input type="file" accept="image/*" @change="onFileChange($event)">
                                 </button>
                             </li>
                         </ul>
@@ -519,8 +559,8 @@
 
                                 <button id="get_photo_library_1">圖片庫</button>
                                 <button id="web_cam_1">照相</button>
-                                <button id="get_file_1" style="position: relative;">選取檔案
-                                    <input type="file" accept="image/*" style="position: absolute; top: 0; left: 0;bottom: 0; right: 0; margin: auto; width: 100%; opacity: 0;" @change="onFileChange_1($event)">
+                                <button id="get_file_1" class="ui-button ui-corner-all ui-widget">選取檔案
+                                    <input type="file" accept="image/*" @change="onFileChange_1($event)">
                                 </button>
                             </li>
                         </ul>
@@ -580,10 +620,7 @@
                                 <li>
                                     E-Mail
                                 </li>
-                                <li>
-                                    <eng>Recipient Name in E-mail</eng>
-                                    E-Mail的收件人名字
-                                </li>
+                            
                                 <li>
                                     <eng>Picture</eng>
                                     照片
@@ -632,9 +669,7 @@
                                 <li>
                                     {{ receive_record.email }}
                                 </li>
-                                <li>
-                                    {{ receive_record.email_customer }}
-                                </li>
+                                
                                 <li><i class="fas fa-image" v-if="receive_record.pic.length > 0" @click="zoom(receive_record.id)"></i></li>
                                 <li>{{ receive_record.description }}</li>
                                 <li>{{ receive_record.quantity }}</li>
@@ -851,19 +886,24 @@
                                         <p>Remark</p>
                                         <p>備註</p>
                                     </th>
+                                    <th>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="">
                                 <tr v-for="(item, index) in pic_lib">
-                                    <td><input class="alone" type="checkbox" :value="item.is_checked" v-model="item.is_checked">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="download_lib(url_ip + item.gcp_name)">存成檔案 <br /> Save As File</button>
+                                    <td>
+                                        <input class="alone" type="checkbox" :value="item.is_checked" v-model="item.is_checked">
                                     </td>
-                                    <td><a href="url_ip + item.gcp_name" target="_blank"><img width="50%" v-if="item.gcp_name" :src="url_ip + item.gcp_name"></a></td>
+                                    <td><a :href="url_ip + item.gcp_name" target="_blank"><img width="50%" v-if="item.gcp_name" :src="url_ip + item.gcp_name"></a></td>
                                     <td>{{ item.date_receive }}</td>
                                     <td>{{ item.quantity }}</td>
                                     <td>{{ item.supplier }}</td>
                                     <td>{{ item.customer }}</td>
                                     <td>{{ item.remark }}</td>
+                                    <td>
+                                        <button type="button" data-dismiss="modal" @click="download_lib(url_ip + item.gcp_name)"><i class="fas fa-file-download"></i></button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -909,11 +949,7 @@
                                     <div v-for="(item, index) in pic_list" class="photobox">
                                         <input type="checkbox" class="alone" :value="item.check" v-model="item.check">
                                         <img :id="'hello_kitty_' + index" :src="item.url">
-
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="download_pic(index)">
-                                            存成檔案<br />
-                                            Save As File
-                                        </button>
+                                        <button type="button" data-dismiss="modal" @click="download_pic(index)"><i class="fas fa-file-download"></i></button>
                                     </div>
 
                                 </div>
@@ -921,9 +957,13 @@
                         </div>
 
                         <!-- Modal footer -->
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="choose_picture()">
-                            選取 Select
-                        </button>
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="choose_picture()">選取 Select</button>
+                        </div>
+
+
+
                     </div>
 
                 </div>
