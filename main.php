@@ -211,7 +211,7 @@
             position: relative;
         }
 
-        #get_file > input[type="file"], get_file_1 > input[type="file"]{
+        #get_file > input[type="file"], #get_file_1 > input[type="file"]{
             position: absolute;
             top: 0;
             left: 0;
