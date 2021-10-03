@@ -71,8 +71,8 @@
         var ShowCam = function() {
 
             Webcam.set({
-                width: 480,
-                height: 480,
+                width: 600,
+                height: 600,
                 image_format: 'jpeg',
                 jpeg_quality: 100,
                 constraints: {
@@ -178,8 +178,8 @@
         }
 
         .block .camerabox #results>img {
-            max-width: 480px;
-            max-height: 480px;
+            max-width: 600px;
+            max-height: 600px;
         }
 
         .block .camerabox .photobox {
@@ -192,14 +192,14 @@
         }
 
         .block .camerabox .photobox img {
-            max-width: 480px;
-            max-height: 480px;
+            max-width: 600px;
+            max-height: 600px;
             margin: 10px 20px;
         }
 
         .block .camerabox .photobox  button {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             font-size: 20px;
         }
 
@@ -895,14 +895,14 @@
                                     <td>
                                         <input class="alone" type="checkbox" :value="item.is_checked" v-model="item.is_checked">
                                     </td>
-                                    <td><a :href="url_ip + item.gcp_name" target="_blank"><img width="50%" v-if="item.gcp_name" :src="url_ip + item.gcp_name"></a></td>
+                                    <td><a :href="url_ip + item.gcp_name" download><img width="50%" v-if="item.gcp_name" :src="url_ip + item.gcp_name"></a></td>
                                     <td>{{ item.date_receive }}</td>
                                     <td>{{ item.quantity }}</td>
                                     <td>{{ item.supplier }}</td>
                                     <td>{{ item.customer }}</td>
                                     <td>{{ item.remark }}</td>
                                     <td>
-                                        <button type="button" data-dismiss="modal" @click="download_lib(url_ip + item.gcp_name)"><i class="fas fa-file-download"></i></button>
+                                        <a :href="url_ip + item.gcp_name" download="library"><button type="button" data-dismiss="modal" ><i class="fas fa-file-download"></i></button></a>
                                     </td>
                                 </tr>
                             </tbody>
