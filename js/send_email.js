@@ -868,7 +868,8 @@ var app = new Vue({
             this.isEditing = false;
             this.record = {};
 
-            this.receive_record = [];
+            this.receive_records = [];
+
 
             $('#date_sent').datepicker('setDate', "");
             $('#etd_date').datepicker('setDate', "");
