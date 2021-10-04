@@ -518,7 +518,7 @@ var app = new Vue({
 
             webcam = $("#webcam").dialog({
                 autoOpen: false,
-                height: 540,
+                height: 700,
                 width: 900,
                 modal: true,
             });
