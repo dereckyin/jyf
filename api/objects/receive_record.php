@@ -15,6 +15,7 @@ class ReceiveRecord{
     public $description;
     public $quantity;
     public $supplier;
+    public $mail_note;
     public $picname;
     public $kilo;
     public $cuft;
@@ -45,6 +46,8 @@ class ReceiveRecord{
                     description = :description,
                     quantity = :quantity,
                     supplier = :supplier,
+                    email = :email,
+                    mail_note = :mail_note,
                     kilo = :kilo,
                     cuft = :cuft,
                     taiwan_pay = :taiwan_pay,
@@ -64,6 +67,8 @@ class ReceiveRecord{
         $stmt->bindParam(':description', $this->description);
         $stmt->bindParam(':quantity', $this->quantity);
         $stmt->bindParam(':supplier', $this->supplier);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':mail_note', $this->mail_note);
         $stmt->bindParam(':kilo', $this->kilo);
         $stmt->bindParam(':cuft', $this->cuft);
         $stmt->bindParam(':taiwan_pay', $this->taiwan_pay);
@@ -101,6 +106,8 @@ class ReceiveRecord{
                                   courier_money, 
                                   remark, 
                                   batch_num, 
+                                  mail_note,
+                                  main_cnt,
                                   status, 
                                   crt_time, 
                                   crt_user,

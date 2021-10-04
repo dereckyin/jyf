@@ -62,6 +62,9 @@ $(function(){
                      <a class="btn small detail">新增貨櫃記錄<eng>New Container Record</eng></a>
                      <a class="btn small" href="loading_edit.php">修改貨櫃記錄<eng>Edit Container Record</eng></a>
                      <a class="btn small" href="loading_query.php">查詢貨櫃記錄<eng>Query Container Record</eng></a>
+                     <a href="send_email.php" class="btn small">E-Mail功能
+                        <eng>E-Mail Function</eng>
+                    </a>
                  </div>
              </div>
              <div class="block record">
