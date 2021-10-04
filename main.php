@@ -270,10 +270,13 @@
                                 <input type="text" name="customer" v-model.lazy="customer" maxlength="256" style="width: calc(65% - 40px);">
                                 <button type="button" class="btn btn-primary" id="create-user"><i class="fas fa-address-card"></i></button>
                             </li>
-                            <li></li>
-                            <li>
+
+                            <li>E-Mail</li>
+                            <li><input type="text" name="email" v-model.lazy="email">
+                                <span class="text-danger" v-if="error_email" v-text="error_email"></span>
                             </li>
                         </ul>
+                        <!--
                         <ul>
                             <li class="header"></li>
                             <li>E-Mail的收件人名字
@@ -282,12 +285,10 @@
                             <li>
                                 <input type="text" name="email_customer" v-model.lazy="email_customer" maxlength="256" style="width: calc(65% - 40px);">
                             </li>
-                            <li>E-Mail</li>
-                            <li>
-                                <input type="text" name="email" v-model.lazy="email">
-                                <span class="text-danger" v-if="error_email" v-text="error_email"></span>
-                            </li>
+                            <li></li>
+                            <li></li>
                         </ul>
+                        -->
                     </div>
                     <div class="tablebox V s01">
                         <ul>
@@ -431,10 +432,12 @@
                                 <input type="text" name="customer" maxlength="256" v-model.lazy="record.customer" style="width: calc(65% - 40px);">
                                 <button type="button" class="btn btn-primary" id="create-user1"><i class="fas fa-address-card"></i></button>
                             </li>
-                            <li></li>
+                            <li>E-Mail</li>
                             <li>
+                                <input type="text" name="email" v-model.lazy="record.email">
                             </li>
                         </ul>
+                        <!--
                         <ul>
                             <li class="header"></li>
                             <li>E-Mail的收件人名字
@@ -443,11 +446,10 @@
                             <li>
                                 <input type="text" name="email_customer" v-model.lazy="record.email_customer" maxlength="256" style="width: calc(65% - 40px);">
                             </li>
-                            <li>E-Mail</li>
-                            <li>
-                                <input type="text" name="email" v-model.lazy="record.email">
-                            </li>
+                            <li></li>
+                            <li></li>
                         </ul>
+                        -->
                     </div>
                     <div class="tablebox V s01">
                         <ul>
@@ -886,8 +888,6 @@
                                         <p>Remark</p>
                                         <p>備註</p>
                                     </th>
-                                    <th>
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="">
@@ -895,15 +895,16 @@
                                     <td>
                                         <input class="alone" type="checkbox" :value="item.is_checked" v-model="item.is_checked">
                                     </td>
-                                    <td><a :href="url_ip + item.gcp_name" download><img width="50%" v-if="item.gcp_name" :src="url_ip + item.gcp_name"></a></td>
+                                    <td><a :href="url_ip + item.gcp_name" target="_blank"><img width="50%" v-if="item.gcp_name" :src="url_ip + item.gcp_name"></a></td>
                                     <td>{{ item.date_receive }}</td>
                                     <td>{{ item.quantity }}</td>
                                     <td>{{ item.supplier }}</td>
                                     <td>{{ item.customer }}</td>
                                     <td>{{ item.remark }}</td>
+                                    <!--
                                     <td>
                                         <a :href="url_ip + item.gcp_name" download="library"><button type="button" data-dismiss="modal" ><i class="fas fa-file-download"></i></button></a>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             </tbody>
                         </table>
@@ -956,7 +957,6 @@
                             </div>
                         </div>
 
-                        <!-- Modal footer -->
                         <!-- Modal footer -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="choose_picture()">選取 Select</button>
