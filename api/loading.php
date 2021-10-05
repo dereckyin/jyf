@@ -38,6 +38,61 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 $user = $decoded->data->username;
 
+
+function GetPic($picname, $photo, $id, $conn){
+    $merged_results = array();
+
+    if($picname != "")
+    {
+        array_push($merged_results, array(
+            "pid" => $id,
+            "batch_id" => $id,
+            "is_checked" => true,
+            "customer" => "",
+            "date_receive" => "",
+            "type" => "FILE",
+            "quantity" => "",
+            "remark" => "",
+            "supplier" => "",
+            "gcp_name" => $picname,
+        ));
+        
+    }
+
+    if($photo == 'RECEIVE')
+    {
+        $sql = "SELECT id, gcp_name FROM gcp_storage_file WHERE batch_id = ? AND batch_type = 'RECEIVE' AND STATUS <> -1";
+        if ($stmt = mysqli_prepare($conn, $sql)) {
+
+            mysqli_stmt_bind_param($stmt, "i", $id);
+        
+            /* execute query */
+            mysqli_stmt_execute($stmt);
+
+            $result1 = mysqli_stmt_get_result($stmt);
+
+            while($row = mysqli_fetch_assoc($result1)) {
+                $filename = $row['gcp_name'];
+                $pid = $row['id'];
+                array_push($merged_results, array(
+                    "pid" => $pid,
+                    "batch_id" => $id,
+                    "is_checked" => true,
+                    "customer" => "",
+                    "date_receive" => "",
+                    "type" => "RECEIVE",
+                    "quantity" => "",
+                    "remark" => "",
+                    "supplier" => "",
+                    "gcp_name" => $filename,
+                ));
+            }
+        }
+    }
+
+    return $merged_results;
+}
+
 switch ($method) {
     case 'GET':
         $id = stripslashes((isset($_GET['id']) ?  $_GET['id'] : ""));
@@ -204,7 +259,7 @@ switch ($method) {
                         array_push($key, strtolower($row['customer']));
                     }
 
-                    $subquery = "SELECT CASE WHEN mail_cnt > 0 THEN 0 ELSE 1 END as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, mail_cnt, mail_note, remark, picname, crt_time, crt_user, 1 as is_edited FROM receive_record where batch_num = $record and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
+                    $subquery = "SELECT CASE WHEN mail_cnt > 0 THEN 0 ELSE 1 END as is_checked, id, date_receive, customer, email, email_customer, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, mail_cnt, mail_note, remark, picname, crt_time, crt_user, 1 as is_edited, photo FROM receive_record where batch_num = $record and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
 
                     if ($stmt = mysqli_prepare($conn, $subquery)) {
 
@@ -215,18 +270,135 @@ switch ($method) {
 
                         $result1 = mysqli_stmt_get_result($stmt);
 
-                        while ($row = mysqli_fetch_assoc($result1)) {
-                            $merged_results[] = $row;
-                        }
+                        if($result1 != null)
+            {
+                while($row = mysqli_fetch_assoc($result1))
+                {
+                    $is_edited = $row['is_edited'];
+                    $is_checked = $row['is_checked'];
+                    $id = $row['id'];
+                    $date_receive = $row['date_receive'];
+                    $customer = $row['customer'];
+                    $email_customer = $row['email_customer'];
+                    $email = $row['email'];
+                    $description = $row['description'];
+                    $quantity = $row['quantity'];
+                    $supplier = $row['supplier'];
+                    $kilo = $row['kilo'];
+                    $cuft = $row['cuft'];
+                    $taiwan_pay = $row['taiwan_pay'];
+                    $courier_pay = $row['courier_pay'];
+                    $courier_money = $row['courier_money'];
+                    $remark = $row['remark'];
+                    $picname = $row['picname'];
+                    $photo = $row['photo'];
+                    $crt_time = $row['crt_time'];
+                    $crt_user = $row['crt_user'];
+                    $mail_cnt = $row['mail_cnt'];
+                    $mail_note = $row['mail_note'];
+                    
+                    $pic = GetPic($picname, $photo, $id, $conn);
+
+                    $merged_results[] = array(
+                        "is_edited" => $is_edited,
+                        "is_checked" => $is_checked,
+                        "id" => $id,
+                        "date_receive" => $date_receive,
+                        "customer" => $customer,
+                        "email_customer" => $email_customer,
+                        "email" => $email,
+                        "description" => $description,
+                        "quantity" => $quantity,
+                        "supplier" => $supplier,
+                        "kilo" => $kilo,
+                        "cuft" => $cuft,
+                        "taiwan_pay" => $taiwan_pay,
+                        "courier_pay" => $courier_pay,
+                        "courier_money" => $courier_money,
+                        "remark" => $remark,
+                        "picname" => $picname,
+                        "photo" => $photo,
+                        "crt_time" => $crt_time,
+                        "crt_user" => $crt_user,
+                        "mail_note" => $mail_note,
+                        "mail_cnt" => $mail_cnt,
+
+                        "pic" => $pic,
+                    
+                    );
+                }
+            
+            }
                     }
                 }
             }
 
-            $subquery = "SELECT CASE WHEN mail_cnt > 0 THEN 0 ELSE 1 END as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, mail_cnt, mail_note, remark, picname, crt_time, crt_user, 1 as is_edited  FROM receive_record where batch_num = $record and date_receive = '' and status = ''  ORDER BY id";
+            $subquery = "SELECT CASE WHEN mail_cnt > 0 THEN 0 ELSE 1 END as is_checked, id, date_receive, customer, email, email_customer, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, mail_cnt, mail_note, remark, picname, crt_time, crt_user, 1 as is_edited, photo  FROM receive_record where batch_num = $record and date_receive = '' and status = ''  ORDER BY id";
 
-            $result1 = mysqli_query($conn, $subquery);
-            while ($row = mysqli_fetch_assoc($result1))
-                $merged_results[] = $row;
+            // $result1 = mysqli_query($conn, $subquery);
+
+            $result1 = mysqli_query($conn,$subquery);
+            if($result1 != null)
+            {
+                while($row = mysqli_fetch_assoc($result1))
+                {
+                    $is_edited = $row['is_edited'];
+                    $is_checked = $row['is_checked'];
+                    $id = $row['id'];
+                    $date_receive = $row['date_receive'];
+                    $customer = $row['customer'];
+                    $email_customer = $row['email_customer'];
+                    $email = $row['email'];
+                    $description = $row['description'];
+                    $quantity = $row['quantity'];
+                    $supplier = $row['supplier'];
+                    $kilo = $row['kilo'];
+                    $cuft = $row['cuft'];
+                    $taiwan_pay = $row['taiwan_pay'];
+                    $courier_pay = $row['courier_pay'];
+                    $courier_money = $row['courier_money'];
+                    $remark = $row['remark'];
+                    $picname = $row['picname'];
+                    $photo = $row['photo'];
+                    $crt_time = $row['crt_time'];
+                    $crt_user = $row['crt_user'];
+                    $mail_cnt = $row['mail_cnt'];
+                    $mail_note = $row['mail_note'];
+                    
+                    $pic = GetPic($picname, $photo, $id, $conn);
+
+                    $merged_results[] = array(
+                        "is_edited" => $is_edited,
+                        "is_checked" => $is_checked,
+                        "id" => $id,
+                        "date_receive" => $date_receive,
+                        "customer" => $customer,
+                        "email_customer" => $email_customer,
+                        "email" => $email,
+                        "description" => $description,
+                        "quantity" => $quantity,
+                        "supplier" => $supplier,
+                        "kilo" => $kilo,
+                        "cuft" => $cuft,
+                        "taiwan_pay" => $taiwan_pay,
+                        "courier_pay" => $courier_pay,
+                        "courier_money" => $courier_money,
+                        "remark" => $remark,
+                        "picname" => $picname,
+                        "photo" => $photo,
+                        "crt_time" => $crt_time,
+                        "crt_user" => $crt_user,
+                        "mail_note" => $mail_note,
+                        "mail_cnt" => $mail_cnt,
+
+                        "pic" => $pic,
+                    
+                    );
+                }
+            
+            }
+            //while ($row = mysqli_fetch_assoc($result1))
+            //    $merged_results[] = $row;
 
 
             echo json_encode($merged_results, JSON_UNESCAPED_SLASHES);

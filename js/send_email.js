@@ -135,6 +135,10 @@ let mainState = {
     pages: [],
     pages_loading: [],
 
+    url_ip: "https://storage.googleapis.com/feliiximg/",
+
+    pic_preview: [],
+
     name: [
       {name: 'Lyn', id: 'Lyn'},
       {name: 'Roger', id: 'Roger'},
@@ -882,6 +886,23 @@ var app = new Vue({
             this.getLoadingRecords();
         },
 
+        zoom(id) {
+            this.selectedImage = "true";
+            this.pic_preview = this.shallowCopy(this.receive_records.find(element => element.id == id)['pic']);
+  
+            let imgdialog = $("#imgModal").dialog({
+                  autoOpen: false,
+                  height: 720,
+                  width: 640,
+                  modal: true,
+              });
+  
+           imgdialog.dialog("open");
+            console.log("Zoom", this.selectedImage);
+      
+            //this.$forceUpdate();
+          },
+
         resetError: function() {
           console.log("resetError");
             this.error_date_send = '';
@@ -932,21 +953,7 @@ var app = new Vue({
             return result;
         },
 
-        zoom(url) {
-          this.selectedImage = "img/" + url;
-
-          let imgdialog = $("#imgModal").dialog({
-                autoOpen: false,
-                height: 720,
-                width: 640,
-                modal: true,
-            });
-
-          $("#img_pre").attr('src', this.selectedImage);
-
-         imgdialog.dialog("open");
-          console.log("Zoom", this.selectedImage);
-        },
+     
 
         editRecord() {
           console.log("editRecord");

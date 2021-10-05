@@ -350,7 +350,7 @@
                                        v-model="email" maxlength="256">
                             </li>
                             <li>
-                                <i class="fas fa-image" aria-hidden="true"></i>
+                                <i class="fas fa-image" v-if="receive_record.pic.length > 0" @click="zoom(receive_record.id)"></i>
                             </li>
                             <li>
                                 <div v-show="receive_record.is_edited == 1">
@@ -406,6 +406,17 @@
                     </a>
                 </div>
 
+            </div>
+        </div>
+
+        <div class="modal" id="imgModal">
+            <div v-if="this.selectedImage" max-width="85vw">
+                <!-- <img :src="this.selectedImage" alt="" width="100%" @click.stop="this.selectedImage = null"> -->
+                <template v-for="(item, index) in pic_preview">
+                    <img v-if="item.type == 'FILE'" name="img_pre" class="img-responsive postimg" :src="'img/' + item.gcp_name" alt="" width="100%">
+                    <img v-if="item.type == 'RECEIVE'" name="img_pre" class="img-responsive postimg" :src="url_ip + item.gcp_name" alt="" width="100%">
+                    <hr>
+                </template>
             </div>
         </div>
     </div>
