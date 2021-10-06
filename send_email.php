@@ -409,6 +409,17 @@
             </div>
         </div>
 
+        <div class="modal" id="emailModal">
+            <div max-width="85vw">
+                目前在寄第 {{ mail_send }} 個收貨紀錄 / 這一批次總共要寄 {{ mail_to_send }} 個收貨記錄 
+            </div>
+            <div max-width="85vw">
+                <template v-for="(item, index) in msg">
+                    {{item}}<hr>
+                </template>
+            </div>
+        </div>
+
         <div class="modal" id="imgModal">
             <div v-if="this.selectedImage" max-width="85vw">
                 <!-- <img :src="this.selectedImage" alt="" width="100%" @click.stop="this.selectedImage = null"> -->

@@ -179,7 +179,12 @@ let mainState = {
     r_kilo : 0.0,
     n_kilo : 0.0,
     r_cuft : 0.0,
-    n_cuft : 0.0
+    n_cuft : 0.0,
+
+    // msg
+    msg : [],
+    mail_to_send : 0,
+    mail_send : 0,
 
 };
 
@@ -335,15 +340,13 @@ var app = new Vue({
                 });
         },
 
-        mail_client: function() {
-            let formData = new FormData();
-
+        mail_client: async function() {
             var favorite = [];
 
             for (i = 0; i < this.receive_records.length; i++) 
             {
                 if(this.receive_records[i].is_checked == 1)
-                favorite.push(this.receive_records[i].id);
+                    favorite.push(this.receive_records[i]);
             }
 
 
@@ -353,37 +356,49 @@ var app = new Vue({
                 return;
             }
 
-            formData.append('record', favorite.toString());
-
-
-            const token = sessionStorage.getItem('token');
-
-            axios({
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        Authorization: `Bearer ${token}`
-                    },
-                    url: 'api/loading_mail.php',
-                    data: formData
-                })
-                .then(function(response) {
-                    //handle success
-                    console.log(response)
-
-                    Swal.fire({
-                        html: response.data.message,
-                        icon: "info",
-                        confirmButtonText: "OK",
-                    });
-
+            let maildialog = $("#emailModal").dialog({
+                autoOpen: false,
+                height: 320,
+                width: 680,
+                modal: true,
+                close: function() {
                     app.resetForm();
+                  }
+            });
 
-                })
-                .catch(function(response) {
-                    //handle error
-                    console.log(response)
-                });
+            maildialog.dialog("open");
+
+            let _this = this;
+
+            let token = localStorage.getItem("accessToken");
+
+            this.mail_to_send = favorite.length;
+            this.mail_send = 0;
+            this.msg = [];
+
+            for(i = 0; i < favorite.length; i++)
+            {
+                const params = {
+                    record: favorite[i].id,
+                };
+                try {
+                    let res = await axios.get("api/loading_mail.php", {
+                    params,
+                    headers: { Authorization: `Bearer ${token}` },
+                    });
+                    
+                    this.msg.push(favorite[i].customer + ":" + res.data.message);
+                    
+                } catch (err) {
+                    console.log(err)
+        
+                }
+
+                this.mail_send = this.mail_send + 1;
+            }
+
+           
+
         },
 
         confirmRow: function(item){
