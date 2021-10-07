@@ -186,6 +186,8 @@ let mainState = {
     mail_to_send : 0,
     mail_send : 0,
 
+    send_all : false,
+
 };
 
 var app = new Vue({
@@ -376,7 +378,9 @@ var app = new Vue({
             this.mail_send = 0;
             this.msg = [];
 
-            for(i = 0; i < favorite.length; i++)
+            this.send_all = false;
+
+            for(var i = 0; i < favorite.length; i++)
             {
                 const params = {
                     record: favorite[i].id,
@@ -386,8 +390,16 @@ var app = new Vue({
                     params,
                     headers: { Authorization: `Bearer ${token}` },
                     });
+
+                    obj = {
+                        "i" : i+1,
+                        "customer" : favorite[i].customer,
+                        "msg" : res.data.message,
+                        "desc" : favorite[i].description,
+                    };
                     
-                    this.msg.push(favorite[i].customer + ":" + res.data.message);
+                    if(res.data.message != "")
+                        this.msg.push(obj);
                     
                 } catch (err) {
                     console.log(err)
@@ -397,6 +409,7 @@ var app = new Vue({
                 this.mail_send = this.mail_send + 1;
             }
 
+            this.send_all = true;
            
 
         },
@@ -888,6 +901,11 @@ var app = new Vue({
             this.record = {};
 
             this.receive_records = [];
+            this.send_all = false;
+
+            this.msg = [];
+            this.mail_to_send = 0;
+            this.mail_send = 0;
 
 
             $('#date_sent').datepicker('setDate', "");

@@ -410,15 +410,28 @@
         </div>
 
         <div class="modal" id="emailModal">
-            <div max-width="85vw">
-                目前在寄第 {{ mail_send }} 個收貨紀錄 / 這一批次總共要寄 {{ mail_to_send }} 個收貨記錄 
+            <div max-width="85vw" style="text-align: center;">
+
+                第 <span style="color: red">{{ mail_send }}</span> 個收貨記錄正在寄送E-Mail ( 總共要處理 {{ mail_to_send }} 個收貨記錄)
+
+                <div style="font-weight: 700; margin-top: 5px;" v-if="send_all">
+                    全部處理完畢
+                </div>
+
             </div>
-            <div max-width="85vw">
+
+            <div max-width="85vw" style="border: 1px solid #C0C0C0; margin-top: 10px; padding: 10px 10px 0;">
+                <h6 style="padding-bottom: 10px;">錯誤訊息</h6>
+
                 <template v-for="(item, index) in msg">
-                    {{item}}<hr>
+                    第 {{item.i}} 個收貨記錄 (收件人: {{ item.customer }}, 貨品名稱: {{ item.desc }})<br>
+                    原因: {{ item.msg }}
+                    <hr>
                 </template>
             </div>
+
         </div>
+
 
         <div class="modal" id="imgModal">
             <div v-if="this.selectedImage" max-width="85vw">
