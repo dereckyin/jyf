@@ -95,7 +95,7 @@ function SendMail($detail) {
     <body>
     
     
-    <div style="height: 138px; width: 865px; background-color: rgb(170,218,255); padding-top: 22px; padding-left: 45px;">
+    <div style="height: 138px; width: 865px; background-color: rgb(19,153,72); padding-top: 22px; padding-left: 45px;">
     
         <table style="width: 100%;">
             <tbody>
@@ -135,9 +135,7 @@ function SendMail($detail) {
         shipment
         arriving at Caloocan, such as the state of sea, port congestion, port productivity, and the
         inspection
-        of Philippines Customs. When the time is close to the estimated date of shipment arriving at
-        Caloocan
-        that we provided, please feel free to call our Caloocan office to get the latest update for your
+        of Philippines Customs. When the time is close to the ETA Manila Port that we provided, please feel free to call our Caloocan office to get the latest update for your
         shipment.
     </td>
 </tr>
@@ -195,15 +193,31 @@ function SendMail($detail) {
     <tr>
         <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; font-size: 14px; width: 280px; font-weight: 600;">
             <eng style="font-size: 16px;">
-                Estimated Date of Shipment Arriving at Caloocan
+                ETA Manila Port
             </eng>
             <br>
-            預計菲律賓到貨日期
+            預計到達馬尼拉港日期
 
         </td>
         <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; width: 440px; font-size: 16px;">';
 
     $content .= $detail[0]['eta_date'];
+
+    $content .= '</td>
+    </tr>
+
+    <tr>
+        <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; font-size: 14px; width: 280px; font-weight: 600;">
+            <eng style="font-size: 16px;">
+                Tentative Date of Pick-up
+            </eng>
+            <br>
+            預計可提貨日期
+
+        </td>
+        <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; width: 440px; font-size: 16px;">';
+
+    $content .= $detail[0]['eta_date_6'];
 
     $content .= '<span style="color: red; display: block; margin-top: 5px; text-align: justify;">Notes: the cut off date is the date that our container was gated-in to the carrier company. The estimated date of shipment arriving at Caloocan is far away from the cut off date usually because the carrier company kept changing the departure date of vessel due to vessel availability, port congestion, or weather condition.</span>
     </td>
@@ -361,10 +375,10 @@ function SendMail($detail) {
     //$mail->AddAddress('dennis@feliix.com', 'dennis');
     $mail->AddAddress($detail[0]['email'], $detail[0]['customer']);
  
-    $mail->SetFrom("servictoryshipment@gmail.com", "servictoryshipment");
-    $mail->AddReplyTo("servictoryshipment@gmail.com", "servictoryshipment");
+    $mail->SetFrom("servictoryshipment@gmail.com", "Feliix Shipping");
+    $mail->AddReplyTo("servictoryshipment@gmail.com", "Feliix Shipping");
    
-    $mail->Subject = "Delivery Notifications";
+    $mail->Subject = "[Feliix Shipping] Hello, your shipment is on the way";
    
 
     $mail->MsgHTML($content);
@@ -414,7 +428,8 @@ function GetRecordDetail($id, $conn){
                 "customer" => $customer,
                 "date_receive" => FormatDate($date_receive, 0),
                 "date_sent" => FormatDate($date_sent, 0),
-                "eta_date" => FormatDate($eta_date, 6),
+                "eta_date" => FormatDate($eta_date, 0),
+                "eta_date_6" => FormatDate($eta_date, 6),
                 "email" => $email,
                 "email_customer" => $email_customer,
                 "description" => $description,
