@@ -538,3 +538,10 @@ CREATE TABLE IF NOT EXISTS `price_record_salary_sea` (
 -- 2021/09/17
 ALTER TABLE receive_record
 ADD COLUMN `email_customer` varchar(256) DEFAULT '' AFTER customer;
+
+-- 2021/10/04
+ALTER TABLE receive_record
+ADD COLUMN `mail_cnt` int default 0 AFTER batch_num;
+
+ALTER TABLE receive_record
+ADD COLUMN `mail_note` varchar(512) DEFAULT '' AFTER mail_cnt;
