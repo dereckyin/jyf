@@ -219,7 +219,7 @@ function SendMail($detail) {
 
     $content .= $detail[0]['eta_date_6'];
 
-    $content .= '<span style="color: red; display: block; margin-top: 5px; text-align: justify;">Notes: the cut off date is the date that our container was gated-in to the carrier company. The estimated date of shipment arriving at Caloocan is far away from the cut off date usually because the carrier company kept changing the departure date of vessel due to vessel availability, port congestion, or weather condition.</span>
+    $content .= '<span style="color: red; display: block; margin-top: 5px; text-align: justify;">Notes: the cut off date is the date that our container was gated-in to the carrier company. The ETA Manila port is far away from the cut off date usually because the carrier company kept changing the departure date of vessel due to vessel availability, port congestion, or weather condition. As a result, the tentative date of pick-up will be affected.</span>
     </td>
 </tr>
 
