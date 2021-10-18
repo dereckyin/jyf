@@ -1811,12 +1811,17 @@ var app = new Vue({
                   return false;
               } 
 
-              if (!this.isEmail(this.record.email) && !this.record.email == "") 
+              var email_array = this.record.email.split(';');
+              
+              for(var i = 0; i < email_array.length; i++)
               {
-                  this.error_email = '必須是email (email required)';
-                  $(window).scrollTop(0);
-                  return false;
-              } 
+                if (!this.isEmail(email_array[i]) && !this.record.email == "") 
+                {
+                    this.error_email = '必須是email (email required)';
+                    $(window).scrollTop(0);
+                    return false;
+                } 
+              }
 
               if (!this.isNumeric(this.record.kilo) && !this.record.kilo == "")
               {
@@ -1855,13 +1860,17 @@ var app = new Vue({
                   return false;
               } 
 
-              if (!this.isEmail(this.email) && !this.email == "") 
+              email_array = this.email.split(';');
+              
+              for(var i = 0; i < email_array.length; i++)
               {
-                  this.error_email = '必須是email (email required)';
-                  $(window).scrollTop(0);
-                  return false;
-              } 
-
+                if (!this.isEmail(email_array[i]) && !this.email == "") 
+                {
+                    this.error_email = '必須是email (email required)';
+                    $(window).scrollTop(0);
+                    return false;
+                } 
+              }
 
               if (!this.isNumeric(this.kilo) && !this.kilo == "")
               {
