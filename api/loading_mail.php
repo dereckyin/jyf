@@ -373,7 +373,12 @@ function SendMail($detail) {
     $mail->IsHTML(true);
     //$mail->AddAddress('dereckyin@gmail.com', 'dereckyin');
     //$mail->AddAddress('dennis@feliix.com', 'dennis');
-    $mail->AddAddress($detail[0]['email'], $detail[0]['customer']);
+    $email_arr = explode (";", $detail[0]['email']);
+
+    foreach ($email_arr as $email) {
+        $mail->AddAddress($email, $detail[0]['customer']);
+    }
+    
  
     $mail->SetFrom("servictoryshipment@gmail.com", "Feliix Shipping");
     $mail->AddReplyTo("servictoryshipment@gmail.com", "Feliix Shipping");
