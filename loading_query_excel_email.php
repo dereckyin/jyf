@@ -235,11 +235,9 @@ foreach ($batch_nums as $num)
 
             if($max < $j)
                 $max = $j;
-
-            
         }
 
-        $sheet->getStyle('A1' . ':' . columnFromIndex(14 + $max) . $i)->applyFromArray($styleArray);
+        $sheet->getStyle('A' . $i . ':' . columnFromIndex(14 + 6) . $i)->applyFromArray($styleArray);
 
         $i++;
 
