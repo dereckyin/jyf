@@ -156,7 +156,12 @@
                     <a class="btn small" @click="editRecord()">查看
                         <eng>Show</eng>
                     </a>
+                    &nbsp;
+                    <a class="btn small" @click="printRecord()">匯出
+                        <eng>Export to Excel, Pdf, Print</eng>
+                    </a>
                 </div>
+
             </div>
 
             <div class="block">
