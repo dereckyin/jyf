@@ -208,9 +208,9 @@ foreach ($batch_nums as $num)
         $picname = $row['picname'];
         $photo = $row['photo'];
 
-        
+        $rid = $row['id'];
 
-        $pic = GetPic($picname, $photo, $id, $conn);
+        $pic = GetPic($picname, $photo, $rid, $conn);
 
         $max = 0;
         $j = 0;
