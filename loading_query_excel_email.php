@@ -263,8 +263,8 @@ foreach ($batch_nums as $num)
 
         $mail_all_cnt++;
     }
-    $sheet->getStyle('A1:' . 'J1')->getFont()->setBold(true);
-    $sheet->getStyle('A1:' . 'J' . --$i)->applyFromArray($styleArray);
+    $sheet->getStyle('A1:' . 'S1')->getFont()->setBold(true);
+    $sheet->getStyle('A1:' . 'S' . --$i)->applyFromArray($styleArray);
 
 
     $sheet->setCellValue('A'  . ($i + 3), '嘜頭 Shopping Mark');
