@@ -755,6 +755,57 @@ var app = new Vue({
             app.resetForm();
         },
 
+        printRecord(){
+            var favorite = [];
+            for (i = 0; i < this.loading_records.length; i++) 
+            {
+              if(this.loading_records[i].is_checked == 1)
+                favorite.push(this.loading_records[i].id);
+            }
+
+            //$.each($("input[name='record_id']:checked"), function() {
+            //    favorite.push($(this).val());
+            //});
+            if (favorite.length != 1) {
+                alert("請選一筆資料查看 (Please select one row!)");
+                //$(window).scrollTop(0);
+                return;
+            }
+
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
+            let _this = this;
+            form_Data.append("jwt", token);
+            form_Data.append("id", favorite);
+           
+      
+            axios({
+              method: "post",
+              url: "loading_query_excel_email.php",
+              data: form_Data,
+              responseType: "blob",
+            })
+                .then(function(response) {
+                      const url = window.URL.createObjectURL(new Blob([response.data]));
+                      const link = document.createElement('a');
+                      link.href = url;
+                     
+                        link.setAttribute('download', '裝櫃明細.xlsx');
+                     
+                      document.body.appendChild(link);
+                      link.click();
+
+                      app.resetForm();
+      
+                })
+                .catch(function(response) {
+                    //handle error
+                    console.log(response)
+                });
+
+                
+        },
+
         editReceiveRecord: function(event) {
             console.log("editReceiveRecord")
 
