@@ -55,6 +55,11 @@ $page = (isset($_GET['page']) ?  $_GET['page'] : "");
 
 $merged_results = array();
 
+if($category == "All")
+{
+    $category = "";
+    $sub_category = "";
+}
 
 
 $query = "SELECT *, 0 i1, 0 i2, 0 i3, 0 o1, 0 o2, 0 o3, 0 ai, 0 ao from price_record_salary_sea where 1 = 1 ";
