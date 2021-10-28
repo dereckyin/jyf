@@ -306,6 +306,7 @@ try {
                                     <option>Staff Return Money</option>
                                     <option>Bonus</option>
                                     <option>Separation pay</option>
+                                    <option>Petty</option>
                                     <option>Other</option>
 <!--
                                         <option>Absent</option>
@@ -603,7 +604,7 @@ try {
                     </select> -->
 
             <select style="width:10vw; margin-left:1vw;" v-model="select_category">
-
+                        <option>All</option>
             <option>Salary</option>
                                         <option>Overtime</option>
                                         <option>Allowance</option>
@@ -612,6 +613,7 @@ try {
                                         <option>Staff Return Money</option>
                                         <option>Bonus</option>
                                         <option>Separation pay</option>
+                                        <option>Petty</option>
                                         <option>Other</option>
                          <!--               
                 <option>All</option>

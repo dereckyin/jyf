@@ -303,12 +303,14 @@ try {
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;" v-model="category">
                                     <option>Cash Expenses</option>
+                                    <option>Cash Expenses Petty</option>
                                     <option>Cash on Hand </option>
                                     <option>Change for Customer</option>
                                     <option>Helper Fees</option>
                                     <option>Other</option>
                                     <option>Petty</option>
-                                    <option>Salary</option>
+                                    <option>Receipt</option>
+                                    <option>Salary Petty</option>
                                 </select>
                             </td>
 
@@ -566,12 +568,15 @@ try {
         <select style="width:10vw; margin-left:1vw;" v-model="select_category">
             <option>All</option>
             <option>Cash Expenses</option>
+            <option>Cash Expenses Petty</option>
             <option>Cash on Hand </option>
             <option>Change for Customer</option>
             <option>Helper Fees</option>
             <option>Other</option>
             <option>Petty</option>
+            <option>Receipt</option>
             <option>Salary</option>
+            <option>Salary Petty</option>
         </select>
 
 
