@@ -30,7 +30,7 @@ var app = new Vue({
     remarks: "",
     keyword: "",
     select_date_type: 0,
-    select_category: '',
+    select_category: 'All',
     select_sub_category: "",
 
     is_locked: false,
@@ -1294,7 +1294,7 @@ var app = new Vue({
       this.remarks = "";
       this.filename = [];
 
-      this.select_category = "";
+      this.select_category = "All";
       this.select_sub_category = "";
 
       this.is_locked = 0;
