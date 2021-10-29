@@ -306,6 +306,7 @@ try {
                                     <option>Staff Return Money</option>
                                     <option>Bonus</option>
                                     <option>Separation pay</option>
+                                    <option>Perfect Attendance</option>
                                     <option>Petty</option>
                                     <option>Other</option>
 <!--
@@ -613,6 +614,7 @@ try {
                                         <option>Staff Return Money</option>
                                         <option>Bonus</option>
                                         <option>Separation pay</option>
+                                        <option>Perfect Attendance</option>
                                         <option>Petty</option>
                                         <option>Other</option>
                          <!--               
