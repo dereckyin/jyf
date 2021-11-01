@@ -46,115 +46,41 @@ if($jwt){
             http_response_code(200);
             $recode = $receive_record->GetReceiveRecordByBatchNumber($ids);
 
-            $cust = "";
-            $sDate = "";
-            $sDesc = "";
-            $sQty = "";
-            $fKilo = 0.0;
-            $fCuft = 0.0;
-            $pKilo = 0.0;
-            $pCuft = 0.0;
-            $sCourier = "";
-            $sSupplier = "";
-            $sRemark = "";
+            $i = 0;
+            foreach ($recode as $row) 
+            {
+                $i++;
+                $rec = array();
+                $rec[]=array(
+                    "id" => $row['id'],
+                    "date_receive" => rtrim($row['date_receive'], "<br>"), 
+                    "customer" => $row['customer'], 
+                    "description" => rtrim($row['description'], "<br>"), 
+                    "quantity" => rtrim($row['quantity'], "<br>"), 
 
-            foreach ($recode as $row) {
-                if($cust != $row['customer'])
-                {
-                    if($cust != "")
-                    {
-                        // add record
-                        $new = ["date_receive" => rtrim($sDate, "<br>"), "customer" => $cust, "description" => rtrim($sDesc, "<br>"), "quantity" => rtrim($sQty, "<br>"), "kilo" => $fKilo, "cuft" => $fCuft, "price_kilo" => $pKilo, "price_cuft" => $pCuft, "courier_money" => rtrim($sCourier, "<br>"), "supplier" => rtrim($sSupplier, "<br>"), "remark" => rtrim($sRemark, "<br>")];
-                        $merged_results[] = $new;
+                    "cust" => "",
+           
+                    "supplier" => rtrim($row['supplier'], "<br>"), 
+                    "remark" => rtrim($row['remark'], "<br>"),
+                );
 
-                        // clear values
-                        $sDate = "";
-                        $sDesc = "";
-                        $sQty = "";
-                        $fKilo = 0.0;
-                        $fCuft = 0.0;
-                        $pKilo = 0.0;
-                        $pCuft = 0.0;
-                        $sCourier = "";
-                        $sSupplier = "";
-                        $sRemark = "";
-                    }
 
-                    if(!empty($row['date_receive']))
-                        $sDate = $sDate . $row['date_receive'] . "<br>";
-                    else
-                        $sDate = $sDate . "&nbsp<br>";
-
-                    if(!empty($row['description']))
-                        $sDesc = $sDesc . $row['description'] . "<br>";
-                    else
-                        $sDesc = $sDesc . "&nbsp<br>";
-
-                    if(!empty($row['quantity']))
-                        $sQty = $sQty . $row['quantity']. "<br>";
-                    else
-                        $sQty = $sQty . "&nbsp<br>";
-
-                    if(!empty($row['courier_money']))
-                        $sCourier = $sCourier . $row['courier_money']. "<br>";
-                    else
-                        $sCourier = $sCourier . "&nbsp<br>";
-
-                    if(!empty($row['supplier']))
-                        $sSupplier = $sSupplier . $row['supplier']. "<br>";
-                    else
-                        $sSupplier = $sSupplier . "&nbsp<br>";
-
-                    if(!empty($row['remark']))
-                        $sRemark = $sRemark . $row['remark']. "<br>";
-                    else
-                        $sRemark = $sRemark . "&nbsp<br>";
-
-                    $cust = $row['customer'];
-                }
-                else
-                {
-                    if(!empty($row['date_receive']))
-                        $sDate = $sDate . $row['date_receive']. "<br>";
-                    else
-                        $sDate = $sDate . "&nbsp<br>";
-
-                    if(!empty($row['description']))
-                        $sDesc = $sDesc . $row['description']. "<br>";
-                    else
-                        $sDesc = $sDesc ."&nbsp<br>";
-
-                    if(!empty($row['quantity']))
-                        $sQty = $sQty . $row['quantity']. "<br>";
-                    else
-                        $sQty = $sQty . "&nbsp<br>";
-
-                    if(!empty($row['courier_money']))
-                        $sCourier = $sCourier .$row['courier_money']. "<br>";
-                    else
-                        $sCourier = $sCourier ."&nbsp<br>";
-
-                    if(!empty($row['supplier']))
-                        $sSupplier = $sSupplier . $row['supplier']. "<br>";
-                    else
-                        $sSupplier = $sSupplier . "&nbsp<br>";
-
-                    if(!empty($row['remark']))
-                        $sRemark = $sRemark . $row['remark']. "<br>";
-                    else
-                        $sRemark = $sRemark . "&nbsp<br>";
-                }
-            }
-
-            if($cust != "") {
                 // add record
-                $new = ["date_receive" => rtrim($sDate, "<br>"), "customer" => $cust, "description" => rtrim($sDesc, "<br>"), "quantity" => rtrim($sQty, "<br>"), "kilo" => $fKilo, "cuft" => $fCuft, "price_kilo" => $pKilo, "price_cuft" => $pCuft, "courier_money" => rtrim($sCourier, "<br>"), "supplier" => rtrim($sSupplier, "<br>"), "remark" => rtrim($sRemark, "<br>")];
+                $new = [
+                    "order" => $i,
+                    "is_checked" => 0,
+                    "group_id" => 0,
+                    "kilo" => "", 
+                    "cuft" => "", 
+                    "kilo_price" => "", 
+                    "cuft_price" => "", 
+                    
+                    "record" => $rec,
+                ];
                 $merged_results[] = $new;
             }
-            
             // response in json format
-            echo json_encode(
-                $merged_results);
+            echo json_encode($merged_results);
         }
         else
         {
