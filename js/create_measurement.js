@@ -256,12 +256,43 @@ var app = new Vue({
 
         decompose_item() {
             obj = [];
+            group_record = [];
             new_record = [];
 
             order = 0;
+            
+            for (i = 0; i < this.receive_records.length; i++) {
+                if(this.receive_records[i].is_checked != 1 && this.receive_records[i].record.length > 1)
+                {
+                    order = order + 1;
+                    obj = [];
+
+                    ary = this.shallowCopy(
+                        this.receive_records.find((element) => element.order == this.receive_records[i].order)
+                      ).record;
+                    for (j = 0; j < ary.length; j++)
+                        obj.push(ary[j]);
+
+                    if(obj.length > 0){
+                        rec = {
+                            "order" : order,
+                            "is_checked" : 0,
+                            "group_id" : this.receive_records[i].group_id,
+                            "kilo" : this.receive_records[i].kilo, 
+                            "cuft": this.receive_records[i].cuft, 
+                            "kilo_price" : this.receive_records[i].kilo_price, 
+                            "cuft_price": this.receive_records[i].cuft_price, 
+                            "cust" : this.receive_records[i].cust,
+                            "record" : obj,
+                        };
+                    }
+
+                    group_record.push(rec);
+                }
+            }
 
             for (i = 0; i < this.receive_records.length; i++) {
-                if(this.receive_records[i].is_checked != 1)
+                if(this.receive_records[i].is_checked != 1 && this.receive_records[i].record.length == 1)
                 {
                     order = order + 1;
                     obj = [];
@@ -325,7 +356,9 @@ var app = new Vue({
                 }
               }
 
-              this.receive_records = new_record;
+              group_record.push(new_record);
+
+              this.receive_records = group_record;
              this.need_to_update = true;
 
         },
