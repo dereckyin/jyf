@@ -111,7 +111,7 @@ $sheet->getStyle('A1:' . 'I' . --$i)->applyFromArray($styleArray);
 
 
 
-$sql = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.shipper, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.estimate_weight  FROM loading lo where lo.id in ($id) order by BINARY customer, date_receive";
+$sql = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.shipper, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.estimate_weight  FROM loading lo where lo.id in ($id) order by crt_time desc";
 
 $result1 = mysqli_query($conn,$sql);
 while($row = mysqli_fetch_assoc($result1))
