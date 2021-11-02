@@ -173,6 +173,9 @@ switch ($method) {
                     for ($j = 0; $j < count($detail_array[$i]['record']); $j++) {
                         $record_id = $detail_array[$i]['record'][$j]['id'];
                         $cust = $detail_array[$i]['record'][$j]['cust'];
+
+                        if($cust == '')
+                            $cust = 0;
         
                         $query = "INSERT INTO measure_record_detail (detail_id, record_id, cust, crt_user, crt_time)
                                     values(?, ?, ?, ?, now())";
