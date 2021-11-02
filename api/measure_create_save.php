@@ -85,7 +85,7 @@ switch ($method) {
         );
 
 
-    //    try {
+        try {
             // execute the query, also check if query was successful
             if ($stmt->execute()) {
                 $last_id = mysqli_insert_id($conn);
@@ -95,13 +95,13 @@ switch ($method) {
                 echo json_encode("Failure1 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
                 die();
             }
-        // } catch (Exception $e) {
-        //     error_log($e->getMessage());
-        //     $conn->rollback();
-        //     http_response_code(501);
-        //     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-        //     die();
-        // }
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $conn->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            die();
+        }
 
         // for loading
         $query = "UPDATE loading
@@ -113,7 +113,7 @@ switch ($method) {
        // $stmt->bind_param("is", $last_id, $measure_container_id);
 
 
-     //   try {
+        try {
             // execute the query, also check if query was successful
             if (!$stmt->execute()) {
                 $conn->rollback();
@@ -121,13 +121,13 @@ switch ($method) {
                 echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
                 die();
             }
-        // } catch (Exception $e) {
-        //     error_log($e->getMessage());
-        //     $conn->rollback();
-        //     http_response_code(501);
-        //     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-        //     die();
-        // }
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $conn->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            die();
+        }
 
         // for record
         for ($i = 0; $i < count($detail_array); $i++) {
@@ -156,12 +156,12 @@ switch ($method) {
             );
 
 
-        //    try {
+            try {
                 // execute the query, also check if query was successful
                 if (!$stmt->execute()) {
                     $conn->rollback();
                     http_response_code(501);
-                    echo json_encode("Failure 3 at " . date("Y-m-d") . " " . date("h:i:sa"));
+                    echo json_encode("Failure3 at " . date("Y-m-d") . " " . date("h:i:sa"));
                     die();
                 }
                 else
@@ -189,30 +189,30 @@ switch ($method) {
                             $user
                         );
 
-                      //  try {
+                        try {
                             // execute the query, also check if query was successful
                             if (!$stmt->execute()) {
                                 $conn->rollback();
                                 http_response_code(501);
-                                echo json_encode("Failure 4 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                                echo json_encode("Failure4 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
                                 die();
                             }
-                        // } catch (Exception $e) {
-                        //     error_log($e->getMessage());
-                        //     $conn->rollback();
-                        //     http_response_code(501);
-                        //     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-                        //     die();
-                        // }
+                        } catch (Exception $e) {
+                            error_log($e->getMessage());
+                            $conn->rollback();
+                            http_response_code(501);
+                            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                            die();
+                        }
                     }
                 }
-            // } catch (Exception $e) {
-            //     error_log($e->getMessage());
-            //     $conn->rollback();
-            //     http_response_code(501);
-            //     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-            //     die();
-            // }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                $conn->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+            }
             
         }
 
