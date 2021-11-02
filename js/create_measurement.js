@@ -356,9 +356,9 @@ var app = new Vue({
                 }
               }
 
-              group_record.push(new_record);
+              // group_record.push(new_record);
 
-              this.receive_records = group_record;
+              this.receive_records = [].concat(group_record, new_record);
              this.need_to_update = true;
 
         },
