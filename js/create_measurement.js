@@ -276,12 +276,12 @@ var app = new Vue({
                         rec = {
                             "order" : order,
                             "is_checked" : 0,
-                            "group_id" : 0,
-                            "kilo" : "", 
-                            "cuft": "", 
-                            "kilo_price" : "", 
-                            "cuft_price": "", 
-                            "cust" : "",
+                            "group_id" : this.receive_records[i].group_id,
+                            "kilo" : this.receive_records[i].kilo, 
+                            "cuft": this.receive_records[i].cuft, 
+                            "kilo_price" : this.receive_records[i].kilo_price, 
+                            "cuft_price": this.receive_records[i].cuft_price, 
+                            "cust" : this.receive_records[i].cust,
                             "record" : obj,
                         };
                     }
@@ -391,12 +391,12 @@ var app = new Vue({
                         rec = {
                             "order" : order,
                             "is_checked" : 0,
-                            "group_id" : 0,
-                            "kilo" : "", 
-                            "cuft": "", 
-                            "kilo_price" : "", 
-                            "cuft_price": "", 
-                            "cust" : "",
+                            "group_id" : this.receive_records[i].group_id,
+                            "kilo" : this.receive_records[i].kilo, 
+                            "cuft": this.receive_records[i].cuft, 
+                            "kilo_price" : this.receive_records[i].kilo_price, 
+                            "cuft_price": this.receive_records[i].cuft_price, 
+                            "cust" : this.receive_records[i].cust,
                             "record" : obj,
                         };
                     }
