@@ -106,13 +106,11 @@ switch ($method) {
         // for loading
         $query = "UPDATE loading
             SET
-                measure_num = ?
-                
-            WHERE id in (?)";
+                measure_num = " . $last_id . " WHERE id in (" . $measure_container_id . ")";
 
         $stmt = $conn->prepare($query);
 
-        $stmt->bind_param("is", $last_id, $measure_container_id);
+       // $stmt->bind_param("is", $last_id, $measure_container_id);
 
 
      //   try {
