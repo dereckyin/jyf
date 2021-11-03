@@ -175,7 +175,7 @@ var app = new Vue({
                 favorite_container.push(this.loading_records[i].container_number);
             }
 
-            if(favorite.length == 0 || favorite.length > 1)
+            if(favorite.length != 1)
             {
                 Swal.fire({
                     title: 'Warning',
@@ -795,7 +795,7 @@ var app = new Vue({
                 }
             }
 
-            if(favorite.length > 1)
+            if(favorite.length != 1)
             { 
                 Swal.fire({
                     title: 'Warning',
