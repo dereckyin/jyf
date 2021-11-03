@@ -14,8 +14,6 @@
     <link rel="stylesheet" type="text/css" href="css/case.css"/>
     <link rel="stylesheet" type="text/css" href="css/mediaquires.css"/>
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
- 
-
 
     <style type="text/css">
         hr {
@@ -28,7 +26,7 @@
             background-color: #333; /* Modern Browsers */
         }
 
-        select {
+        select{
             background-image: url(../images/ui/icon_form_select_arrow.svg);
         }
 
@@ -108,7 +106,7 @@
             width: 100%;
         }
 
-        .ph_client {
+        .ph_client{
             background-color: #EFEFEF;
         }
 
@@ -126,7 +124,6 @@
         ul.dropdown-menu.inner li {
             display: block;
         }
-
     </style>
 
 
@@ -157,23 +154,23 @@
 
         <div class="block">
             <div class="btnbox">
-                <a class="btn small" @click="create_measurement">Create Measurement Record
+                <a class="btn small" href="create_measurement.php">Create Measurement Record
                     <cht>新增丈量記錄</cht>
                 </a>
-                <a class="btn small" href="edit_measurement.php">Edit Measurement Record
+                <a class="btn small" @click="create_measurement()">Edit Measurement Record
                     <cht>修改丈量記錄</cht>
                 </a>
             </div>
         </div>
         <div class="block record show" v-show="show_detail">
             <h6>
-                On the Way Container Records
-                <cht>未領貨櫃記錄</cht>
+                Measurement Records
+                <cht>丈量記錄</cht>
             </h6>
             <!-- list -->
             <div class="mainlist">
 
-                <div class="listheader">
+            <div class="listheader">
                     <div class="pageblock" style="float:right;"> Page Size:
                         <select v-model="perPage">
                             <option v-for="item in inventory" :value="item" :key="item.id">
@@ -204,42 +201,48 @@
                             Check
                         </li>
                         <li>
+                            <cht>丈量日期</cht>
+                            Date Encoded
+                        </li>
+                        <li>
+                            <cht>貨櫃到倉日期</cht>
+                            Date C/R (Date Container arrived Manila)
+                        </li>
+                        <li>
+                            <cht>貨櫃數量</cht>
+                            Qty of Containers
+                        </li>
+                        <li>
                             <cht>櫃號</cht>
-                            Container Number
-                        </li>
-                        <li>S/O</li>
-                        <li>
-                            <cht>船公司</cht>
-                            Shipping Line Company
+                            Containers Number
                         </li>
                         <li>
-                            <cht>結關日期</cht>
-                            Date Send
+                            <cht>備註</cht>
+                            Remark
                         </li>
-                        <li>ETA</li>
                     </ul>
+
                     <ul v-for='(record, index) in displayedLoading'>
                         <li><input type="checkbox" name="record_id" class="alone" :value="record.id" :true-value="1"
                                    v-model:checked="record.is_checked"></li>
-                        <li>{{ record.container_number }}</li>
-                        <li>{{ record.so }}</li>
-                        <li>{{ record.ship_company }}</li>
-                        <li>{{ record.date_sent }}</li>
-                        <li>{{ record.etd_date }}</li>
+                        <li>{{ record.date_encode }}</li>
+                        <li>{{ record.date_arrive }}</li>
+                        <li>{{ record.qty }}</li>
+                        <li>{{ record.container }}</li>
+                        <li>{{ record.remark }}</li>
                     </ul>
 
                 </div>
 
             </div>
             <div class="btnbox">
-                <a class="btn small" @click="exportReceiveRecords()" v-if="show_record == false">Export to Excel, Pdf, Print
-                    <cht>貨物明細匯出</cht>
+                <a class="btn small"  v-if="show_record == false" @click="showReceiveRecords()">Edit Measurement Record
+                    <cht>修改丈量記錄</cht>
 
                 </a>
-                <a class="btn small" @click="showReceiveRecords()" v-if="show_record == false">Create Measurement Record
-                    <cht>新增丈量記錄</cht>
+                <a class="btn small"  v-if="show_record == false" @click="delReceiveRecords()">Delete Measurement Record
+                    <cht>刪除丈量記錄</cht>
                 </a>
-
                 <a class="btn small" @click="cancelRecord()" v-if="show_record == true">Cancel
                     <cht>取消</cht>
                 </a>
@@ -254,12 +257,12 @@
                         Qty of Containers
                         <cht>貨櫃數量</cht>
                     </li>
-                    <li><input type="text" name="measure_qty" disabled v-model="measure_qty"></li>
+                    <li><input type="text" name="measure_qty" v-model="measure_qty" disabled></li>
                     <li>
                         Container Number
                         <cht>櫃號</cht>
                     </li>
-                    <li><input type="text" name="measure_container" disabled v-model="measure_container"></li>
+                    <li><input type="text" name="measure_container" :value="measure_container" disabled></li>
                 </ul>
 
                 <ul>
@@ -270,7 +273,7 @@
                     <li>
                         <date-encode id="date_encode" @update-date="update_date_encode" v-model="date_encode"
                                      style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-encode>
-                        
+                     
                     </li>
                     <li>
                         Date C/R (Date Container arrived Manila)
@@ -279,7 +282,7 @@
                     <li>
                         <date-cr id="date_cr" @update-date="update_date_cr" v-model="date_cr"
                                  style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-cr>
-                        
+                 
                     </li>
                 </ul>
 
@@ -364,8 +367,6 @@
                     </thead>
 
 
-
-
                     <tbody>
                         <template v-for='(row, i) in receive_records'>
                             <tr v-for='(item, j) in row.record'>
@@ -445,7 +446,7 @@
 <script src="js/jquery-ui.js"></script>
 <script src="js/axios.min.js"></script>
 <script src="js/vue.js"></script>
-<script type="text/javascript" src="js/create_measurement.js" defer></script>
+<script type="text/javascript" src="js/edit_measurement.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 </body>
