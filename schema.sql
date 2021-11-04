@@ -603,22 +603,19 @@ create table measure_record_detail
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-
 CREATE TABLE IF NOT EXISTS `contactor_ph` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `shipping_mark` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `customer` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `c_phone` varchar(82) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `c_fax` varchar(82) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `c_email` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `supplier` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `s_phone` varchar(82) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `s_fax` varchar(82) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `s_email` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `company_title` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `vat_number` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `company` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `customer` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `address` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `phone` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fax` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mobile` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `remark` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  
+	`status` varchar(2) DEFAULT '',
+ 
   `crt_time` timestamp NULL DEFAULT current_timestamp(),
   `crt_user` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `mdf_time` timestamp NULL DEFAULT NULL,
