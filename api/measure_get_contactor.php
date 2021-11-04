@@ -45,7 +45,7 @@ $keyword = (isset($_GET['keyword']) ?  $_GET['keyword'] : '');
 
 $merged_results = array();
 
-$query = "SELECT id, customer from contactor_ph where 1 = 1 ";
+$query = "SELECT id, customer from contactor_ph where 1 = 1 and `status` = ''";
 
 
 $stmt = $db->prepare( $query );
