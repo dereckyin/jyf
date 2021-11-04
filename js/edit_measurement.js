@@ -111,6 +111,7 @@ var app = new Vue({
       console.log('Vue created');
       this.perPage = this.inventory.find(i => i.id === this.perPage);
       this.getContactors();
+      this.create_measurement();
     },
 
 
@@ -346,60 +347,15 @@ var app = new Vue({
             for (i = 0; i < this.receive_records.length; i++) {
                 if(this.receive_records[i].is_checked != 1 && this.receive_records[i].record.length > 1)
                 {
-                    order = order + 1;
-                    obj = [];
-
-                    ary = this.shallowCopy(
-                        this.receive_records.find((element) => element.order == this.receive_records[i].order)
-                      ).record;
-                    for (j = 0; j < ary.length; j++)
-                        obj.push(ary[j]);
-
-                    if(obj.length > 0){
-                        rec = {
-                            "order" : order,
-                            "is_checked" : 0,
-                            "group_id" : this.receive_records[i].group_id,
-                            "kilo" : this.receive_records[i].kilo, 
-                            "cuft": this.receive_records[i].cuft, 
-                            "kilo_price" : this.receive_records[i].kilo_price, 
-                            "cuft_price": this.receive_records[i].cuft_price, 
-                            "cust" : this.receive_records[i].cust,
-                            "record" : obj,
-                        };
-                    }
-
-                    group_record.push(rec);
+                    group_record.push(this.receive_records[i]);
                 }
             }
 
             for (i = 0; i < this.receive_records.length; i++) {
                 if(this.receive_records[i].is_checked != 1 && this.receive_records[i].record.length == 1)
                 {
-                    order = order + 1;
-                    obj = [];
-
-                    ary = this.shallowCopy(
-                        this.receive_records.find((element) => element.order == this.receive_records[i].order)
-                      ).record;
-                    for (j = 0; j < ary.length; j++)
-                        obj.push(ary[j]);
-
-                    if(obj.length > 0){
-                        rec = {
-                            "order" : order,
-                            "is_checked" : 0,
-                            "group_id" : this.receive_records[i].group_id,
-                            "kilo" : this.receive_records[i].kilo, 
-                            "cuft": this.receive_records[i].cuft, 
-                            "kilo_price" : this.receive_records[i].kilo_price, 
-                            "cuft_price": this.receive_records[i].cuft_price, 
-                            "cust" : this.receive_records[i].cust,
-                            "record" : obj,
-                        };
-                    }
-
-                    new_record.push(rec);
+                    
+                    new_record.push(this.receive_records[i]);
                 }
             }
 
@@ -419,7 +375,7 @@ var app = new Vue({
                         obj.push(ary[j]);
 
                         rec = {
-                            "order" : order,
+                            "order" : "",
                             "is_checked" : 0,
                             "group_id" : 0,
                             "kilo" : "", 
@@ -476,7 +432,7 @@ var app = new Vue({
             order = 1;
             if(obj.length > 0){
                 rec = {
-                    "order" : order,
+                    "order" : "",
                     "is_checked" : 0,
                     "group_id" : 0,
                     "kilo" : "", 
@@ -493,30 +449,7 @@ var app = new Vue({
             for (i = 0; i < this.receive_records.length; i++) {
                 if(this.receive_records[i].is_checked != 1)
                 {
-                    order = order + 1;
-                    obj = [];
-
-                    ary = this.shallowCopy(
-                        this.receive_records.find((element) => element.order == this.receive_records[i].order)
-                      ).record;
-                    for (j = 0; j < ary.length; j++)
-                        obj.push(ary[j]);
-
-                    if(obj.length > 0){
-                        rec = {
-                            "order" : order,
-                            "is_checked" : 0,
-                            "group_id" : this.receive_records[i].group_id,
-                            "kilo" : this.receive_records[i].kilo, 
-                            "cuft": this.receive_records[i].cuft, 
-                            "kilo_price" : this.receive_records[i].kilo_price, 
-                            "cuft_price": this.receive_records[i].cuft_price, 
-                            "cust" : this.receive_records[i].cust,
-                            "record" : obj,
-                        };
-                    }
-
-                    new_record.push(rec);
+                    new_record.push(this.receive_records[i]);
                 }
               }
 
