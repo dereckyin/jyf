@@ -725,6 +725,12 @@ var app = new Vue({
                 this.measure_id = this.loading_records[i].id;
                 this.currency_rate = this.loading_records[i].currency_rate;
                 this.remark = this.loading_records[i].remark;
+
+                $('#date_encode').datepicker();
+                $('#date_encode').datepicker('setDate', this.date_encode);
+
+                $('#date_cr').datepicker();
+                $('#date_cr').datepicker('setDate', this.date_cr);
                 }
             }
 
