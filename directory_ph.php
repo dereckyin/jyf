@@ -286,6 +286,7 @@
                             <li>{{ contactor.phone }}</li>
                             <li>{{ contactor.fax }}</li>
                             <li>{{ contactor.mobile }}</li>
+                            <li>{{ contactor.email }}</li>
                             <li>{{ contactor.remark }}</li>
                       
                         </ul>
