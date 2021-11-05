@@ -291,7 +291,7 @@ var app = new Vue({
                     if (response.data !== "")
                         console.log(response.data);
                     //this.$forceUpdate();
-                    //app.resetForm();
+                    app.resetForm();
                 })
                 .catch(function(response) {
                     //handle error
