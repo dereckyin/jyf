@@ -111,6 +111,7 @@ header nav a{ letter-spacing: 3px; padding: 0 10px; border-left: 1px solid #FFF;
 header nav > a{ position: relative;}
 header nav a:first-child{ border-left: none;}
 header nav a > eng{ display: block; font-size: 12px; font-weight: 100; letter-spacing: 0;}
+header nav a > cht{ display: block; font-size: 12px; font-weight: 100; letter-spacing: 0;}
 header nav dl.sub{ display: inline-block;}
 header nav dl.sub dt{border-left: 1px solid #FFF; margin-bottom: 9px;}
 header nav dl.sub a{ display: block; position: relative; padding-right: 24px;}

@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="case.css">
 <style>
     .side-menu {
         position: absolute;
@@ -158,20 +159,26 @@ if ( isset( $jwt ) ) {
         </dl>
 
         <?php
+        if($decoded->data->sea_expense_v2)
+        echo "<a href='directory_ph.php'>Directory
+        <cht>客戶通訊錄</cht>
+    </a>";
+        ?>
+        <?php
  	if($decoded->data->sea_expense)
         {
-        echo "<a href='salary_recorder_sea.php'>薪資記錄表
-        <eng>Salary Recorder</eng>
+        echo "<a href='salary_recorder_sea.php'>Salary Recorder
+        <cht>薪資記錄表</cht>
     </a>";
-        echo "<a href='expense_recorder_sea.php'>支出記錄表
-        <eng>Expense Recorder</eng>
+        echo "<a href='expense_recorder_sea.php'>Expense Recorder
+        <cht>支出記錄表</cht>
     </a>";
         }
         ?>
         <?php
  	if($decoded->data->sea_expense_v2)
-        echo "<a href='expense_recorder_sea_v2.php'>支出記錄表2
-        <eng>Expense Recorder2</eng>
+        echo "<a href='expense_recorder_sea_v2.php'>Expense Recorder2
+        <cht>支出記錄表2</cht>
     </a>";
         ?>
     </nav>
