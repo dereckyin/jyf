@@ -55,7 +55,7 @@ class Loading{
                                   FROM " . $this->table_name . "
                                   where measure_num = 0 
                                   and status = ''  
-                                  ORDER BY container_number  ";
+                                  ORDER BY crt_time desc  ";
 
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();

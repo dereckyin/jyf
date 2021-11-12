@@ -91,6 +91,7 @@ class ReceiveRecord{
 
         $query = "SELECT 0 as is_checked, 
                                   id, 
+                                  0 group_id,
                                   date_receive, 
                                   customer, 
                                   email_customer, 
@@ -101,13 +102,14 @@ class ReceiveRecord{
                                   picname, 
                                   kilo, 
                                   cuft, 
+                                  '' kilo_price,
+                                  '' cuft_price,
                                   taiwan_pay, 
                                   courier_pay,
                                   courier_money, 
                                   remark, 
                                   batch_num, 
                                   mail_note,
-                                  main_cnt,
                                   status, 
                                   crt_time, 
                                   crt_user,
@@ -118,7 +120,7 @@ class ReceiveRecord{
                                   FROM " . $this->table_name . "
                                   where batch_num in (" . $ids . ")
                                   and status = ''  
-                                  ORDER BY customer, date_receive  ";
+                                  ORDER BY BINARY customer, date_receive  ";
 
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();

@@ -545,3 +545,160 @@ ADD COLUMN `mail_cnt` int default 0 AFTER batch_num;
 
 ALTER TABLE receive_record
 ADD COLUMN `mail_note` varchar(512) DEFAULT '' AFTER mail_cnt;
+
+-- 2021/10/28 - create measurement
+create table measure_ph
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`date_encode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`date_arrive` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`currency_rate` float DEFAULT 0,
+	`remark` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`status` varchar(2) DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+	`mdf_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`mdf_user` varchar(128) DEFAULT '',
+	`del_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`del_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+create table measure_detail
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `measure_id` bigint(20) unsigned NOT NULL,
+  `customer` varchar(128)  DEFAULT '',
+	`kilo` float,
+	`cuft` float,
+	`kilo_price` float,
+	`cuft_price` float,
+  `charge` float,
+	`status` varchar(2) DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+	`mdf_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`mdf_user` varchar(128) DEFAULT '',
+	`del_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`del_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+create table measure_record_detail
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `detail_id` bigint(20) unsigned NOT NULL,
+	`record_id` bigint(20) unsigned NOT NULL,
+  `cust` bigint(20)  DEFAULT 0,
+	`status` varchar(2) DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+	`mdf_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`mdf_user` varchar(128) DEFAULT '',
+	`del_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`del_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE IF NOT EXISTS `contactor_ph` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `customer` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `address` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `phone` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fax` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mobile` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `remark` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  
+	`status` varchar(2) DEFAULT '',
+ 
+  `crt_time` timestamp NULL DEFAULT current_timestamp(),
+  `crt_user` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `mdf_time` timestamp NULL DEFAULT NULL,
+  `mdf_user` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `del_time` timestamp NULL DEFAULT NULL,
+  `del_user` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- 2021/11/08 pickup
+ALTER TABLE measure_detail
+ADD COLUMN `encode` varchar(128) DEFAULT '' AFTER charge;
+
+ALTER TABLE measure_detail
+ADD COLUMN `encode_status` varchar(1) DEFAULT '' AFTER charge;
+
+ALTER TABLE measure_detail
+ADD COLUMN `pickup_status` varchar(1) DEFAULT '' AFTER charge;
+
+ALTER TABLE measure_ph
+ADD COLUMN `pick_id` bigint(20) DEFAULT 0 AFTER remark;
+
+
+create table pick
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`remark` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`status` varchar(2) DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+	`mdf_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`mdf_user` varchar(128) DEFAULT '',
+	`del_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`del_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+create table pick_group
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`group_id` bigint(20) unsigned NOT NULL,
+  `measure_id` bigint(20) unsigned NOT NULL,
+  `measure_detail_id` bigint(20) unsigned NOT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+ALTER TABLE receive_record
+ADD COLUMN `pick_date` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE receive_record
+ADD COLUMN `pick_person` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE receive_record
+ADD COLUMN `pick_note` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE receive_record
+ADD COLUMN `pick_time` timestamp NULL;
+
+ALTER TABLE receive_record
+ADD COLUMN `pick_user` varchar(128) DEFAULT '';
+
+create table payment
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `detail_id` bigint(20) unsigned NOT NULL,
+  `type` int(11) DEFAULT 0,
+  `issue_date` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `payment_date` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `person` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `amount` decimal(10, 2) default 0.0,
+	`remark` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`status` varchar(2) DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+	`mdf_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`mdf_user` varchar(128) DEFAULT '',
+	`del_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`del_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 20211112
+ALTER TABLE user ADD COLUMN phili INT DEFAULT 0;

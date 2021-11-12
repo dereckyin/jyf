@@ -57,7 +57,7 @@ else
             $size = stripslashes((isset($_GET['size']) ?  $_GET['size'] : ""));
             $keyword = stripslashes((isset($_GET['keyword']) ?  $_GET['keyword'] : ""));
 
-            $sql = "SELECT 0 as is_checked, id, username, email, status, status_1, status_2, sea_expense, sea_expense_v2, is_admin, (SELECT login_time FROM login_history WHERE login_history.uid = user.id ORDER BY login_time desc LIMIT 1) login_time  FROM user where status <> -1 ".($id ? " and id=$id" : '');
+            $sql = "SELECT 0 as is_checked, id, username, email, status, phili, status_1, status_2, sea_expense, sea_expense_v2, is_admin, (SELECT login_time FROM login_history WHERE login_history.uid = user.id ORDER BY login_time desc LIMIT 1) login_time  FROM user where status <> -1 ".($id ? " and id=$id" : '');
 
             if(!empty($_GET['page'])) {
                 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -111,6 +111,7 @@ else
             $email = stripslashes(isset($_POST['email']) ?  $_POST['email'] : "");
             $password = stripslashes(isset($_POST['password']) ?  $_POST['password'] : "" );
             $status = stripslashes(isset($_POST['status']) ?  $_POST['status'] : 0 );
+            $phili = stripslashes(isset($_POST['phili']) ?  $_POST['phili'] : 0 );
             $status_1 = stripslashes(isset($_POST['status_1']) ?  $_POST['status_1'] : 0 );
             $status_2 = stripslashes(isset($_POST['status_2']) ?  $_POST['status_2'] : 0 );
             $sea_expense = stripslashes(isset($_POST['sea_expense']) ?  $_POST['sea_expense'] : 0 );
@@ -131,6 +132,7 @@ else
                 $user->email = $email;
                 $user->password = $password;
                 $user->status = $status;
+                $user->phili = $phili;
                 $user->status_1 = $status_1;
                 $user->status_2 = $status_2;
                 $user->sea_expense = $sea_expense;
@@ -143,6 +145,7 @@ else
 
             case "update":
                     $user->status = $status;
+                    $user->phili = $phili;
                     $user->status_1 = $status_1;
                     $user->status_2 = $status_2;
                     $user->sea_expense = $sea_expense;

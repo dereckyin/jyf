@@ -12,6 +12,7 @@ class User{
     public $email;
     public $password;
     public $status;
+    public $phili;
     public $status_1;
     public $status_2;
     public $sea_expense;
@@ -33,6 +34,7 @@ class User{
                     email = :email,
                     password = :password,
                     status = :status,
+                    phili = :phili,
                     status_1 = :status_1,
                     status_2 = :status_2,
                     sea_expense = :sea_expense,
@@ -52,6 +54,7 @@ class User{
         $stmt->bindParam(':username', $this->username);
         $stmt->bindParam(':email', $this->email);
         $stmt->bindParam(':status', $this->status);
+        $stmt->bindParam(':phili', $this->phili);
         $stmt->bindParam(':status_1', $this->status_1);
         $stmt->bindParam(':status_2', $this->status_2);
         $stmt->bindParam(':sea_expense', $this->sea_expense);
@@ -74,7 +77,7 @@ class User{
     function userExists(){
     
         // query to check if email exists
-        $query = "SELECT id, username, status, status_1, status_2, sea_expense, sea_expense_v2, password
+        $query = "SELECT id, username, status, phili, status_1, status_2, sea_expense, sea_expense_v2, password
                 FROM " . $this->table_name . "
                 WHERE username = ?
                 LIMIT 0,1";
@@ -105,6 +108,7 @@ class User{
             $this->username = $row['username'];
             $this->password = $row['password'];
             $this->status = $row['status'];
+            $this->phili = $row['phili'];
             $this->status_1 = $row['status_1'];
             $this->status_2 = $row['status_2'];
             $this->sea_expense = $row['sea_expense'];
@@ -120,7 +124,7 @@ class User{
 
     function userCanLogin(){
         // query to check if email exists
-        $query = "SELECT id, username, password, status, status_1, status_2, is_admin, sea_expense, sea_expense_v2
+        $query = "SELECT id, username, password, status, phili, status_1, status_2, is_admin, sea_expense, sea_expense_v2
                 FROM " . $this->table_name . "
                 WHERE username = ? 
                 LIMIT 0,1";
@@ -151,6 +155,7 @@ class User{
             $this->username = $row['username'];
             $this->password = $row['password'];
             $this->status = $row['status'];
+            $this->phili = $row['phili'];
             $this->status_1 = $row['status_1'];
             $this->status_2 = $row['status_2'];
             $this->sea_expense = $row['sea_expense'];
@@ -237,6 +242,7 @@ class User{
         $query = "UPDATE " . $this->table_name . "
                 SET
                     status = :status,
+                    phili = :phili,
                     status_1 = :status_1,
                     status_2 = :status_2,
                     sea_expense = :sea_expense,
@@ -253,6 +259,7 @@ class User{
     
         // bind the values from the form
         $stmt->bindParam(':status', $this->status);
+        $stmt->bindParam(':phili', $this->phili);
         $stmt->bindParam(':status_1', $this->status_1);
         $stmt->bindParam(':status_2', $this->status_2);
         $stmt->bindParam(':sea_expense', $this->sea_expense);
