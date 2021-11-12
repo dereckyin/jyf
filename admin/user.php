@@ -284,7 +284,7 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
-                                    <input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.sea_expense" @change="updateEditSeaExpense" required> 啟用海運支出記錄
+                                    <input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.phili" @change="updateEditPhili" required> 啟用海運菲律賓端業務
                                 </li>
                             </ul>
 
@@ -292,7 +292,7 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
-                                    <input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.phili" @change="updateEditPhili" required> 啟用海運菲律賓端業務
+                                    <input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.sea_expense" @change="updateEditSeaExpense" required> 啟用海運支出記錄
                                 </li>
                             </ul>
 
