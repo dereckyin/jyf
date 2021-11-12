@@ -59,7 +59,7 @@ include_once 'libs/php-jwt-master/src/JWT.php';
 use \Firebase\JWT\JWT;
  
 // check if email exists and if password is correct
-if($user_exists && password_verify($password, $user->password) && $cap == 1 && ($user->status == 1 || $user->status_1 == 1 || $user->status_2 == 1)){
+if($user_exists && password_verify($password, $user->password) && $cap == 1 && ($user->status == 1 || $user->status_1 == 1 || $user->status_2 == 1 || $user->phili == 1)){
  
     $token = array(
        "iss" => $iss,
@@ -72,6 +72,7 @@ if($user_exists && password_verify($password, $user->password) && $cap == 1 && (
            "email" => $user->email,
            "is_admin" => $user->is_admin,
            "status" => $user->status,
+           "phili" => $user->phili,
            "status_1" => $user->status_1,
            "status_2" => $user->status_2,
            "sea_expense" => $user->sea_expense,

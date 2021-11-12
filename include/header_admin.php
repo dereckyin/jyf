@@ -159,7 +159,7 @@ if ( isset( $jwt ) ) {
         </dl>
 
         <?php
-        if($decoded->data->sea_expense_v2)
+        if($decoded->data->phili)
         echo "<a href='directory_ph.php'>Directory
         <cht>客戶通訊錄</cht>
     </a>";

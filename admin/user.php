@@ -183,6 +183,15 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
+                                    <input class="form-check-input" type="checkbox" name="phili" required id="A1"
+                                           :true-value="1" v-model:checked="phili" @change="updatePhili"> 啟用海運菲律賓端業務
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
                                     <input class="form-check-input" type="checkbox" name="status" required id="A1"
                                            :true-value="1" v-model:checked="sea_expense" @change="updateSeaExpense"> 啟用海運支出記錄
                                 </li>
@@ -283,6 +292,14 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
+                                    <input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.phili" @change="updateEditPhili" required> 啟用海運菲律賓端業務
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
                                     <input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.sea_expense_v2" @change="updateEditSeaExpense_v2" required> 啟用海運支出記錄2 
                                 </li>
                             </ul>
@@ -332,6 +349,7 @@ include 'menu.php';
                             <th>使用者名稱</th>
                             <th>email</th>
                             <th>啟用海運網站</th>
+                            <th>啟用海運菲律賓端業務</th>
                             <th>啟用海運支出記錄</th>
                             <th>啟用海運支出記錄2</th>
                             <th>啟用零件支出記錄</th>
@@ -347,6 +365,7 @@ include 'menu.php';
                             <td> {{ rec.username }}</td>
                             <td> {{ rec.email }}</td>
                             <td>{{ (rec.status == '1') ? "是 (yes)" : "否 (no)" }}</td>
+                            <td>{{ (rec.phili == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.sea_expense == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.sea_expense_v2 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.status_1 == '1') ? "是 (yes)" : "否 (no)" }}</td>
