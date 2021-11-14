@@ -111,7 +111,7 @@ switch ($method) {
             die();
         }
 /*
-        // for loading
+        // for pickup
         $query = "UPDATE loading
             SET
                 measure_num = " . $last_id . " WHERE id in (" . $measure_container_id . ")";

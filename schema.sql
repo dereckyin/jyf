@@ -636,6 +636,9 @@ ADD COLUMN `encode_status` varchar(1) DEFAULT '' AFTER charge;
 ALTER TABLE measure_detail
 ADD COLUMN `pickup_status` varchar(1) DEFAULT '' AFTER charge;
 
+ALTER TABLE measure_detail
+ADD COLUMN `payment_status` varchar(1) DEFAULT '' AFTER charge;
+
 ALTER TABLE measure_ph
 ADD COLUMN `pick_id` bigint(20) DEFAULT 0 AFTER remark;
 
