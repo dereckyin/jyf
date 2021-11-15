@@ -705,3 +705,34 @@ create table payment
 
 -- 20211112
 ALTER TABLE user ADD COLUMN phili INT DEFAULT 0;
+
+-- expense record
+ALTER TABLE contactor_ph
+ADD COLUMN `color` varchar(12) DEFAULT '' AFTER remark;
+
+
+
+CREATE TABLE IF NOT EXISTS `contactor_ph_po` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `customer` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `address` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `phone` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fax` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mobile` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `remark` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `color` varchar(12) DEFAULT '',
+  `acquisition`  varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `acquisition_by` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `date_to_call` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+ 
+  `crt_time` timestamp NULL DEFAULT current_timestamp(),
+  `crt_user` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `mdf_time` timestamp NULL DEFAULT NULL,
+  `mdf_user` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `del_time` timestamp NULL DEFAULT NULL,
+  `del_user` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

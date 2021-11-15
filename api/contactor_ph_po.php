@@ -49,7 +49,7 @@ else
             $keyword = urldecode($keyword);
 
 
-            $sql = "SELECT 0 as is_checked, id, company, customer, address, COALESCE(phone, '') phone, COALESCE(fax, '') fax, COALESCE(mobile, '') mobile, email, remark, color, crt_time, crt_user  FROM contactor_ph where `status` = '' ".($id ? " and id=$id" : ''); 
+            $sql = "SELECT 0 as is_checked, id, company, customer, address, COALESCE(phone, '') phone, COALESCE(fax, '') fax, COALESCE(mobile, '') mobile, email, remark, color, acquisition, acquisition_by, date_to_call, crt_time, crt_user  FROM contactor_ph_po where `status` = '' ".($id ? " and id=$id" : ''); 
 
             if($keyword != "") {
                 $sql = $sql . " and (company like '%" . $keyword . "%' ";
@@ -113,6 +113,10 @@ else
             $email = stripslashes($_POST["email"]);
             $color = stripslashes($_POST["color"]);
             $remark = stripslashes($_POST["remark"]);
+
+            $acquisition = stripslashes($_POST["acquisition"]);
+            $acquisition_by = stripslashes($_POST["acquisition_by"]);
+            $date_to_call = stripslashes($_POST["date_to_call"]);
         
             $crud = stripslashes($_POST["crud"]);
             $id = stripslashes($_POST["id"]);
@@ -121,7 +125,7 @@ else
             {
               case 'insert':
             /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
-                $sql = "insert into contactor_ph (company, 
+                $sql = "insert into contactor_ph_po (company, 
                 customer, 
                 address, 
                 phone, 
@@ -130,10 +134,13 @@ else
                 email,
                 color,
                 remark,
+                acquisition,
+                acquisition_by,
+                date_to_call,
                                                       crt_user) 
-                                            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql); 
-                $stmt->bind_param("ssssssssss",
+                $stmt->bind_param("sssssssssssss",
                                     $company, 
                                     $customer, 
                                     $address, 
@@ -142,7 +149,10 @@ else
                                     $mobile,
                                     $email,
                                     $color,
-                                    $remark,  
+                                    $remark, 
+                                    $acquisition,
+                                    $acquisition_by,
+                                    $date_to_call, 
                                     $user);
                 $stmt->execute();
                 $stmt->close();
@@ -156,7 +166,7 @@ else
             case "update":
                 
                     /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
-                    $sql = "update contactor_ph set company = ?, 
+                    $sql = "update contactor_ph_po set company = ?, 
                                                           customer = ?, 
                                                           address = ?, 
                                                           phone = ?, 
@@ -165,12 +175,16 @@ else
                                                           email = ?,
                                                           color = ?,
                                                           remark = ?,
+
+                                                          acquisition = ?,
+                                                          acquisition_by = ?,
+                                                          date_to_call = ?,
                                                     
                                                           mdf_time = now(),
                                                           mdf_user = ?
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
-                    $stmt->bind_param("ssssssssssd",
+                    $stmt->bind_param("sssssssssssssd",
                                         $company, 
                                         $customer, 
                                         $address, 
@@ -180,6 +194,9 @@ else
                                         $email,
                                         $color,
                                         $remark, 
+                                        $acquisition,
+                                        $acquisition_by,
+                                        $date_to_call, 
                                         $user,
                                         $id);
                     $stmt->execute();
@@ -193,7 +210,7 @@ else
                 break;
 
               case 'del':
-                $sql = "update contactor_ph set status = 'D', del_time = now(), del_user = '$user' where id in ($id)";
+                $sql = "update contactor_ph_po set status = 'D', del_time = now(), del_user = '$user' where id in ($id)";
                 
                 $query = $conn->query($sql);
      

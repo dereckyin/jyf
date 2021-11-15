@@ -20,6 +20,10 @@ let mainState = {
     email: '',
     remark: '',
     color: '',
+
+    acquisition: '',
+    acquisition_by: '',
+    date_to_call: '',
  
     contactors: [],
     record: {},
@@ -102,7 +106,7 @@ var app = new Vue({
     methods: {
         getRecords: function(keyword) {
           console.log("getRecords");
-            axios.get('api/contactor_ph.php?keyword=' + keyword)
+            axios.get('api/contactor_ph_po.php?keyword=' + keyword)
                 .then(function(response) {
                     console.log(response.data);
                     app.contactors = response.data;
@@ -168,6 +172,9 @@ var app = new Vue({
                 formData.append('email', this.email)
                 formData.append('color', this.color)
                 formData.append('remark', this.remark)
+                formData.append('acquisition', this.acquisition)
+                formData.append('acquisition_by', this.acquisition_by)
+                formData.append('date_to_call', this.date_to_call)
    
                 formData.append('crud', "insert");
                 formData.append('id', '');
@@ -186,7 +193,7 @@ var app = new Vue({
                             'Content-Type': 'multipart/form-data',
                             Authorization: `Bearer ${token}`
                         },
-                        url: 'api/contactor_ph.php',
+                        url: 'api/contactor_ph_po.php',
                         data: formData
                     })
                     .then(function(response) {
@@ -224,6 +231,9 @@ var app = new Vue({
             formData.append('email', this.record.email)
             formData.append('color', this.record.color)
             formData.append('remark', this.record.remark)
+            formData.append('acquisition', this.record.acquisition)
+            formData.append('acquisition_by', this.record.acquisition_by)
+            formData.append('date_to_call', this.record.date_to_call)
          
             formData.append('crud', "update");
             formData.append('id', this.record.id);
@@ -236,7 +246,7 @@ var app = new Vue({
                         'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ${token}`
                     },
-                    url: 'api/contactor_ph.php',
+                    url: 'api/contactor_ph_po.php',
                     data: formData
                     
                 })
@@ -273,6 +283,9 @@ var app = new Vue({
             formData.append('mobile', "")
             formData.append('email', "")
             formData.append('color', "")
+            formData.append('acquisition', "")
+            formData.append('acquisition_by', "")
+            formData.append('date_to_call', "")
             formData.append('remark', "")
          
             formData.append('crud', "del");
@@ -286,7 +299,7 @@ var app = new Vue({
                         'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ${token}`
                     },
-                    url: 'api/contactor_ph.php',
+                    url: 'api/contactor_ph_po.php',
                     data: formData
                 })
                 .then(function(response) {
@@ -313,6 +326,9 @@ var app = new Vue({
             this.mobile = '';
             this.email = '';
             this.color = '';
+            this.acquisition = '';
+            this.acquisition_by = '';
+            this.date_to_call = '';
             this.remark = '';
         
          
