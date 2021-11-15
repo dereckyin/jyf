@@ -95,7 +95,7 @@ var app = new Vue({
                 favorite.push(this.contactors[i].id);
           }
 
-          return 'directory_excel_ph.php?id=' + favorite.join(",");
+          return 'directory_excel_ph_po.php?id=' + favorite.join(",");
         }
     },
 
