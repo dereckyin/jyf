@@ -457,6 +457,77 @@ var app = new Vue({
               this.need_to_update = true;
         },
 
+        exportEditReceiveRecords: function() {
+            var favorite = [];
+
+            let measure_container = "";
+            let measure_qty = "";
+            let date_encode = "";
+            let date_cr = "";
+            let currency_rate = "";
+            let remark = "";
+
+            for (i = 0; i < this.loading_records.length; i++) 
+            {
+              if(this.loading_records[i].is_checked == 1)
+              {
+                favorite.push(this.loading_records[i].id);
+                measure_container = this.loading_records[i].container;
+                measure_qty = this.loading_records[i].qty;
+                date_encode = this.loading_records[i].date_encode;
+                date_cr = this.loading_records[i].date_arrive;
+                currency_rate = this.loading_records[i].currency_rate;
+                remark = this.loading_records[i].remark;
+              } 
+            }
+
+            if(favorite.length != 1)
+            { 
+                Swal.fire({
+                    title: 'Warning',
+                    text: 'Please select one record only',
+                    type: 'warning',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
+            let _this = this;
+            form_Data.append("jwt", token);
+            form_Data.append("id", favorite.join(","));
+            form_Data.append("container", measure_container);
+            form_Data.append("qty", measure_qty);
+            form_Data.append("date_cr", date_cr);
+            form_Data.append("date_encode", date_encode);
+            form_Data.append("currency_rate", currency_rate);
+            form_Data.append("remark", remark);
+           
+
+            axios({
+                method: "post",
+                url: "edit_measurement_excel.php",
+                data: form_Data,
+                responseType: "blob",
+            })
+                .then(function(response) {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement("a");
+                link.href = url;
+
+                link.setAttribute("download", "measure_excel.xlsx");
+
+                document.body.appendChild(link);
+                link.click();
+                })
+                .catch(function(response) {
+                console.log(response);
+                });
+
+        
+        },
+
         getContactors: function(keyword) {
             console.log("getContactors");
             let _this = this;
@@ -672,10 +743,25 @@ var app = new Vue({
 
             var favorite = [];
 
+            let measure_container = "";
+            let measure_qty = "";
+            let date_encode = "";
+            let date_cr = "";
+            let currency_rate = "";
+            let remark = "";
+
             for (i = 0; i < this.loading_records.length; i++) 
             {
               if(this.loading_records[i].is_checked == 1)
+              {
                 favorite.push(this.loading_records[i].id);
+                measure_container = this.loading_records[i].container;
+                measure_qty = this.loading_records[i].qty;
+                date_encode = this.loading_records[i].date_encode;
+                date_cr = this.loading_records[i].date_arrive;
+                currency_rate = this.loading_records[i].currency_rate;
+                remark = this.loading_records[i].remark;
+              }
             }
             
             var token = localStorage.getItem("token");
@@ -683,7 +769,12 @@ var app = new Vue({
             let _this = this;
             form_Data.append("jwt", token);
             form_Data.append("id", favorite.join(","));
-           
+            form_Data.append("container", measure_container);
+            form_Data.append("qty", measure_qty);
+            form_Data.append("date_cr", date_cr);
+            form_Data.append("date_encode", date_encode);
+            form_Data.append("currency_rate", currency_rate);
+            form_Data.append("remark", remark);
 
             axios({
                 method: "post",

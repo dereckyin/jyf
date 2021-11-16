@@ -243,6 +243,9 @@
                 <a class="btn small"  v-if="show_record == false" @click="delReceiveRecords()">Delete Measurement Record
                     <cht>刪除丈量記錄</cht>
                 </a>
+                <a class="btn small"  v-if="show_record == false" @click="exportEditReceiveRecords()">Export to Excel
+                    <cht>匯出</cht>
+                </a>
                 <a class="btn small" @click="cancelRecord()" v-if="show_record == true">Cancel
                     <cht>取消</cht>
                 </a>
