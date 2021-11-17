@@ -160,10 +160,22 @@ if ( isset( $jwt ) ) {
 
         <?php
         if($decoded->data->phili)
-        echo "<a href='directory_ph.php'>Directory
-        <cht>客戶通訊錄</cht>
-    </a>";
+        {
+        echo "
+        <dl class='sub'>
+            <dt>
+                <a class='after-micons'>Directory <cht>通訊錄</cht></a>
+            </dt>
+            <dd>
+                <a href='directory_ph.php'>Customer Directory <cht>客戶通訊錄</cht></a>
+            </dd>
+            <dd>
+                <a href='possible_directory_ph.php'>Possible Customer Directory <cht>潛在客戶通訊錄</cht></a>
+            </dd>
+        </dl>";
+        }
         ?>
+
         <?php
  	if($decoded->data->sea_expense)
         {
