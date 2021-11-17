@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 <?php include 'check.php';?>
 <?php
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
@@ -58,7 +56,6 @@ try {
     }
 
 ?>
->>>>>>> test
 <!DOCTYPE html>
 <html>
 <head>
@@ -127,6 +124,10 @@ try {
             font-size: 16px;
         }
 
+        select {
+            background-image: url(images/ui/icon_form_select_arrow_gray.svg);
+        }
+
         div.mainlist div.tablebox.d02 ul.black li:nth-of-type(n+1){
             color: black;
         }
@@ -174,8 +175,8 @@ try {
         <header></header>
         <!-- header end -->
         <div class="mainContent">
-            <h6>Customer Directory
-                <cht>客戶通訊錄</cht>
+            <h6>Possible Customer Directory
+                <cht>潛在客戶通訊錄</cht>
             </h6>
             <!-- add form -->
             <div class="block" v-if="!isEditing">
@@ -241,6 +242,26 @@ try {
                         </li>
                     </ul>
                     <ul>
+                        <li>Acquisition
+                            <cht>獲取客戶方式</cht>
+                        </li>
+                        <li style="display: flex;">
+                            <select style="margin-right: 20px;" v-model.lazy="acquisition">
+                                <option value="refer">Refer By</option>
+                                <option value="ads">Newspaper Ads</option>
+                            </select>
+                            <input type="text" name="" v-model.lazy="acquisition_by" maxlength="256">
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>Date to Call
+                            <cht>聯絡日期</cht>
+                        </li>
+                        <li>
+                            <input type="text" name="" v-model.lazy="date_to_call" maxlength="256">
+                        </li>
+                    </ul>
+                    <ul>
                         <li>Remarks
                             <cht>備註</cht>
                         </li>
@@ -254,7 +275,7 @@ try {
                             <cht>記錄顏色</cht>
                         </li>
                         <li>
-                            <div class="record_color">
+                        <div class="record_color">
                                 <input type="radio" name="record_color" id="record_color_black" value="black"
                                        v-model="color" checked="checked">
                                 <label for="record_color_black" style="background-color: black;"></label>
@@ -349,6 +370,26 @@ try {
                         </li>
                     </ul>
                     <ul>
+                        <li>Acquisition
+                            <cht>獲取客戶方式</cht>
+                        </li>
+                        <li style="display: flex;">
+                            <select style="margin-right: 20px;" v-model.lazy="record.acquisition">
+                                <option value="refer">Refer By</option>
+                                <option value="ads">Newspaper Ads</option>
+                            </select>
+                            <input type="text" name="" v-model.lazy="record.acquisition_by" maxlength="256">
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>Date to Call
+                            <cht>聯絡日期</cht>
+                        </li>
+                        <li>
+                            <input type="text" name="" v-model.lazy="record.date_to_call" maxlength="256">
+                        </li>
+                    </ul>
+                    <ul>
                         <li>Remarks
                             <cht>備註</cht>
                         </li>
@@ -362,7 +403,7 @@ try {
                             <cht>記錄顏色</cht>
                         </li>
                         <li>
-                            <div class="record_color">
+                        <div class="record_color">
                                 <input type="radio" name="record_color" id="record_color_black" value="black"
                                        v-model="record.color" checked="checked">
                                 <label for="record_color_black" style="background-color: black;"></label>
@@ -417,7 +458,7 @@ try {
                         </div>
                         <div class="searchblock" style="float:left;">Search <input type="text" v-model="keyword"></div>
                     </div>
-                    <div class="tablebox d02">
+                    <div class="tablebox d02" style="overflow-x: auto;">
                         <ul class="header">
                             <li><cht>勾選</cht>
                                 Check
@@ -441,6 +482,12 @@ try {
                                 Mobile Number
                             </li>
                             <li>E-Mail</li>
+                            <li><cht>獲取客戶方式</cht>
+                                Acquisition
+                            </li>
+                            <li><cht>聯絡日期</cht>
+                                Date to Call
+                            </li>
                             <li><cht>備註</cht>
                                 Remarks
                             </li>
@@ -456,13 +503,9 @@ try {
                             <li>{{ contactor.phone }}</li>
                             <li>{{ contactor.fax }}</li>
                             <li>{{ contactor.mobile }}</li>
-<<<<<<< HEAD
-
                             <li>{{ contactor.email }}</li>
-
-=======
-                            <li>{{ contactor.email }}</li>
->>>>>>> test
+                            <li>{{ contactor.acquisition == "ads" ? "Newspaper Ads " : (contactor.acquisition == "refer" ? "Refer By " : "") }} {{ contactor.acquisition_by }}</li>
+                            <li>{{ contactor.date_to_call }}</li>
                             <li>{{ contactor.remark }}</li>
                       
                         </ul>
@@ -484,6 +527,6 @@ try {
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="js/axios.min.js"></script>
-<script type="text/javascript" src="js/contactor_ph.js" defer></script>
+<script type="text/javascript" src="js/contactor_ph_po.js" defer></script>
 </body>
 </html>
