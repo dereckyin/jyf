@@ -43,6 +43,8 @@ if($jwt){
         // response in json format
         if(!empty($ids))
         {
+            $merged_results = array();
+            
             http_response_code(200);
             $recode = $receive_record->GetReceiveRecordByBatchNumber($ids);
 
