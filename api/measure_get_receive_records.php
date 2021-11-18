@@ -76,7 +76,7 @@ if($jwt){
                     "cuft" => "", 
                     "kilo_price" => "", 
                     "cuft_price" => "", 
-                    
+                    "charge" => "",
                     "record" => $rec,
                 ];
                 $merged_results[] = $new;

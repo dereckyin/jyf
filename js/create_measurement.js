@@ -222,36 +222,35 @@ var app = new Vue({
               });
           },
 
-        refresh_kilo() {
-            for(var i = 0; i < this.receive_records.length; i++) {
-                var num = "";
-               
-                if(this.receive_records[i]['kilo'] == "")
-                {
-                  this.receive_records[i]['kilo_price'] = "";
-                }
-                else
-                {
-                  num = parseFloat(this.receive_records[i]['kilo'] == "" ? 0 : this.receive_records[i]['kilo']);
-                  this.receive_records[i]['kilo_price'] = (num < 3000 ? 36.5 : 34.5).toLocaleString('en-US', {maximumFractionDigits:2});  
-                }
-              }
-        },
 
-        refresh_cuft() {
-            for(var i = 0; i < this.receive_records.length; i++) {
-                var num = "";
-               
-                if(this.receive_records[i]['cuft'] == "")
-                {
-                  this.receive_records[i]['cuft_price'] = "";
-                }
-                else
-                {
-                  num = parseFloat(this.receive_records[i]['cuft'] == "" ? 0 : this.receive_records[i]['cuft']);
-                  this.receive_records[i]['cuft_price'] = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
-                }
-              }
+        change_charge: function(row){
+         
+            ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
+            nkilo = ((row.kilo == "" ? 0 : row.kilo) < 3000 ? 36.5 : 34.5) * (row.kilo == "" ? 0 : row.kilo);
+            
+            row.charge = (ncuft > nkilo) ? ncuft : nkilo;
+
+            if(row.kilo == "")
+            {
+                row.kilo_price = ""; 
+            }
+            else
+            {
+                num = parseFloat(row.kilo == "" ? 0 : row.kilo);
+                row.kilo_price = (num < 3000 ? 36.5 : 34.5).toLocaleString('en-US', {maximumFractionDigits:2});  
+            }
+
+            if(row.cuft == "")
+            {
+                row.cuft_price = ""; 
+            }
+            else
+            {
+                num = parseFloat(row.cuft == "" ? 0 : row.cuft);
+                row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+            }
+
+            app.$forceUpdate();
         },
 
         decompose_item() {
@@ -283,6 +282,7 @@ var app = new Vue({
                             "kilo_price" : this.receive_records[i].kilo_price, 
                             "cuft_price": this.receive_records[i].cuft_price, 
                             "cust" : this.receive_records[i].cust,
+                            "charge" : this.receive_records[i].charge,
                             "record" : obj,
                         };
                     }
@@ -314,6 +314,7 @@ var app = new Vue({
                             "cuft_price": this.receive_records[i].cuft_price, 
                             "cust" : this.receive_records[i].cust,
                             "record" : obj,
+                            "charge" : this.receive_records[i].charge,
                         };
                     }
 
@@ -346,6 +347,7 @@ var app = new Vue({
                             "cuft_price": "", 
                             "cust" : "",
                             "record" : obj,
+                            "charge" : "",
                         };
 
                         index = this.sortedIndex(new_record, cust);
@@ -403,6 +405,7 @@ var app = new Vue({
                     "cuft_price": "", 
                     "cust" : "",
                     "record" : obj,
+                    "charge" : "",
                 };
 
                 new_record.push(rec);
@@ -431,6 +434,7 @@ var app = new Vue({
                             "cuft_price": this.receive_records[i].cuft_price, 
                             "cust" : this.receive_records[i].cust,
                             "record" : obj,
+                            "charge" : this.receive_records[i].charge, 
                         };
                     }
 

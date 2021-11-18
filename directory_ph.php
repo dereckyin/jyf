@@ -101,57 +101,6 @@ try {
         div.tablebox > ul > li > cht {
             font-size: 12px;
         }
-
-        div.record_color {
-            display: flex;
-            align-items: center;
-            height: 100%;
-        }
-
-        div.record_color > label {
-            display: inline-block;
-            margin: 7px 0 7px 40px;
-            width: 18px;
-            height: 18px;
-        }
-
-        div.record_color > label:nth-of-type(1) {
-            margin-left: 18px;
-        }
-
-        input[type=radio]:checked + Label::before, input[type=radio] + Label::before {
-            margin-left: -40px;
-            font-size: 16px;
-        }
-
-        div.mainlist div.tablebox.d02 ul.black li:nth-of-type(n+1){
-            color: black;
-        }
-
-        div.mainlist div.tablebox.d02 ul.red li:nth-of-type(n+1){
-            color: red;
-        }
-
-        div.mainlist div.tablebox.d02 ul.orange li:nth-of-type(n+1){
-            color: orange;
-        }
-
-        div.mainlist div.tablebox.d02 ul.green li:nth-of-type(n+1){
-            color: green;
-        }
-
-        div.mainlist div.tablebox.d02 ul.blue li:nth-of-type(n+1){
-            color: blue;
-        }
-
-        div.mainlist div.tablebox.d02 ul.black:hover li:nth-of-type(n+1),
-        div.mainlist div.tablebox.d02 ul.red:hover li:nth-of-type(n+1),
-        div.mainlist div.tablebox.d02 ul.orange:hover li:nth-of-type(n+1),
-        div.mainlist div.tablebox.d02 ul.green:hover li:nth-of-type(n+1),
-        div.mainlist div.tablebox.d02 ul.blue:hover li:nth-of-type(n+1){
-            color: white;
-        }
-
     </style>
 
     <!-- jQuery和js載入 -->
@@ -171,7 +120,7 @@ try {
         <header></header>
         <!-- header end -->
         <div class="mainContent">
-            <h6>Customer Directory
+            <h6>Directory
                 <cht>客戶通訊錄</cht>
             </h6>
             <!-- add form -->
@@ -183,7 +132,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="company" maxlength="256">
-                            <span class="text-danger" v-if="company_err" text="Please input company name"></span></li>
+                            <span class="text-danger" v-if="company_err" text="Please input company name"></span>
                     </ul>
                     <ul>
                         <li>Customer's Name
@@ -191,7 +140,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="customer" maxlength="256">
-                            <span class="text-danger" v-if="customer_err" text="Please input customer name"></span></li>
+                            <span class="text-danger" v-if="customer_err">Please input customer name</span>
                         </li>
                     </ul>
                     <ul>
@@ -200,7 +149,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="address" maxlength="256">
-                            <span class="text-danger" v-if="address_err" text="Please input address"></span></li>
+                            <span class="text-danger" v-if="address_err" text="Please input address"></span>
                         </li>
                     </ul>
                     <ul>
@@ -209,7 +158,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="phone" maxlength="256">
-                            <span class="text-danger" v-if="phone_err" text="Please input phone"></span></li>
+                            <span class="text-danger" v-if="phone_err" text="Please input phone"></span>
                         </li>
                     </ul>
                     <ul>
@@ -218,7 +167,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="fax" maxlength="256">
-                            <span class="text-danger" v-if="fax_err" text="Please input fax"></span></li>
+                            <span class="text-danger" v-if="fax_err" text="Please input fax"></span>
                         </li>
                     </ul>
                     <ul>
@@ -227,14 +176,14 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="mobile" maxlength="256">
-                            <span class="text-danger" v-if="mobile_err" text="Please input mobile"></span></li>
+                            <span class="text-danger" v-if="mobile_err" text="Please input mobile"></span>
                         </li>
                     </ul>
                     <ul>
                         <li>E-mail</li>
                         <li>
                             <input type="text" name="" v-model.lazy="email" maxlength="256">
-                            <span class="text-danger" v-if="email_err" text="Please input email"></span></li>
+                            <span class="text-danger" v-if="email_err" text="Please input email"></span>
                         </li>
                     </ul>
                     <ul>
@@ -243,36 +192,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="remark" maxlength="256">
-                            <span class="text-danger" v-if="remark_err" text="Please input emark"></span></li>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>Record Color
-                            <cht>記錄顏色</cht>
-                        </li>
-                        <li>
-                            <div class="record_color">
-                                <input type="radio" name="record_color" id="record_color_black" value="black"
-                                       v-model="color" checked="checked">
-                                <label for="record_color_black" style="background-color: black;"></label>
-
-                                <input type="radio" name="record_color" id="record_color_red" value="red"
-                                       v-model="color">
-                                <label for="record_color_red" style="background-color: red;"></label>
-
-                                <input type="radio" name="record_color" id="record_color_orange" value="orage"
-                                       v-model="color">
-                                <label for="record_color_orange" style="background-color: orange;"></label>
-
-                                <input type="radio" name="record_color" id="record_color_green" value="green"
-                                       v-model="color">
-                                <label for="record_color_green" style="background-color: green;"></label>
-
-                                <input type="radio" name="record_color" id="record_color_blue" value="blue"
-                                       v-model="color">
-                                <label for="record_color_blue" style="background-color: blue;"></label>
-
-                            </div>
+                            <span class="text-danger" v-if="remark_err" text="Please input emark"></span>
                         </li>
                     </ul>
                 </div>
@@ -291,7 +211,8 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.company" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
+                        </li>
                     </ul>
                     <ul>
                         <li>Customer's Name
@@ -299,7 +220,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.customer" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="customer_err">Please input customer name</span>
                         </li>
                     </ul>
                     <ul>
@@ -308,7 +229,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.address" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
@@ -317,7 +238,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.phone" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
@@ -326,7 +247,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.fax" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
@@ -335,14 +256,14 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.mobile" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
                         <li>E-mail</li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.email" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
@@ -351,36 +272,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.remark" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>Record Color
-                            <cht>記錄顏色</cht>
-                        </li>
-                        <li>
-                            <div class="record_color">
-                                <input type="radio" name="record_color" id="record_color_black" value="black"
-                                       v-model="record.color" checked="checked">
-                                <label for="record_color_black" style="background-color: black;"></label>
-
-                                <input type="radio" name="record_color" id="record_color_red" value="red"
-                                       v-model="record.color">
-                                <label for="record_color_red" style="background-color: red;"></label>
-
-                                <input type="radio" name="record_color" id="record_color_orange" value="orange"
-                                       v-model="record.color">
-                                <label for="record_color_orange" style="background-color: orange;"></label>
-
-                                <input type="radio" name="record_color" id="record_color_green" value="green"
-                                       v-model="record.color">
-                                <label for="record_color_green" style="background-color: green;"></label>
-
-                                <input type="radio" name="record_color" id="record_color_blue" value="blue"
-                                       v-model="record.color">
-                                <label for="record_color_blue" style="background-color: blue;"></label>
-
-                            </div>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                 </div>
@@ -442,7 +334,7 @@ try {
                                 Remarks
                             </li>
                         </ul>
-                        <ul v-for='(contactor, index) in displayedPosts' :class="contactor.color == '' ? 'black' : contactor.color">
+                        <ul v-for='(contactor, index) in displayedPosts'>
                             <li>
                                 <input type="checkbox" name="record_id" class="alone" :value="contactor.index"
                                        :true-value="1" v-model:checked="contactor.is_checked">

@@ -42,7 +42,7 @@ $(function(){
             </li>
             <li>
               <input type="text" name="shipping_mark" v-model.lazy="shipping_mark" maxlength="128">
-              <span class="text-danger" v-if="error_shipping_mark" v-text="error_shipping_mark"></span></li>
+              <span class="text-danger" v-if="error_shipping_mark" v-text="error_shipping_mark"></span>
             </li>
           </ul>
         </div>
@@ -53,7 +53,7 @@ $(function(){
             </li>
             <li>
               <input type="text" name="customer" v-model.lazy="customer" maxlength="256">
-              <span class="text-danger" v-if="error_customer" v-text="error_customer"></span></li>
+              <span class="text-danger" v-if="error_customer">{{error_customer}}</span>
           </ul>
           <ul>
             <li>電話
@@ -61,7 +61,7 @@ $(function(){
             </li>
             <li>
               <input type="text" name="c_phone" v-model.lazy="c_phone" maxlength="80">
-              <span class="text-danger" v-if="error_c_phone" v-text="error_c_phone"></span></li>
+              <span class="text-danger" v-if="error_c_phone" v-text="error_c_phone"></span>
             </li>
           </ul>
           <ul>
@@ -70,14 +70,14 @@ $(function(){
             </li>
             <li>
               <input type="text" name="c_fax" v-model.lazy="c_fax" maxlength="80">
-              <span class="text-danger" v-if="error_c_fax" v-text="error_c_fax"></span></li>
+              <span class="text-danger" v-if="error_c_fax" v-text="error_c_fax"></span>
             </li>
           </ul>
           <ul>
             <li>E-mail</li>
             <li>
               <input type="text" name="c_email" v-model.lazy="c_email" maxlength="256">
-              <span class="text-danger" v-if="error_c_email" v-text="error_c_email"></span></li>
+              <span class="text-danger" v-if="error_c_email" v-text="error_c_email"></span>
             </li>
           </ul>
         </div>
@@ -88,7 +88,7 @@ $(function(){
             </li>
             <li>
               <input type="text" name="supplier" v-model.lazy="supplier" maxlength="256">
-              <span class="text-danger" v-if="error_supplier" v-text="error_supplier"></span></li>
+              <span class="text-danger" v-if="error_supplier" v-text="error_supplier">{{error_supplier}}</span>
           </ul>
           <ul>
             <li>電話
@@ -96,7 +96,7 @@ $(function(){
             </li>
             <li>
               <input type="text" name="s_phone" v-model.lazy="s_phone" maxlength="80">
-              <span class="text-danger" v-if="error_s_phone" v-text="error_s_phone"></span></li>
+              <span class="text-danger" v-if="error_s_phone" v-text="error_s_phone"></span>
             </li>
           </ul>
           <ul>
@@ -105,35 +105,35 @@ $(function(){
             </li>
             <li>
               <input type="text" name="s_fax" v-model.lazy="s_fax" maxlength="80">
-              <span class="text-danger" v-if="error_s_fax" v-text="error_s_fax"></span></li>
+              <span class="text-danger" v-if="error_s_fax" v-text="error_s_fax"></span>
             </li>
           </ul>
           <ul>
             <li>E-mail</li>
             <li>
               <input type="text" name="s_email" v-model.lazy="s_email" maxlength="256">
-              <span class="text-danger" v-if="error_s_email" v-text="error_s_email"></span></li>
+              <span class="text-danger" v-if="error_s_email" v-text="error_s_email"></span>
             </li>
           </ul>
           <ul>
             <li>抬頭<eng>Company Title</eng></li>
             <li>
               <input type="text" name="company_title" v-model.lazy="company_title" maxlength="128">
-              <span class="text-danger" v-if="error_company_title" v-text="error_company_title"></span></li>
+              <span class="text-danger" v-if="error_company_title" v-text="error_company_title"></span>
             </li>
           </ul>
           <ul>
             <li>統編<eng>VAT Number</eng></li>
             <li>
               <input type="text" name="vat_number" v-model.lazy="vat_number" maxlength="40">
-              <span class="text-danger" v-if="error_vat_number" v-text="error_vat_number"></span></li>
+              <span class="text-danger" v-if="error_vat_number" v-text="error_vat_number"></span>
             </li>
           </ul>
           <ul>
             <li>地址<eng>Address</eng></li>
             <li>
               <input type="text" name="address" v-model.lazy="address" maxlength="256">
-              <span class="text-danger" v-if="error_address" v-text="error_address"></span></li>
+              <span class="text-danger" v-if="error_address" v-text="error_address"></span>
             </li>
           </ul>
         </div>
@@ -151,7 +151,7 @@ $(function(){
             </li>
             <li>
               <input type="text" name="shipping_mark" v-model.lazy="record.shipping_mark" maxlength="128">
-              <span class="text-danger" v-if="error_shipping_mark" v-text="error_shipping_mark"></span></li>
+              <span class="text-danger" v-if="error_shipping_mark" v-text="error_shipping_mark"></span>
             </li>
           </ul>
         </div>
@@ -162,7 +162,7 @@ $(function(){
             </li>
             <li>
               <input type="text" name="customer" v-model.lazy="record.customer" maxlength="256">
-              <span class="text-danger" v-if="error_customer" v-text="error_customer"></span></li>
+              <span class="text-danger" v-if="error_customer" v-text="error_customer">{{error_customer}}</span>
           </ul>
           <ul>
             <li>電話
@@ -170,7 +170,7 @@ $(function(){
             </li>
             <li>
               <input type="text" name="c_phone" v-model.lazy="record.c_phone" maxlength="80">
-              <span class="text-danger" v-if="error_c_phone" v-text="error_c_phone"></span></li>
+              <span class="text-danger" v-if="error_c_phone" v-text="error_c_phone"></span>
             </li>
           </ul>
           <ul>
@@ -179,14 +179,14 @@ $(function(){
             </li>
             <li>
               <input type="text" name="c_fax" v-model.lazy="record.c_fax" maxlength="80">
-              <span class="text-danger" v-if="error_c_fax" v-text="error_c_fax"></span></li>
+              <span class="text-danger" v-if="error_c_fax" v-text="error_c_fax"></span>
             </li>
           </ul>
           <ul>
             <li>E-mail</li>
             <li>
               <input type="text" name="c_email" v-model.lazy="record.c_email" maxlength="256">
-              <span class="text-danger" v-if="error_c_email" v-text="error_c_email"></span></li>
+              <span class="text-danger" v-if="error_c_email" v-text="error_c_email"></span>
             </li>
           </ul>
         </div>
@@ -197,7 +197,7 @@ $(function(){
             </li>
             <li>
               <input type="text" name="supplier" v-model.lazy="record.supplier" maxlength="256">
-              <span class="text-danger" v-if="error_supplier" v-text="error_supplier"></span></li>
+              <span class="text-danger" v-if="error_supplier" v-text="error_supplier">{{error_supplier}}</span>
           </ul>
           <ul>
             <li>電話
@@ -205,7 +205,7 @@ $(function(){
             </li>
             <li>
               <input type="text" name="s_phone" v-model.lazy="record.s_phone" maxlength="80">
-              <span class="text-danger" v-if="error_s_phone" v-text="error_s_phone"></span></li>
+              <span class="text-danger" v-if="error_s_phone" v-text="error_s_phone"></span>
             </li>
           </ul>
           <ul>
@@ -214,14 +214,14 @@ $(function(){
             </li>
             <li>
               <input type="text" name="s_fax" v-model.lazy="record.s_fax" maxlength="80">
-              <span class="text-danger" v-if="error_s_fax" v-text="error_s_fax"></span></li>
+              <span class="text-danger" v-if="error_s_fax" v-text="error_s_fax"></span>
             </li>
           </ul>
           <ul>
             <li>E-mail</li>
             <li>
               <input type="text" name="s_email" v-model.lazy="record.s_email" maxlength="256">
-              <span class="text-danger" v-if="error_s_email" v-text="error_s_email"></span></li>
+              <span class="text-danger" v-if="error_s_email" v-text="error_s_email"></span>
             </li>
           </ul>
           <ul>
@@ -229,21 +229,21 @@ $(function(){
 
             <li>
               <input type="text" name="company_title" v-model.lazy="record.company_title" maxlength="128">
-              <span class="text-danger" v-if="error_company_title" v-text="error_company_title"></span></li>
+              <span class="text-danger" v-if="error_company_title" v-text="error_company_title"></span>
             </li>
           </ul>
           <ul>
             <li>統編<eng>VAT Number</eng></li>
             <li>
               <input type="text" name="vat_number" v-model.lazy="record.vat_number" maxlength="40">
-              <span class="text-danger" v-if="error_vat_number" v-text="error_vat_number"></span></li>
+              <span class="text-danger" v-if="error_vat_number" v-text="error_vat_number"></span>
             </li>
           </ul>
           <ul>
             <li>地址<eng>Address</eng></li>
             <li>
               <input type="text" name="address" v-model.lazy="record.address" maxlength="256">
-              <span class="text-danger" v-if="error_address" v-text="error_address"></span></li>
+              <span class="text-danger" v-if="error_address" v-text="error_address"></span>
             </li>
           </ul>
         </div>

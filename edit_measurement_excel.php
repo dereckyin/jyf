@@ -207,12 +207,13 @@ $sheet->setCellValue('F1', '測量重量 Measure Kilo');
 $sheet->setCellValue('G1', '測量才積 Measure Cuft');
 $sheet->setCellValue('H1', '重量單價 Price per Kilo');
 $sheet->setCellValue('I1', '才積單價 Price per Cuft');
-$sheet->setCellValue('J1', '寄貨人 Supplier');
-$sheet->setCellValue('K1', '備註 Remark');
-$sheet->setCellValue('L1', '重量 Kilo');
-$sheet->setCellValue('M1', '才積 Cuft');
-$sheet->setCellValue('N1', '台灣付運費 Taiwan Pay');
-$sheet->setCellValue('O1', '代墊 Courier/payment');
+$sheet->setCellValue('J1', '收費金額 Amount');
+$sheet->setCellValue('K1', '寄貨人 Supplier');
+$sheet->setCellValue('L1', '備註 Remark');
+$sheet->setCellValue('M1', '重量 Kilo');
+$sheet->setCellValue('N1', '才積 Cuft');
+$sheet->setCellValue('O1', '台灣付運費 Taiwan Pay');
+$sheet->setCellValue('P1', '代墊 Courier/payment');
 
 $i = 2;
 
@@ -232,14 +233,15 @@ foreach ($result as $measure)
         $sheet->setCellValue('G' . $i, $measure["cuft"]);
         $sheet->setCellValue('H' . $i, $measure["kilo"] == "" ? "" : ($measure["kilo"] < 3000 ? 36.5 : 34.5));
         $sheet->setCellValue('I' . $i, $measure["cuft"] == "" ? "" : ($measure["cuft"] < 300 ? 365 : 345));
-        $sheet->setCellValue('J' . $i, $rec["supplier"]);
-        $sheet->setCellValue('K' . $i, $rec["remark"]);
-        $sheet->setCellValue('L' . $i, $rec["kilo"]);
-        $sheet->setCellValue('M' . $i, $rec["cuft"]);
-        $sheet->setCellValue('N' . $i, $rec["taiwan_pay"] == 1 ? "Yes" : "");
-        $sheet->setCellValue('O' . $i, $rec["courier_pay"] == 1 ? "Yes" : "");
+        $sheet->setCellValue('J' . $i, $measure["charge"]);
+        $sheet->setCellValue('K' . $i, $rec["supplier"]);
+        $sheet->setCellValue('L' . $i, $rec["remark"]);
+        $sheet->setCellValue('M' . $i, $rec["kilo"]);
+        $sheet->setCellValue('N' . $i, $rec["cuft"]);
+        $sheet->setCellValue('O' . $i, $rec["taiwan_pay"] == 1 ? "Yes" : "");
+        $sheet->setCellValue('P' . $i, $rec["courier_pay"] == 1 ? "Yes" : "");
 
-        $sheet->getStyle('A'. $i. ':' . 'O' . $i)->applyFromArray($styleArray);
+        $sheet->getStyle('A'. $i. ':' . 'P' . $i)->applyFromArray($styleArray);
         $i++;
     }
 
@@ -249,12 +251,13 @@ foreach ($result as $measure)
         $sheet->mergeCells('G' . $j . ':G' . ($i -1));
         $sheet->mergeCells('H' . $j . ':H' . ($i -1));
         $sheet->mergeCells('I' . $j . ':I' . ($i -1));
+        $sheet->mergeCells('J' . $j . ':J' . ($i -1));
     }
 
 }
 
-$sheet->getStyle('A1:' . 'O1')->getFont()->setBold(true);
-$sheet->getStyle('A1:' . 'O' . --$i)->applyFromArray($styleArray);
+$sheet->getStyle('A1:' . 'P1')->getFont()->setBold(true);
+$sheet->getStyle('A1:' . 'P' . --$i)->applyFromArray($styleArray);
 
 $sheet->setCellValue('A'  . ($i + 3), 'Qty of Containers 貨櫃數量');
 $sheet->setCellValue('B'  . ($i + 3), $qty);

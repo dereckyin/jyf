@@ -69,6 +69,7 @@ if($jwt){
                         $cuft = 0.0;
                         $pKilo = 0.0;
                         $pCuft = 0.0;
+                        $charge = 0.0;
 
                         for ($x = 0; $x < sizeof($price_record); $x++) {
                             if($price_record[$x]['customer'] == $cust)
@@ -77,11 +78,12 @@ if($jwt){
                                 $cuft = $price_record[$x]['cuft'];
                                 $pKilo = $price_record[$x]['price_kilo'];
                                 $pCuft = $price_record[$x]['price_cuft'];
+                                $charge = $price_record[$x]['charge'];
                                 break;
                             }
                         }
 
-                        $new = ["date_receive" => rtrim($sDate, "<br>"), "customer" => $cust, "description" => rtrim($sDesc, "<br>"), "quantity" => rtrim($sQty, "<br>"), "kilo" => $kilo, "cuft" => $cuft, "price_kilo" => $pKilo, "price_cuft" => $pCuft, "courier_money" => rtrim($sCourier, "<br>"), "supplier" => rtrim($sSupplier, "<br>"), "remark" => rtrim($sRemark, "<br>")];
+                        $new = ["date_receive" => rtrim($sDate, "<br>"), "customer" => $cust, "description" => rtrim($sDesc, "<br>"), "quantity" => rtrim($sQty, "<br>"), "kilo" => $kilo, "cuft" => $cuft, "price_kilo" => $pKilo, "price_cuft" => $pCuft, "charge" => $charge, "courier_money" => rtrim($sCourier, "<br>"), "supplier" => rtrim($sSupplier, "<br>"), "remark" => rtrim($sRemark, "<br>")];
                         $merged_results[] = $new;
 
                         // clear values
@@ -166,6 +168,7 @@ if($jwt){
                 $cuft = 0.0;
                 $pKilo = 0.0;
                 $pCuft = 0.0;
+                $charge = 0.0;
                 for ($x = 0; $x < sizeof($price_record); $x++) {
                     if($price_record[$x]['customer'] == $cust)
                     {
@@ -173,11 +176,12 @@ if($jwt){
                         $cuft = $price_record[$x]['cuft'];
                         $pKilo = $price_record[$x]['price_kilo'];
                         $pCuft = $price_record[$x]['price_cuft'];
+                        $charge = $price_record[$x]['charge'];
                         break;
                     }
                 }
 
-                $new = ["date_receive" => rtrim($sDate, "<br>"), "customer" => $cust, "description" => rtrim($sDesc, "<br>"), "quantity" => rtrim($sQty, "<br>"), "kilo" => $kilo, "cuft" => $cuft, "price_kilo" => $pKilo, "price_cuft" => $pCuft, "courier_money" => rtrim($sCourier, "<br>"), "supplier" => rtrim($sSupplier, "<br>"), "remark" => rtrim($sRemark, "<br>")];
+                $new = ["date_receive" => rtrim($sDate, "<br>"), "customer" => $cust, "description" => rtrim($sDesc, "<br>"), "quantity" => rtrim($sQty, "<br>"), "kilo" => $kilo, "cuft" => $cuft, "price_kilo" => $pKilo, "price_cuft" => $pCuft, "charge" => $charge, "courier_money" => rtrim($sCourier, "<br>"), "supplier" => rtrim($sSupplier, "<br>"), "remark" => rtrim($sRemark, "<br>")];
                 $merged_results[] = $new;
             }
             

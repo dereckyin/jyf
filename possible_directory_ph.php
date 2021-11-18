@@ -187,7 +187,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="company" maxlength="256">
-                            <span class="text-danger" v-if="company_err" text="Please input company name"></span></li>
+                            <span class="text-danger" v-if="company_err" text="Please input company name"></span>
                     </ul>
                     <ul>
                         <li>Customer's Name
@@ -195,7 +195,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="customer" maxlength="256">
-                            <span class="text-danger" v-if="customer_err" text="Please input customer name"></span></li>
+                            <span class="text-danger" v-if="customer_err" text="Please input customer name">{{customer_err}}</span>
                         </li>
                     </ul>
                     <ul>
@@ -204,7 +204,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="address" maxlength="256">
-                            <span class="text-danger" v-if="address_err" text="Please input address"></span></li>
+                            <span class="text-danger" v-if="address_err" text="Please input address"></span>
                         </li>
                     </ul>
                     <ul>
@@ -213,7 +213,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="phone" maxlength="256">
-                            <span class="text-danger" v-if="phone_err" text="Please input phone"></span></li>
+                            <span class="text-danger" v-if="phone_err" text="Please input phone"></span>
                         </li>
                     </ul>
                     <ul>
@@ -222,7 +222,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="fax" maxlength="256">
-                            <span class="text-danger" v-if="fax_err" text="Please input fax"></span></li>
+                            <span class="text-danger" v-if="fax_err" text="Please input fax"></span>
                         </li>
                     </ul>
                     <ul>
@@ -231,14 +231,14 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="mobile" maxlength="256">
-                            <span class="text-danger" v-if="mobile_err" text="Please input mobile"></span></li>
+                            <span class="text-danger" v-if="mobile_err" text="Please input mobile"></span>
                         </li>
                     </ul>
                     <ul>
                         <li>E-mail</li>
                         <li>
                             <input type="text" name="" v-model.lazy="email" maxlength="256">
-                            <span class="text-danger" v-if="email_err" text="Please input email"></span></li>
+                            <span class="text-danger" v-if="email_err" text="Please input email"></span>
                         </li>
                     </ul>
                     <ul>
@@ -267,7 +267,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="remark" maxlength="256">
-                            <span class="text-danger" v-if="remark_err" text="Please input emark"></span></li>
+                            <span class="text-danger" v-if="remark_err" text="Please input emark"></span>
                         </li>
                     </ul>
                     <ul>
@@ -315,7 +315,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.company" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                     </ul>
                     <ul>
                         <li>Customer's Name
@@ -323,7 +323,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.customer" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="customer_err" v-text="">{{customer_err}}</span>
                         </li>
                     </ul>
                     <ul>
@@ -332,7 +332,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.address" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
@@ -341,7 +341,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.phone" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
@@ -350,7 +350,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.fax" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
@@ -359,14 +359,14 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.mobile" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
                         <li>E-mail</li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.email" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
@@ -395,7 +395,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.remark" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>

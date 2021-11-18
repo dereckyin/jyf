@@ -212,6 +212,11 @@ var app = new Vue({
         editReceiveRecord: function(event) {
             console.log("editReceiveRecord")
 
+            if (!this.validateForm())
+            {
+              return;
+            }
+
             targetId = this.record.id;
             let formData = new FormData();
             //console.log(document.querySelector("input[name=datepicker1]").value)
