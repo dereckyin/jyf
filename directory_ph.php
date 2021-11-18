@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 <?php include 'check.php';?>
 <?php
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
@@ -58,7 +56,6 @@ try {
     }
 
 ?>
->>>>>>> test
 <!DOCTYPE html>
 <html>
 <head>
@@ -483,13 +480,7 @@ try {
                             <li>{{ contactor.phone }}</li>
                             <li>{{ contactor.fax }}</li>
                             <li>{{ contactor.mobile }}</li>
-<<<<<<< HEAD
-
                             <li>{{ contactor.email }}</li>
-
-=======
-                            <li>{{ contactor.email }}</li>
->>>>>>> test
                             <li>{{ contactor.remark }}</li>
                       
                         </ul>
