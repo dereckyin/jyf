@@ -205,7 +205,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="customer" maxlength="256">
-                            <span class="text-danger" v-if="customer_err" text="Please input customer name">{{customer_err}}</span>
+                            <span class="text-danger" v-if="customer_err" text="Please input customer name">Customer's name is required</span>
                         </li>
                     </ul>
                     <ul>
@@ -341,7 +341,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.customer" maxlength="256">
-                            <span class="text-danger" v-if="customer_err" v-text="">{{customer_err}}</span>
+                            <span class="text-danger" v-if="customer_err" v-text="">Customer's name is required</span>
                         </li>
                     </ul>
                     <ul>
