@@ -148,11 +148,21 @@ try {
             color: blue;
         }
 
+        div.mainlist div.tablebox.d02 ul.mediumpurple li:nth-of-type(n+1){
+            color: mediumpurple;
+        }
+
+        div.mainlist div.tablebox.d02 ul.rosybrown li:nth-of-type(n+1){
+            color: rosybrown;
+        }
+
         div.mainlist div.tablebox.d02 ul.black:hover li:nth-of-type(n+1),
         div.mainlist div.tablebox.d02 ul.red:hover li:nth-of-type(n+1),
         div.mainlist div.tablebox.d02 ul.orange:hover li:nth-of-type(n+1),
         div.mainlist div.tablebox.d02 ul.green:hover li:nth-of-type(n+1),
-        div.mainlist div.tablebox.d02 ul.blue:hover li:nth-of-type(n+1){
+        div.mainlist div.tablebox.d02 ul.blue:hover li:nth-of-type(n+1),
+        div.mainlist div.tablebox.d02 ul.mediumpurple:hover li:nth-of-type(n+1),
+        div.mainlist div.tablebox.d02 ul.rosybrown:hover li:nth-of-type(n+1){
             color: white;
         }
 
@@ -296,6 +306,14 @@ try {
                                        v-model="color">
                                 <label for="record_color_blue" style="background-color: blue;"></label>
 
+                                <input type="radio" name="record_color" id="record_color_mediumpurple" value="mediumpurple"
+                                       v-model="color">
+                                <label for="record_color_mediumpurple" style="background-color: mediumpurple;"></label>
+
+                                <input type="radio" name="record_color" id="record_color_rosybrown" value="rosybrown"
+                                       v-model="color">
+                                <label for="record_color_rosybrown" style="background-color: rosybrown;"></label>
+
                             </div>
                         </li>
                     </ul>
@@ -423,6 +441,14 @@ try {
                                 <input type="radio" name="record_color" id="record_color_blue" value="blue"
                                        v-model="record.color">
                                 <label for="record_color_blue" style="background-color: blue;"></label>
+
+                                <input type="radio" name="record_color" id="record_color_mediumpurple" value="mediumpurple"
+                                       v-model="record.color">
+                                <label for="record_color_mediumpurple" style="background-color: mediumpurple;"></label>
+
+                                <input type="radio" name="record_color" id="record_color_rosybrown" value="rosybrown"
+                                       v-model="record.color">
+                                <label for="record_color_rosybrown" style="background-color: rosybrown;"></label>
 
                             </div>
                         </li>
