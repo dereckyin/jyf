@@ -147,11 +147,21 @@ try {
             color: blue;
         }
 
+        div.mainlist div.tablebox.d02 ul.mediumpurple li:nth-of-type(n+1){
+            color: mediumpurple;
+        }
+
+        div.mainlist div.tablebox.d02 ul.rosybrown li:nth-of-type(n+1){
+            color: rosybrown;
+        }
+
         div.mainlist div.tablebox.d02 ul.black:hover li:nth-of-type(n+1),
         div.mainlist div.tablebox.d02 ul.red:hover li:nth-of-type(n+1),
         div.mainlist div.tablebox.d02 ul.orange:hover li:nth-of-type(n+1),
         div.mainlist div.tablebox.d02 ul.green:hover li:nth-of-type(n+1),
-        div.mainlist div.tablebox.d02 ul.blue:hover li:nth-of-type(n+1){
+        div.mainlist div.tablebox.d02 ul.blue:hover li:nth-of-type(n+1),
+        div.mainlist div.tablebox.d02 ul.mediumpurple:hover li:nth-of-type(n+1),
+        div.mainlist div.tablebox.d02 ul.rosybrown:hover li:nth-of-type(n+1){
             color: white;
         }
 
@@ -186,7 +196,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="company" maxlength="256">
-                            <span class="text-danger" v-if="company_err" text="Please input company name"></span></li>
+                            <span class="text-danger" v-if="company_err" text="Please input company name"></span>
                     </ul>
                     <ul>
                         <li>Customer's Name
@@ -194,7 +204,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="customer" maxlength="256">
-                            <span class="text-danger" v-if="customer_err" text="Please input customer name"></span></li>
+                            <span class="text-danger" v-if="customer_err">Customer's name is required</span>
                         </li>
                     </ul>
                     <ul>
@@ -203,7 +213,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="address" maxlength="256">
-                            <span class="text-danger" v-if="address_err" text="Please input address"></span></li>
+                            <span class="text-danger" v-if="address_err" text="Please input address"></span>
                         </li>
                     </ul>
                     <ul>
@@ -212,7 +222,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="phone" maxlength="256">
-                            <span class="text-danger" v-if="phone_err" text="Please input phone"></span></li>
+                            <span class="text-danger" v-if="phone_err" text="Please input phone"></span>
                         </li>
                     </ul>
                     <ul>
@@ -221,7 +231,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="fax" maxlength="256">
-                            <span class="text-danger" v-if="fax_err" text="Please input fax"></span></li>
+                            <span class="text-danger" v-if="fax_err" text="Please input fax"></span>
                         </li>
                     </ul>
                     <ul>
@@ -230,14 +240,14 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="mobile" maxlength="256">
-                            <span class="text-danger" v-if="mobile_err" text="Please input mobile"></span></li>
+                            <span class="text-danger" v-if="mobile_err" text="Please input mobile"></span>
                         </li>
                     </ul>
                     <ul>
                         <li>E-mail</li>
                         <li>
                             <input type="text" name="" v-model.lazy="email" maxlength="256">
-                            <span class="text-danger" v-if="email_err" text="Please input email"></span></li>
+                            <span class="text-danger" v-if="email_err" text="Please input email"></span>
                         </li>
                     </ul>
                     <ul>
@@ -275,6 +285,14 @@ try {
                                        v-model="color">
                                 <label for="record_color_blue" style="background-color: blue;"></label>
 
+                                <input type="radio" name="record_color" id="record_color_mediumpurple" value="mediumpurple"
+                                       v-model="color">
+                                <label for="record_color_mediumpurple" style="background-color: mediumpurple;"></label>
+
+                                <input type="radio" name="record_color" id="record_color_rosybrown" value="rosybrown"
+                                       v-model="color">
+                                <label for="record_color_rosybrown" style="background-color: rosybrown;"></label>
+
                             </div>
                         </li>
                     </ul>
@@ -294,7 +312,8 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.company" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
+                        </li>
                     </ul>
                     <ul>
                         <li>Customer's Name
@@ -302,7 +321,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.customer" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="customer_err">Customer's name is required</span>
                         </li>
                     </ul>
                     <ul>
@@ -311,7 +330,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.address" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
@@ -320,7 +339,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.phone" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
@@ -329,7 +348,7 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.fax" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
@@ -338,14 +357,14 @@ try {
                         </li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.mobile" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
                         <li>E-mail</li>
                         <li>
                             <input type="text" name="" v-model.lazy="record.email" maxlength="256">
-                            <span class="text-danger" v-if="" v-text=""></span></li>
+                            <span class="text-danger" v-if="" v-text=""></span>
                         </li>
                     </ul>
                     <ul>
@@ -382,6 +401,14 @@ try {
                                 <input type="radio" name="record_color" id="record_color_blue" value="blue"
                                        v-model="record.color">
                                 <label for="record_color_blue" style="background-color: blue;"></label>
+
+                                <input type="radio" name="record_color" id="record_color_mediumpurple" value="mediumpurple"
+                                       v-model="record.color">
+                                <label for="record_color_mediumpurple" style="background-color: mediumpurple;"></label>
+
+                                <input type="radio" name="record_color" id="record_color_rosybrown" value="rosybrown"
+                                       v-model="record.color">
+                                <label for="record_color_rosybrown" style="background-color: rosybrown;"></label>
 
                             </div>
                         </li>

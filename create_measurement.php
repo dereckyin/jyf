@@ -353,6 +353,10 @@
                             Price per Cuft
                         </th>
                         <th>
+                            <cht>收費金額</cht>
+                            Amount
+                        </th>
+                        <th>
                             <cht>寄貨人</cht>
                             Supplier
                         </th>
@@ -392,16 +396,19 @@
                                     {{ item.quantity }}
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model="row.kilo" @change=refresh_kilo()>
+                                    <input type="number" min="0" v-model="row.kilo" @change=change_charge(row)>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model="row.cuft" @change=refresh_cuft()>
+                                    <input type="number" min="0" v-model="row.cuft" @change=change_charge(row)>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
                                     <input type="number" min="0" v-model="row.kilo_price">
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
                                     <input type="number" min="0" v-model="row.cuft_price">
+                                </td>
+                                <td v-if="j == 0" :rowspan="row.record.length">
+                                    <input type="number" min="0" v-model="row.charge">
                                 </td>
                                 <td>
                                 {{ item.supplier }}
