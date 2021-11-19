@@ -406,10 +406,10 @@
                                     <input type="number" min="0" v-model="row.cuft" @change=change_charge(row)>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model="row.kilo_price">
+                                    <input type="number" min="0" v-model="row.kilo_price" @change=change_charge(row)>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model="row.cuft_price">
+                                    <input type="number" min="0" v-model="row.cuft_price" @change=change_charge(row)>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
                                     <input type="number" min="0" v-model="row.charge">

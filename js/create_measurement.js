@@ -224,27 +224,26 @@ var app = new Vue({
 
 
         change_charge: function(row){
-         
-            ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
-            nkilo = ((row.kilo == "" ? 0 : row.kilo) < 3000 ? 36.5 : 34.5) * (row.kilo == "" ? 0 : row.kilo);
+
+            if(row.kilo_price == "")
+                nkilo = ((row.kilo == "" ? 0 : row.kilo) < 3000 ? 36.5 : 34.5) * (row.kilo == "" ? 0 : row.kilo);
+            else
+                nkilo = (row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
+
+            if(row.cuft_price == "")
+                ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
+            else
+                ncuft = (row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
             
             row.charge = (ncuft > nkilo) ? ncuft : nkilo;
 
-            if(row.kilo == "")
-            {
-                row.kilo_price = ""; 
-            }
-            else
+            if(row.kilo != "" && row.kilo_price == "")
             {
                 num = parseFloat(row.kilo == "" ? 0 : row.kilo);
                 row.kilo_price = (num < 3000 ? 36.5 : 34.5).toLocaleString('en-US', {maximumFractionDigits:2});  
             }
 
-            if(row.cuft == "")
-            {
-                row.cuft_price = ""; 
-            }
-            else
+            if(row.cuft != "" && row.cuft_price == "")
             {
                 num = parseFloat(row.cuft == "" ? 0 : row.cuft);
                 row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
