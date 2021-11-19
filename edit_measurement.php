@@ -400,16 +400,16 @@
                                     {{ item.quantity }}
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model="row.kilo" @change=change_charge(row)>
+                                    <input type="number" min="0" v-model="row.kilo" @change=change_A(row)>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model="row.cuft" @change=change_charge(row)>
+                                    <input type="number" min="0" v-model="row.cuft" @change=change_B(row)>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model="row.kilo_price" @change=change_charge(row)>
+                                    <input type="number" min="0" v-model="row.kilo_price" @change=change_C(row)>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model="row.cuft_price" @change=change_charge(row)>
+                                    <input type="number" min="0" v-model="row.cuft_price" @change=change_D(row)>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
                                     <input type="number" min="0" v-model="row.charge">
