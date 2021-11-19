@@ -249,6 +249,19 @@ var app = new Vue({
                 row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
             }
 
+            if(row.kilo == "")
+            {
+                row.kilo_price = "";  
+            }
+
+            if(row.cuft == "")
+            {
+                row.cuft_price = "";  
+            }
+
+            if(row.cuft == "" && row.cuft_price == "" && row.kilo == "" && row.kilo_price == "")
+                row.charge = "";
+
             app.$forceUpdate();
         },
 
