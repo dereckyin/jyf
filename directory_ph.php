@@ -188,6 +188,17 @@ try {
             <div class="block" v-if="!isEditing">
                 <div class="tablebox d01">
                     <ul>
+                        <li>Set
+                            <cht>群組</cht>
+                        </li>
+                        <li>
+                            <input type="text" name="tag" list="tagname" v-model.lazy="tag" maxlength="256">
+                            <datalist id="tagname" >
+                                <option :value="con.tags" v-for='(con, index) in tags'>
+                            </datalist>
+                        </li>
+                    </ul>
+                    <ul>
                         <li>Company Name
                             <cht>公司名</cht>
                         </li>
@@ -303,6 +314,17 @@ try {
             <!-- eidt form -->
             <div class="block" v-else>
                 <div class="tablebox d01">
+                <ul>
+                        <li>Set
+                            <cht>群組</cht>
+                        </li>
+                        <li>
+                            <input type="text" name="tag" list="edittagname" v-model.lazy="record.tag" maxlength="256">
+                            <datalist id="edittagname" >
+                                <option :value="con.tags" v-for='(con, index) in tags'>
+                            </datalist>
+                        </li>
+                    </ul>
                     <ul>
                         <li>Company Name
                             <cht>公司名</cht>
@@ -439,7 +461,9 @@ try {
                                    @click="page++">chevron_right</a> <a class="last micons" @click="page=pages.length">last_page</a>
                             </div>
                         </div>
-                        <div class="searchblock" style="float:left;">Search <input type="text" v-model="keyword"></div>
+                        <div class="searchblock" style="float:left;"><select class="selectpicker" data-live-search="true" v-model="search_tag">
+                                        <option v-for='(con, index) in tags' :value="con.tags">{{ con.tags }}</option>
+                                    </select> Search <input type="text" v-model="keyword"></div>
                     </div>
                     <div class="tablebox d02">
                         <ul class="header">

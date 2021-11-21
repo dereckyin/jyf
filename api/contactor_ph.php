@@ -48,8 +48,11 @@ else
             $keyword = (isset($_GET['keyword']) ?  $_GET['keyword'] : "");
             $keyword = urldecode($keyword);
 
+            $tag = (isset($_GET['tag']) ?  $_GET['tag'] : "Main");
+            $tag = urldecode($tag);
 
-            $sql = "SELECT 0 as is_checked, id, company, customer, address, COALESCE(phone, '') phone, COALESCE(fax, '') fax, COALESCE(mobile, '') mobile, email, remark, color, crt_time, crt_user  FROM contactor_ph where `status` = '' ".($id ? " and id=$id" : ''); 
+
+            $sql = "SELECT 0 as is_checked, id, tags tag, company, customer, address, COALESCE(phone, '') phone, COALESCE(fax, '') fax, COALESCE(mobile, '') mobile, email, remark, color, crt_time, crt_user  FROM contactor_ph where `status` = '' ".($id ? " and id=$id" : ''); 
 
             if($keyword != "") {
                 $sql = $sql . " and (company like '%" . $keyword . "%' ";
@@ -60,6 +63,11 @@ else
                 $sql = $sql . " or mobile like '%" . $keyword . "%' ";
                 $sql = $sql . " or email like '%" . $keyword . "%' ";
                 $sql = $sql . " or remark like '%" . $keyword . "%' )";
+            }
+
+            if($tag != "") {
+                $sql = $sql . " and tags = '" . $tag . "' ";
+             
             }
 
 
@@ -104,6 +112,7 @@ else
             break;
 
         case 'POST':
+            $tag = stripslashes($_POST["tag"]);
             $company = stripslashes($_POST["company"]);
             $customer = stripslashes($_POST["customer"]);
             $address = stripslashes($_POST["address"]);
@@ -117,11 +126,14 @@ else
             $crud = stripslashes($_POST["crud"]);
             $id = stripslashes($_POST["id"]);
 
+            if($tag == "")
+                $tag = "Main";
+
             switch ($crud) 
             {
               case 'insert':
             /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
-                $sql = "insert into contactor_ph (company, 
+                $sql = "insert into contactor_ph (tags, company, 
                 customer, 
                 address, 
                 phone, 
@@ -131,9 +143,10 @@ else
                 color,
                 remark,
                                                       crt_user) 
-                                            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql); 
-                $stmt->bind_param("ssssssssss",
+                $stmt->bind_param("sssssssssss",
+                                    $tag,
                                     $company, 
                                     $customer, 
                                     $address, 
@@ -156,7 +169,7 @@ else
             case "update":
                 
                     /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
-                    $sql = "update contactor_ph set company = ?, 
+                    $sql = "update contactor_ph set tags = ? ,company = ?, 
                                                           customer = ?, 
                                                           address = ?, 
                                                           phone = ?, 
@@ -170,7 +183,8 @@ else
                                                           mdf_user = ?
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
-                    $stmt->bind_param("ssssssssssd",
+                    $stmt->bind_param("sssssssssssd",
+                                        $tag, 
                                         $company, 
                                         $customer, 
                                         $address, 

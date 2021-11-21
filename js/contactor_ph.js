@@ -20,6 +20,10 @@ let mainState = {
     email: '',
     remark: '',
     color: '',
+    tag: '',
+    search_tag: 'Main',
+
+    tags: [],
  
     contactors: [],
     record: {},
@@ -72,7 +76,11 @@ var app = new Vue({
       keyword () {
         console.log('Vue watch keyword');
         this.getRecords(this.keyword);
-      }
+      },
+
+      search_tag () 
+        {this.getRecords(this.keyword);},
+
     },
 
     computed: {
@@ -102,10 +110,23 @@ var app = new Vue({
     methods: {
         getRecords: function(keyword) {
           console.log("getRecords");
-            axios.get('api/contactor_ph.php?keyword=' + keyword)
+            axios.get('api/contactor_ph.php?tag=' + this.search_tag + '&keyword=' + keyword)
                 .then(function(response) {
                     console.log(response.data);
                     app.contactors = response.data;
+                    
+                    //this.$refs.showUser1.$el.DataTable();
+                    console.log("getRecords");
+
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+
+              axios.get('api/contactor_ph_tags.php')
+                .then(function(response) {
+                    console.log(response.data);
+                    app.tags = response.data;
                     
                     //this.$refs.showUser1.$el.DataTable();
                     console.log("getRecords");
@@ -159,6 +180,7 @@ var app = new Vue({
                 let formData = new FormData();
                 //console.log("datepicker:", this.date_receive)
                 //console.log(document.querySelector("input[name=datepicker]").value)
+                formData.append('tag', this.tag)
                 formData.append('company', this.company)
                 formData.append('customer', this.customer)
                 formData.append('address', this.address)
@@ -220,6 +242,7 @@ var app = new Vue({
             targetId = this.record.id;
             let formData = new FormData();
             //console.log(document.querySelector("input[name=datepicker1]").value)
+            formData.append('tag', this.record.tag)
             formData.append('company', this.record.company)
             formData.append('customer', this.record.customer)
             formData.append('address', this.record.address)
@@ -270,6 +293,7 @@ var app = new Vue({
             //targetId = this.record.id;
             let formData = new FormData();
             //console.log(document.querySelector("input[name=datepicker1]").value)
+            formData.append('tag', "")
             formData.append('company', "")
             formData.append('customer', "")
             formData.append('address', "")
@@ -310,6 +334,7 @@ var app = new Vue({
 
         resetForm: function() {
           console.log("resetForm");
+            this.tag = '';
             this.company = '';
             this.customer = '';
             this.address = '';
