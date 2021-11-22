@@ -555,6 +555,12 @@ var app = new Vue({
           this.getMeasures();
         },
 
+        record_cancel: function() {
+          for (let obj in this.record) {
+            this.record[obj].org_pick_date = this.record[obj].pick_date;
+          }
+        },
+
         record_save: async function() {
           let _this = this;
 

@@ -65,7 +65,7 @@ $user_id = $decoded->data->id;
         for ($i = 0; $i < count($detail_array); $i++) {
             $measure_id = ($detail_array[$i]['measure_id'] == '') ? 0 : $detail_array[$i]['measure_id'];
             $rid = ($detail_array[$i]['id'] == '') ? 0 : $detail_array[$i]['id'];
-            $pick_date = ($detail_array[$i]['pick_date'] == '') ? "" : $detail_array[$i]['pick_date'];
+            $pick_date = ($detail_array[$i]['org_pick_date'] == '') ? "" : $detail_array[$i]['org_pick_date'];
             $pick_note = ($detail_array[$i]['pick_note'] == '') ? "" : $detail_array[$i]['pick_note'];
             $pick_person = ($detail_array[$i]['pick_person'] == '') ? "" : $detail_array[$i]['pick_person'];
             
