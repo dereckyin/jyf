@@ -19,7 +19,7 @@ let mainState = {
     mobile: '',
     email: '',
     remark: '',
-    color: '',
+    color: 'black',
     tag: 'Main',
     search_tag: 'Main',
 
@@ -342,7 +342,7 @@ var app = new Vue({
             this.fax = '';
             this.mobile = '';
             this.email = '';
-            this.color = '';
+            this.color = 'black';
             this.remark = '';
         
          
@@ -424,6 +424,10 @@ var app = new Vue({
                 return;
             }
             this.record = this.shallowCopy(app.contactors.find(element => element.id == favorite));
+
+            if(this.record.color == '')
+              this.record.color = 'black';
+              
             this.isEditing = true;
 
           
