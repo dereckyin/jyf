@@ -20,7 +20,7 @@ let mainState = {
     email: '',
     remark: '',
     color: '',
-    tag: '',
+    tag: 'Main',
     search_tag: 'Main',
 
     tags: [],
@@ -334,7 +334,7 @@ var app = new Vue({
 
         resetForm: function() {
           console.log("resetForm");
-            this.tag = '';
+            this.tag = 'Main';
             this.company = '';
             this.customer = '';
             this.address = '';

@@ -192,10 +192,15 @@ try {
                             <cht>群組</cht>
                         </li>
                         <li>
-                            <input type="text" name="tag" list="tagname" v-model.lazy="tag" maxlength="256">
-                            <datalist id="tagname" >
-                                <option :value="con.tags" v-for='(con, index) in tags'>
-                            </datalist>
+                            <select v-model.lazy="tag">
+                                <option value="Main">Main</option>
+                                <option value="MR. YANG">MR. YANG</option>
+                                <option value="CDC GLOBAL UNDER ANDREW CO">CDC GLOBAL UNDER ANDREW CO</option>
+                                <option value="LYM">LYM</option>
+                                <option value="JAYSON LAM">JAYSON LAM</option>
+                                <option value="OBE/PBD">OBE/PBD</option>
+                            </select>
+                         
                         </li>
                     </ul>
                     <ul>
@@ -319,10 +324,15 @@ try {
                             <cht>群組</cht>
                         </li>
                         <li>
-                            <input type="text" name="tag" list="edittagname" v-model.lazy="record.tag" maxlength="256">
-                            <datalist id="edittagname" >
-                                <option :value="con.tags" v-for='(con, index) in tags'>
-                            </datalist>
+                            <select v-model.lazy="record.tag">
+                                <option value="Main">Main</option>
+                                <option value="MR. YANG">MR. YANG</option>
+                                <option value="CDC GLOBAL UNDER ANDREW CO">CDC GLOBAL UNDER ANDREW CO</option>
+                                <option value="LYM">LYM</option>
+                                <option value="JAYSON LAM">JAYSON LAM</option>
+                                <option value="OBE/PBD">OBE/PBD</option>
+                            </select>
+                          
                         </li>
                     </ul>
                     <ul>
@@ -462,7 +472,12 @@ try {
                             </div>
                         </div>
                         <div class="searchblock" style="float:left;"><select class="selectpicker" data-live-search="true" v-model="search_tag">
-                                        <option v-for='(con, index) in tags' :value="con.tags">{{ con.tags }}</option>
+                        <option value="Main">Main</option>
+                                <option value="MR. YANG">MR. YANG</option>
+                                <option value="CDC GLOBAL UNDER ANDREW CO">CDC GLOBAL UNDER ANDREW CO</option>
+                                <option value="LYM">LYM</option>
+                                <option value="JAYSON LAM">JAYSON LAM</option>
+                                <option value="OBE/PBD">OBE/PBD</option>
                                     </select> Search <input type="text" v-model="keyword"></div>
                     </div>
                     <div class="tablebox d02">
