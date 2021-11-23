@@ -81,6 +81,7 @@ if($jwt){
 
             $id = $row['id'];
             $group_id = $row['group_id'];
+            $pre_group_id = $row['group_id'];
             $measure_detail_id = $row['measure_detail_id'];
 
             $mes = GetMeasureDetail($measure_detail_id, $db);

@@ -86,12 +86,37 @@ $user_id = $decoded->data->id;
             die();
         }
 
+        // for payment
+        $query = "update payment 
+                    set status = -1,
+                    mdf_time = now(),
+                    mdf_user = '" . $user . "'
+            WHERE id in  (" . $id . ")";
+
+        $stmt = $conn->prepare($query);
+
+        try {
+            // execute the query, also check if query was successful
+            if (!$stmt->execute()) {
+                $conn->rollback();
+                http_response_code(501);
+                echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                die();
+            }
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $conn->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            die();
+        }
+/*
         // for measure_detail
         $query = "update measure_detail 
                     set pickup_status = '',
                     encode = '',
                     encode_status = '' 
-            WHERE id in (" . $id . ")";
+            WHERE id in  (" . $id . ")";
 
         $stmt = $conn->prepare($query);
 
@@ -120,7 +145,7 @@ $user_id = $decoded->data->id;
                     pick_user = ''
                     where receive_record.id IN (SELECT record_id FROM measure_record_detail
                     LEFT JOIN measure_detail ON measure_record_detail.detail_id = measure_detail.id
-                    WHERE measure_detail.id  in (" . $id . "))";
+                    WHERE measure_detail.id  in (select measure_detail_id from pick_group where id in (" . $id . ")))";
 
         $stmt = $conn->prepare($query);
 
@@ -139,7 +164,7 @@ $user_id = $decoded->data->id;
             echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
             die();
         }
-
+*/
         $conn->commit();
     }
 

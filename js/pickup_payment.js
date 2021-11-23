@@ -301,6 +301,15 @@ var app = new Vue({
           for (i = 0; i < this.receive_records.length; i++) {
               if(this.receive_records[i].is_checked == 1)
               {
+                let measure = this.receive_records[i].measure;
+                    for (j = 0; j < measure.length; j++) {
+                      if(measure[j].payment_status != "")
+                      {
+                        alert('Item that already completed the total payment cannot be decomposed.');
+                        this.getMeasures();
+                        return;
+                      }
+                    }
                   favorite.push(this.receive_records[i].group_id);
               }
             }
@@ -350,7 +359,17 @@ var app = new Vue({
             for (i = 0; i < this.receive_records.length; i++) {
                 if(this.receive_records[i].is_checked == 1)
                 {
-                    favorite.push(this.receive_records[i].id);
+                    let measure = this.receive_records[i].measure;
+                    for (j = 0; j < measure.length; j++) {
+                      if(measure[j].payment_status != "")
+                      {
+                          alert('Item that already completed the total payment cannot merge with other items.');
+                          this.getMeasures();
+                        return;
+                      }
+                      favorite.push(measure[j].id);
+                    }
+                    
                 }
               }
 
