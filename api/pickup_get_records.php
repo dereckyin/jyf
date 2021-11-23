@@ -81,6 +81,7 @@ if($jwt){
 
             $id = $row['id'];
             $group_id = $row['group_id'];
+            $pre_group_id = $row['group_id'];
             $measure_detail_id = $row['measure_detail_id'];
 
             $mes = GetMeasureDetail($measure_detail_id, $db);
@@ -266,21 +267,22 @@ function GetMeasurePersonRecord($id, $db){
                
                     WHERE rd.detail_id = " . $id . "
             AND rd.`status` <> -1 
+            and coalesce(cp.customer, '') <> ''
     ";
 
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
 
-    $merged_results = "";
+    $merged_results = [];
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     
-        $merged_results .= $row['cust'] . ",";
+        $merged_results[] = $row['cust'];
   
     }
 
-    return rtrim($merged_results, ',');
+    return $merged_results;
 }
 
 function GetMeasureDetailRecord($id, $db){
@@ -312,6 +314,7 @@ function GetMeasureDetailRecord($id, $db){
         $cust = $row['cust'];
         $cust_id = $row['cust_id'];
         $pick_date = $row['pick_date'];
+        $org_pick_date = $row['pick_date'];
         $pick_person = $row['pick_person'];
         $pick_note = $row['pick_note'];
         $pick_time = $row['pick_time'];
@@ -328,6 +331,7 @@ function GetMeasureDetailRecord($id, $db){
             "cust" => $cust,
             "cust_id" => $cust_id,
             "pick_date" => $pick_date,
+            "org_pick_date" => $org_pick_date,
             "pick_person" => $pick_person,
             "pick_note" => $pick_note,
             "pick_time" => $pick_time,

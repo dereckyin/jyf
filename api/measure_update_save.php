@@ -145,7 +145,6 @@ switch ($method) {
 
         $result = $stmt1->get_result();
         while ($row = $result->fetch_assoc()) {
-            $id = $row['id'];
             $record = DeleteMeasureDetailRecord($row['id'], $conn);
         }
 

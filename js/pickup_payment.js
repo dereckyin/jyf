@@ -48,6 +48,8 @@ let mainState = {
     show_record:false,
     need_to_update: false,
 
+    ar: 0,
+
     // paging
     page: 1,
     //perPage: 10,
@@ -301,6 +303,15 @@ var app = new Vue({
           for (i = 0; i < this.receive_records.length; i++) {
               if(this.receive_records[i].is_checked == 1)
               {
+                let measure = this.receive_records[i].measure;
+                    for (j = 0; j < measure.length; j++) {
+                      if(measure[j].payment_status != "")
+                      {
+                        alert('Item that already completed the total payment cannot be decomposed.');
+                        this.getMeasures();
+                        return;
+                      }
+                    }
                   favorite.push(this.receive_records[i].group_id);
               }
             }
@@ -350,7 +361,17 @@ var app = new Vue({
             for (i = 0; i < this.receive_records.length; i++) {
                 if(this.receive_records[i].is_checked == 1)
                 {
-                    favorite.push(this.receive_records[i].id);
+                    let measure = this.receive_records[i].measure;
+                    for (j = 0; j < measure.length; j++) {
+                      if(measure[j].payment_status != "")
+                      {
+                          alert('Item that already completed the total payment cannot merge with other items.');
+                          this.getMeasures();
+                        return;
+                      }
+                      favorite.push(measure[j].id);
+                    }
+                    
                 }
               }
 
@@ -487,11 +508,12 @@ var app = new Vue({
         chang_remark: function(row) {
           if(row.amount == '')
             return;
-          let charge = this.payment_record.charge;
+          // let charge = this.payment_record.charge;
+          let charge = this.ar;
           let pay = 0;
           for(let i = 0; i < this.payment.length; i++)
             pay += this.payment[i].amount == "" ? 0 : Number(this.payment[i].amount);
-          if(charge - pay < 0)
+          if(charge - pay < 0 && row.type == 1)
             row.remark = "Cash " + row.amount + " - " + (Number(charge) - Number(pay) + Number(row.amount)) + " = P" + Math.abs(charge - pay);
         },
 
@@ -518,11 +540,12 @@ var app = new Vue({
 
         },
 
-        item_payment: function(record) {
+        item_payment: function(record, ar) {
           this.payment = [];
           this.payment_record = [];
 
           this.payment = [].concat(record.payment);
+          this.ar = ar;
 
           this.payment_record = this.shallowCopy(record);
         },
@@ -553,6 +576,12 @@ var app = new Vue({
           }
 
           this.getMeasures();
+        },
+
+        record_cancel: function() {
+          for (let obj in this.record) {
+            this.record[obj].org_pick_date = this.record[obj].pick_date;
+          }
         },
 
         record_save: async function() {

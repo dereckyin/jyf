@@ -188,6 +188,22 @@ try {
             <div class="block" v-if="!isEditing">
                 <div class="tablebox d01">
                     <ul>
+                        <li>Set
+                            <cht>群組</cht>
+                        </li>
+                        <li>
+                            <select v-model.lazy="tag">
+                                <option value="Main">Main</option>
+                                <option value="MR. YANG">MR. YANG</option>
+                                <option value="CDC GLOBAL UNDER ANDREW CO">CDC GLOBAL UNDER ANDREW CO</option>
+                                <option value="LYM">LYM</option>
+                                <option value="JAYSON LAM">JAYSON LAM</option>
+                                <option value="OBE/PBD">OBE/PBD</option>
+                            </select>
+                         
+                        </li>
+                    </ul>
+                    <ul>
                         <li>Company Name
                             <cht>公司名</cht>
                         </li>
@@ -303,6 +319,22 @@ try {
             <!-- eidt form -->
             <div class="block" v-else>
                 <div class="tablebox d01">
+                <ul>
+                        <li>Set
+                            <cht>群組</cht>
+                        </li>
+                        <li>
+                            <select v-model.lazy="record.tag">
+                                <option value="Main">Main</option>
+                                <option value="MR. YANG">MR. YANG</option>
+                                <option value="CDC GLOBAL UNDER ANDREW CO">CDC GLOBAL UNDER ANDREW CO</option>
+                                <option value="LYM">LYM</option>
+                                <option value="JAYSON LAM">JAYSON LAM</option>
+                                <option value="OBE/PBD">OBE/PBD</option>
+                            </select>
+                          
+                        </li>
+                    </ul>
                     <ul>
                         <li>Company Name
                             <cht>公司名</cht>
@@ -439,7 +471,14 @@ try {
                                    @click="page++">chevron_right</a> <a class="last micons" @click="page=pages.length">last_page</a>
                             </div>
                         </div>
-                        <div class="searchblock" style="float:left;">Search <input type="text" v-model="keyword"></div>
+                        <div class="searchblock" style="float:left;"><select class="selectpicker" data-live-search="true" v-model="search_tag">
+                        <option value="Main">Main</option>
+                                <option value="MR. YANG">MR. YANG</option>
+                                <option value="CDC GLOBAL UNDER ANDREW CO">CDC GLOBAL UNDER ANDREW CO</option>
+                                <option value="LYM">LYM</option>
+                                <option value="JAYSON LAM">JAYSON LAM</option>
+                                <option value="OBE/PBD">OBE/PBD</option>
+                                    </select> Search <input type="text" v-model="keyword"></div>
                     </div>
                     <div class="tablebox d02">
                         <ul class="header">

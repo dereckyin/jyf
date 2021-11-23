@@ -185,6 +185,17 @@
             cursor: pointer;
         }
 
+        .tb_measure tbody tr td span{
+            background-color: #5bc0de;
+                color: #fff;
+                font-size: 14px;
+                display: inline-block;
+                font-weight: 600;
+                border-radius: 5px;
+                padding: 0 7px;
+                margin: 0 5px;
+        }
+
     </style>
 
 
@@ -338,7 +349,8 @@
                                 <button data-toggle="modal" data-target="#encode_modal" v-if="item.encode_status == ''" @click="item_encode(item)">Encode</button>
                             </td>
                             <td>
-                                {{ item.record_cust }}
+                                <span v-for='(cust, j) in item.record_cust'>{{ cust }}</span>
+                             
                             </td>
                             <td>
                                 {{ item.crt_time }}
@@ -350,11 +362,13 @@
                             <td>
                                 <div v-for='(rs, k) in item.record'>{{rs.pick_date}}</div>
                                 <button @click="item_record(item.record)" data-toggle="modal" data-target="#record_modal" v-if="item.pickup_status == ''">Encode</button>
+                                <button @click="item_record(item.record)" data-toggle="modal" data-target="#record_modal_detail" v-if="item.pickup_status != ''">Detail</button>
                             </td>
                             <td v-if="j == 0" :rowspan="row.measure.length">
                                 <div class="ar">A/R: {{ row.ar_amount }} </div>
                                 <div v-for='(rs, l) in item.payment'>{{rs.payment_date}}, {{ rs.amount }}</div>
-                                <button data-toggle="modal" data-target="#payment_modal" v-if="item.payment_status == ''" @click="item_payment(item)">Encode</button>
+                                <button data-toggle="modal" data-target="#payment_modal" v-if="item.payment_status == ''" @click="item_payment(item, row.ar)">Encode</button>
+                                <button data-toggle="modal" data-target="#payment_modal_detail" v-if="item.payment_status != ''" @click="item_payment(item, row.ar)">Detail</button>
                             </td>
                         </tr>
                     </template>
@@ -667,7 +681,7 @@
                         <li>{{ item.quantity }}</li>
                         <li>{{ item.supplier }}</li>
                         <li>{{ item.remark }}</li>
-                        <li><input type="date" v-model="item.pick_date"></li>
+                        <li><input type="date" v-model="item.org_pick_date"></li>
                         <li><input type="text" v-model="item.pick_person"></li>
                         <li><input type="text" v-model="item.pick_note"></li>
                     </ul>
@@ -676,9 +690,88 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-warning">Cancel <cht>取消</cht></button>
+                <button type="button" data-dismiss="modal" class="btn btn-warning" @click="record_cancel()">Cancel <cht>取消</cht></button>
                 <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="record_save()">Save <cht>儲存</cht></button>
                 <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="record_save_complete()">Complete All Pickup <cht>完成所有提貨</cht></button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- The Modal -->
+<div class="modal fade" id="record_modal_detail">
+    <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 1200px;">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">Details of Goods
+                    <cht>貨品內容</cht>
+                </h5>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="tablebox s02">
+                    <ul class="header">
+                        <li>
+                            <cht>收貨日期</cht>
+                            Date Receive
+                        </li>
+                        <li>
+                            <cht>收件人(菲)</cht>
+                            Company/Customer(PH)
+                        </li>
+                        <li>
+                            <cht>貨品名稱</cht>
+                            Description
+                        </li>
+                        <li>
+                            <cht>件數</cht>
+                            Quantity
+                        </li>
+                        <li>
+                            <cht>寄貨人</cht>
+                            Supplier
+                        </li>
+                        <li>
+                            <cht>備註</cht>
+                            Remark
+                        </li>
+                        <li>
+                            <cht>提貨日期</cht>
+                            Date Pickup
+                        </li>
+                        <li>
+                            <cht>提貨人</cht>
+                            Pickup Person
+                        </li>
+                        <li>
+                            <cht>補充說明</cht>
+                            Notes
+                        </li>
+                    </ul>
+
+                    <ul v-for="(item, j) in record">
+
+                        <li>{{ item.date_receive }}</li>
+                        <li>{{ item.cust }}</li>
+                        <li>{{ item.description }}</li>
+                        <li>{{ item.quantity }}</li>
+                        <li>{{ item.supplier }}</li>
+                        <li>{{ item.remark }}</li>
+                        <li>{{ item.org_pick_date }}</li>
+                        <li>{{ item.pick_person }}</li>
+                        <li>{{ item.pick_note }}</li>
+                    </ul>
+                   
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-warning">Cancel <cht>取消</cht></button>
             </div>
 
         </div>
@@ -766,6 +859,81 @@
                 <button type="button" data-dismiss="modal" class="btn btn-warning">Cancel <cht>取消</cht></button>
                 <button type="button" data-dismiss="modal" class="btn btn-secondary" @click=payment_save()>Save <cht>儲存</cht></button>
                 <button type="button" data-dismiss="modal" class="btn btn-secondary" @click=payment_save_complete()>Complete All Payment <cht>完成所有付款</cht></button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- The Modal -->
+<div class="modal" id="payment_modal_detail">
+    <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 1200px;">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">Payment Status
+                    <cht>付款狀態</cht>
+                </h5>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="tablebox s02 payment">
+                    <ul class="header">
+                        <li>
+                            <cht>支付方式</cht>
+                            Payment Method
+                        </li>
+                        <li>
+                            <cht>開立日期</cht>
+                            Issue Date
+                        </li>
+                        <li>
+                            <cht>收到日期</cht>
+                            Receive Date
+                        </li>
+                        <li>
+                            <cht>金額</cht>
+                            Amount
+                        </li>
+                        <li>
+                            <cht>備註</cht>
+                            Remark
+                        </li>
+                     
+                    </ul>
+
+                    <ul v-for="(item, j) in payment">
+                        <li>
+                            {{ item.type == 1 ? "Cash 現金" : "" }}
+                            {{ item.type == 2 ? "Deposit 存款" : "" }}
+                            {{ item.type == 3 ? "Check 支票" : "" }}
+                            {{ item.type == 4 ? "Taiwan Pay 台灣付款" : "" }}
+                            {{ item.type == 5 ? "Advance Payment 預付款" : "" }}
+                        </li>
+                        <li>
+                        {{ item.issue_date }}
+                        </li>
+                        <li>
+                        {{ item.payment_date }}
+                        </li>
+                        <li>
+                        {{ item.amount }}
+                        </li>
+                        <li>
+                            {{ item.remark }}
+                        </li>
+                       
+                    </ul>
+
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-warning">Cancel <cht>取消</cht></button>
             </div>
 
         </div>

@@ -736,3 +736,7 @@ CREATE TABLE IF NOT EXISTS `contactor_ph_po` (
   `del_user` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 20211119
+ALTER TABLE contactor_ph
+ADD COLUMN `tags` varchar(256) DEFAULT 'Main' AFTER remark;
