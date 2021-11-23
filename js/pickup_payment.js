@@ -48,6 +48,8 @@ let mainState = {
     show_record:false,
     need_to_update: false,
 
+    ar: 0,
+
     // paging
     page: 1,
     //perPage: 10,
@@ -506,11 +508,12 @@ var app = new Vue({
         chang_remark: function(row) {
           if(row.amount == '')
             return;
-          let charge = this.payment_record.charge;
+          // let charge = this.payment_record.charge;
+          let charge = this.ar;
           let pay = 0;
           for(let i = 0; i < this.payment.length; i++)
             pay += this.payment[i].amount == "" ? 0 : Number(this.payment[i].amount);
-          if(charge - pay < 0)
+          if(charge - pay < 0 && row.type == 1)
             row.remark = "Cash " + row.amount + " - " + (Number(charge) - Number(pay) + Number(row.amount)) + " = P" + Math.abs(charge - pay);
         },
 
@@ -537,11 +540,12 @@ var app = new Vue({
 
         },
 
-        item_payment: function(record) {
+        item_payment: function(record, ar) {
           this.payment = [];
           this.payment_record = [];
 
           this.payment = [].concat(record.payment);
+          this.ar = ar;
 
           this.payment_record = this.shallowCopy(record);
         },
