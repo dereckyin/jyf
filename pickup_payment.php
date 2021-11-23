@@ -367,8 +367,8 @@
                             <td v-if="j == 0" :rowspan="row.measure.length">
                                 <div class="ar">A/R: {{ row.ar_amount }} </div>
                                 <div v-for='(rs, l) in item.payment'>{{rs.payment_date}}, {{ rs.amount }}</div>
-                                <button data-toggle="modal" data-target="#payment_modal" v-if="item.payment_status == ''" @click="item_payment(item, row.ar_amount)">Encode</button>
-                                <button data-toggle="modal" data-target="#payment_modal_detail" v-if="item.payment_status != ''" @click="item_payment(item, row.ar_amount)">Detail</button>
+                                <button data-toggle="modal" data-target="#payment_modal" v-if="item.payment_status == ''" @click="item_payment(item, row.ar)">Encode</button>
+                                <button data-toggle="modal" data-target="#payment_modal_detail" v-if="item.payment_status != ''" @click="item_payment(item, row.ar)">Detail</button>
                             </td>
                         </tr>
                     </template>
