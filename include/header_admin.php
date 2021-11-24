@@ -138,10 +138,6 @@ if ( isset( $jwt ) ) {
             <eng>Loading Goods into Container</eng>
         </a>
 
-        <a href="measure.php">到貨丈量、打單
-            <eng>Measurement, Pickup/Payment</eng>
-        </a>
-
         <a href="query_receive.php">收貨記錄查詢
             <eng>Query For Receiving Records</eng>
         </a>
@@ -161,7 +157,18 @@ if ( isset( $jwt ) ) {
         <?php
         if($decoded->data->phili)
         {
-        echo "
+        echo "<dl class='sub'>
+            <dt>
+                <a class='after-micons'>Measurement <cht>丈量</cht></a>
+            </dt>
+            <dd>
+                <a href='create_measurement.php'>Create Measurement Record <cht>新增丈量記錄</cht></a>
+            </dd>
+            <dd>
+                <a href='edit_measurement.php'>Edit Measurement Record <cht>修改丈量記錄</cht></a>
+            </dd>
+        </dl>
+
         <dl class='sub'>
             <dt>
                 <a class='after-micons'>Directory <cht>通訊錄</cht></a>

@@ -312,7 +312,7 @@
                 <cht>貨物內容</cht>
             </h6>
 
-            <div class="mainlist">
+            <div class="mainlist" style="overflow-x: auto;">
                 <table class="tb_measure">
                     <thead>
                     <tr>
