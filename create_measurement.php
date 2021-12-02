@@ -127,6 +127,11 @@
             display: block;
         }
 
+        .ph_client .dropdown-menu.show{
+            max-width: 60vw!important;
+            transform: none!important;
+        }
+
     </style>
 
 
