@@ -139,15 +139,18 @@ switch ($method) {
             // $charge = ($kilo * $kilo_price > $cuft * $cuft_price ? $kilo * $kilo_price : $cuft * $cuft_price);
             $charge = ($detail_array[$i]['charge'] == '') ? 0 : $detail_array[$i]['charge'];
 
-            $query = "INSERT INTO measure_detail (measure_id, kilo, cuft, kilo_price, cuft_price, charge, crt_user, crt_time)
-                            values(?, ?, ?, ?, ?, ?, ?, now())";
+            $customer = ($detail_array[$i]['customer'] == '') ? '' : $detail_array[$i]['customer'];
+
+            $query = "INSERT INTO measure_detail (measure_id, customer, kilo, cuft, kilo_price, cuft_price, charge, crt_user, crt_time)
+                            values(?, ?, ?, ?, ?, ?, ?, ?, now())";
 
             // prepare the query
             $stmt = $conn->prepare($query);
 
             $stmt->bind_param(
-                "iddddds",
+                "isddddds",
                 $last_id,
+                $customer,
                 $kilo,
                 $cuft,
                 $kilo_price,
