@@ -546,7 +546,7 @@ var app = new Vue({
 
             axios({
                 method: "post",
-                url: "edit_measurement_excel.php",
+                url: "edit_measurement_excel_v2.php",
                 data: form_Data,
                 responseType: "blob",
             })
