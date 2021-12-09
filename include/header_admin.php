@@ -167,6 +167,12 @@ if ( isset( $jwt ) ) {
             <dd>
                 <a href='edit_measurement.php'>Edit Measurement Record <cht>修改丈量記錄</cht></a>
             </dd>
+            <dd>
+                <a href='create_measurement_v2.php'>Create Measurement Record v2<cht>新增丈量記錄2</cht></a>
+            </dd>
+            <dd>
+                <a href='edit_measurement_v2.php'>Edit Measurement Record v2<cht>修改丈量記錄2</cht></a>
+            </dd>
         </dl>
 
         <dl class='sub'>

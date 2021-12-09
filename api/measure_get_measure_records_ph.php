@@ -115,7 +115,7 @@ function GetMeasureByBatchNumber($id, $db){
 
 function GetMeasureDetail($id, $db){
     $query = "
-            SELECT 0 as is_checked, id, kilo, cuft, kilo_price, cuft_price, charge
+            SELECT 0 as is_checked, id, customer, kilo, cuft, kilo_price, cuft_price, charge
                 FROM measure_detail
             WHERE  measure_id = " . $id . "
             AND `status` <> -1 
@@ -131,6 +131,7 @@ function GetMeasureDetail($id, $db){
         $is_checked = $row['is_checked'];
         $id = $row['id'];
         $kilo = $row['kilo'] == 0 ? "" : $row['kilo'];
+        $customer = $row['customer'] == "" ? "" : $row['customer'];
         $cuft = $row['cuft'] == 0 ? "" : $row['cuft'];
         $kilo_price = $row['kilo_price'] == 0 ? "" : $row['kilo_price'];
         $cuft_price = $row['cuft_price'] == 0 ? "" : $row['cuft_price'];
@@ -143,6 +144,7 @@ function GetMeasureDetail($id, $db){
             "is_checked" => $is_checked,
             "order" => $id,
             "group_id" => 0,
+            "customer" => $customer,
             "kilo" => $kilo,
             "cuft" => $cuft,
             "kilo_price" => $kilo_price,
