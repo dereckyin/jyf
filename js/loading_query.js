@@ -413,7 +413,7 @@ var app = new Vue({
                     console.log(response)
                 });
 
-            item['is_checked'] = 1; 
+            item['is_edited'] = 1; 
             this.is_modifying = false;
         },
 
@@ -429,7 +429,7 @@ var app = new Vue({
             this.courier_money = 0;
             this.e_remark = '';
 
-            item['is_checked'] = 1; 
+            item['is_edited'] = 1; 
             this.is_modifying = false;
         },
 
@@ -439,7 +439,7 @@ var app = new Vue({
             else
                 this.is_modifying = true;
 
-            item['is_checked'] = 0;
+            item['is_edited'] = 0;
 
             this.date_receive = item['date_receive'];
             this.customer = item['customer'];
