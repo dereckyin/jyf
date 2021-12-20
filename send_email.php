@@ -156,9 +156,7 @@
                     <a class="btn small" @click="editRecord()">查看
                         <eng>Show</eng>
                     </a>
-                </div>
-
-                <div class="btnbox">
+                    &nbsp;
                     <a class="btn small" @click="printRecord()">匯出
                         <eng>Export to Excel, Pdf, Print</eng>
                     </a>
@@ -470,12 +468,12 @@
 </div>
 <!-- The Modal -->
 <!-- Bootstrap  -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="js/axios.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script type="text/javascript" src="js/send_email.js" defer></script>
 <script defer src="https://kit.fontawesome.com/a076d05399.js"></script>
