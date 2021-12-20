@@ -101,7 +101,7 @@ $(function(){
                          </ul>
                          <ul v-for='(record, index) in displayedLoading'>
                             <li>
-                                <input type="checkbox" name="record_id" class="alone" :value="record.index" :true-value="1" v-model:checked="record.is_checked">
+                                <input type="checkbox" name="record_id" class="alone" :value="record.index" :true-value="1" v-model:checked="record.is_edited">
                             </li>
                             <li>{{ record.container_number }}</li>
                             <li>{{ record.so }}</li>
@@ -230,81 +230,81 @@ $(function(){
                           <li>功能</li>
                      </ul>
                      <ul v-for='(receive_record, index) in displayedPosts' :key="index">
-                        <li><div v-show = "receive_record.is_checked == 1">
+                        <li><div v-show = "receive_record.is_edited == 1">
                               <label> {{receive_record.date_receive}}</label>
                             </div>
                               <input name="receive_record" 
-                                   v-show = "receive_record.is_checked == 0" 
+                                   v-show = "receive_record.is_edited == 0" 
                                    v-model = "date_receive" maxlength="10">
                         </li>
-                        <li><div v-show = "receive_record.is_checked == 1">
+                        <li><div v-show = "receive_record.is_edited == 1">
                               <label> {{receive_record.customer.replace(/\\/g, '') }}</label>
                             </div>
                               <input name="customer" 
-                                   v-show = "receive_record.is_checked == 0" 
+                                   v-show = "receive_record.is_edited == 0" 
                                    v-model = "customer" maxlength="256">
                         </li>
-                        <li><div v-show = "receive_record.is_checked == 1">
+                        <li><div v-show = "receive_record.is_edited == 1">
                               <label> {{receive_record.description}}</label>
                             </div>
                               <input name="description" 
-                                   v-show = "receive_record.is_checked == 0" 
+                                   v-show = "receive_record.is_edited == 0" 
                                    v-model = "description" maxlength="512">
                         </li>
-                        <li><div v-show = "receive_record.is_checked == 1">
+                        <li><div v-show = "receive_record.is_edited == 1">
                               <label> {{receive_record.quantity}}</label>
                             </div>
                               <input name="quantity" 
-                                   v-show = "receive_record.is_checked == 0" 
+                                   v-show = "receive_record.is_edited == 0" 
                                    v-model = "quantity" maxlength="128">
                         </li>
-                        <li><div v-show = "receive_record.is_checked == 1">
+                        <li><div v-show = "receive_record.is_edited == 1">
                               <label> {{receive_record.supplier.replace(/\\/g, '') }}</label>
                             </div>
                               <input name="supplier" 
-                                   v-show = "receive_record.is_checked == 0" 
+                                   v-show = "receive_record.is_edited == 0" 
                                    v-model = "supplier" maxlength="256">
                         </li>
-                        <li><div v-show = "receive_record.is_checked == 1">
+                        <li><div v-show = "receive_record.is_edited == 1">
                               <label> {{(receive_record.kilo == 0) ? "" : receive_record.kilo}}</label>
                             </div>
                               <input name="kilo" 
-                                   v-show = "receive_record.is_checked == 0" 
+                                   v-show = "receive_record.is_edited == 0" 
                                    v-model = "kilo">
                         </li>
-                        <li><div v-show = "receive_record.is_checked == 1">
+                        <li><div v-show = "receive_record.is_edited == 1">
                               <label> {{(receive_record.cuft == 0) ? "" : receive_record.cuft}}</label>
                             </div>
                               <input name="cuft" 
-                                   v-show = "receive_record.is_checked == 0" 
+                                   v-show = "receive_record.is_edited == 0" 
                                    v-model = "cuft">
                         </li>
-                        <li><div v-show = "receive_record.is_checked == 1">
+                        <li><div v-show = "receive_record.is_edited == 1">
                               <label> {{ (receive_record.taiwan_pay == 1) ? "是 (yes)" : "否 (no)" }} </label>
                             </div>
-                              <select name="taiwan_pay" v-show="receive_record.is_checked == 0" :id='"taiwan_pay"+receive_record.id'>
+                              <select name="taiwan_pay" v-show="receive_record.is_edited == 0" :id='"taiwan_pay"+receive_record.id'>
                                   <option value="1" :selected="taiwan_pay == 1 ? 'selected' : ''">是 (yes)</option>
                                   <option value="0" :selected="taiwan_pay == 0 ? 'selected' : ''">否 (no)</option>
                                 </select>
                         </li>
-                        <li><div v-show = "receive_record.is_checked == 1">
+                        <li><div v-show = "receive_record.is_edited == 1">
                               <label> {{(receive_record.courier_money == 0) ? "" : receive_record.courier_money }}</label>
                             </div>
                               <input name="courier_money" 
-                                   v-show = "receive_record.is_checked == 0" 
+                                   v-show = "receive_record.is_edited == 0" 
                                    v-model = "courier_money">
                         </li>
-                        <li><div v-show = "receive_record.is_checked == 1">
+                        <li><div v-show = "receive_record.is_edited == 1">
                               <p v-html="receive_record.remark.replace(/(?:\r\n|\r|\n)/g, '&nbsp')"></p>
                             </div>
                               <input name="e_remark" 
-                                   v-show = "receive_record.is_checked == 0" 
+                                   v-show = "receive_record.is_edited == 0" 
                                    v-model = "e_remark" maxlength="512">
                         </li>
 
-                        <li><button v-show = "receive_record.is_checked == 1" @click="editRow(receive_record)">修改</button>
-                            <button v-show = "receive_record.is_checked == 0" @click="confirmRow(receive_record)">確認</button>
-                            <button v-show = "receive_record.is_checked == 0" @click="cancelRow(receive_record)">取消</button>
+                        <li><button v-show = "receive_record.is_edited == 1" @click="editRow(receive_record)">修改</button>
+                            <button v-show = "receive_record.is_edited == 0" @click="confirmRow(receive_record)">確認</button>
+                            <button v-show = "receive_record.is_edited == 0" @click="cancelRow(receive_record)">取消</button>
                         </li>
                      </ul>
                  </div>
