@@ -143,7 +143,7 @@ $(function(){
 </div>
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script> 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script> 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 

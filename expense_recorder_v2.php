@@ -2054,12 +2054,12 @@ try {
 
 
 </body>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 <script src="https://cdn.bootcss.com/moment.js/2.21.0/moment.js"></script>
 <script src="js/vue-select.js"></script>
 <script src="js/axios.min.js"></script> 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script src="js/a076d05399.js"></script> 
 <script src="//unpkg.com/vue-i18n/dist/vue-i18n.js"></script>
 <script src="//unpkg.com/element-ui"></script>

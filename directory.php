@@ -351,7 +351,7 @@ $(function(){
 <!-- Bootstrap  --> 
 <script src="js/bootstrap/popper.min.js"></script> 
 <script src="js/bootstrap/bootstrap.min.js"></script> 
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"></script> 
 <script src="js/axios.min.js"></script> 
 <script type="text/javascript" src="js/contactor.js" defer></script>
 </body>

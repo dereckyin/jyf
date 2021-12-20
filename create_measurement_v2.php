@@ -455,7 +455,7 @@
 <script src="js/axios.min.js"></script>
 <script src="js/vue.js"></script>
 <script type="text/javascript" src="js/create_measurement_v2.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 </body>
 </html>
