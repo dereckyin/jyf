@@ -101,7 +101,7 @@ $(function(){
                          </ul>
                          <ul v-for='(record, index) in displayedLoading'>
                             <li>
-                                <input type="checkbox" name="record_id" class="alone" :value="record.index" :true-value="1" v-model:checked="record.is_edited">
+                                <input type="checkbox" name="record_id" class="alone" :value="record.index" :true-value="1" v-model:checked="record.is_checked">
                             </li>
                             <li>{{ record.container_number }}</li>
                             <li>{{ record.so }}</li>
