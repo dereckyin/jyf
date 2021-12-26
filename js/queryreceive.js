@@ -89,7 +89,7 @@ var app = new Vue({
                         return '&#'+i.charCodeAt(0)+';';
                      });
 
-                    html += "<tr><td onclick='data(this)'>" + "<input type='checkbox' class='form-check-input' value='" + container + "'><label class='form-check-label'>&nbsp</label>" + "</td><td>" + container + "</td></tr>";
+                    html += '<tr><td onclick="data(this)">' + '<input type="checkbox" class="form-check-input" value="' + container + '"><label class="form-check-label">&nbsp</label>' + '</td><td>' + container + '</td></tr>';
                     //$("#contact").append("<tr onclick='data(this)'><td>" + customer + "</td><td>" + c_phone + "</td><td>" + c_fax + "</td><td>" + c_email + "</td></tr>");
                 }
                 
@@ -119,7 +119,7 @@ var app = new Vue({
                         return '&#'+i.charCodeAt(0)+';';
                      });
 
-                    html += "<tr><td onclick='data(this)'>" + "<input type='checkbox' class='form-check-input' value='" + container + "'><label class='form-check-label'>&nbsp</label>" + "</td><td>" + container + "</td></tr>";
+                    html += '<tr><td onclick="data(this)">' + '<input type="checkbox" class="form-check-input" value="' + container + '"><label class="form-check-label">&nbsp</label>' + '</td><td>' + container + '</td></tr>';
                     //$("#contact").append("<tr onclick='data(this)'><td>" + customer + "</td><td>" + c_phone + "</td><td>" + c_fax + "</td><td>" + c_email + "</td></tr>");
                 }
                 

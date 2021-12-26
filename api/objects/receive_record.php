@@ -501,12 +501,14 @@ class ReceiveRecord{
 
         if(!empty($customer)) {
             $customer = rtrim($customer, ',');
+            $customer = str_replace('\'', '\\\'', $customer);
             $cust = explode(",", $customer);
             $cus_str = "'".implode("','",array_map("trim",array_filter($cust)))."'";
         }
 
         if(!empty($supplier)) {
             $supplier = rtrim($supplier, ',');
+            $supplier = str_replace('\'', '\\\'', $supplier);
             $sup = explode(",", $supplier);
             $sup_str = "'".implode("','",array_map("trim",array_filter($sup)))."'";
 
