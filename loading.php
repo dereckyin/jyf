@@ -104,7 +104,7 @@ $(function(){
              <div class="block">
                 <div class="btnbox">
                     <?php
-                    if($taiwan_read == "1")
+                    if($taiwan_read == "0")
                     {
                     ?>
                      <a class="btn small detail">新增貨櫃記錄<eng>New Container Record</eng></a>
