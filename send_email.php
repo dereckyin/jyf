@@ -105,7 +105,7 @@ try {
             <div class="block">
                 <div class="btnbox">
                 <?php
-                    if($taiwan_read == "1")
+                    if($taiwan_read == "0")
                     {
                     ?>
                     <a class="btn small" href="loading.php">新增貨櫃記錄
