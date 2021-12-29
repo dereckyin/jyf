@@ -18,6 +18,8 @@ let mainState = {
     phili: 0,
     status_1: 0,
     status_2: 0,
+    taiwan_read:0,
+    phili_read:0,
     sea_expense: 0,
     sea_expense_v2: 0,
     is_admin: '',
@@ -228,6 +230,8 @@ var app = new Vue({
             formData.append('phili', this.record.phili)
             formData.append('status_1', this.record.status_1)
             formData.append('status_2', this.record.status_2)
+            formData.append('taiwan_read', this.record.taiwan_read)
+            formData.append('phili_read', this.record.phili_read)
             formData.append('sea_expense', this.record.sea_expense)
             formData.append('sea_expense_v2', this.record.sea_expense_v2)
             formData.append('is_admin', this.record.is_admin)
@@ -334,6 +338,28 @@ var app = new Vue({
                 this.status_2 = 1;
             } else {
                 this.status_2 = 0;
+            }
+        },
+
+        update_taiwan_read: function(event) {
+          console.log("update_taiwan_read");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.taiwan_read = 1;
+            } else {
+                this.taiwan_read = 0;
+            }
+        },
+
+        update_phili_read: function(event) {
+          console.log("update_phili_read");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.phili_read = 1;
+            } else {
+                this.phili_read = 0;
             }
         },
 
@@ -469,6 +495,8 @@ var app = new Vue({
             formData.append('phili', this.record.phili)
             formData.append('status_1', this.record.status_1)
             formData.append('status_2', this.record.status_2)
+            formData.append('taiwan_read', this.record.taiwan_read)
+            formData.append('phili_read', this.record.phili_read)
             formData.append('sea_expense', this.record.sea_expense)
             formData.append('sea_expense_v2', this.record.sea_expense_v2)
             formData.append('is_admin', this.record.is_admin)
@@ -557,6 +585,8 @@ var app = new Vue({
             formData.append('phili', this.phili)
             formData.append('status_1', this.status_1)
             formData.append('status_2', this.status_2)
+            formData.append('taiwan_read', this.taiwan_read)
+            formData.append('phili_read', this.phili_read)
             formData.append('sea_expense', this.sea_expense)
             formData.append('sea_expense_v2', this.sea_expense_v2)
             formData.append('is_admin', this.is_admin)
@@ -603,6 +633,8 @@ var app = new Vue({
             this.phili = 0;
             this.status_1 = 0;
             this.status_2 = 0;
+            this.taiwan_read = 0;
+            this.phili_read = 0;
             this.sea_expense = 0;
             this.sea_expense_v2 = 0;
             this.is_admin = '';

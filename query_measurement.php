@@ -27,8 +27,6 @@ try {
 
             $phili_read = $decoded->data->phili_read;
           
-            if($phili_read == "1")
-                header( 'location:index.php' );
 
         }
         catch (Exception $e){
@@ -205,21 +203,21 @@ try {
 
         <div class="block">
             <div class="btnbox">
-
-            <?php
+                <?php
                 if($phili_read == "0")
-{
-    ?>
+                {
+                    ?>
                 <a class="btn small" href="create_measurement_v2.php">Create Measurement Record
                     <cht>新增丈量記錄</cht>
                 </a>
-                <a class="btn small" @click="create_measurement()">Edit Measurement Record
+                <a class="btn small" href="edit_measurement_v2.php">Edit Measurement Record
                     <cht>修改丈量記錄</cht>
                 </a>
+
                 <?php
-}
-?>
-                <a class="btn small" href="query_measurement.php">
+                }
+                ?>
+                <a class="btn small">
                     Query Measurement Record <cht>查詢丈量記錄</cht>
                 </a>
             </div>
@@ -298,12 +296,9 @@ try {
 
             </div>
             <div class="btnbox">
-                <a class="btn small"  v-if="show_record == false" @click="showReceiveRecords()">Edit Measurement Record
-                    <cht>修改丈量記錄</cht>
-
-                </a>
-                <a class="btn small"  v-if="show_record == false" @click="delReceiveRecords()">Delete Measurement Record
-                    <cht>刪除丈量記錄</cht>
+                
+                <a class="btn small"  v-if="show_record == false" @click="showReceiveRecords()">Ｑuery
+                    <cht>查詢</cht>
                 </a>
                 <a class="btn small"  v-if="show_record == false" @click="exportEditReceiveRecords()">Export to Excel
                     <cht>匯出</cht>
@@ -438,7 +433,7 @@ try {
                             <tr v-for='(item, j) in row.record'>
                                 
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                  <input type="checkbox" name="record_id" true-value="1" class="alone" value="" v-model.lazy="row.is_checked">
+                                  <input type="checkbox" name="record_id" disabled true-value="1" class="alone" value="" v-model.lazy="row.is_checked">
                                 </td>
                                 <td>
                                     {{ item.date_receive }}
@@ -447,7 +442,7 @@ try {
                                     {{ item.customer }}
                                 </td>
                                 <td class="ph_client" v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="text"  v-model.lazy="row.customer" >
+                                    <input type="text"  v-model.lazy="row.customer" disabled>
                                 </td>
                                 <td>
                                     {{ item.description }}
@@ -456,19 +451,19 @@ try {
                                     {{ item.quantity }}
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model.lazy="row.kilo" @change=change_A(row)>
+                                    <input type="number" min="0" v-model.lazy="row.kilo" @change=change_A(row) disabled>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model.lazy="row.cuft" @change=change_B(row)>
+                                    <input type="number" min="0" v-model.lazy="row.cuft" @change=change_B(row) disabled>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model.lazy="row.kilo_price" @change=change_C(row)>
+                                    <input type="number" min="0" v-model.lazy="row.kilo_price" @change=change_C(row) disabled>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model.lazy="row.cuft_price" @change=change_D(row)>
+                                    <input type="number" min="0" v-model.lazy="row.cuft_price" @change=change_D(row) disabled>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model.lazy="row.charge">
+                                    <input type="number" min="0" v-model.lazy="row.charge" disabled>
                                 </td>
                                 <td>
                                 {{ item.supplier }}
@@ -484,18 +479,7 @@ try {
                 </table>
 
                 <div class="btnbox" style="border: none; margin-top: 10px;">
-                    <a class="btn small" @click="merge_item()">
-                        Merge Items
-                        <cht>合併項目</cht>
-                    </a>
-                    <a class="btn small" @click="decompose_item()">
-                        Decompose Item
-                        <cht>拆分項目</cht>
-                    </a>
-                    <a class="btn small" @click="save_measure()">
-                        Save
-                        <cht>儲存</cht>
-                    </a>
+                    
                 </div>
             </div>
 
@@ -512,7 +496,7 @@ try {
 <script src="js/jquery-ui.js"></script>
 <script src="js/axios.min.js"></script>
 <script src="js/vue.js"></script>
-<script type="text/javascript" src="js/edit_measurement_v2.js" defer></script>
+<script type="text/javascript" src="js/query_measurement.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 </body>

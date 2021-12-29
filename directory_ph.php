@@ -17,6 +17,7 @@ include_once 'api/config/database.php';
 use \Firebase\JWT\JWT;
 
 $test_manager = "0";
+$phili_read = "0";
 
 try {
         // decode jwt
@@ -24,6 +25,8 @@ try {
             // decode jwt
             $decoded = JWT::decode($jwt, $key, array('HS256'));
             $user_id = $decoded->data->id;
+
+            $phili_read = $decoded->data->phili_read;
 
             if(!$decoded->data->phili)
                 header( 'location:index.php' );
@@ -312,7 +315,14 @@ try {
                 </div>
 
                 <div class="btnbox">
+                    <?php
+                        if($phili_read == "0")
+                        {
+                            ?>
                     <a class="btn" @click="createReceiveRecord()">Save <cht>儲存</cht></a>
+                    <?php
+                        }
+                        ?>
                 </div>
             </div>
 
@@ -527,8 +537,15 @@ try {
                 </div>
                 <div class="btnbox">
                     <a class="btn small selbtn" style="color:white;" @click="toggleCheckbox();">Select All/Undo <cht>全選/全取消</cht></a>
+                    <?php
+                        if($phili_read == "0")
+                        {
+                            ?>
                     <a class="btn small" style="color:white;" @click="editRecord()">Edit <cht>修改</cht></a>
                     <a class="btn small" style="color:white;" @click="deleteRecord()">Delete <cht>刪除</cht></a>
+                    <?php
+                        }
+                        ?>
                     <a class="btn small" style="color:white;" v-bind:href="pageUrl">Export to Excel <cht>匯出</cht></a>
                 </div>
             </div>

@@ -102,11 +102,18 @@ include_once '../api/libs/php-jwt-master/src/SignatureInvalidException.php';
 include_once '../api/libs/php-jwt-master/src/JWT.php';
 use \Firebase\JWT\JWT;
 
+$taiwan_read = "0";
+$phili_read = "0";
+
+
 if ( isset( $jwt ) ) {
 
 	try {
 	        // decode jwt
 	        $decoded = JWT::decode($jwt, $key, array('HS256'));
+
+            $taiwan_read = $decoded->data->taiwan_read;
+            $phili_read = $decoded->data->phili_read;
 
 	        if($decoded->data->is_admin)
         echo "<a href='admin/main.php'>後台管理
@@ -131,9 +138,16 @@ if ( isset( $jwt ) ) {
 
         <a href="main.php">收貨記錄
                 <eng>Receive Goods</eng></a>
+
+                <?php
+                if($taiwan_read == "0")
+                {
+                    ?>
         <a href="sea_take_photo.php">手機照相
                 <eng>Take Photo</eng></a>
-
+<?php
+                }
+                ?>
         <a href="loading.php">貨物裝櫃
             <eng>Loading Goods into Container</eng>
         </a>
@@ -157,23 +171,9 @@ if ( isset( $jwt ) ) {
         <?php
         if($decoded->data->phili)
         {
-        echo "<dl class='sub'>
-            <dt>
-                <a class='after-micons'>Measurement <cht>丈量</cht></a>
-            </dt>
-            <dd>
-                <a href='create_measurement.php'>Create Measurement Record <cht>新增丈量記錄</cht></a>
-            </dd>
-            <dd>
-                <a href='edit_measurement.php'>Edit Measurement Record <cht>修改丈量記錄</cht></a>
-            </dd>
-            <dd>
-                <a href='create_measurement_v2.php'>Create Measurement Record v2<cht>新增丈量記錄2</cht></a>
-            </dd>
-            <dd>
-                <a href='edit_measurement_v2.php'>Edit Measurement Record v2<cht>修改丈量記錄2</cht></a>
-            </dd>
-        </dl>
+        echo "
+        <a class='after-micons' href='create_measurement_v2.php'>Measurement <cht>丈量</cht></a>
+           
 
         <dl class='sub'>
             <dt>
