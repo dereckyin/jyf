@@ -332,7 +332,7 @@ try {
                     </li>
                     <li>
                         <date-encode id="date_encode" @update-date="update_date_encode" v-model="date_encode"
-                                     style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-encode>
+                                     style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;" disabled></date-encode>
                      
                     </li>
                     <li>
@@ -341,7 +341,7 @@ try {
                     </li>
                     <li>
                         <date-cr id="date_cr" @update-date="update_date_cr" v-model="date_cr"
-                                 style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-cr>
+                                 style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;" disabled></date-cr>
                  
                     </li>
                 </ul>
@@ -352,13 +352,13 @@ try {
                         <cht>匯率</cht>
                     </li>
                     <li>
-                        <input type="text" name="currency_rate" v-model="currency_rate">
+                        <input type="text" name="currency_rate" v-model="currency_rate" disabled>
                     </li>
                     <li>
                         Remark
                         <cht>備註</cht>
                     </li>
-                    <li><input type="text" name="remark" v-model="remark"></li>
+                    <li><input type="text" name="remark" v-model="remark" disabled></li>
                 </ul>
             </div>
         </div>
