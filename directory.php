@@ -1,4 +1,61 @@
 <?php include 'check.php';?>
+<?php
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
+$uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
+if ( !isset( $jwt ) ) {
+  header( 'location:index' );
+}
+
+include_once 'api/config/core.php';
+include_once 'api/libs/php-jwt-master/src/BeforeValidException.php';
+include_once 'api/libs/php-jwt-master/src/ExpiredException.php';
+include_once 'api/libs/php-jwt-master/src/SignatureInvalidException.php';
+include_once 'api/libs/php-jwt-master/src/JWT.php';
+include_once 'api/config/database.php';
+
+
+use \Firebase\JWT\JWT;
+
+$taiwan_read = "0";
+
+try {
+        // decode jwt
+        try {
+            // decode jwt
+            $decoded = JWT::decode($jwt, $key, array('HS256'));
+            $user_id = $decoded->data->id;
+
+            $taiwan_read = $decoded->data->taiwan_read;
+            
+            // 可以存取Expense Recorder的人員名單如下：Dennis Lin(2), Glendon Wendell Co(4), Kristel Tan(6), Kuan(3), Mary Jude Jeng Articulo(9), Thalassa Wren Benzon(41), Stefanie Mika C. Santos(99)
+            // 為了測試先加上testmanager(87) by BB
+            // if($user_id == 1 || $user_id == 4 || $user_id == 6 || $user_id == 2 || $user_id == 41 || $user_id == 3 || $user_id == 9 || $user_id == 87 || $user_id == 99)
+            // {
+            //     $access3 = true;
+            // }
+            // else
+            // {
+            //     header( 'location:index' );
+            // }
+
+        }
+        catch (Exception $e){
+
+            header( 'location:index.php' );
+        }
+
+
+        //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
+        //    header( 'location:index.php' );
+    }
+    // if decode fails, it means jwt is invalid
+    catch (Exception $e){
+    
+        header( 'location:index.php' );
+    }
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -137,11 +194,19 @@ $(function(){
             </li>
           </ul>
         </div>
-        <div class="btnbox"><a class="btn" @click="createReceiveRecord()">儲存
+        <div class="btnbox">
+        <?php
+if($taiwan_read == "0")
+{
+        ?>
+        <a class="btn" @click="createReceiveRecord()">儲存
           <eng>Save</eng>
-          </a></div>
+          </a>
+<?php
+}
+?>
+        </div>
       </div>
-      
       <!-- eidt form -->
       <div class="block" v-else>
         <div class="tablebox d01">
@@ -324,11 +389,20 @@ $(function(){
         </div>
         <div class="btnbox"> <a class="btn small selbtn" style="color:white;" @click="toggleCheckbox();">全選 / 全取消
           <p>All/Undo</p>
-          </a> <a class="btn small" style="color:white;" @click="editRecord()">修改
+          </a> 
+<?php
+if($taiwan_read == "0")
+{
+?>
+          <a class="btn small" style="color:white;" @click="editRecord()">修改
           <p>Edit</p>
           </a> <a class="btn small" style="color:white;" @click="deleteRecord()">刪除
           <p>Delete</p>
-          </a> <a class="btn small" style="color:white;" v-bind:href="pageUrl">匯出
+          </a> 
+<?php
+}
+?>
+          <a class="btn small" style="color:white;" v-bind:href="pageUrl">匯出
           <p>Export</p>
           </a> </div>
       </div>

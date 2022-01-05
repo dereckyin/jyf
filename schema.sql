@@ -740,3 +740,8 @@ CREATE TABLE IF NOT EXISTS `contactor_ph_po` (
 -- 20211119
 ALTER TABLE contactor_ph
 ADD COLUMN `tags` varchar(256) DEFAULT 'Main' AFTER remark;
+
+-- 20211229
+ALTER TABLE user ADD COLUMN phili_read INT DEFAULT 0;
+
+ALTER TABLE user ADD COLUMN taiwan_read INT DEFAULT 0;

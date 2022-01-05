@@ -223,6 +223,22 @@ include 'menu.php';
                                            :true-value="1" v-model:checked="status_2" @change="updateStatus_2"> 啟用零件支出記錄2
                                 </li>
                             </ul>
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
+								<input class="form-check-input" type="checkbox" name="taiwan_read" required id="A1"
+                                           :true-value="1" v-model:checked="taiwan_read" @change="update_taiwan_read"> 啟用台灣唯讀
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
+								<input class="form-check-input" type="checkbox" name="phili_read" required id="A1"
+                                           :true-value="1" v-model:checked="phili_read" @change="update_phili_read"> 啟用菲律賓唯讀
+                                </li>
+                            </ul>
 
                             <ul>
                                 <li>
@@ -324,6 +340,22 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
+								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.taiwan_read" @change="update_taiwan_read" required> 啟用台灣唯讀
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
+								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.phili_read" @change="update_phili_read" required> 啟用菲律賓唯讀
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
                                     <input class="form-check-input" type="checkbox" id="B2" :true-value="1"  v-model:checked="record.is_admin" @change="updateEditIsAdmin" required> 是否為管理者
                                 </li>
                             </ul>
@@ -354,6 +386,8 @@ include 'menu.php';
                             <th>啟用海運支出記錄2</th>
                             <th>啟用零件支出記錄</th>
                             <th>啟用零件支出記錄2</th>
+                            <th>啟用台灣唯讀</th>
+                            <th>啟用菲律賓唯讀</th>
                             <th>是否為管理者</th>
                             <th>上次登入日期</th>
                         </tr>
@@ -370,6 +404,8 @@ include 'menu.php';
                             <td>{{ (rec.sea_expense_v2 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.status_1 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.status_2 == '1') ? "是 (yes)" : "否 (no)" }}</td>
+                            <td>{{ (rec.taiwan_read == '1') ? "是 (yes)" : "否 (no)" }}</td>
+                            <td>{{ (rec.phili_read == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.is_admin == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td> {{ rec.login_time }}</td>
                         </tr>

@@ -75,6 +75,8 @@ if($user_exists && password_verify($password, $user->password) && $cap == 1 && (
            "phili" => $user->phili,
            "status_1" => $user->status_1,
            "status_2" => $user->status_2,
+           "taiwan_read" => $user->taiwan_read,
+           "phili_read" => $user->phili_read,
            "sea_expense" => $user->sea_expense,
            "sea_expense_v2" => $user->sea_expense_v2,
        )

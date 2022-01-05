@@ -1,4 +1,48 @@
 <?php include 'check.php';?>
+<?php
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
+$uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
+if ( !isset( $jwt ) ) {
+  header( 'location:index' );
+}
+
+include_once 'api/config/core.php';
+include_once 'api/libs/php-jwt-master/src/BeforeValidException.php';
+include_once 'api/libs/php-jwt-master/src/ExpiredException.php';
+include_once 'api/libs/php-jwt-master/src/SignatureInvalidException.php';
+include_once 'api/libs/php-jwt-master/src/JWT.php';
+include_once 'api/config/database.php';
+
+
+use \Firebase\JWT\JWT;
+
+$taiwan_read = "0";
+
+try {
+        // decode jwt
+        try {
+            // decode jwt
+            $decoded = JWT::decode($jwt, $key, array('HS256'));
+            $user_id = $decoded->data->id;
+
+            $taiwan_read = $decoded->data->taiwan_read;
+          
+
+        }
+        catch (Exception $e){
+
+            header( 'location:index.php' );
+        }
+
+    }
+    // if decode fails, it means jwt is invalid
+    catch (Exception $e){
+    
+        header( 'location:index.php' );
+    }
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,8 +103,15 @@ $(function(){
             <h6>貨物裝櫃<eng>Loading Goods into Container</eng></h6>
              <div class="block">
                 <div class="btnbox">
+                    <?php
+                    if($taiwan_read == "0")
+                    {
+                    ?>
                      <a class="btn small detail">新增貨櫃記錄<eng>New Container Record</eng></a>
                      <a class="btn small" href="loading_edit.php">修改貨櫃記錄<eng>Edit Container Record</eng></a>
+                     <?php
+                    }
+                    ?>
                      <a class="btn small" href="loading_query.php">查詢貨櫃記錄<eng>Query Container Record</eng></a>
                      <a href="send_email.php" class="btn small">E-Mail功能
                         <eng>E-Mail Function</eng>

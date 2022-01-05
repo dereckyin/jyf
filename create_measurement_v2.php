@@ -1,4 +1,47 @@
 <?php include 'check.php';?>
+<?php
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
+$uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
+if ( !isset( $jwt ) ) {
+  header( 'location:index' );
+}
+
+include_once 'api/config/core.php';
+include_once 'api/libs/php-jwt-master/src/BeforeValidException.php';
+include_once 'api/libs/php-jwt-master/src/ExpiredException.php';
+include_once 'api/libs/php-jwt-master/src/SignatureInvalidException.php';
+include_once 'api/libs/php-jwt-master/src/JWT.php';
+include_once 'api/config/database.php';
+
+
+use \Firebase\JWT\JWT;
+
+$phili_read = "0";
+
+try {
+        // decode jwt
+        try {
+            // decode jwt
+            $decoded = JWT::decode($jwt, $key, array('HS256'));
+            $user_id = $decoded->data->id;
+
+            $phili_read = $decoded->data->phili_read;
+          
+
+        }
+        catch (Exception $e){
+
+            header( 'location:index.php' );
+        }
+
+    }
+    // if decode fails, it means jwt is invalid
+    catch (Exception $e){
+    
+        header( 'location:index.php' );
+    }
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -162,11 +205,21 @@
 
         <div class="block">
             <div class="btnbox">
+                <?php
+                if($phili_read == "0")
+{
+    ?>
                 <a class="btn small" @click="create_measurement">Create Measurement Record
                     <cht>新增丈量記錄</cht>
                 </a>
                 <a class="btn small" href="edit_measurement_v2.php">Edit Measurement Record
                     <cht>修改丈量記錄</cht>
+                </a>
+<?php
+}
+?>
+                <a class="btn small" href="query_measurement.php">
+                    Query Measurement Record <cht>查詢丈量記錄</cht>
                 </a>
             </div>
         </div>
@@ -328,10 +381,7 @@
                             <cht>收件人</cht>
                             Company/Customer
                         </th>
-                        <th>
-                            <cht>收件人(菲)</cht>
-                            Company/Customer(PH)
-                        </th>
+                        <th>SOLD TO</th>
                         <th>
                             <cht>貨品名稱</cht>
                             Description

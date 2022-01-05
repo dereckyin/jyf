@@ -57,7 +57,7 @@ else
             $size = stripslashes((isset($_GET['size']) ?  $_GET['size'] : ""));
             $keyword = stripslashes((isset($_GET['keyword']) ?  $_GET['keyword'] : ""));
 
-            $sql = "SELECT 0 as is_checked, id, username, email, status, phili, status_1, status_2, sea_expense, sea_expense_v2, is_admin, (SELECT login_time FROM login_history WHERE login_history.uid = user.id ORDER BY login_time desc LIMIT 1) login_time  FROM user where status <> -1 ".($id ? " and id=$id" : '');
+            $sql = "SELECT 0 as is_checked, id, username, email, status, phili, status_1, status_2, taiwan_read, phili_read, sea_expense, sea_expense_v2, is_admin, (SELECT login_time FROM login_history WHERE login_history.uid = user.id ORDER BY login_time desc LIMIT 1) login_time  FROM user where status <> -1 ".($id ? " and id=$id" : '');
 
             if(!empty($_GET['page'])) {
                 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -114,6 +114,8 @@ else
             $phili = stripslashes(isset($_POST['phili']) ?  $_POST['phili'] : 0 );
             $status_1 = stripslashes(isset($_POST['status_1']) ?  $_POST['status_1'] : 0 );
             $status_2 = stripslashes(isset($_POST['status_2']) ?  $_POST['status_2'] : 0 );
+            $taiwan_read = stripslashes(isset($_POST['taiwan_read']) ?  $_POST['taiwan_read'] : 0 );
+            $phili_read = stripslashes(isset($_POST['phili_read']) ?  $_POST['phili_read'] : 0 );
             $sea_expense = stripslashes(isset($_POST['sea_expense']) ?  $_POST['sea_expense'] : 0 );
             $sea_expense_v2 = stripslashes(isset($_POST['sea_expense_v2']) ?  $_POST['sea_expense_v2'] : 0 );
             $is_admin = stripslashes(isset($_POST['is_admin']) ?  $_POST['is_admin'] : "");
@@ -135,6 +137,8 @@ else
                 $user->phili = $phili;
                 $user->status_1 = $status_1;
                 $user->status_2 = $status_2;
+                $user->taiwan_read = $taiwan_read;
+                $user->phili_read = $phili_read;
                 $user->sea_expense = $sea_expense;
                 $user->sea_expense_v2 = $sea_expense_v2;
                 $user->is_admin = $is_admin;
@@ -148,6 +152,8 @@ else
                     $user->phili = $phili;
                     $user->status_1 = $status_1;
                     $user->status_2 = $status_2;
+                    $user->taiwan_read = $taiwan_read;
+                    $user->phili_read = $phili_read;
                     $user->sea_expense = $sea_expense;
                     $user->sea_expense_v2 = $sea_expense_v2;
                     $user->is_admin = $is_admin;

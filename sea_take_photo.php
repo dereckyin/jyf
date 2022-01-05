@@ -1,3 +1,55 @@
+<?php include 'check.php'; ?>
+<?php
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
+$uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
+if ( !isset( $jwt ) ) {
+  header( 'location:index' );
+}
+
+include_once 'api/config/core.php';
+include_once 'api/libs/php-jwt-master/src/BeforeValidException.php';
+include_once 'api/libs/php-jwt-master/src/ExpiredException.php';
+include_once 'api/libs/php-jwt-master/src/SignatureInvalidException.php';
+include_once 'api/libs/php-jwt-master/src/JWT.php';
+include_once 'api/config/database.php';
+
+
+use \Firebase\JWT\JWT;
+
+$taiwan_read = "0";
+
+try {
+        // decode jwt
+        try {
+            // decode jwt
+            $decoded = JWT::decode($jwt, $key, array('HS256'));
+            $user_id = $decoded->data->id;
+
+            $taiwan_read = $decoded->data->taiwan_read;
+            
+            if($taiwan_read == "1")
+            {
+                header( 'location:index.php' );
+            }
+
+        }
+        catch (Exception $e){
+
+            header( 'location:index.php' );
+        }
+
+
+        //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
+        //    header( 'location:index.php' );
+    }
+    // if decode fails, it means jwt is invalid
+    catch (Exception $e){
+    
+        header( 'location:index.php' );
+    }
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
