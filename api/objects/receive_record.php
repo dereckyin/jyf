@@ -505,7 +505,7 @@ class ReceiveRecord{
             $cust = explode("　，　", $customer);
 
             foreach ($cust as &$value) {
-                $cus_str .= " r.customer like '%" . $value . "%' or ";
+                $cus_str .= " r.customer like '%" . trim($value) . "%' or ";
             }
 
             $cus_str = rtrim($cus_str, 'or ');
@@ -517,7 +517,7 @@ class ReceiveRecord{
             $sup = explode("　，　", $supplier);
 
             foreach ($sup as &$value) {
-                $sup_str .= " r.supplier like '%" . $value . "%' or ";
+                $sup_str .= " r.supplier like '%" . trim($value) . "%' or ";
             }
 
             $sup_str = rtrim($sup_str, 'or ');
