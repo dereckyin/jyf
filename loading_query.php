@@ -278,7 +278,16 @@ $(function(){
                           <li>台灣付<eng>Taiwan Pay</eng></li>
                           <li>代墊<eng>Courier/Payment</eng></li>
                           <li>備註<eng>Remark</eng></li>
-                          <li>功能</li>
+                          <li>
+                          <?php
+                          if($taiwan_read == 0)  
+                          {
+                        ?>
+                          功能
+                          <?php
+                                }
+                            ?>
+                          </li>
                      </ul>
                      <ul v-for='(receive_record, index) in displayedPosts' :key="index">
                         <li><div v-show = "receive_record.is_edited == 1">
@@ -353,9 +362,17 @@ $(function(){
                                    v-model = "e_remark" maxlength="512">
                         </li>
 
-                        <li><button v-show = "receive_record.is_edited == 1" @click="editRow(receive_record)">修改</button>
+                        <li>
+                        <?php
+                          if($taiwan_read == 0)  
+                          {
+                        ?>
+                            <button v-show = "receive_record.is_edited == 1" @click="editRow(receive_record)">修改</button>
                             <button v-show = "receive_record.is_edited == 0" @click="confirmRow(receive_record)">確認</button>
                             <button v-show = "receive_record.is_edited == 0" @click="cancelRow(receive_record)">取消</button>
+                        <?php
+                          }
+                        ?>
                         </li>
                      </ul>
                  </div>

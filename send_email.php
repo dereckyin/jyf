@@ -371,7 +371,16 @@ try {
                             <li>補充說明
                                 <eng>Notes</eng>
                             </li>
-                            <li>功能</li>
+                            <li>
+                            <?php
+                          if($taiwan_read == 0)  
+                          {
+                        ?>
+                                功能
+                                <?php
+                                }
+                            ?>
+                            </li>
                         </ul>
                         <ul v-for='(receive_record, index) in displayedPosts' :key="index" :class="[receive_record.mail_cnt > 0 ? 'sent' : '']">
                             <li>
@@ -439,12 +448,19 @@ try {
                                        v-model="mail_note" maxlength="512">
                             </li>
                             <li>
+                            <?php
+                            if($taiwan_read == 0)  
+                            {
+                            ?>
                                 <button v-show="receive_record.is_edited == 1" @click="editRow(receive_record)">修改
                                 </button>
                                 <button v-show="receive_record.is_edited == 0" @click="confirmRow(receive_record)">確認
                                 </button>
                                 <button v-show="receive_record.is_edited == 0" @click="cancelRow(receive_record)">取消
                                 </button>
+                            <?php
+                                }
+                            ?>
                             </li>
                         </ul>
                     </div>
@@ -452,12 +468,19 @@ try {
                 </div>
 
                 <div class="btnbox">
+                <?php
+                            if($taiwan_read == 0)  
+                            {
+                            ?>
                     <a class="btn small" v-if="isEditing == true" @click="toggleCheckbox();">全選 / 全取消
                         <eng>All/Undo</eng>
                     </a>
                     <a class="btn small" v-if="isEditing == true" @click="mail_client()">E-Mail寄送
                         <eng>Send E-Mail</eng>
                     </a>
+                    <?php
+                                }
+                            ?>
                 </div>
 
             </div>
