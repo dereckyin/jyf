@@ -291,7 +291,7 @@ $(function(){
 
       for (var i = 0, element; element = checkboxes[i]; i++) {
         if(element.checked)
-          containers += element.value + ",";
+          containers += element.value + "　，　";
           //work with element
       }
 
@@ -310,7 +310,7 @@ $(function(){
 
       for (var i = 0, element; element = checkboxes[i]; i++) {
         if(element.checked)
-          containers += element.value + ",";
+          containers += element.value + "　，　";
           //work with element
       }
 

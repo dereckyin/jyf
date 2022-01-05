@@ -500,17 +500,27 @@ class ReceiveRecord{
         $sup_str = "";
 
         if(!empty($customer)) {
-            $customer = rtrim($customer, ',');
+            $customer = rtrim($customer, '　，　');
             $customer = str_replace('\'', '\\\'', $customer);
-            $cust = explode(",", $customer);
-            $cus_str = "'".implode("','",array_map("trim",array_filter($cust)))."'";
+            $cust = explode("　，　", $customer);
+
+            foreach ($cust as &$value) {
+                $cus_str .= " r.customer like '%" . $value . "%' or ";
+            }
+
+            $cus_str = rtrim($cus_str, 'or ');
         }
 
         if(!empty($supplier)) {
-            $supplier = rtrim($supplier, ',');
+            $supplier = rtrim($supplier, '　，　');
             $supplier = str_replace('\'', '\\\'', $supplier);
-            $sup = explode(",", $supplier);
-            $sup_str = "'".implode("','",array_map("trim",array_filter($sup)))."'";
+            $sup = explode("　，　", $supplier);
+
+            foreach ($sup as &$value) {
+                $sup_str .= " r.supplier like '%" . $value . "%' or ";
+            }
+
+            $sup_str = rtrim($sup_str, 'or ');
 
         }
 
@@ -544,11 +554,11 @@ class ReceiveRecord{
         }
 
         if(!empty($sup_str)) {
-            $query = $query . " and r.supplier in($sup_str) ";
+            $query = $query . " and ($sup_str) ";
         }
 
         if(!empty($cus_str)) {
-            $query = $query . " and r.customer in($cus_str) ";
+            $query = $query . " and ($cus_str) ";
         }
 
         $query = $query . " order by r.date_receive ";
@@ -590,11 +600,11 @@ class ReceiveRecord{
         }
 
         if(!empty($sup_str)) {
-            $query = $query . " and r.supplier in($sup_str) ";
+            $query = $query . " and ($sup_str) ";
         }
 
         if(!empty($cus_str)) {
-            $query = $query . " and r.customer in($cus_str) ";
+            $query = $query . " and ($cus_str) ";
         }
 
         $query = $query . " order by r.id ";
