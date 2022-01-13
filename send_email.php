@@ -196,7 +196,7 @@ try {
                             <li :style="[record.eta_date_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{
                                 record.eta_date }}
                             </li>
-                            <li>{{ record.date_arrive }}</li>
+                            <li :style="[record.date_arrive_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ record.date_arrive }}</li>
                             <li>{{ record.mail_cnt }} / {{ record.cnt }}</li>
                         </ul>
                     </div>

@@ -237,10 +237,12 @@
                             <cht>勾選</cht>
                             Check
                         </li>
+                        <!--
                         <li>
                             <cht>丈量日期</cht>
                             Date Encoded
                         </li>
+                        -->
                         <li>
                             <cht>貨櫃到倉日期</cht>
                             Date C/R (Date Container arrived Manila)
@@ -262,7 +264,7 @@
                     <ul v-for='(record, index) in displayedLoading'>
                         <li><input type="checkbox" name="record_id" class="alone" :value="record.id" :true-value="1"
                                    v-model:checked="record.is_checked"></li>
-                        <li>{{ record.date_encode }}</li>
+                        <!-- <li>{{ record.date_encode }}</li> -->
                         <li>{{ record.date_arrive }}</li>
                         <li>{{ record.qty }}</li>
                         <li>{{ record.container }}</li>
@@ -304,13 +306,11 @@
                             OR
                         </th>
                         <th>
-                            <cht>收件人(菲)</cht>
-                            Company/Customer(PH)
+                            SOLD TO
                         </th>
-                        <th>
-                            <cht>丈量日期</cht>
-                            Date Encoded
-                        </th>
+                       
+                        <th><cht>貨櫃到倉日期</cht> Date C/R</th>
+                        <th><cht>櫃號</cht> Containers Number</th>
                         <th>
                             <cht>收貨記錄筆數</cht>
                             Number of Goods Records
@@ -353,7 +353,10 @@
                              
                             </td>
                             <td>
-                                {{ item.crt_time }}
+                                {{ item.date_arrive }}
+                            </td>
+                            <td>
+                                {{ item.container }}
                             </td>
                             <td>{{ item.record.length }}</td>
                             <td>{{ item.kilo }}{{ item.kilo == '' ? '' : '@' + (item.kilo < 3000 ? 36.5 : 34.5) }}</td>

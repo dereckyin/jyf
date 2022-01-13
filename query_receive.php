@@ -151,7 +151,7 @@ $(function(){
 
               <li>{{ receive_record.date_sent }}</li>
               <li :style="[receive_record.eta_date_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ receive_record.eta_date }}</li>
-              <li>{{ receive_record.date_arrive }}</li>
+              <li :style="[receive_record.date_arrive_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ receive_record.date_arrive }}</li>
               <li>{{ receive_record.date_encode }}</li>
               <li></li>
               <li></li>

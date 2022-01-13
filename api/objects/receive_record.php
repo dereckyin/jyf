@@ -90,37 +90,42 @@ class ReceiveRecord{
         $merged_results = array();
 
         $query = "SELECT 0 as is_checked, 
-                                  id, 
-                                  0 group_id,
-                                  date_receive, 
-                                  customer, 
-                                  email_customer, 
-                                  email, 
-                                  description, 
-                                  quantity,
-                                  supplier, 
-                                  picname, 
-                                  kilo, 
-                                  cuft, 
-                                  '' kilo_price,
-                                  '' cuft_price,
-                                  taiwan_pay, 
-                                  courier_pay,
-                                  courier_money, 
-                                  remark, 
-                                  batch_num, 
-                                  mail_note,
-                                  status, 
-                                  crt_time, 
-                                  crt_user,
-                                  mdf_time, 
-                                  mdf_user, 
-                                  del_time, 
-                                  del_user
-                                  FROM " . $this->table_name . "
-                                  where batch_num in (" . $ids . ")
-                                  and status = ''  
-                                  ORDER BY BINARY customer, date_receive  ";
+                                    rr.id, 
+                                    0 group_id,
+                                    date_receive, 
+                                    customer, 
+                                    email_customer, 
+                                    email, 
+                                    description, 
+                                    quantity,
+                                    supplier, 
+                                    picname, 
+                                    kilo, 
+                                    cuft, 
+                                    '' kilo_price,
+                                    '' cuft_price,
+                                    taiwan_pay, 
+                                    courier_pay,
+                                    courier_money, 
+                                    rr.remark, 
+                                    batch_num, 
+                                    mail_note,
+                                    ld.date_arrive,
+                                    CONCAT(ld.container_number) container,
+                                    rr.status, 
+                                    rr.crt_time, 
+                                    rr.crt_user,
+                                    rr.mdf_time, 
+                                    rr.mdf_user, 
+                                    rr.del_time, 
+                                    rr.del_user
+                       
+                                  FROM " . $this->table_name . " rr
+                                  left join loading ld on rr.batch_num = ld.id
+                                  where rr.batch_num in (" . $ids . ")
+                                  and rr.status = ''  
+                                  and ld.status = ''
+                                  ORDER BY BINARY rr.customer, rr.date_receive  ";
 
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
@@ -505,7 +510,7 @@ class ReceiveRecord{
             $cust = explode("　，　", $customer);
 
             foreach ($cust as &$value) {
-                $cus_str .= " r.customer like '%" . $value . "%' or ";
+                $cus_str .= " r.customer like '%" . trim($value) . "%' or ";
             }
 
             $cus_str = rtrim($cus_str, 'or ');
@@ -517,7 +522,7 @@ class ReceiveRecord{
             $sup = explode("　，　", $supplier);
 
             foreach ($sup as &$value) {
-                $sup_str .= " r.supplier like '%" . $value . "%' or ";
+                $sup_str .= " r.supplier like '%" . trim($value) . "%' or ";
             }
 
             $sup_str = rtrim($sup_str, 'or ');
