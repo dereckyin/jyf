@@ -171,10 +171,15 @@ else{
 
 function GetMeasureDetail($measure_detail_id, $db){
     $query = "
-            SELECT 0 as is_checked, id, kilo, cuft, kilo_price, cuft_price, charge, encode, encode_status, pickup_status, payment_status, DATE_FORMAT(crt_time, '%Y/%m/%d') crt_time
+            SELECT distinct 0 as is_checked, measure_detail.id, kilo, cuft, kilo_price, cuft_price, charge, encode, encode_status, pickup_status, payment_status, DATE_FORMAT(measure_detail.crt_time, '%Y/%m/%d') crt_time, 
+            (SELECT date_arrive FROM measure_ph WHERE measure_detail.measure_id = measure_ph.id) date_arrive,
+(SELECT GROUP_CONCAT(container_number separator ', ') FROM loading WHERE loading.measure_num = measure_detail.measure_id) container_number
                 FROM measure_detail
-            WHERE  id = " . $measure_detail_id . "
-            AND `status` <> -1 
+         
+            WHERE  measure_detail.id = " . $measure_detail_id . "
+
+            AND measure_detail.`status` = ''
+  
     ";
 
     // prepare the query
@@ -197,6 +202,9 @@ function GetMeasureDetail($measure_detail_id, $db){
         $pickup_status = $row['pickup_status'] == "" ? "" : $row['pickup_status'];
         $payment_status = $row['payment_status'] == "" ? "" : $row['payment_status'];
         $crt_time = $row['crt_time'] == "" ? "" : $row['crt_time'];
+
+        $container_number = $row['container_number'] == "" ? "" : $row['container_number'];
+        $date_arrive = $row['date_arrive'] == "" ? "" : $row['date_arrive'];
 
         $record = GetMeasureDetailRecord($row['id'], $db);
         $record_cust = GetMeasurePersonRecord($row['id'], $db);
@@ -224,6 +232,8 @@ function GetMeasureDetail($measure_detail_id, $db){
            "record_cust" => $record_cust,
            "payment" => $payment,
            "crt_time" => $crt_time,
+           "container_number" => $container_number,
+           "date_arrive" => $date_arrive,
         );
     }
 

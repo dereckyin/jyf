@@ -542,10 +542,11 @@ class ReceiveRecord{
                         l.date_arrive,
                         m.date_encode,
                         l.eta_date,
-                        COALESCE(ld.eta_date, '') eta_date_his 
+                        COALESCE(ld.eta_date, '') eta_date_his,
+                        COALESCE(ld.date_arrive, '') date_arrive_his 
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id
-                        LEFT JOIN measure m on l.measure_num = m.id
+                        LEFT JOIN measure_ph m on l.measure_num = m.id
                         LEFT JOIN loading_date_history ld ON l.id = ld.loading_id 
                         where r.status = '' 
                         and r.date_receive <> '' ";
@@ -588,10 +589,11 @@ class ReceiveRecord{
                         l.date_arrive,
                         m.date_encode,
                         l.eta_date,
-                        COALESCE(ld.eta_date, '') eta_date_his 
+                        COALESCE(ld.eta_date, '') eta_date_his,
+                        COALESCE(ld.date_arrive, '') date_arrive_his  
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id
-                        LEFT JOIN measure m on l.measure_num = m.id
+                        LEFT JOIN measure_ph m on l.measure_num = m.id
                         LEFT JOIN loading_date_history ld ON l.id = ld.loading_id 
                         where r.status = '' 
                         and r.date_receive = '' ";

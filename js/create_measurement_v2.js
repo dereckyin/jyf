@@ -178,7 +178,7 @@ var app = new Vue({
             var token = localStorage.getItem("token");
             var form_Data = new FormData();
       
-            this.date_encode = document.querySelector("input[id=date_encode]").value;
+            // this.date_encode = document.querySelector("input[id=date_encode]").value;
             this.date_cr = document.querySelector("input[id=date_cr]").value;
 
             form_Data.append("jwt", token);
@@ -1315,6 +1315,8 @@ var app = new Vue({
 
         validateMeasure() {
             this.resetError();
+
+            this.date_encode = new Date().toISOString().slice(0,10).replace(/-/g,"/");
 
             if (!this.isDate(this.date_encode) || this.date_encode == "") 
             {

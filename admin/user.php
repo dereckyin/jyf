@@ -340,7 +340,7 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
-								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.taiwan_read" @change="update_taiwan_read" required> 啟用台灣唯讀
+								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.taiwan_read" @change="update_edit_taiwan_read" required> 啟用台灣唯讀
                                 </li>
                             </ul>
 
@@ -348,7 +348,7 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
-								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.phili_read" @change="update_phili_read" required> 啟用菲律賓唯讀
+								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.phili_read" @change="update_edit_phili_read" required> 啟用菲律賓唯讀
                                 </li>
                             </ul>
 

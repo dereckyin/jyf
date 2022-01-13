@@ -356,7 +356,7 @@
                                 {{ item.date_arrive }}
                             </td>
                             <td>
-                                {{ item.container }}
+                                {{ item.container_number }}
                             </td>
                             <td>{{ item.record.length }}</td>
                             <td>{{ item.kilo }}{{ item.kilo == '' ? '' : '@' + (item.kilo < 3000 ? 36.5 : 34.5) }}</td>

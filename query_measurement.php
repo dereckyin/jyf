@@ -342,8 +342,8 @@ try {
                         <cht>貨櫃到倉日期</cht>
                     </li>
                     <li>
-                        <date-cr id="date_cr" @update-date="update_date_cr" v-model="date_cr"
-                                 style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;" readonly></date-cr>
+                        <input type="text" v-model="date_cr"
+                                readonly></input>
                  
                     </li>
                     <li>
