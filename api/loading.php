@@ -38,6 +38,29 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 $user = $decoded->data->username;
 
+function UpdateLoadingDateArriveHistory($date_arrive, $_id, $conn){
+    $sql = "SELECT id, date_arrive FROM loading_date_history  where loading_id in (SELECT id FROM loading where measure_num in (select * from (select measure_num from loading where id = $_id) as t))";
+    $result = mysqli_query($conn, $sql);
+
+    // die if SQL statement failed
+    while ($row = mysqli_fetch_array($result)) {
+        $loading_id = $row['id'];
+        $date_arrive_ary = explode(",", $row['date_arrive']);
+
+        if (!in_array($date_arrive, $date_arrive_ary)) {
+            array_push($date_arrive_ary, $date_arrive);
+        }
+
+        $date_arrive_str = ltrim(implode(",", $date_arrive_ary), ",");
+
+
+        $sql = "update loading_date_history set 
+                                            date_arrive = '$date_arrive_str'
+                                    where id = $loading_id";
+        $query = $conn->query($sql);
+    }
+
+}
 
 function GetPic($picname, $photo, $id, $conn){
     $merged_results = array();
@@ -664,6 +687,8 @@ switch ($method) {
 
                 $sql = "update loading set date_arrive = '$date_arrive' where measure_num in (select * from (select measure_num from loading where id = $id) as t)";
                 $query = $conn->query($sql);
+
+                UpdateLoadingDateArriveHistory($date_arrive, $id, $conn);
 
                 echo $affected_rows;
 
