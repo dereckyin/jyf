@@ -659,10 +659,10 @@ switch ($method) {
                                             where loading_id = $id";
                 $query = $conn->query($sql);
 
-                $sql = "update measure_ph set date_arrive = '$date_arrive' where id = (select measure_num from loading where id = '$id')";
+                $sql = "update measure_ph set date_arrive = '$date_arrive' where id = (select measure_num from loading where id = $id)";
                 $query = $conn->query($sql);
 
-                $sql = "update loading set date_arrive = '$date_arrive' where measure_num = (select measure_num from loading where id = '$id')";
+                $sql = "update loading set date_arrive = '$date_arrive' where measure_num = (select measure_num from loading where id = $id)";
                 $query = $conn->query($sql);
 
                 echo $affected_rows;
