@@ -520,12 +520,15 @@ var app = new Vue({
 
 
         refresh_select () {
+            return;
+            /*
             for (i = 0; i < this.receive_records.length; i++) {
                 for (j = 0; j < this.receive_records[i].record.length; j++) {
                 let select_id = 'client_' + this.receive_records[i].record[j].id;
                 $("#" + select_id).selectpicker('refresh');
                 }
               }
+              */
         },
 
         create_measurement:function() {
@@ -747,6 +750,8 @@ var app = new Vue({
             
             var favorite = [];
             var favorite_container = [];
+
+            var date_arrive = [];
          
             for (i = 0; i < this.loading_records.length; i++) 
             {
@@ -754,12 +759,25 @@ var app = new Vue({
               {
                 favorite.push(this.loading_records[i].id);
                 favorite_container.push(this.loading_records[i].container_number);
+                date_arrive.push(this.loading_records[i].date_arrive);
                 }
             }
 
             this.measure_qty = favorite.length;
             this.measure_container = favorite_container.join(",");
             this.measure_container_id = favorite.join(",");
+
+            if(date_arrive.length == 1)
+            {
+                if(date_arrive[0] != "")
+                {
+                    $('#date_cr').datepicker();
+                    $('#date_cr').datepicker('setDate', date_arrive[0]);
+
+                    this.date_cr = date_arrive[0];
+                }
+            
+            }
 
             await this.getReceivedData(favorite.join(","));
 

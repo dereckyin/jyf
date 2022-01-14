@@ -51,7 +51,8 @@ class Loading{
                                   ob_date, 
                                   eta_date, 
                                   broker, 
-                                  remark 
+                                  remark,
+                                  date_arrive 
                                   FROM " . $this->table_name . "
                                   where measure_num = 0 
                                   and status = ''  

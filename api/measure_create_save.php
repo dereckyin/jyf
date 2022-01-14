@@ -165,7 +165,8 @@ switch ($method) {
             // $charge = ($kilo * $kilo_price > $cuft * $cuft_price ? $kilo * $kilo_price : $cuft * $cuft_price);
             $charge = ($detail_array[$i]['charge'] == '') ? 0 : $detail_array[$i]['charge'];
 
-            $customer = ($detail_array[$i]['record'][0]['cust'] == '') ? '' : $detail_array[$i]['record'][0]['cust'];
+            $cus = isset($detail_array[$i]['customer']) ? $detail_array[$i]['customer'] : "";
+            $customer = $cus;
 
             $query = "INSERT INTO measure_detail (measure_id, customer, kilo, cuft, kilo_price, cuft_price, charge, crt_user, crt_time)
                             values(?, ?, ?, ?, ?, ?, ?, ?, now())";

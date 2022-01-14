@@ -158,6 +158,8 @@ switch ($method) {
             die();
         }
 
+        UpdateLoadingDateArriveHistory($date_cr, $id, $conn);
+
         // for measure_record_detail
         $query = "select * from measure_detail where measure_id = " . $id;
         $stmt1 = $conn->prepare($query);
