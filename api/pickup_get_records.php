@@ -40,7 +40,10 @@ if($jwt){
         $query = "
             SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
                 FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-            WHERE  group_id <> 0 ";
+            WHERE  group_id <> 0 and group_id IN (
+            
+                select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
+                WHERE group_id <> 0";
 
         if($keyword == 'N')
             $query .= " AND measure_detail.pickup_status = '' ";
@@ -48,10 +51,13 @@ if($jwt){
         if($keyword == 'A')
             $query .= " AND measure_detail.pickup_status = 'C' and measure_detail.payment_status = '' ";
 
-        if($keyword == '')
+        if($keyword == 'F')
             $query .= " AND NOT (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
 
-        $query .= " order by group_id desc";
+        if($keyword == 'D')
+            $query .= " AND (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
+
+        $query .= ") order by group_id desc";
 
         $stmt = $db->prepare($query);
         $stmt->execute();
@@ -73,6 +79,8 @@ if($jwt){
                     "measure" => $items,
                     "ar" => GetAr($items),
                     "ar_amount" => GetArAmount($items),
+                    "payments" => GetPayments($items),
+                    "measure_detail_id" => $measure_detail_id,
                 );
 
                 $items = [];
@@ -99,6 +107,8 @@ if($jwt){
                 "measure" => $items,
                 "ar" => GetAr($items),
                 "ar_amount" => GetArAmount($items),
+                "payments" => GetPayments($items),
+                "measure_detail_id" => $measure_detail_id,
             );
         }
 
@@ -114,8 +124,11 @@ if($jwt){
         if($keyword == 'A')
             $query .= " AND measure_detail.pickup_status = 'C' and measure_detail.payment_status = '' ";
 
-        if($keyword == '')
+        if($keyword == 'F')
             $query .= " AND NOT (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
+
+        if($keyword == 'D')
+            $query .= " AND (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
 
         $query .= " order by group_id desc";
 
@@ -138,6 +151,8 @@ if($jwt){
                 "measure" => $items,
                 "ar" => GetAr($items),
                 "ar_amount" => GetArAmount($items),
+                "payments" => GetPayments($items),
+                "measure_detail_id" => $measure_detail_id,
             );
         }
 
@@ -240,6 +255,7 @@ function GetMeasureDetail($measure_detail_id, $db){
     return $merged_results;
 }
 
+
 function GetAr($array)
 {
     $amount = 0;
@@ -249,6 +265,22 @@ function GetAr($array)
     }
 
     return $amount;
+}
+
+function GetPayments($array)
+{
+    $payment = [];
+
+    foreach($array as $item) {
+        $payment = array_merge($payment, $item['payment']);
+     
+    }
+
+    $keys = array_column($payment, 'payment_date');
+    array_multisort($keys, SORT_ASC, $payment);
+
+
+    return $payment;
 }
 
 function GetArAmount($array)
@@ -369,11 +401,11 @@ function GetMeasureDetailRecord($id, $db){
 
 
 function GetPaymentRecord($id, $db){
-    $query = "SELECT id, `type`, issue_date, payment_date, person, amount, remark
+    $query = "SELECT id, detail_id, `type`, issue_date, payment_date, person, amount, remark
                 FROM payment
                                  
                     WHERE detail_id = " . $id . "
-            AND `status` <> -1 
+            AND `status` <> -1 order by payment_date 
     ";
 
     // prepare the query
@@ -385,6 +417,7 @@ function GetPaymentRecord($id, $db){
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     
         $id = $row['id'];
+        $detail_id = $row['detail_id'];
         $type = $row['type'];
         $issue_date = $row['issue_date'];
         $payment_date = $row['payment_date'];
@@ -395,6 +428,7 @@ function GetPaymentRecord($id, $db){
 
         $merged_results[] = array(
             "id" => $id,
+            "detail_id" => $detail_id,
             "type" => $type,
             "issue_date" => $issue_date,
             "payment_date" => $payment_date,

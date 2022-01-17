@@ -287,10 +287,12 @@
                 <cht>提貨與付款記錄</cht>
             </h6>
 
-            <select style="margin: 5px 0 10px 0; text-align: left; width: 520px;" @change="getMeasures()" v-model="filter">
-                <option selected value="">List "All" (全部列出)</option>
+            <select style="margin: 5px 0px 10px; text-align: left; width: 520px;"  @change="getMeasures()" v-model="filter">
+                <option value="F">List "All Except For All Completed" (全部列出，除了已提貨且已付款)</option>
                 <option value="N">List "Not Yet Pickup" (僅列出未提貨)</option>
                 <option value="A">List "Already Pickup Not Yet Paid" (僅列出已提貨但未付款)</option>
+                <option value="D">List "Already Pickup And Paid" (僅列出已提貨且已付款)</option>
+                <option value="">List "All" (全部列出)</option> 
             </select>
 
             <div class="mainlist">
@@ -369,9 +371,9 @@
                             </td>
                             <td v-if="j == 0" :rowspan="row.measure.length">
                                 <div class="ar">A/R: {{ row.ar_amount }} </div>
-                                <div v-for='(rs, l) in item.payment'>{{rs.payment_date}}, {{ rs.amount }}</div>
-                                <button data-toggle="modal" data-target="#payment_modal" v-if="item.payment_status == ''" @click="item_payment(item, row.ar)">Encode</button>
-                                <button data-toggle="modal" data-target="#payment_modal_detail" v-if="item.payment_status != ''" @click="item_payment(item, row.ar)">Detail</button>
+                                <div v-for='(rs, l) in row.payments'>{{rs.payment_date}}, {{ rs.amount }}</div>
+                                <button data-toggle="modal" data-target="#payment_modal" v-if="item.payment_status == ''" @click="item_payment(row.payments, row.ar, row.measure_detail_id)">Encode</button>
+                                <button data-toggle="modal" data-target="#payment_modal_detail" v-if="item.payment_status != ''" @click="item_payment(row.payments, row.ar, row.measure_detail_id)">Detail</button>
                             </td>
                         </tr>
                     </template>

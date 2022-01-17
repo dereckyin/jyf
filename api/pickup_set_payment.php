@@ -62,41 +62,50 @@ $user_id = $decoded->data->id;
 
         $conn->begin_transaction();
 
-        // for payment
-        $query = "update payment 
-                    set status = -1,
-                    mdf_user = '" . $user . "', 
-                    mdf_time = now()
-            WHERE detail_id = " . $id;
-
-        $stmt = $conn->prepare($query);
-
-        try {
-            // execute the query, also check if query was successful
-            if (!$stmt->execute()) {
-                $conn->rollback();
-                http_response_code(501);
-                echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
-                die();
-            }
-        } catch (Exception $e) {
-            error_log($e->getMessage());
-            $conn->rollback();
-            http_response_code(501);
-            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-            die();
-        }
+        
 
         for ($i = 0; $i < count($detail_array); $i++) {
+            $id = ($detail_array[$i]['id'] == '') ? 0 : $detail_array[$i]['id'];
             $type = ($detail_array[$i]['type'] == '') ? 0 : $detail_array[$i]['type'];
+            $detail_id = ($detail_array[$i]['detail_id'] == '') ? 0 : $detail_array[$i]['detail_id'];
             $issue_date = ($detail_array[$i]['issue_date'] == '') ? "" : $detail_array[$i]['issue_date'];
             $payment_date = ($detail_array[$i]['payment_date'] == '') ? "" : $detail_array[$i]['payment_date'];
             $person = ($detail_array[$i]['person'] == '') ? "" : $detail_array[$i]['person'];
             $amount = ($detail_array[$i]['amount'] == '') ? 0 : $detail_array[$i]['amount'];
             $remark = ($detail_array[$i]['remark'] == '') ? "" : $detail_array[$i]['remark'];
+
+
+            if($id != 0)
+            {
+                // for payment
+                $query = "update payment 
+                        set status = -1,
+                        mdf_user = '" . $user . "', 
+                        mdf_time = now()
+                WHERE id = " . $id;
+
+                $stmt = $conn->prepare($query);
+
+                try {
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
+                    $conn->rollback();
+                    http_response_code(501);
+                    echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                    die();
+                }
+                } catch (Exception $e) {
+                error_log($e->getMessage());
+                $conn->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+                }
+            }
+
             
             $query = "insert into payment (detail_id, `type`, issue_date, payment_date, person, amount, remark, status, crt_time, crt_user)
-                VALUES (" . $id . ", " . $type . ", '" . $issue_date . "', '" . $payment_date . "', '" . $person . "', " . $amount . ", '" . $remark . "', 0, now(), '" . $user . "')";  
+                VALUES (" . $detail_id . ", " . $type . ", '" . $issue_date . "', '" . $payment_date . "', '" . $person . "', " . $amount . ", '" . $remark . "', 0, now(), '" . $user . "')";  
           
             $stmt = $conn->prepare($query);
 
@@ -115,32 +124,34 @@ $user_id = $decoded->data->id;
                 echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
             }
-        }
 
-        // for status
-        $query = "UPDATE measure_detail
-            SET
-            payment_status = '" . $encode_status . "'
-            WHERE id = " . $id;
+                
+            // for status
+            $query = "UPDATE measure_detail
+                SET
+                payment_status = '" . $encode_status . "'
+                WHERE id = " . $detail_id;
 
-        $stmt = $conn->prepare($query);
+            $stmt = $conn->prepare($query);
 
-        try {
-            // execute the query, also check if query was successful
-            if (!$stmt->execute()) {
+            try {
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
+                    $conn->rollback();
+                    http_response_code(501);
+                    echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
                 $conn->rollback();
                 http_response_code(501);
-                echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
             }
-        } catch (Exception $e) {
-            error_log($e->getMessage());
-            $conn->rollback();
-            http_response_code(501);
-            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-            die();
-        }
             
+        }
+
         $conn->commit();
     }
 
