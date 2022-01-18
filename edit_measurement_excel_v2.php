@@ -268,20 +268,17 @@ $sheet->setCellValue('B'  . ($i + 3), $qty);
 $sheet->setCellValue('A'  . ($i + 4), 'Container Number 櫃號');
 $sheet->setCellValue('B'  . ($i + 4), $container);
 
-$sheet->setCellValue('A'  . ($i + 5), 'Date Encoded 丈量日期');
-$sheet->setCellValue('B'  . ($i + 5), $date_encode);
+$sheet->setCellValue('A'  . ($i + 5), 'Date C/R (Date Container arrived Manila) 貨櫃到倉日期');
+$sheet->setCellValue('B'  . ($i + 5), $date_cr);
 
-$sheet->setCellValue('A'  . ($i + 6), 'Date C/R (Date Container arrived Manila) 貨櫃到倉日期');
-$sheet->setCellValue('B'  . ($i + 6), $date_cr);
+$sheet->setCellValue('A'  . ($i + 6), 'Currency Rate 匯率');
+$sheet->setCellValue('B'  . ($i + 6), $currency_rate);
 
-$sheet->setCellValue('A'  . ($i + 7), 'Currency Rate 匯率');
-$sheet->setCellValue('B'  . ($i + 7), $currency_rate);
+$sheet->setCellValue('A'  . ($i + 7), 'Remark 備註');
+$sheet->setCellValue('B'  . ($i + 7), $remark);
 
-$sheet->setCellValue('A'  . ($i + 8), 'Remark 備註');
-$sheet->setCellValue('B'  . ($i + 8), $remark);
-
-$sheet->getStyle('A' . ($i + 3) . ':' . 'A' . ($i + 8))->getFont()->setBold(true);
-$sheet->getStyle('A' . ($i + 3) . ':' . 'B' . ($i + 8))->applyFromArray($styleArray);
+$sheet->getStyle('A' . ($i + 3) . ':' . 'A' . ($i + 7))->getFont()->setBold(true);
+$sheet->getStyle('A' . ($i + 3) . ':' . 'B' . ($i + 7))->applyFromArray($styleArray);
 
 /*
     $objPHPExcel = new PHPExcel();

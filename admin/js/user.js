@@ -363,6 +363,28 @@ var app = new Vue({
             }
         },
 
+        update_edit_taiwan_read: function(event) {
+          console.log("update_taiwan_read");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.record.taiwan_read = 1;
+            } else {
+                this.record.taiwan_read = 0;
+            }
+        },
+
+        update_edit_phili_read: function(event) {
+          console.log("update_phili_read");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.record.phili_read = 1;
+            } else {
+                this.record.phili_read = 0;
+            }
+        },
+
         updateSeaExpense: function(event) {
           console.log("updateSeaExpense");
             let checked = event.target.checked;

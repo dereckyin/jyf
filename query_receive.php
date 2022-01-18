@@ -136,7 +136,7 @@ $(function(){
               <li><eng>Date Sent</eng>結關日期</li>
               <li><eng>ETA</eng></li>
               <li><eng>Date C/R</eng> 貨櫃到倉日期</li>
-              <li><eng>Date Encoded</eng> 丈量日期</li>
+              <!-- <li><eng>Date Encoded</eng> 丈量日期</li> -->
               <li><eng>Date Pickup</eng> 提貨日期</li>
               <li><eng>Date Paid</eng> 付款日期</li>
             </ul>
@@ -151,10 +151,10 @@ $(function(){
 
               <li>{{ receive_record.date_sent }}</li>
               <li :style="[receive_record.eta_date_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ receive_record.eta_date }}</li>
-              <li>{{ receive_record.date_arrive }}</li>
-              <li>{{ receive_record.date_encode }}</li>
-              <li></li>
-              <li></li>
+              <li :style="[receive_record.date_arrive_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ receive_record.date_arrive }}</li>
+              <!-- <li>{{ receive_record.date_encode }}</li> -->
+              <li>{{ receive_record.real_pick_time }}</li>
+              <li>{{ receive_record.real_payment_time }}</li>
             </ul>
           </div>
         </div>

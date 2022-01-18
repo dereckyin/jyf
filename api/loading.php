@@ -38,6 +38,29 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 $user = $decoded->data->username;
 
+function UpdateLoadingDateArriveHistory($date_arrive, $_id, $conn){
+    $sql = "SELECT id, date_arrive FROM loading_date_history  where loading_id in (SELECT id FROM loading where measure_num in (select * from (select measure_num from loading where id = $_id) as t))";
+    $result = mysqli_query($conn, $sql);
+
+    // die if SQL statement failed
+    while ($row = mysqli_fetch_array($result)) {
+        $loading_id = $row['id'];
+        $date_arrive_ary = explode(",", $row['date_arrive']);
+
+        if (!in_array($date_arrive, $date_arrive_ary)) {
+            array_push($date_arrive_ary, $date_arrive);
+        }
+
+        $date_arrive_str = ltrim(implode(",", $date_arrive_ary), ",");
+
+
+        $sql = "update loading_date_history set 
+                                            date_arrive = '$date_arrive_str'
+                                    where id = $loading_id";
+        $query = $conn->query($sql);
+    }
+
+}
 
 function GetPic($picname, $photo, $id, $conn){
     $merged_results = array();
@@ -106,9 +129,9 @@ switch ($method) {
             //$sql = "SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive, crt_time, crt_user  FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  status = '' ".($id ? " and lo.id=$id" : ''); 
             //$sql = $sql . " ORDER BY ship_company, date_sent ";
 
-            $sql = "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, shipper, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.date_arrive date_arrive_his, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, '9999/99/99' ords  FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' " . ($id ? " and lo.id=$id" : '') . " AND lo.date_sent = '' ORDER BY lo.date_sent ) ";
+            $sql = "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, shipper, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.date_arrive date_arrive_his, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, ld.date_arrive date_arrive_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, '9999/99/99' ords  FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' " . ($id ? " and lo.id=$id" : '') . " AND lo.date_sent = '' ORDER BY lo.date_sent ) ";
             $sql = $sql . "UNION ";
-            $sql = $sql . "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, shipper, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.date_arrive date_arrive_his, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, lo.date_sent ords FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' " . ($id ? " and lo.id=$id" : '') . " AND lo.date_sent <> '' ORDER BY lo.date_sent DESC ) ";
+            $sql = $sql . "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, shipper, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.date_arrive date_arrive_his, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, ld.date_arrive date_arrive_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, lo.date_sent ords FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' " . ($id ? " and lo.id=$id" : '') . " AND lo.date_sent <> '' ORDER BY lo.date_sent DESC ) ";
             $sql = $sql . "ORDER BY ords DESC, ship_company ";
         }
 
@@ -116,9 +139,9 @@ switch ($method) {
             //$sql = "SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive, crt_time, crt_user  FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  status = '' ".($id ? " and lo.id=$id" : ''); 
             //$sql = $sql . " ORDER BY ship_company, date_sent ";
 
-            $sql = "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, shipper, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.date_arrive date_arrive_his, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, '9999/99/99' ords, (SELECT COUNT(*) FROM receive_record WHERE batch_num = lo.id) cnt, (SELECT COUNT(*) FROM receive_record WHERE batch_num = lo.id AND mail_cnt <> 0) mail_cnt  FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' " . ($id ? " and lo.id=$id" : '') . " AND lo.date_sent = '' ORDER BY lo.date_sent ) ";
+            $sql = "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, shipper, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.date_arrive date_arrive_his, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, ld.date_arrive date_arrive_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, '9999/99/99' ords, (SELECT COUNT(*) FROM receive_record WHERE batch_num = lo.id) cnt, (SELECT COUNT(*) FROM receive_record WHERE batch_num = lo.id AND mail_cnt <> 0) mail_cnt  FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' " . ($id ? " and lo.id=$id" : '') . " AND lo.date_sent = '' ORDER BY lo.date_sent ) ";
             $sql = $sql . "UNION ";
-            $sql = $sql . "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, shipper, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.date_arrive date_arrive_his, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, lo.date_sent ords,  (SELECT COUNT(*) FROM receive_record WHERE batch_num = lo.id) cnt, (SELECT COUNT(*) FROM receive_record WHERE batch_num = lo.id AND mail_cnt <> 0) mail_cnt FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' " . ($id ? " and lo.id=$id" : '') . " AND lo.date_sent <> '' ORDER BY lo.date_sent DESC ) ";
+            $sql = $sql . "(SELECT 0 as is_checked, lo.id, shipping_mark, estimate_weight, actual_weight, container_number, seal, so, ship_company, ship_boat, neck_cabinet, shipper, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, lo.date_arrive date_arrive_his, ld.date_sent date_send_his, ld.etd_date etd_date_his, ld.ob_date ob_date_his, ld.eta_date eta_date_his, ld.date_arrive date_arrive_his, broker, remark, (SELECT date_arrive FROM measure WHERE measure.id = measure_num) date_arrive_old, crt_time, crt_user, lo.date_sent ords,  (SELECT COUNT(*) FROM receive_record WHERE batch_num = lo.id) cnt, (SELECT COUNT(*) FROM receive_record WHERE batch_num = lo.id AND mail_cnt <> 0) mail_cnt FROM loading lo LEFT JOIN loading_date_history ld ON lo.id = ld.loading_id where  lo.STATUS = '' " . ($id ? " and lo.id=$id" : '') . " AND lo.date_sent <> '' ORDER BY lo.date_sent DESC ) ";
             $sql = $sql . "ORDER BY ords DESC, ship_company ";
         }
 
@@ -524,8 +547,9 @@ switch ($method) {
                                     date_sent,
                                     etd_date,
                                     ob_date,
-                                    eta_date) 
-                              values (?, ?, ?, ?, ?)";
+                                    eta_date,
+                                    date_arrive) 
+                              values (?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param(
                     "dssss",
@@ -533,7 +557,8 @@ switch ($method) {
                     $date_sent,
                     $etd_date,
                     $ob_date,
-                    $eta_date
+                    $eta_date,
+                    $date_arrive
                 );
 
                 $stmt->execute();
@@ -610,7 +635,7 @@ switch ($method) {
                                             where id in($record)";
                 $query = $conn->query($sql);
 
-                $sql = "SELECT date_sent, etd_date, ob_date, eta_date FROM loading_date_history  where loading_id=$id";
+                $sql = "SELECT date_sent, etd_date, ob_date, eta_date, date_arrive FROM loading_date_history  where loading_id=$id";
                 $result = mysqli_query($conn, $sql);
 
                 // die if SQL statement failed
@@ -619,6 +644,7 @@ switch ($method) {
                     $etd_date_ary = explode(",", $row['etd_date']);
                     $ob_date_ary = explode(",", $row['ob_date']);
                     $eta_date_ary = explode(",", $row['eta_date']);
+                    $date_arrive_ary = explode(",", $row['date_arrive']);
                 }
 
                 if (!in_array($date_sent, $date_sent_ary)) {
@@ -637,19 +663,32 @@ switch ($method) {
                     array_push($eta_date_ary, $eta_date);
                 }
 
+                if (!in_array($date_arrive, $date_arrive_ary)) {
+                    array_push($date_arrive_ary, $date_arrive);
+                }
+
                 $date_sent_str = ltrim(implode(",", $date_sent_ary), ",");
                 $etd_date_str = ltrim(implode(",", $etd_date_ary), ",");
                 $ob_date_str = ltrim(implode(",", $ob_date_ary), ",");
                 $eta_date_str = ltrim(implode(",", $eta_date_ary), ",");
+                $date_arrive_str = ltrim(implode(",", $date_arrive_ary), ",");
 
 
                 $sql = "update loading_date_history set date_sent = '$date_sent_str',
                                                       etd_date = '$etd_date_str',
                                                       ob_date = '$ob_date_str',
-                                                      eta_date = '$eta_date_str'
+                                                      eta_date = '$eta_date_str',
+                                                      date_arrive = '$date_arrive_str'
                                             where loading_id = $id";
                 $query = $conn->query($sql);
 
+                $sql = "update measure_ph set date_arrive = '$date_arrive' where id = (select measure_num from loading where id = $id)";
+                $query = $conn->query($sql);
+
+                $sql = "update loading set date_arrive = '$date_arrive' where measure_num in (select * from (select measure_num from loading where id = $id) as t)";
+                $query = $conn->query($sql);
+
+                UpdateLoadingDateArriveHistory($date_arrive, $id, $conn);
 
                 echo $affected_rows;
 

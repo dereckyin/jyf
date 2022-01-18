@@ -139,7 +139,6 @@ create table loading_date_history
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-
 -- 傾印  表格 ludb.user 結構
 CREATE TABLE IF NOT EXISTS `user` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -745,3 +744,13 @@ ADD COLUMN `tags` varchar(256) DEFAULT 'Main' AFTER remark;
 ALTER TABLE user ADD COLUMN phili_read INT DEFAULT 0;
 
 ALTER TABLE user ADD COLUMN taiwan_read INT DEFAULT 0;
+
+-- 20220113 add date arrived history
+ALTER TABLE loading_date_history ADD COLUMN `date_arrive` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20220118 add pick date & payment time
+ALTER TABLE receive_record
+ADD COLUMN `real_pick_time` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE receive_record
+ADD COLUMN `real_payment_time` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';

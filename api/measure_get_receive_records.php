@@ -64,6 +64,8 @@ if($jwt){
            
                     "supplier" => rtrim($row['supplier'], "<br>"), 
                     "remark" => rtrim($row['remark'], "<br>"),
+                    "container" => rtrim($row['container'], "<br>"),
+                    "date_arrive" => rtrim($row['date_arrive'], "<br>"),
                 );
 
 

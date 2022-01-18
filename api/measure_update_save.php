@@ -53,6 +53,30 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 $user = $decoded->data->username;
 
+function UpdateLoadingDateArriveHistory($date_arrive, $id, $conn){
+    $sql = "SELECT id, date_arrive FROM loading_date_history  where loading_id in (select id from loading where measure_num = $id)";
+    $result = mysqli_query($conn, $sql);
+
+    // die if SQL statement failed
+    while ($row = mysqli_fetch_array($result)) {
+        $loading_id = $row['id'];
+        $date_arrive_ary = explode(",", $row['date_arrive']);
+
+        if (!in_array($date_arrive, $date_arrive_ary)) {
+            array_push($date_arrive_ary, $date_arrive);
+        }
+
+        $date_arrive_str = ltrim(implode(",", $date_arrive_ary), ",");
+
+
+        $sql = "update loading_date_history set 
+                                            date_arrive = '$date_arrive_str'
+                                    where id = $loading_id";
+        $query = $conn->query($sql);
+    }
+
+}
+
 switch ($method) {
 
     case 'POST':
@@ -110,16 +134,13 @@ switch ($method) {
             echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
             die();
         }
-/*
+
         // for pickup
         $query = "UPDATE loading
             SET
-                measure_num = " . $last_id . " WHERE id in (" . $measure_container_id . ")";
+            date_arrive = '" . $date_cr . "' WHERE measure_num = " . $id;
 
         $stmt = $conn->prepare($query);
-
-       // $stmt->bind_param("is", $last_id, $measure_container_id);
-
 
         try {
             // execute the query, also check if query was successful
@@ -136,7 +157,9 @@ switch ($method) {
             echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
             die();
         }
-*/
+
+        UpdateLoadingDateArriveHistory($date_cr, $id, $conn);
+
         // for measure_record_detail
         $query = "select * from measure_detail where measure_id = " . $id;
         $stmt1 = $conn->prepare($query);

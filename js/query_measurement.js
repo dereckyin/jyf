@@ -598,12 +598,15 @@ var app = new Vue({
 
 
         refresh_select () {
+            return;
+            /*
             for (i = 0; i < this.receive_records.length; i++) {
                 for (j = 0; j < this.receive_records[i].record.length; j++) {
                 let select_id = 'client_' + this.receive_records[i].record[j].id;
                 $("#" + select_id).selectpicker('refresh');
                 }
               }
+              */
         },
 
         create_measurement:function() {

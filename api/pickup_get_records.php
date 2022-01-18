@@ -40,7 +40,10 @@ if($jwt){
         $query = "
             SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
                 FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-            WHERE  group_id <> 0 ";
+            WHERE  group_id <> 0 and group_id IN (
+            
+                select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
+                WHERE group_id <> 0";
 
         if($keyword == 'N')
             $query .= " AND measure_detail.pickup_status = '' ";
@@ -48,10 +51,13 @@ if($jwt){
         if($keyword == 'A')
             $query .= " AND measure_detail.pickup_status = 'C' and measure_detail.payment_status = '' ";
 
-        if($keyword == '')
+        if($keyword == 'F')
             $query .= " AND NOT (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
 
-        $query .= " order by group_id desc";
+        if($keyword == 'D')
+            $query .= " AND (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
+
+        $query .= ") order by group_id desc";
 
         $stmt = $db->prepare($query);
         $stmt->execute();
@@ -73,6 +79,8 @@ if($jwt){
                     "measure" => $items,
                     "ar" => GetAr($items),
                     "ar_amount" => GetArAmount($items),
+                    "payments" => GetPayments($items),
+                    "measure_detail_id" => $measure_detail_id,
                 );
 
                 $items = [];
@@ -99,6 +107,8 @@ if($jwt){
                 "measure" => $items,
                 "ar" => GetAr($items),
                 "ar_amount" => GetArAmount($items),
+                "payments" => GetPayments($items),
+                "measure_detail_id" => $measure_detail_id,
             );
         }
 
@@ -114,8 +124,11 @@ if($jwt){
         if($keyword == 'A')
             $query .= " AND measure_detail.pickup_status = 'C' and measure_detail.payment_status = '' ";
 
-        if($keyword == '')
+        if($keyword == 'F')
             $query .= " AND NOT (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
+
+        if($keyword == 'D')
+            $query .= " AND (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
 
         $query .= " order by group_id desc";
 
@@ -138,6 +151,8 @@ if($jwt){
                 "measure" => $items,
                 "ar" => GetAr($items),
                 "ar_amount" => GetArAmount($items),
+                "payments" => GetPayments($items),
+                "measure_detail_id" => $measure_detail_id,
             );
         }
 
@@ -171,10 +186,15 @@ else{
 
 function GetMeasureDetail($measure_detail_id, $db){
     $query = "
-            SELECT 0 as is_checked, id, kilo, cuft, kilo_price, cuft_price, charge, encode, encode_status, pickup_status, payment_status, DATE_FORMAT(crt_time, '%Y/%m/%d') crt_time
+            SELECT distinct 0 as is_checked, measure_detail.id, kilo, cuft, kilo_price, cuft_price, charge, encode, encode_status, pickup_status, payment_status, DATE_FORMAT(measure_detail.crt_time, '%Y/%m/%d') crt_time, 
+            (SELECT date_arrive FROM measure_ph WHERE measure_detail.measure_id = measure_ph.id) date_arrive,
+(SELECT GROUP_CONCAT(container_number separator ', ') FROM loading WHERE loading.measure_num = measure_detail.measure_id) container_number
                 FROM measure_detail
-            WHERE  id = " . $measure_detail_id . "
-            AND `status` <> -1 
+         
+            WHERE  measure_detail.id = " . $measure_detail_id . "
+
+            AND measure_detail.`status` = ''
+  
     ";
 
     // prepare the query
@@ -197,6 +217,9 @@ function GetMeasureDetail($measure_detail_id, $db){
         $pickup_status = $row['pickup_status'] == "" ? "" : $row['pickup_status'];
         $payment_status = $row['payment_status'] == "" ? "" : $row['payment_status'];
         $crt_time = $row['crt_time'] == "" ? "" : $row['crt_time'];
+
+        $container_number = $row['container_number'] == "" ? "" : $row['container_number'];
+        $date_arrive = $row['date_arrive'] == "" ? "" : $row['date_arrive'];
 
         $record = GetMeasureDetailRecord($row['id'], $db);
         $record_cust = GetMeasurePersonRecord($row['id'], $db);
@@ -224,11 +247,14 @@ function GetMeasureDetail($measure_detail_id, $db){
            "record_cust" => $record_cust,
            "payment" => $payment,
            "crt_time" => $crt_time,
+           "container_number" => $container_number,
+           "date_arrive" => $date_arrive,
         );
     }
 
     return $merged_results;
 }
+
 
 function GetAr($array)
 {
@@ -239,6 +265,22 @@ function GetAr($array)
     }
 
     return $amount;
+}
+
+function GetPayments($array)
+{
+    $payment = [];
+
+    foreach($array as $item) {
+        $payment = array_merge($payment, $item['payment']);
+     
+    }
+
+    $keys = array_column($payment, 'payment_date');
+    array_multisort($keys, SORT_ASC, $payment);
+
+
+    return $payment;
 }
 
 function GetArAmount($array)
@@ -266,8 +308,21 @@ function GetMeasurePersonRecord($id, $db){
                     left join contactor_ph cp on cp.id = rd.cust
                
                     WHERE rd.detail_id = " . $id . "
-            AND rd.`status` <> -1 
+            AND rd.`status`= '' 
             and coalesce(cp.customer, '') <> ''
+
+            union
+
+            SELECT distinct coalesce(cp.customer, '') cust
+                FROM measure_record_detail rd
+                    left JOIN receive_record rc ON
+                    rd.record_id = rc.id
+                    left join measure_detail cp on cp.id = rd.detail_id
+               
+                    WHERE rd.detail_id = " . $id . "
+            AND rd.`status` = ''
+            and coalesce(cp.customer, '') <> ''
+
     ";
 
     // prepare the query
@@ -286,7 +341,7 @@ function GetMeasurePersonRecord($id, $db){
 }
 
 function GetMeasureDetailRecord($id, $db){
-    $query = "SELECT rd.detail_id, rc.id, rc.date_receive, rc.customer, rc.description, rc.quantity, rc.supplier, rc.remark, rd.cust cust_id, coalesce(cp.customer, '') cust, pick_date, pick_person, pick_note, pick_time, pick_user
+    $query = "SELECT rd.detail_id, rc.id, rc.date_receive, rc.customer, rc.description, rc.quantity, rc.supplier, rc.remark, rd.cust cust_id, case when coalesce(cp.customer, '')  <> '' then coalesce(cp.customer, '') when (SELECT coalesce(customer, '') FROM measure_detail WHERE id = " . $id . ") <> '' then (SELECT coalesce(customer, '') FROM measure_detail WHERE id =  " . $id . ") end cust, pick_date, pick_person, pick_note, pick_time, pick_user
                 FROM measure_record_detail rd
                     left JOIN receive_record rc ON
                     rd.record_id = rc.id
@@ -346,11 +401,11 @@ function GetMeasureDetailRecord($id, $db){
 
 
 function GetPaymentRecord($id, $db){
-    $query = "SELECT id, `type`, issue_date, payment_date, person, amount, remark
+    $query = "SELECT id, detail_id, `type`, issue_date, payment_date, person, amount, remark
                 FROM payment
                                  
                     WHERE detail_id = " . $id . "
-            AND `status` <> -1 
+            AND `status` <> -1 order by payment_date 
     ";
 
     // prepare the query
@@ -362,6 +417,7 @@ function GetPaymentRecord($id, $db){
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     
         $id = $row['id'];
+        $detail_id = $row['detail_id'];
         $type = $row['type'];
         $issue_date = $row['issue_date'];
         $payment_date = $row['payment_date'];
@@ -372,6 +428,7 @@ function GetPaymentRecord($id, $db){
 
         $merged_results[] = array(
             "id" => $id,
+            "detail_id" => $detail_id,
             "type" => $type,
             "issue_date" => $issue_date,
             "payment_date" => $payment_date,

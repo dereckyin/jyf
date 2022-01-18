@@ -1,4 +1,47 @@
 <?php include 'check.php';?>
+<?php
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
+$uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
+if ( !isset( $jwt ) ) {
+  header( 'location:index' );
+}
+
+include_once 'api/config/core.php';
+include_once 'api/libs/php-jwt-master/src/BeforeValidException.php';
+include_once 'api/libs/php-jwt-master/src/ExpiredException.php';
+include_once 'api/libs/php-jwt-master/src/SignatureInvalidException.php';
+include_once 'api/libs/php-jwt-master/src/JWT.php';
+include_once 'api/config/database.php';
+
+
+use \Firebase\JWT\JWT;
+
+$phili_read = "0";
+
+try {
+        // decode jwt
+        try {
+            // decode jwt
+            $decoded = JWT::decode($jwt, $key, array('HS256'));
+            $user_id = $decoded->data->id;
+
+            $phili_read = $decoded->data->phili_read;
+          
+
+        }
+        catch (Exception $e){
+
+            header( 'location:index.php' );
+        }
+
+    }
+    // if decode fails, it means jwt is invalid
+    catch (Exception $e){
+    
+        header( 'location:index.php' );
+    }
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -237,10 +280,12 @@
                             <cht>勾選</cht>
                             Check
                         </li>
+                        <!--
                         <li>
                             <cht>丈量日期</cht>
                             Date Encoded
                         </li>
+                        -->
                         <li>
                             <cht>貨櫃到倉日期</cht>
                             Date C/R (Date Container arrived Manila)
@@ -262,7 +307,7 @@
                     <ul v-for='(record, index) in displayedLoading'>
                         <li><input type="checkbox" name="record_id" class="alone" :value="record.id" :true-value="1"
                                    v-model:checked="record.is_checked"></li>
-                        <li>{{ record.date_encode }}</li>
+                        <!-- <li>{{ record.date_encode }}</li> -->
                         <li>{{ record.date_arrive }}</li>
                         <li>{{ record.qty }}</li>
                         <li>{{ record.container }}</li>
@@ -273,9 +318,16 @@
 
             </div>
             <div class="btnbox">
+            <?php
+                if($phili_read == "0")
+{
+    ?>
                 <a class="btn small" @click="pickup()">Generate Pickup / Payment Record
                     <cht>打單</cht>
                 </a>
+                <?php
+}
+?>
             </div>
         </div>
 
@@ -285,10 +337,12 @@
                 <cht>提貨與付款記錄</cht>
             </h6>
 
-            <select style="margin: 5px 0 10px 0; text-align: left; width: 520px;" @change="getMeasures()" v-model="filter">
-                <option selected value="">List "All" (全部列出)</option>
+            <select style="margin: 5px 0px 10px; text-align: left; width: 520px;"  @change="getMeasures()" v-model="filter">
+                <option value="F">List "All Except For All Completed" (全部列出，除了已提貨且已付款)</option>
                 <option value="N">List "Not Yet Pickup" (僅列出未提貨)</option>
                 <option value="A">List "Already Pickup Not Yet Paid" (僅列出已提貨但未付款)</option>
+                <option value="D">List "Already Pickup And Paid" (僅列出已提貨且已付款)</option>
+                <option value="">List "All" (全部列出)</option> 
             </select>
 
             <div class="mainlist">
@@ -304,13 +358,11 @@
                             OR
                         </th>
                         <th>
-                            <cht>收件人(菲)</cht>
-                            Company/Customer(PH)
+                            SOLD TO
                         </th>
-                        <th>
-                            <cht>丈量日期</cht>
-                            Date Encoded
-                        </th>
+                       
+                        <th><cht>貨櫃到倉日期</cht> Date C/R</th>
+                        <th><cht>櫃號</cht> Containers Number</th>
                         <th>
                             <cht>收貨記錄筆數</cht>
                             Number of Goods Records
@@ -346,14 +398,25 @@
                             </td>
                             <td>
                                 <div>{{ item.encode }}</div>
+                                <?php
+                if($phili_read == "0")
+{
+    ?>
                                 <button data-toggle="modal" data-target="#encode_modal" v-if="item.encode_status == ''" @click="item_encode(item)">Encode</button>
+                                <?php
+}
+?>
+
                             </td>
                             <td>
                                 <span v-for='(cust, j) in item.record_cust'>{{ cust }}</span>
                              
                             </td>
                             <td>
-                                {{ item.crt_time }}
+                                {{ item.date_arrive }}
+                            </td>
+                            <td>
+                                {{ item.container_number }}
                             </td>
                             <td>{{ item.record.length }}</td>
                             <td>{{ item.kilo }}{{ item.kilo == '' ? '' : '@' + (item.kilo < 3000 ? 36.5 : 34.5) }}</td>
@@ -361,14 +424,28 @@
                             <td>{{ item.charge }}</td>
                             <td>
                                 <div v-for='(rs, k) in item.record'>{{rs.pick_date}}</div>
+                                <?php
+                if($phili_read == "0")
+{
+    ?>
                                 <button @click="item_record(item.record)" data-toggle="modal" data-target="#record_modal" v-if="item.pickup_status == ''">Encode</button>
+                                <?php
+}
+?>
                                 <button @click="item_record(item.record)" data-toggle="modal" data-target="#record_modal_detail" v-if="item.pickup_status != ''">Detail</button>
                             </td>
                             <td v-if="j == 0" :rowspan="row.measure.length">
                                 <div class="ar">A/R: {{ row.ar_amount }} </div>
-                                <div v-for='(rs, l) in item.payment'>{{rs.payment_date}}, {{ rs.amount }}</div>
-                                <button data-toggle="modal" data-target="#payment_modal" v-if="item.payment_status == ''" @click="item_payment(item, row.ar)">Encode</button>
-                                <button data-toggle="modal" data-target="#payment_modal_detail" v-if="item.payment_status != ''" @click="item_payment(item, row.ar)">Detail</button>
+                                <div v-for='(rs, l) in row.payments'>{{rs.payment_date}}, {{ rs.amount }}</div>
+                                <?php
+                if($phili_read == "0")
+{
+    ?>
+                                <button data-toggle="modal" data-target="#payment_modal" v-if="item.payment_status == ''" @click="item_payment(row.payments, row.ar, row.measure_detail_id)">Encode</button>
+                                <?php
+}
+?>
+                                <button data-toggle="modal" data-target="#payment_modal_detail" v-if="item.payment_status != ''" @click="item_payment(row.payments, row.ar, row.measure_detail_id)">Detail</button>
                             </td>
                         </tr>
                     </template>
@@ -377,6 +454,10 @@
                 </table>
 
                 <div class="btnbox" style="border: none; margin-top: 10px;">
+                <?php
+                if($phili_read == "0")
+{
+    ?>
                     <a class="btn small" @click="merge_item()">
                         Merge Items
                         <cht>合併項目</cht>
@@ -385,6 +466,9 @@
                         Decompose Item
                         <cht>拆分項目</cht>
                     </a>
+                    <?php
+}
+?>
                 </div>
             </div>
 
@@ -578,6 +662,7 @@
                 </table>
 
                 <div class="btnbox" style="border: none; margin-top: 10px;">
+                
                     <a class="btn small">
                         Merge Items
                         <cht>合併項目</cht>
@@ -586,6 +671,7 @@
                         Decompose Item
                         <cht>拆分項目</cht>
                     </a>
+                    
                 </div>
             </div>
         </div>
@@ -639,10 +725,7 @@
                             <cht>收貨日期</cht>
                             Date Receive
                         </li>
-                        <li>
-                            <cht>收件人(菲)</cht>
-                            Company/Customer(PH)
-                        </li>
+                        <li><cht>收件人</cht> Company/Customer</li>
                         <li>
                             <cht>貨品名稱</cht>
                             Description
@@ -676,7 +759,7 @@
                     <ul v-for="(item, j) in record">
 
                         <li>{{ item.date_receive }}</li>
-                        <li>{{ item.cust }}</li>
+                        <li>{{ item.customer }}</li>
                         <li>{{ item.description }}</li>
                         <li>{{ item.quantity }}</li>
                         <li>{{ item.supplier }}</li>
@@ -720,10 +803,7 @@
                             <cht>收貨日期</cht>
                             Date Receive
                         </li>
-                        <li>
-                            <cht>收件人(菲)</cht>
-                            Company/Customer(PH)
-                        </li>
+                        <li><cht>收件人</cht> Company/Customer</li>
                         <li>
                             <cht>貨品名稱</cht>
                             Description
@@ -757,7 +837,7 @@
                     <ul v-for="(item, j) in record">
 
                         <li>{{ item.date_receive }}</li>
-                        <li>{{ item.cust }}</li>
+                        <li>{{ item.customer }}</li>
                         <li>{{ item.description }}</li>
                         <li>{{ item.quantity }}</li>
                         <li>{{ item.supplier }}</li>

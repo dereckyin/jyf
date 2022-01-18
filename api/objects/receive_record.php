@@ -90,37 +90,42 @@ class ReceiveRecord{
         $merged_results = array();
 
         $query = "SELECT 0 as is_checked, 
-                                  id, 
-                                  0 group_id,
-                                  date_receive, 
-                                  customer, 
-                                  email_customer, 
-                                  email, 
-                                  description, 
-                                  quantity,
-                                  supplier, 
-                                  picname, 
-                                  kilo, 
-                                  cuft, 
-                                  '' kilo_price,
-                                  '' cuft_price,
-                                  taiwan_pay, 
-                                  courier_pay,
-                                  courier_money, 
-                                  remark, 
-                                  batch_num, 
-                                  mail_note,
-                                  status, 
-                                  crt_time, 
-                                  crt_user,
-                                  mdf_time, 
-                                  mdf_user, 
-                                  del_time, 
-                                  del_user
-                                  FROM " . $this->table_name . "
-                                  where batch_num in (" . $ids . ")
-                                  and status = ''  
-                                  ORDER BY BINARY customer, date_receive  ";
+                                    rr.id, 
+                                    0 group_id,
+                                    date_receive, 
+                                    customer, 
+                                    email_customer, 
+                                    email, 
+                                    description, 
+                                    quantity,
+                                    supplier, 
+                                    picname, 
+                                    kilo, 
+                                    cuft, 
+                                    '' kilo_price,
+                                    '' cuft_price,
+                                    taiwan_pay, 
+                                    courier_pay,
+                                    courier_money, 
+                                    rr.remark, 
+                                    batch_num, 
+                                    mail_note,
+                                    ld.date_arrive,
+                                    CONCAT(ld.container_number) container,
+                                    rr.status, 
+                                    rr.crt_time, 
+                                    rr.crt_user,
+                                    rr.mdf_time, 
+                                    rr.mdf_user, 
+                                    rr.del_time, 
+                                    rr.del_user
+                       
+                                  FROM " . $this->table_name . " rr
+                                  left join loading ld on rr.batch_num = ld.id
+                                  where rr.batch_num in (" . $ids . ")
+                                  and rr.status = ''  
+                                  and ld.status = ''
+                                  ORDER BY BINARY rr.customer, rr.date_receive  ";
 
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
@@ -537,10 +542,13 @@ class ReceiveRecord{
                         l.date_arrive,
                         m.date_encode,
                         l.eta_date,
-                        COALESCE(ld.eta_date, '') eta_date_his 
+                        r.real_pick_time,
+                        r.real_payment_time,
+                        COALESCE(ld.eta_date, '') eta_date_his,
+                        COALESCE(ld.date_arrive, '') date_arrive_his 
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id
-                        LEFT JOIN measure m on l.measure_num = m.id
+                        LEFT JOIN measure_ph m on l.measure_num = m.id
                         LEFT JOIN loading_date_history ld ON l.id = ld.loading_id 
                         where r.status = '' 
                         and r.date_receive <> '' ";
@@ -583,10 +591,13 @@ class ReceiveRecord{
                         l.date_arrive,
                         m.date_encode,
                         l.eta_date,
-                        COALESCE(ld.eta_date, '') eta_date_his 
+                        r.real_pick_time,
+                        r.real_payment_time,
+                        COALESCE(ld.eta_date, '') eta_date_his,
+                        COALESCE(ld.date_arrive, '') date_arrive_his  
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id
-                        LEFT JOIN measure m on l.measure_num = m.id
+                        LEFT JOIN measure_ph m on l.measure_num = m.id
                         LEFT JOIN loading_date_history ld ON l.id = ld.loading_id 
                         where r.status = '' 
                         and r.date_receive = '' ";

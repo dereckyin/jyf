@@ -260,10 +260,12 @@ try {
                             <cht>勾選</cht>
                             Check
                         </li>
+            <!--
                         <li>
                             <cht>丈量日期</cht>
                             Date Encoded
                         </li>
+            -->
                         <li>
                             <cht>貨櫃到倉日期</cht>
                             Date C/R (Date Container arrived Manila)
@@ -285,7 +287,7 @@ try {
                     <ul v-for='(record, index) in displayedLoading'>
                         <li><input type="checkbox" name="record_id" class="alone" :value="record.id" :true-value="1"
                                    v-model:checked="record.is_checked"></li>
-                        <li>{{ record.date_encode }}</li>
+                    <!--    <li>{{ record.date_encode }}</li> -->
                         <li>{{ record.date_arrive }}</li>
                         <li>{{ record.qty }}</li>
                         <li>{{ record.container }}</li>
@@ -317,22 +319,22 @@ try {
                         Qty of Containers
                         <cht>貨櫃數量</cht>
                     </li>
-                    <li><input type="text" name="measure_qty" v-model="measure_qty" disabled></li>
+                    <li><input type="text" name="measure_qty" v-model="measure_qty" readonly></li>
                     <li>
                         Container Number
                         <cht>櫃號</cht>
                     </li>
-                    <li><input type="text" name="measure_container" :value="measure_container" disabled></li>
+                    <li><input type="text" name="measure_container" :value="measure_container" readonly></li>
                 </ul>
 
                 <ul>
-                    <li>
+                    <li style="display: none;">
                         Date Encoded
                         <cht>丈量日期</cht>
                     </li>
-                    <li>
+                    <li style="display: none;">
                         <date-encode id="date_encode" @update-date="update_date_encode" v-model="date_encode"
-                                     style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;" disabled></date-encode>
+                                     style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;" readonly></date-encode>
                      
                     </li>
                     <li>
@@ -340,25 +342,31 @@ try {
                         <cht>貨櫃到倉日期</cht>
                     </li>
                     <li>
-                        <date-cr id="date_cr" @update-date="update_date_cr" v-model="date_cr"
-                                 style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;" disabled></date-cr>
+                        <input type="text" v-model="date_cr"
+                                readonly></input>
                  
                     </li>
+                    <li>
+                        Remark
+                        <cht>備註</cht>
+                    </li>
+                    <li><input type="text" name="remark" v-model="remark" readonly></li>
                 </ul>
-
+<!--
                 <ul>
                     <li>
                         Currency Rate
                         <cht>匯率</cht>
                     </li>
                     <li>
-                        <input type="text" name="currency_rate" v-model="currency_rate" disabled>
+                        <input type="text" name="currency_rate" v-model="currency_rate" readonly>
                     </li>
                     <li>
                         Remark
                         <cht>備註</cht>
                     </li>
-                    <li><input type="text" name="remark" v-model="remark" disabled></li>
+                    <li><input type="text" name="remark" v-model="remark" readonly></li>
+            -->
                 </ul>
             </div>
         </div>
@@ -442,7 +450,7 @@ try {
                                     {{ item.customer }}
                                 </td>
                                 <td class="ph_client" v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="text"  v-model.lazy="row.customer" disabled>
+                                    <input type="text"  v-model.lazy="row.customer" readonly>
                                 </td>
                                 <td>
                                     {{ item.description }}
@@ -451,19 +459,19 @@ try {
                                     {{ item.quantity }}
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model.lazy="row.kilo" @change=change_A(row) disabled>
+                                    <input type="number" min="0" v-model.lazy="row.kilo" @change=change_A(row) readonly>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model.lazy="row.cuft" @change=change_B(row) disabled>
+                                    <input type="number" min="0" v-model.lazy="row.cuft" @change=change_B(row) readonly>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model.lazy="row.kilo_price" @change=change_C(row) disabled>
+                                    <input type="number" min="0" v-model.lazy="row.kilo_price" @change=change_C(row) readonly>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model.lazy="row.cuft_price" @change=change_D(row) disabled>
+                                    <input type="number" min="0" v-model.lazy="row.cuft_price" @change=change_D(row) readonly>
                                 </td>
                                 <td v-if="j == 0" :rowspan="row.record.length">
-                                    <input type="number" min="0" v-model.lazy="row.charge" disabled>
+                                    <input type="number" min="0" v-model.lazy="row.charge" readonly>
                                 </td>
                                 <td>
                                 {{ item.supplier }}

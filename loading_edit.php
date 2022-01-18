@@ -108,7 +108,7 @@ $(function(){
                             <li>{{ record.date_sent }}</li>
                             <li :style="[record.ob_date_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ record.ob_date }}</li>
                             <li :style="[record.eta_date_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ record.eta_date }}</li>
-                            <li>{{ record.date_arrive }}</li>
+                            <li :style="[record.date_arrive_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ record.date_arrive }}</li>
                          </ul>
                      </div>
                  </div>
@@ -199,7 +199,7 @@ $(function(){
                          <li>ETA</li>
                          <li><eta-date-picker id="eta_date"  @update-date="updat_eta_date" v-model="record.eta_date" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></eta-date-picker><span class="text-danger" v-if="error_eta_date" v-text="error_eta_date"></span></li>
                          <li>到倉日期<eng>Date C/R</eng></li>
-                         <li><date_arrive-picker id="date_arrive"  @update-date="updat_date_arrive" v-model="date_arrive" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date_arrive-picker><span class="text-danger" v-if="error_date_arrive" v-text="error_date_arrive"></span></li>
+                         <li><date_arrive-picker id="date_arrive"  @update-date="updat_date_arrive" v-model="record.date_arrive" style="width: calc(60% - 10px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date_arrive-picker><span class="text-danger" v-if="error_date_arrive" v-text="error_date_arrive"></span></li>
                      </ul>
                  </div>  
                  <div class="tablebox lo01">

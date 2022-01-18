@@ -53,6 +53,30 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 $user = $decoded->data->username;
 
+function UpdateLoadingDateArriveHistory($date_arrive, $id, $conn){
+    $sql = "SELECT id, date_arrive FROM loading_date_history  where loading_id in ($id)";
+    $result = mysqli_query($conn, $sql);
+
+    // die if SQL statement failed
+    while ($row = mysqli_fetch_array($result)) {
+        $loading_id = $row['id'];
+        $date_arrive_ary = explode(",", $row['date_arrive']);
+
+        if (!in_array($date_arrive, $date_arrive_ary)) {
+            array_push($date_arrive_ary, $date_arrive);
+        }
+
+        $date_arrive_str = ltrim(implode(",", $date_arrive_ary), ",");
+
+
+        $sql = "update loading_date_history set 
+                                            date_arrive = '$date_arrive_str'
+                                    where id = $loading_id";
+        $query = $conn->query($sql);
+    }
+
+}
+
 switch ($method) {
 
     case 'POST':
@@ -106,7 +130,7 @@ switch ($method) {
         // for loading
         $query = "UPDATE loading
             SET
-                measure_num = " . $last_id . " WHERE id in (" . $measure_container_id . ")";
+                measure_num = " . $last_id . ", date_arrive = '" . $date_cr . "'  WHERE id in (" . $measure_container_id . ")";
 
         $stmt = $conn->prepare($query);
 
@@ -129,6 +153,8 @@ switch ($method) {
             die();
         }
 
+        UpdateLoadingDateArriveHistory($date_cr, $measure_container_id, $conn);
+
         // for record
         for ($i = 0; $i < count($detail_array); $i++) {
 
@@ -139,7 +165,8 @@ switch ($method) {
             // $charge = ($kilo * $kilo_price > $cuft * $cuft_price ? $kilo * $kilo_price : $cuft * $cuft_price);
             $charge = ($detail_array[$i]['charge'] == '') ? 0 : $detail_array[$i]['charge'];
 
-            $customer = ($detail_array[$i]['customer'] == '') ? '' : $detail_array[$i]['customer'];
+            $cus = isset($detail_array[$i]['customer']) ? $detail_array[$i]['customer'] : "";
+            $customer = $cus;
 
             $query = "INSERT INTO measure_detail (measure_id, customer, kilo, cuft, kilo_price, cuft_price, charge, crt_user, crt_time)
                             values(?, ?, ?, ?, ?, ?, ?, ?, now())";

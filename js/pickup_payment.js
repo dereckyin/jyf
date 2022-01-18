@@ -23,7 +23,7 @@ let mainState = {
 
     error_mesasge:'',
 
-    filter : '',
+    filter : 'F',
 
     edit_measure:{},
     edit_receive:{},
@@ -49,6 +49,7 @@ let mainState = {
     need_to_update: false,
 
     ar: 0,
+    detail_id:0,
 
     // paging
     page: 1,
@@ -493,7 +494,8 @@ var app = new Vue({
             
           
           obj = {
-            "id" : order,
+            "id" : 0,
+            "detail_id" : this.detail_id,
             "type" : 1,
             "issue_date" : '',
             "payment_date" : '',
@@ -540,12 +542,15 @@ var app = new Vue({
 
         },
 
-        item_payment: function(record, ar) {
+        item_payment: function(record, ar, detail_id) {
           this.payment = [];
           this.payment_record = [];
 
-          this.payment = [].concat(record.payment);
+          //this.payment = [].concat(record);
+          this.payment = JSON.parse(JSON.stringify(record));
           this.ar = ar;
+
+          this.detail_id = detail_id;
 
           this.payment_record = this.shallowCopy(record);
         },

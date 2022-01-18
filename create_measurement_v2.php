@@ -321,11 +321,11 @@ try {
                 </ul>
 
                 <ul>
-                    <li>
+                    <li style="display: none;">
                         Date Encoded
                         <cht>丈量日期</cht>
                     </li>
-                    <li>
+                    <li style="display: none;">
                         <date-encode id="date_encode" @update-date="update_date_encode" v-model="date_encode"
                                      style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-encode>
                         
@@ -339,8 +339,13 @@ try {
                                  style="width: calc(40% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-cr>
                         
                     </li>
+                    <li>
+                        Remark
+                        <cht>備註</cht>
+                    </li>
+                    <li><input type="text" name="remark" v-model="remark"></li>
                 </ul>
-
+<!-- 
                 <ul>
                     <li>
                         Currency Rate
@@ -355,6 +360,8 @@ try {
                     </li>
                     <li><input type="text" name="remark" v-model="remark"></li>
                 </ul>
+
+-->
             </div>
         </div>
 

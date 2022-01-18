@@ -160,7 +160,7 @@ $(function(){
                             <li >{{ record.date_sent }}</li>
                             <li :style="[record.ob_date_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ record.ob_date }}</li>
                             <li :style="[record.eta_date_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ record.eta_date }}</li>
-                            <li>{{ record.date_arrive }}</li>
+                            <li :style="[record.date_arrive_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ record.date_arrive }}</li>
                             <li>{{ record.broker }}</li>
                          </ul>
                      </div>
