@@ -725,10 +725,7 @@ try {
                             <cht>收貨日期</cht>
                             Date Receive
                         </li>
-                        <li>
-                            <cht>收件人(菲)</cht>
-                            Company/Customer(PH)
-                        </li>
+                        <li><cht>收件人</cht> Company/Customer</li>
                         <li>
                             <cht>貨品名稱</cht>
                             Description
@@ -806,10 +803,7 @@ try {
                             <cht>收貨日期</cht>
                             Date Receive
                         </li>
-                        <li>
-                            <cht>收件人(菲)</cht>
-                            Company/Customer(PH)
-                        </li>
+                        <li><cht>收件人</cht> Company/Customer</li>
                         <li>
                             <cht>貨品名稱</cht>
                             Description

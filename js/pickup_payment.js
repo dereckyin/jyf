@@ -547,7 +547,7 @@ var app = new Vue({
           this.payment_record = [];
 
           //this.payment = [].concat(record);
-          this.payment = record.map((x) => x);
+          this.payment = JSON.parse(JSON.stringify(record));
           this.ar = ar;
 
           this.detail_id = detail_id;
