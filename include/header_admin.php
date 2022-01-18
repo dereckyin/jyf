@@ -173,7 +173,7 @@ if ( isset( $jwt ) ) {
         {
         echo "
         <a class='after-micons' href='create_measurement_v2.php'>Measurement <cht>丈量</cht></a>
-           
+        <a class='after-micons' href='pickup_payment.php'>Pickup and Payment <cht>提貨與付款</cht></a>
 
         <dl class='sub'>
             <dt>

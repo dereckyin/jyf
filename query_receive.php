@@ -153,8 +153,8 @@ $(function(){
               <li :style="[receive_record.eta_date_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ receive_record.eta_date }}</li>
               <li :style="[receive_record.date_arrive_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ receive_record.date_arrive }}</li>
               <!-- <li>{{ receive_record.date_encode }}</li> -->
-              <li></li>
-              <li></li>
+              <li>{{ receive_record.real_pick_time != '' && receive_record.real_payment_time != '' ? receive_record.real_pick_time : ''}}</li>
+              <li>{{ receive_record.real_pick_time != '' && receive_record.real_payment_time != '' ? receive_record.real_payment_time : ''}}</li>
             </ul>
           </div>
         </div>

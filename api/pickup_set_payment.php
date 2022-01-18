@@ -149,6 +149,33 @@ $user_id = $decoded->data->id;
                 echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
             }
+
+            // for receive record
+            if($encode_status == 'C')
+            {
+                $query = "UPDATE receive_record
+                    SET
+                    real_payment_time = '" . date("Y/m/d") . "'
+                    WHERE id in (SELECT record_id from measure_record_detail WHERE detail_id = " . $detail_id . ")";
+
+                $stmt = $conn->prepare($query);
+
+                try {
+                    // execute the query, also check if query was successful
+                    if (!$stmt->execute()) {
+                        $conn->rollback();
+                        http_response_code(501);
+                        echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                        die();
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    $conn->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
+                }
+            }
             
         }
 

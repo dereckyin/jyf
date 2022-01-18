@@ -1,4 +1,47 @@
 <?php include 'check.php';?>
+<?php
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
+$uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
+if ( !isset( $jwt ) ) {
+  header( 'location:index' );
+}
+
+include_once 'api/config/core.php';
+include_once 'api/libs/php-jwt-master/src/BeforeValidException.php';
+include_once 'api/libs/php-jwt-master/src/ExpiredException.php';
+include_once 'api/libs/php-jwt-master/src/SignatureInvalidException.php';
+include_once 'api/libs/php-jwt-master/src/JWT.php';
+include_once 'api/config/database.php';
+
+
+use \Firebase\JWT\JWT;
+
+$phili_read = "0";
+
+try {
+        // decode jwt
+        try {
+            // decode jwt
+            $decoded = JWT::decode($jwt, $key, array('HS256'));
+            $user_id = $decoded->data->id;
+
+            $phili_read = $decoded->data->phili_read;
+          
+
+        }
+        catch (Exception $e){
+
+            header( 'location:index.php' );
+        }
+
+    }
+    // if decode fails, it means jwt is invalid
+    catch (Exception $e){
+    
+        header( 'location:index.php' );
+    }
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -275,9 +318,16 @@
 
             </div>
             <div class="btnbox">
+            <?php
+                if($phili_read == "0")
+{
+    ?>
                 <a class="btn small" @click="pickup()">Generate Pickup / Payment Record
                     <cht>打單</cht>
                 </a>
+                <?php
+}
+?>
             </div>
         </div>
 
@@ -348,7 +398,15 @@
                             </td>
                             <td>
                                 <div>{{ item.encode }}</div>
+                                <?php
+                if($phili_read == "0")
+{
+    ?>
                                 <button data-toggle="modal" data-target="#encode_modal" v-if="item.encode_status == ''" @click="item_encode(item)">Encode</button>
+                                <?php
+}
+?>
+
                             </td>
                             <td>
                                 <span v-for='(cust, j) in item.record_cust'>{{ cust }}</span>
@@ -366,13 +424,27 @@
                             <td>{{ item.charge }}</td>
                             <td>
                                 <div v-for='(rs, k) in item.record'>{{rs.pick_date}}</div>
+                                <?php
+                if($phili_read == "0")
+{
+    ?>
                                 <button @click="item_record(item.record)" data-toggle="modal" data-target="#record_modal" v-if="item.pickup_status == ''">Encode</button>
+                                <?php
+}
+?>
                                 <button @click="item_record(item.record)" data-toggle="modal" data-target="#record_modal_detail" v-if="item.pickup_status != ''">Detail</button>
                             </td>
                             <td v-if="j == 0" :rowspan="row.measure.length">
                                 <div class="ar">A/R: {{ row.ar_amount }} </div>
                                 <div v-for='(rs, l) in row.payments'>{{rs.payment_date}}, {{ rs.amount }}</div>
+                                <?php
+                if($phili_read == "0")
+{
+    ?>
                                 <button data-toggle="modal" data-target="#payment_modal" v-if="item.payment_status == ''" @click="item_payment(row.payments, row.ar, row.measure_detail_id)">Encode</button>
+                                <?php
+}
+?>
                                 <button data-toggle="modal" data-target="#payment_modal_detail" v-if="item.payment_status != ''" @click="item_payment(row.payments, row.ar, row.measure_detail_id)">Detail</button>
                             </td>
                         </tr>
@@ -382,6 +454,10 @@
                 </table>
 
                 <div class="btnbox" style="border: none; margin-top: 10px;">
+                <?php
+                if($phili_read == "0")
+{
+    ?>
                     <a class="btn small" @click="merge_item()">
                         Merge Items
                         <cht>合併項目</cht>
@@ -390,6 +466,9 @@
                         Decompose Item
                         <cht>拆分項目</cht>
                     </a>
+                    <?php
+}
+?>
                 </div>
             </div>
 
@@ -583,6 +662,7 @@
                 </table>
 
                 <div class="btnbox" style="border: none; margin-top: 10px;">
+                
                     <a class="btn small">
                         Merge Items
                         <cht>合併項目</cht>
@@ -591,6 +671,7 @@
                         Decompose Item
                         <cht>拆分項目</cht>
                     </a>
+                    
                 </div>
             </div>
         </div>
@@ -681,7 +762,7 @@
                     <ul v-for="(item, j) in record">
 
                         <li>{{ item.date_receive }}</li>
-                        <li>{{ item.cust }}</li>
+                        <li>{{ item.customer }}</li>
                         <li>{{ item.description }}</li>
                         <li>{{ item.quantity }}</li>
                         <li>{{ item.supplier }}</li>
@@ -762,7 +843,7 @@
                     <ul v-for="(item, j) in record">
 
                         <li>{{ item.date_receive }}</li>
-                        <li>{{ item.cust }}</li>
+                        <li>{{ item.customer }}</li>
                         <li>{{ item.description }}</li>
                         <li>{{ item.quantity }}</li>
                         <li>{{ item.supplier }}</li>

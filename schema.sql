@@ -747,3 +747,10 @@ ALTER TABLE user ADD COLUMN taiwan_read INT DEFAULT 0;
 
 -- 20220113 add date arrived history
 ALTER TABLE loading_date_history ADD COLUMN `date_arrive` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20220118 add pick date & payment time
+ALTER TABLE receive_record
+ADD COLUMN `real_pick_time` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE receive_record
+ADD COLUMN `real_payment_time` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';

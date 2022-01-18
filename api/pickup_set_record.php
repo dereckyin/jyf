@@ -73,7 +73,8 @@ $user_id = $decoded->data->id;
             SET
             pick_date = '" . $pick_date . "',
             pick_note = '" . $pick_note . "',
-            pick_person = '" . $pick_person . "'
+            pick_person = '" . $pick_person . "',
+            real_pick_time = '" . date("Y/m/d") . "'
             WHERE id = " . $rid;
 
             $stmt = $conn->prepare($query);

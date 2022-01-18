@@ -542,6 +542,8 @@ class ReceiveRecord{
                         l.date_arrive,
                         m.date_encode,
                         l.eta_date,
+                        r.real_pick_time,
+                        r.real_payment_time,
                         COALESCE(ld.eta_date, '') eta_date_his,
                         COALESCE(ld.date_arrive, '') date_arrive_his 
                         FROM receive_record r LEFT JOIN loading l 
@@ -589,6 +591,8 @@ class ReceiveRecord{
                         l.date_arrive,
                         m.date_encode,
                         l.eta_date,
+                        r.real_pick_time,
+                        r.real_payment_time,
                         COALESCE(ld.eta_date, '') eta_date_his,
                         COALESCE(ld.date_arrive, '') date_arrive_his  
                         FROM receive_record r LEFT JOIN loading l 
