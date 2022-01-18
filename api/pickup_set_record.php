@@ -74,7 +74,8 @@ $user_id = $decoded->data->id;
             pick_date = '" . $pick_date . "',
             pick_note = '" . $pick_note . "',
             pick_person = '" . $pick_person . "',
-            real_pick_time = '" . date("Y/m/d") . "'
+            pick_time = now(),
+            real_pick_time = '" . str_replace('-', '/', $pick_date) . "'
             WHERE id = " . $rid;
 
             $stmt = $conn->prepare($query);
