@@ -264,7 +264,8 @@ function GetAr($array)
         $amount += ($item['charge'] == "" ? 0 : $item['charge']);
     }
 
-    return $amount;
+    return number_format((float)$amount, 2, '.', '');
+    //return $amount;
 }
 
 function GetPayments($array)
@@ -296,7 +297,7 @@ function GetArAmount($array)
         }
     }
 
-    return $amount;
+    return number_format((float)$amount, 2, '.', '');
 }
 
 
