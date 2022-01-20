@@ -377,7 +377,7 @@ var app = new Vue({
             group_record = [];
             new_record = [];
 
-            order = 0;
+            var _order = 0;
             
             for (i = 0; i < this.receive_records.length; i++) {
                 if(this.receive_records[i].is_checked != 1 && this.receive_records[i].record.length > 1)
@@ -389,7 +389,8 @@ var app = new Vue({
             for (i = 0; i < this.receive_records.length; i++) {
                 if(this.receive_records[i].is_checked != 1 && this.receive_records[i].record.length == 1)
                 {
-                    
+                    if(this.receive_records[i].order != '')
+                        _order = this.receive_records[i].order;
                     new_record.push(this.receive_records[i]);
                 }
             }
@@ -404,13 +405,13 @@ var app = new Vue({
                     for (j = 0; j < ary.length; j++)
                     {
                         let cust = ary[j]['customer'] + ary[j]['date_receive'];
-                        order = order + 1;
+                        _order = _order + 1;
                         obj = [];
 
                         obj.push(ary[j]);
 
                         rec = {
-                            "order" : "",
+                            "order" : _order,
                             "is_checked" : 0,
                             "group_id" : 0,
                             "customer" : "", 
