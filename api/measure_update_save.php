@@ -54,7 +54,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $user = $decoded->data->username;
 
 function UpdateLoadingDateArriveHistory($date_arrive, $id, $conn){
-    $sql = "SELECT id, date_arrive FROM loading_date_history  where loading_id in (select id from loading where measure_num = $id)";
+    $sql = "SELECT id, date_arrive FROM loading_date_history  where loading_id in (select id from loading where measure_num = $id and measure_num <> 0)";
     $result = mysqli_query($conn, $sql);
 
     // die if SQL statement failed
