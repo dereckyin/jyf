@@ -460,7 +460,7 @@ var app = new Vue({
                 if(this.receive_records[i].is_checked == 1)
                 {
                     ary = this.shallowCopy(
-                        this.receive_records.find((element) => element.order == this.receive_records[i].order)
+                        this.receive_records[i]
                       ).record;
                     for (j = 0; j < ary.length; j++)
                         obj.push(ary[j]);
