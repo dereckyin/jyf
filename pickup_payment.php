@@ -419,8 +419,8 @@ try {
                                 {{ item.container_number }}
                             </td>
                             <td>{{ item.record.length }}</td>
-                            <td>{{ item.kilo }}{{ item.kilo == '' ? '' : '@' + (item.kilo < 3000 ? 36.5 : 34.5) }}</td>
-                            <td>{{ item.cuft }}{{ item.cuft == '' ? '' : '@' + (item.cuft < 300 ? 365 : 345) }}</td>
+                            <td>{{ item.kilo }}{{ item.kilo == '' ? '' : '@' + (item.kilo_price) }}</td>
+                            <td>{{ item.cuft }}{{ item.cuft == '' ? '' : '@' + (item.cuft_price) }}</td>
                             <td>{{ item.charge }}</td>
                             <td>
                                 <div v-for='(rs, k) in item.record'>{{rs.pick_date}}</div>
