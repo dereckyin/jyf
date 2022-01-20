@@ -39,7 +39,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $user = $decoded->data->username;
 
 function UpdateLoadingDateArriveHistory($date_arrive, $_id, $conn){
-    $sql = "SELECT id, date_arrive FROM loading_date_history  where loading_id in (SELECT id FROM loading where measure_num in (select * from (select measure_num from loading where id = $_id) as t))";
+    $sql = "SELECT id, date_arrive FROM loading_date_history  where loading_id in (SELECT id FROM loading where measure_num in (select * from (select measure_num from loading where id = $_id and measure_num <> 0) as t))";
     $result = mysqli_query($conn, $sql);
 
     // die if SQL statement failed
@@ -682,10 +682,10 @@ switch ($method) {
                                             where loading_id = $id";
                 $query = $conn->query($sql);
 
-                $sql = "update measure_ph set date_arrive = '$date_arrive' where id = (select measure_num from loading where id = $id)";
+                $sql = "update measure_ph set date_arrive = '$date_arrive' where id = (select measure_num from loading where id = $id  and measure_num <> 0)";
                 $query = $conn->query($sql);
 
-                $sql = "update loading set date_arrive = '$date_arrive' where measure_num in (select * from (select measure_num from loading where id = $id) as t)";
+                $sql = "update loading set date_arrive = '$date_arrive' where measure_num in (select * from (select measure_num from loading where id = $id and measure_num <> 0) as t)";
                 $query = $conn->query($sql);
 
                 UpdateLoadingDateArriveHistory($date_arrive, $id, $conn);

@@ -754,3 +754,6 @@ ADD COLUMN `real_pick_time` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
 
 ALTER TABLE receive_record
 ADD COLUMN `real_payment_time` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20220119 charge column typo
+alter table measure_detail change charge charge DECIMAL(10, 2);
