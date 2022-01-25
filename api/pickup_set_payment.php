@@ -72,6 +72,8 @@ $user_id = $decoded->data->id;
             $payment_date = ($detail_array[$i]['payment_date'] == '') ? "" : $detail_array[$i]['payment_date'];
             $person = ($detail_array[$i]['person'] == '') ? "" : $detail_array[$i]['person'];
             $amount = ($detail_array[$i]['amount'] == '') ? 0 : $detail_array[$i]['amount'];
+            $change = ($detail_array[$i]['change'] == '') ? 0 : $detail_array[$i]['change'];
+            $courier = ($detail_array[$i]['courier'] == '') ? 0 : $detail_array[$i]['courier'];
             $remark = ($detail_array[$i]['remark'] == '') ? "" : $detail_array[$i]['remark'];
 
 
@@ -104,8 +106,8 @@ $user_id = $decoded->data->id;
             }
 
             
-            $query = "insert into payment (detail_id, `type`, issue_date, payment_date, person, amount, remark, status, crt_time, crt_user)
-                VALUES (" . $detail_id . ", " . $type . ", '" . $issue_date . "', '" . $payment_date . "', '" . $person . "', " . $amount . ", '" . $remark . "', 0, now(), '" . $user . "')";  
+            $query = "insert into payment (detail_id, `type`, issue_date, payment_date, person, amount, `change`, courier, remark, status, crt_time, crt_user)
+                VALUES (" . $detail_id . ", " . $type . ", '" . $issue_date . "', '" . $payment_date . "', '" . $person . "', " . $amount . ", " . $change . ", " . $courier . ", '" . $remark . "', 0, now(), '" . $user . "')";  
           
             $stmt = $conn->prepare($query);
 

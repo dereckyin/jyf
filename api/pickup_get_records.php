@@ -293,7 +293,7 @@ function GetArAmount($array)
 
         $payment = $item['payment'];
         foreach($payment as $pay) {
-            $amount = $amount - ($pay['amount'] == "" ? 0 : $pay['amount']);
+            $amount = $amount - (($pay['amount'] == "" ? 0 : $pay['amount']) - ($pay['change'] == "" ? 0 : $pay['change']) - ($pay['courier'] == "" ? 0 : $pay['courier']));
         }
     }
 
@@ -402,7 +402,7 @@ function GetMeasureDetailRecord($id, $db){
 
 
 function GetPaymentRecord($id, $db){
-    $query = "SELECT id, detail_id, `type`, issue_date, payment_date, person, amount, remark
+    $query = "SELECT id, detail_id, `type`, issue_date, payment_date, person, amount, `change`, courier, remark
                 FROM payment
                                  
                     WHERE detail_id = " . $id . "
@@ -424,6 +424,8 @@ function GetPaymentRecord($id, $db){
         $payment_date = $row['payment_date'];
         $person = $row['person'];
         $amount = $row['amount'];
+        $change = $row['change'];
+        $courier = $row['courier'];
         $remark = $row['remark'];
        
 
@@ -435,6 +437,8 @@ function GetPaymentRecord($id, $db){
             "payment_date" => $payment_date,
             "person" => $person,
             "amount" => $amount,
+            "change" => $change,
+            "courier" => $courier,
             "remark" => $remark,
             "ar" => "",
         );

@@ -64,6 +64,13 @@ let mainState = {
 
     perPage: 12,
 
+
+    pick_id: 0,
+    measure_to_edit : [],
+    measure_to_seperate : [],
+    group_a : [],
+    group_b : [],
+
 };
 
 var app = new Vue({
@@ -74,7 +81,7 @@ var app = new Vue({
     created () {
       console.log('Vue created');
       this.perPage = this.inventory.find(i => i.id === this.perPage);
-      this.getContactors();
+      //this.getContactors();
       this.load_measurement();
       this.getMeasures();
     },
@@ -123,6 +130,341 @@ var app = new Vue({
     },
 
     methods: {
+      B_change_C: function(){
+        let row = this.group_b;
+        nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
+
+        ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
+        
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
+
+        app.$forceUpdate();
+    },
+
+    B_change_D: function(){
+      let row = this.group_b;
+        nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
+
+        ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
+        
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
+
+        app.$forceUpdate();
+    },
+
+      B_change_A: function(){
+        let row = this.group_b;
+        nkilo = ((row.kilo == "" ? 0 : row.kilo) < 3000 ? 36.5 : 34.5) * (row.kilo == "" ? 0 : row.kilo);
+        ncuft = (row.cuft == "" ? 0 : row.cuft)  * (row.cuft_price == "" ? 0 : row.cuft_price);
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
+
+        if(row.kilo != "")
+        {
+            num = parseFloat(row.kilo == "" ? 0 : row.kilo);
+            row.kilo_price = (num < 3000 ? 36.5 : 34.5).toLocaleString('en-US', {maximumFractionDigits:2});  
+        }
+
+        if(row.kilo == "")
+        {
+            row.kilo_price = "";  
+        }
+
+        if(row.cuft == "" && row.cuft_price == "" && row.kilo == "" && row.kilo_price == "")
+            row.charge = "";
+
+        app.$forceUpdate();
+    },
+
+    B_change_B: function(){
+      let row = this.group_b;
+        nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
+        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
+      
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
+
+        if(row.cuft != "")
+        {
+            num = parseFloat(row.cuft == "" ? 0 : row.cuft);
+            row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+        }
+
+        if(row.cuft == "")
+        {
+            row.cuft_price = "";  
+        }
+
+        if(row.cuft == "" && row.cuft_price == "" && row.kilo == "" && row.kilo_price == "")
+            row.charge = "";
+
+        app.$forceUpdate();
+    },
+
+      A_change_C: function(){
+        let row = this.group_a;
+        nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
+
+        ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
+        
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
+
+        app.$forceUpdate();
+    },
+
+    A_change_D: function(){
+      let row = this.group_a;
+        nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
+
+        ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
+        
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
+
+        app.$forceUpdate();
+    },
+
+      A_change_A: function(){
+        let row = this.group_a;
+        nkilo = ((row.kilo == "" ? 0 : row.kilo) < 3000 ? 36.5 : 34.5) * (row.kilo == "" ? 0 : row.kilo);
+        ncuft = (row.cuft == "" ? 0 : row.cuft)  * (row.cuft_price == "" ? 0 : row.cuft_price);
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
+
+        if(row.kilo != "")
+        {
+            num = parseFloat(row.kilo == "" ? 0 : row.kilo);
+            row.kilo_price = (num < 3000 ? 36.5 : 34.5).toLocaleString('en-US', {maximumFractionDigits:2});  
+        }
+
+        if(row.kilo == "")
+        {
+            row.kilo_price = "";  
+        }
+
+        if(row.cuft == "" && row.cuft_price == "" && row.kilo == "" && row.kilo_price == "")
+            row.charge = "";
+
+        app.$forceUpdate();
+    },
+
+    A_change_B: function(){
+      let row = this.group_a;
+        nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
+        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
+      
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
+
+        if(row.cuft != "")
+        {
+            num = parseFloat(row.cuft == "" ? 0 : row.cuft);
+            row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+        }
+
+        if(row.cuft == "")
+        {
+            row.cuft_price = "";  
+        }
+
+        if(row.cuft == "" && row.cuft_price == "" && row.kilo == "" && row.kilo_price == "")
+            row.charge = "";
+
+        app.$forceUpdate();
+    },
+
+      change_C: function(){
+        let row = this.measure_to_edit;
+        nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
+
+        ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
+        
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
+
+        app.$forceUpdate();
+    },
+
+    change_D: function(){
+      let row = this.measure_to_edit;
+        nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
+
+        ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
+        
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
+
+        app.$forceUpdate();
+    },
+
+      change_A: function(){
+        let row = this.measure_to_edit;
+        nkilo = ((row.kilo == "" ? 0 : row.kilo) < 3000 ? 36.5 : 34.5) * (row.kilo == "" ? 0 : row.kilo);
+        ncuft = (row.cuft == "" ? 0 : row.cuft)  * (row.cuft_price == "" ? 0 : row.cuft_price);
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
+
+        if(row.kilo != "")
+        {
+            num = parseFloat(row.kilo == "" ? 0 : row.kilo);
+            row.kilo_price = (num < 3000 ? 36.5 : 34.5).toLocaleString('en-US', {maximumFractionDigits:2});  
+        }
+
+        if(row.kilo == "")
+        {
+            row.kilo_price = "";  
+        }
+
+        if(row.cuft == "" && row.cuft_price == "" && row.kilo == "" && row.kilo_price == "")
+            row.charge = "";
+
+        app.$forceUpdate();
+    },
+
+    change_B: function(){
+      let row = this.measure_to_edit;
+        nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
+        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
+      
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
+
+        if(row.cuft != "")
+        {
+            num = parseFloat(row.cuft == "" ? 0 : row.cuft);
+            row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+        }
+
+        if(row.cuft == "")
+        {
+            row.cuft_price = "";  
+        }
+
+        if(row.cuft == "" && row.cuft_price == "" && row.kilo == "" && row.kilo_price == "")
+            row.charge = "";
+
+        app.$forceUpdate();
+    },
+
+      edit_measurement: function(){
+
+        var selected_cnt = 0;
+
+        for (i = 0; i < this.receive_records.length; i++) {
+            if(this.receive_records[i].is_checked == 1)
+            {
+
+              selected_cnt++;
+
+              this.measure_to_edit = [];
+
+              let measure = this.receive_records[i].measure;
+              if(measure.length > 1)
+              {
+                alert('Editing the measurement data for a merged item is not allowed.');
+                this.getMeasures();
+                this.measure_to_edit = [];
+                return;
+              }
+                  
+              this.measure_to_edit = JSON.parse(JSON.stringify(measure[0]));
+              this.measure_to_edit.customer = this.measure_to_edit.record_cust.join(", ");
+           
+            }
+
+            
+          }
+
+          if(selected_cnt > 1)
+          {
+            alert('Please select one measurement to edit.');
+            this.getMeasures();
+            this.measure_to_edit = [];
+            return;
+          }
+
+          if(selected_cnt == 1)
+            $('#edit_record_modal').modal('show');
+          
+            
+      },
+
+      edit_measurement_cancel: function()
+      {
+        this.measure_to_edit = [];
+        $('#edit_record_modal').modal('hide');
+        this.getMeasures();
+      },
+
+      seperate_record: function(){
+
+        var selected_cnt = 0;
+        var record_cnt = 0;
+
+        for (i = 0; i < this.receive_records.length; i++) {
+            if(this.receive_records[i].is_checked == 1)
+            {
+
+              selected_cnt++;
+
+              this.measure_to_seperate = [];
+              this.group_a = [];
+              this.group_b = [];
+
+              let measure = this.receive_records[i].measure;
+              if(measure.length > 1)
+              {
+                alert('Decomposing the measurement data for a merged item is not allowed.');
+                this.getMeasures();
+                this.measure_to_seperate = [];
+                this.group_a = [];
+                this.group_b = [];
+                return;
+              }
+                  
+              this.measure_to_seperate = JSON.parse(JSON.stringify(measure[0]));
+              this.pick_id = this.receive_records[i].id;
+              for(var j = 0; j < this.measure_to_seperate.record.length; j++){
+                this.measure_to_seperate.record[j].group = 'A';
+                record_cnt += this.measure_to_seperate.record.length;
+              }
+            }
+            
+          }
+
+          if(selected_cnt > 1)
+          {
+            alert('Please select one measurement to edit.');
+            this.getMeasures();
+            this.measure_to_seperate = [];
+            this.pick_id = 0;
+            this.group_a = [];
+            this.group_b = [];
+            return;
+          }
+
+          this.group_a.customer = this.measure_to_seperate.record_cust.join(", ");
+          this.group_a.kilo = this.measure_to_seperate.kilo;
+          this.group_a.cuft = this.measure_to_seperate.cuft;
+          this.group_a.kilo_price = this.measure_to_seperate.kilo_price;
+          this.group_a.cuft_price = this.measure_to_seperate.cuft_price;
+          this.group_a.charge = this.measure_to_seperate.charge;
+
+          this.group_b.customer = '';
+          this.group_b.kilo = '';
+          this.group_b.cuft = '';
+          this.group_b.kilo_price = '';
+          this.group_b.cuft_price = '';
+          this.group_b.charge = '';
+
+
+          if(selected_cnt == 1 && record_cnt > 1)
+            $('#seperate_record_modal').modal('show');
+          else
+            this.seperate_record_cancel();
+            
+      },
+
+      seperate_record_cancel: function()
+      {
+        this.measure_to_seperate = [];
+        this.group_a = [];
+        this.group_b = [];
+        this.pick_id = 0;
+        $('#seperate_record_modal').modal('hide');
+        this.getMeasures();
+      },
 
         delReceiveRecords() {
             let _this = this;
@@ -205,42 +547,65 @@ var app = new Vue({
       
           },
 
-        save_measure() {
+          save_seperate_data:async function() {
             let _this = this;
-            if (!this.validateMeasure()) {
-                Swal.fire({
-                    text: _this.error_message,
-                    icon: "warning",
-                    confirmButtonText: "OK",
-                  });
-          
-                  return;
+
+            var group_a_cnt = 0;
+            var group_b_cnt = 0;
+
+            for(var i=0; i < this.measure_to_seperate.record.length; i++)
+            {
+              if(this.measure_to_seperate.record[i].group == 'A')
+                group_a_cnt++;
+
+              if(this.measure_to_seperate.record[i].group == 'B')
+                group_b_cnt++;
             }
 
-      
+            if(group_a_cnt == 0 || group_b_cnt == 0) 
+            {
+              alert('Please seperate measurement data into both groups.');
+              this.seperate_record_cancel();
+              return;
+            }
+              
+
+            obj_a = {
+              "customer" : this.group_a.customer,
+              "kilo" : this.group_a.kilo,
+              "cuft" : this.group_a.cuft,
+              "kilo_price" : this.group_a.kilo_price,
+              "cuft_price" : this.group_a.cuft_price,
+              "charge": this.group_a.charge,
+           
+            }
+
+            obj_b = {
+              "customer" : this.group_b.customer,
+              "kilo" : this.group_b.kilo,
+              "cuft" : this.group_b.cuft,
+              "kilo_price" : this.group_b.kilo_price,
+              "cuft_price" : this.group_b.cuft_price,
+              "charge": this.group_b.charge,
+           
+            }
+
             var token = localStorage.getItem("token");
             var form_Data = new FormData();
       
-            this.date_encode = document.querySelector("input[id=date_encode]").value;
-            this.date_cr = document.querySelector("input[id=date_cr]").value;
-
             form_Data.append("jwt", token);
-            form_Data.append("id", this.measure_id);
-            form_Data.append('date_encode', this.formatDate(this.date_encode))
-            form_Data.append('date_cr', this.formatDate(this.date_cr))
-            form_Data.append('measure_container_id', this.measure_container_id)
-            form_Data.append('currency_rate', this.currency_rate)
-            form_Data.append('remark', this.remark)
       
-            form_Data.append("detail", JSON.stringify(this.receive_records));
-        
+            form_Data.append("pick_id", this.pick_id);
+            form_Data.append("measure", JSON.stringify(this.measure_to_seperate));
+            form_Data.append("group_a", JSON.stringify(obj_a));
+            form_Data.append("group_b", JSON.stringify(obj_b));
       
             axios({
               method: "post",
               headers: {
                 "Content-Type": "multipart/form-data",
               },
-              url: "api/measure_update_save.php",
+              url: "api/measure_to_seperate_save.php",
               data: form_Data,
             })
               .then(function(response) {
@@ -251,8 +616,7 @@ var app = new Vue({
                   confirmButtonText: "OK",
                 });
       
-                _this.resetForm();
-             
+                _this.seperate_record_cancel();
       
               })
               .catch(function(error) {
@@ -262,7 +626,48 @@ var app = new Vue({
                   icon: "info",
                   confirmButtonText: "OK",
                 });
+                _this.seperate_record_cancel();
+              });
+          },
+
+          save_measurement_data:async function() {
+            let _this = this;
+            
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
       
+            form_Data.append("jwt", token);
+      
+            form_Data.append("detail", JSON.stringify(this.measure_to_edit));
+        
+      
+            axios({
+              method: "post",
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+              url: "api/measure_to_edit_save.php",
+              data: form_Data,
+            })
+              .then(function(response) {
+                //handle success
+                Swal.fire({
+                  html: response.data.message,
+                  icon: "info",
+                  confirmButtonText: "OK",
+                });
+      
+                _this.edit_measurement_cancel();
+      
+              })
+              .catch(function(error) {
+                //handle error
+                Swal.fire({
+                  text: JSON.stringify(error),
+                  icon: "info",
+                  confirmButtonText: "OK",
+                });
+                _this.edit_measurement_cancel();
               });
           },
 
@@ -501,6 +906,8 @@ var app = new Vue({
             "payment_date" : '',
             "person": '',
             "amount": '',
+            "change": '',
+            "courier" : '',
             "remark": '',
           }, 
     
@@ -514,9 +921,17 @@ var app = new Vue({
           let charge = this.ar;
           let pay = 0;
           for(let i = 0; i < this.payment.length; i++)
-            pay += this.payment[i].amount == "" ? 0 : Number(this.payment[i].amount);
+            pay += (this.payment[i].amount == "" ? 0 : Number(this.payment[i].amount)) - (this.payment[i].courier == "" ? 0 : Number(this.payment[i].courier));
           if(charge - pay < 0 && row.type == 1)
+          {
             row.remark = "Cash " + row.amount + " - " + (Number(charge) - Number(pay) + Number(row.amount)) + " = P" + Math.abs(charge - pay);
+            row.change = Math.abs(charge - pay);
+          }
+          else
+          {
+            row.remark = '';
+            row.change = '';
+          }
         },
 
         getRecords: function(keyword) {
