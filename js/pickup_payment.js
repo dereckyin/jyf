@@ -359,6 +359,7 @@ var app = new Vue({
               }
                   
               this.measure_to_edit = JSON.parse(JSON.stringify(measure[0]));
+              this.measure_to_edit.customer = this.measure_to_edit.record_cust.join(", ");
            
             }
 
@@ -433,7 +434,7 @@ var app = new Vue({
             return;
           }
 
-          this.group_a.customer = this.measure_to_seperate.record_cust;
+          this.group_a.customer = this.measure_to_seperate.record_cust.join(", ");
           this.group_a.kilo = this.measure_to_seperate.kilo;
           this.group_a.cuft = this.measure_to_seperate.cuft;
           this.group_a.kilo_price = this.measure_to_seperate.kilo_price;
@@ -552,12 +553,12 @@ var app = new Vue({
             var group_a_cnt = 0;
             var group_b_cnt = 0;
 
-            for(var i=0; i < this.measure_to_seperate.length; i++)
+            for(var i=0; i < this.measure_to_seperate.record.length; i++)
             {
-              if(this.measure_to_seperate[i].group == 'A')
+              if(this.measure_to_seperate.record[i].group == 'A')
                 group_a_cnt++;
 
-              if(this.measure_to_seperate[i].group == 'B')
+              if(this.measure_to_seperate.record[i].group == 'B')
                 group_b_cnt++;
             }
 

@@ -1184,7 +1184,7 @@ header( 'location:index.php' );
                         </ul>
 
                         <ul>
-                            <li><input type="text" :value="measure_to_edit.record_cust"></li>
+                            <li><input type="text" v-model="measure_to_edit.customer"></li>
                             <li><input type="number" min="0" v-model="measure_to_edit.kilo" @change="change_A()"></li>
                             <li><input type="number" min="0" v-model="measure_to_edit.cuft" @change="change_B()"></li>
                             <li><input type="number" min="0" v-model="measure_to_edit.kilo_price" @change="change_C()"></li>
