@@ -136,7 +136,7 @@ var app = new Vue({
 
         ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
         
-        row.charge = (ncuft > nkilo) ? ncuft : nkilo;
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         app.$forceUpdate();
     },
@@ -147,7 +147,7 @@ var app = new Vue({
 
         ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
         
-        row.charge = (ncuft > nkilo) ? ncuft : nkilo;
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         app.$forceUpdate();
     },
@@ -156,7 +156,7 @@ var app = new Vue({
         let row = this.group_b;
         nkilo = ((row.kilo == "" ? 0 : row.kilo) < 3000 ? 36.5 : 34.5) * (row.kilo == "" ? 0 : row.kilo);
         ncuft = (row.cuft == "" ? 0 : row.cuft)  * (row.cuft_price == "" ? 0 : row.cuft_price);
-        row.charge = (ncuft > nkilo) ? ncuft : nkilo;
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         if(row.kilo != "")
         {
@@ -180,7 +180,7 @@ var app = new Vue({
         nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
         ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
       
-        row.charge = (ncuft > nkilo) ? ncuft : nkilo;
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         if(row.cuft != "")
         {
@@ -205,7 +205,7 @@ var app = new Vue({
 
         ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
         
-        row.charge = (ncuft > nkilo) ? ncuft : nkilo;
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         app.$forceUpdate();
     },
@@ -216,7 +216,7 @@ var app = new Vue({
 
         ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
         
-        row.charge = (ncuft > nkilo) ? ncuft : nkilo;
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         app.$forceUpdate();
     },
@@ -225,7 +225,7 @@ var app = new Vue({
         let row = this.group_a;
         nkilo = ((row.kilo == "" ? 0 : row.kilo) < 3000 ? 36.5 : 34.5) * (row.kilo == "" ? 0 : row.kilo);
         ncuft = (row.cuft == "" ? 0 : row.cuft)  * (row.cuft_price == "" ? 0 : row.cuft_price);
-        row.charge = (ncuft > nkilo) ? ncuft : nkilo;
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         if(row.kilo != "")
         {
@@ -249,7 +249,7 @@ var app = new Vue({
         nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
         ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
       
-        row.charge = (ncuft > nkilo) ? ncuft : nkilo;
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         if(row.cuft != "")
         {
@@ -274,7 +274,7 @@ var app = new Vue({
 
         ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
         
-        row.charge = (ncuft > nkilo) ? ncuft : nkilo;
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         app.$forceUpdate();
     },
@@ -285,7 +285,7 @@ var app = new Vue({
 
         ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
         
-        row.charge = (ncuft > nkilo) ? ncuft : nkilo;
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         app.$forceUpdate();
     },
@@ -294,7 +294,7 @@ var app = new Vue({
         let row = this.measure_to_edit;
         nkilo = ((row.kilo == "" ? 0 : row.kilo) < 3000 ? 36.5 : 34.5) * (row.kilo == "" ? 0 : row.kilo);
         ncuft = (row.cuft == "" ? 0 : row.cuft)  * (row.cuft_price == "" ? 0 : row.cuft_price);
-        row.charge = (ncuft > nkilo) ? ncuft : nkilo;
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         if(row.kilo != "")
         {
@@ -318,7 +318,7 @@ var app = new Vue({
         nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
         ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
       
-        row.charge = (ncuft > nkilo) ? ncuft : nkilo;
+        row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         if(row.cuft != "")
         {
