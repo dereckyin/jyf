@@ -373,7 +373,8 @@ var app = new Vue({
             return;
           }
 
-          $('#edit_record_modal').modal('show');
+          if(selected_cnt == 1)
+            $('#edit_record_modal').modal('show');
           
             
       },
@@ -388,6 +389,7 @@ var app = new Vue({
       seperate_record: function(){
 
         var selected_cnt = 0;
+        var record_cnt = 0;
 
         for (i = 0; i < this.receive_records.length; i++) {
             if(this.receive_records[i].is_checked == 1)
@@ -402,7 +404,7 @@ var app = new Vue({
               let measure = this.receive_records[i].measure;
               if(measure.length > 1)
               {
-                alert('Editing the measurement data for a merged item is not allowed.');
+                alert('Decomposing the measurement data for a merged item is not allowed.');
                 this.getMeasures();
                 this.measure_to_seperate = [];
                 this.group_a = [];
@@ -414,6 +416,7 @@ var app = new Vue({
               this.pick_id = this.receive_records[i].id;
               for(var j = 0; j < this.measure_to_seperate.record.length; j++){
                 this.measure_to_seperate.record[j].group = 'A';
+                record_cnt += this.measure_to_seperate.record.length;
               }
             }
             
@@ -430,12 +433,12 @@ var app = new Vue({
             return;
           }
 
-          this.group_a.customer = '';
-          this.group_a.kilo = '';
-          this.group_a.cuft = '';
-          this.group_a.kilo_price = '';
-          this.group_a.cuft_price = '';
-          this.group_a.charge = '';
+          this.group_a.customer = this.measure_to_seperate.record_cust;
+          this.group_a.kilo = this.measure_to_seperate.kilo;
+          this.group_a.cuft = this.measure_to_seperate.cuft;
+          this.group_a.kilo_price = this.measure_to_seperate.kilo_price;
+          this.group_a.cuft_price = this.measure_to_seperate.cuft_price;
+          this.group_a.charge = this.measure_to_seperate.charge;
 
           this.group_b.customer = '';
           this.group_b.kilo = '';
@@ -445,9 +448,10 @@ var app = new Vue({
           this.group_b.charge = '';
 
 
-
-          $('#seperate_record_modal').modal('show');
-          
+          if(selected_cnt == 1 && record_cnt > 1)
+            $('#seperate_record_modal').modal('show');
+          else
+            this.seperate_record_cancel();
             
       },
 
@@ -544,6 +548,26 @@ var app = new Vue({
 
           save_seperate_data:async function() {
             let _this = this;
+
+            var group_a_cnt = 0;
+            var group_b_cnt = 0;
+
+            for(var i=0; i < this.measure_to_seperate.length; i++)
+            {
+              if(this.measure_to_seperate[i].group == 'A')
+                group_a_cnt++;
+
+              if(this.measure_to_seperate[i].group == 'B')
+                group_b_cnt++;
+            }
+
+            if(group_a_cnt == 0 || group_b_cnt == 0) 
+            {
+              alert('Please seperate measurement data into both groups.');
+              this.seperate_record_cancel();
+              return;
+            }
+              
 
             obj_a = {
               "customer" : this.group_a.customer,
@@ -881,6 +905,8 @@ var app = new Vue({
             "payment_date" : '',
             "person": '',
             "amount": '',
+            "change": '',
+            "courier" : '',
             "remark": '',
           }, 
     
@@ -894,11 +920,16 @@ var app = new Vue({
           let charge = this.ar;
           let pay = 0;
           for(let i = 0; i < this.payment.length; i++)
-            pay += this.payment[i].amount == "" ? 0 : Number(this.payment[i].amount);
+            pay += (this.payment[i].amount == "" ? 0 : Number(this.payment[i].amount)) - (this.payment[i].courier == "" ? 0 : Number(this.payment[i].courier));
           if(charge - pay < 0 && row.type == 1)
           {
             row.remark = "Cash " + row.amount + " - " + (Number(charge) - Number(pay) + Number(row.amount)) + " = P" + Math.abs(charge - pay);
             row.change = Math.abs(charge - pay);
+          }
+          else
+          {
+            row.remark = '';
+            row.change = '';
           }
         },
 
