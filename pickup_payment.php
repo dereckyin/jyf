@@ -518,12 +518,12 @@ header( 'location:index.php' );
                         Decompose Item
                         <cht>拆分項目</cht>
                     </a>
-                    <a class="btn small" @click="">
+                    <a class="btn small" @click="edit_measurement()">
                         Edit Measurement Data
                         <cht>修改丈量資料</cht>
                     </a>
 
-                    <a class="btn small" @click="">
+                    <a class="btn small" @click="seperate_record()">
                         Decompose Measurement Data
                         <cht>拆分丈量資料</cht>
                     </a>
@@ -1008,10 +1008,10 @@ header( 'location:index.php' );
                                 <input type="number" min="0" v-model="item.amount" @change="chang_remark(item)">
                             </li>
                             <li>
-                                <input type="number" min="0">
+                                <input type="number" min="0" v-model="item.change">
                             </li>
                             <li>
-                                <input type="number" min="0">
+                                <input type="number" min="0" v-model="item.courier">
                             </li>
                             <li>
                                 <input type="text" v-model="item.remark">
@@ -1116,10 +1116,10 @@ header( 'location:index.php' );
                                 {{ item.amount }}
                             </li>
                             <li>
-                                零錢
+                                {{ item.change }}
                             </li>
                             <li>
-                                代墊
+                                {{ item.courier }}
                             </li>
                             <li>
                                 {{ item.remark }}
@@ -1143,7 +1143,7 @@ header( 'location:index.php' );
 
 
     <!-- The Modal -->
-    <div class="modal" id="sep_record_modal">
+    <div class="modal" id="edit_record_modal">
         <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 1200px;">
             <div class="modal-content">
 
@@ -1184,22 +1184,22 @@ header( 'location:index.php' );
                         </ul>
 
                         <ul>
-                            <li><input type="text"></li>
-                            <li><input type="number" min="0"></li>
-                            <li><input type="number" min="0"></li>
-                            <li><input type="number" min="0"></li>
-                            <li><input type="number" min="0"></li>
-                            <li><input type="number" min="0"></li>
+                            <li><input type="text" v-model="measure_to_edit.customer"></li>
+                            <li><input type="number" min="0" v-model="measure_to_edit.kilo" @change="change_A()"></li>
+                            <li><input type="number" min="0" v-model="measure_to_edit.cuft" @change="change_B()"></li>
+                            <li><input type="number" min="0" v-model="measure_to_edit.kilo_price" @change="change_C()"></li>
+                            <li><input type="number" min="0" v-model="measure_to_edit.cuft_price" @change="change_D()"></li>
+                            <li><input type="number" min="0" v-model="measure_to_edit.charge"></li>
                         </ul>
 
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-warning" @click="">Cancel
+                    <button type="button" data-dismiss="modal" class="btn btn-warning" @click="edit_measurement_cancel()">Cancel
                         <cht>取消</cht>
                     </button>
-                    <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="">Save
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="save_measurement_data()">Save
                         <cht>儲存</cht>
                     </button>
                 </div>
@@ -1255,7 +1255,7 @@ header( 'location:index.php' );
                             </li>
                         </ul>
 
-                        <ul v-for="(item, j) in record">
+                        <ul v-for="(item, j) in measure_to_seperate.record">
                             <li>{{ item.date_receive }}</li>
                             <li>{{ item.customer }}</li>
                             <li>{{ item.description }}</li>
@@ -1263,9 +1263,9 @@ header( 'location:index.php' );
                             <li>{{ item.supplier }}</li>
                             <li>{{ item.remark }}</li>
                             <li>
-                                <select>
-                                    <option>Group A</option>
-                                    <option>Group B</option>
+                                <select v-model="item.group">
+                                    <option value='A'>Group A</option>
+                                    <option value='B'>Group B</option>
                                 </select>
                             </li>
                         </ul>
@@ -1304,22 +1304,22 @@ header( 'location:index.php' );
 
                         <ul>
                             <li>Group A</li>
-                            <li><input type="text"></li>
-                            <li><input type="number" min="0"></li>
-                            <li><input type="number" min="0"></li>
-                            <li><input type="number" min="0"></li>
-                            <li><input type="number" min="0"></li>
-                            <li><input type="number" min="0"></li>
+                            <li><input type="text" v-model="group_a.customer"></li>
+                            <li><input type="number" min="0" v-model="group_a.kilo" @change="A_change_A()"></li>
+                            <li><input type="number" min="0" v-model="group_a.cuft" @change="A_change_B()"></li>
+                            <li><input type="number" min="0" v-model="group_a.kilo_price" @change="A_change_C()"></li>
+                            <li><input type="number" min="0" v-model="group_a.cuft_price" @change="A_change_D()"></li>
+                            <li><input type="number" min="0" v-model="group_a.charge"></li>
                         </ul>
 
                         <ul>
                             <li>Group B</li>
-                            <li><input type="text"></li>
-                            <li><input type="number" min="0"></li>
-                            <li><input type="number" min="0"></li>
-                            <li><input type="number" min="0"></li>
-                            <li><input type="number" min="0"></li>
-                            <li><input type="number" min="0"></li>
+                            <li><input type="text" v-model="group_b.customer"></li>
+                            <li><input type="number" min="0" v-model="group_b.kilo" @change="B_change_A()"></li>
+                            <li><input type="number" min="0" v-model="group_b.cuft" @change="B_change_B()"></li>
+                            <li><input type="number" min="0" v-model="group_b.kilo_price" @change="B_change_C()"></li>
+                            <li><input type="number" min="0" v-model="group_b.cuft_price" @change="B_change_D()"></li>
+                            <li><input type="number" min="0" v-model="group_b.charge"></li>
                         </ul>
 
                     </div>
@@ -1327,10 +1327,10 @@ header( 'location:index.php' );
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-warning" @click="">Cancel
+                    <button type="button" data-dismiss="modal" class="btn btn-warning" @click="seperate_record_cancel()">Cancel
                         <cht>取消</cht>
                     </button>
-                    <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="">Save
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="save_seperate_data()">Save
                         <cht>儲存</cht>
                     </button>
                 </div>
@@ -1350,6 +1350,7 @@ header( 'location:index.php' );
 <script src="js/axios.min.js"></script>
 <script src="js/vue.js"></script>
 <script src="js/a076d05399.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script type="text/javascript" src="js/pickup_payment.js" defer></script>
 
 </body>

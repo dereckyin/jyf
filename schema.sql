@@ -757,3 +757,10 @@ ADD COLUMN `real_payment_time` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT ''
 
 -- 20220119 charge column typo
 alter table measure_detail change charge charge DECIMAL(10, 2);
+
+-- 20220121 pickup payment change and courier
+ALTER TABLE payment
+ADD COLUMN `change` decimal(10, 2) default 0.0 AFTER amount;
+
+ALTER TABLE payment
+ADD COLUMN `courier` decimal(10, 2) default 0.0 AFTER `change`;
