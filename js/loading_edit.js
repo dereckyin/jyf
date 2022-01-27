@@ -190,6 +190,10 @@ let mainState = {
     courier_money : 0,
     e_remark:'',
 
+    email:'',
+    mail_note:'',
+    email_customer : '',
+
     // compute
     r_kilo : 0.0,
     n_kilo : 0.0,
@@ -342,6 +346,7 @@ var app = new Vue({
         },
 
         confirmRow: function(item){
+            let _this = this;
             // Ajax request to write changes back to db
             if (!this.isDate(this.date_receive) && !this.date_receive == "") 
             {
@@ -384,9 +389,12 @@ var app = new Vue({
 
             formData.append('date_receive', this.formatDate(this.date_receive))
             formData.append('customer', customer)
+            formData.append('email_customer', this.email_customer)
             formData.append('description', description)
             formData.append('quantity', quantity)
             formData.append('supplier', supplier)
+            formData.append('email', this.email)
+            formData.append('mail_note', this.mail_note)
             formData.append('kilo', this.kilo)
             formData.append('cuft', this.cuft)
             formData.append('taiwan_pay', this.taiwan_pay)
@@ -420,6 +428,10 @@ var app = new Vue({
                     item['courier_money'] = courier_money;
                     item['remark'] = remark;
 
+                    item['email'] = _this.email;
+                    item['email_customer'] = _this.email_customer;
+                    item['mail_note'] = _this.mail_note;
+
                 })
                 .catch(function(response) {
                     //handle error
@@ -441,6 +453,10 @@ var app = new Vue({
             this.taiwan_pay = 0;
             this.courier_money = 0;
             this.e_remark = '';
+
+            this.email = '';
+            this.email_customer = '';
+            this.mail_note = '';
 
             item['is_edited'] = 1; 
             this.is_modifying = false;
@@ -464,6 +480,10 @@ var app = new Vue({
             this.taiwan_pay = item['taiwan_pay'];
             this.courier_money = item['courier_money'];
             this.e_remark = item['remark'];
+
+            this.email = item['email'];
+            this.email_customer = item['email_customer'];
+            this.mail_note = item['mail_note'];
 
             console.log(item);
         },

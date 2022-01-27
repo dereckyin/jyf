@@ -37,6 +37,7 @@ $id = stripslashes($_POST["id"]);
 
 $date_receive = stripslashes($_POST["date_receive"]);
 $customer = stripslashes($_POST["customer"]);
+$email_customer = stripslashes($_POST["email_customer"]);
 $description = stripslashes($_POST["description"]);
 $quantity = stripslashes($_POST["quantity"]);
 $supplier = stripslashes($_POST["supplier"]);
@@ -50,6 +51,7 @@ $remark = stripslashes($_POST["remark"]);
 
 $receive_record->date_receive = $date_receive;
 $receive_record->customer = $customer;
+$receive_record->email_customer = $email_customer;
 $receive_record->description = $description;
 $receive_record->quantity = $quantity;
 $receive_record->supplier = $supplier;
