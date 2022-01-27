@@ -176,7 +176,7 @@ switch ($method) {
                         array_push($key, strtolower($row['customer']));
                     }
 
-                    $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited FROM receive_record where batch_num = $record and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
+                    $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, email_customer, mail_note, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited FROM receive_record where batch_num = $record and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
 
                     if ($stmt = mysqli_prepare($conn, $subquery)) {
 
@@ -194,7 +194,7 @@ switch ($method) {
                 }
             }
 
-            $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited  FROM receive_record where batch_num = $record and date_receive = '' and status = ''  ORDER BY id";
+            $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, email_customer, mail_note, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited  FROM receive_record where batch_num = $record and date_receive = '' and status = ''  ORDER BY id";
 
             $result1 = mysqli_query($conn, $subquery);
             if ($result1 != null) {
@@ -223,7 +223,7 @@ switch ($method) {
                         array_push($key, strtolower($row['customer']));
                     }
 
-                    $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
+                    $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, email_customer, mail_note, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
 
                     if ($stmt = mysqli_prepare($conn, $subquery)) {
 
@@ -241,7 +241,7 @@ switch ($method) {
                 }
             }
 
-            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY id";
+            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, email_customer, mail_note, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, crt_time, crt_user, 1 as is_edited  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY id";
 
             $result1 = mysqli_query($conn, $subquery);
             if ($result1 != null) {
