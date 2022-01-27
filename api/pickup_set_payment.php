@@ -62,7 +62,30 @@ $user_id = $decoded->data->id;
 
         $conn->begin_transaction();
 
-        
+        // for payment
+        $query = "update payment 
+                set status = -1,
+                mdf_user = '" . $user . "', 
+                mdf_time = now()
+        WHERE detail_id = " . $id;
+
+        $stmt = $conn->prepare($query);
+
+        try {
+        // execute the query, also check if query was successful
+        if (!$stmt->execute()) {
+            $conn->rollback();
+            http_response_code(501);
+            echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+            die();
+        }
+        } catch (Exception $e) {
+        error_log($e->getMessage());
+        $conn->rollback();
+        http_response_code(501);
+        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+        die();
+        }
 
         for ($i = 0; $i < count($detail_array); $i++) {
             $id = ($detail_array[$i]['id'] == '') ? 0 : $detail_array[$i]['id'];
@@ -76,7 +99,7 @@ $user_id = $decoded->data->id;
             $courier = ($detail_array[$i]['courier'] == '') ? 0 : $detail_array[$i]['courier'];
             $remark = ($detail_array[$i]['remark'] == '') ? "" : $detail_array[$i]['remark'];
 
-
+/*
             if($id != 0)
             {
                 // for payment
@@ -104,7 +127,7 @@ $user_id = $decoded->data->id;
                 die();
                 }
             }
-
+*/
             
             $query = "insert into payment (detail_id, `type`, issue_date, payment_date, person, amount, `change`, courier, remark, status, crt_time, crt_user)
                 VALUES (" . $detail_id . ", " . $type . ", '" . $issue_date . "', '" . $payment_date . "', '" . $person . "', " . $amount . ", " . $change . ", " . $courier . ", '" . $remark . "', 0, now(), '" . $user . "')";  

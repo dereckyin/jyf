@@ -1037,7 +1037,7 @@ var app = new Vue({
 
           var form_data = new FormData();
     
-          form_data.append('id', this.payment_record.id);
+          form_data.append('id', this.detail_id);
           form_data.append('record', JSON.stringify(this.payment));
            form_data.append('encode_status', '');
    
@@ -1066,7 +1066,7 @@ var app = new Vue({
 
           var form_data = new FormData();
     
-          form_data.append('id', this.payment_record.id);
+          form_data.append('id', this.detail_id);
           form_data.append('record', JSON.stringify(this.payment));
            form_data.append('encode_status', 'C');
    
