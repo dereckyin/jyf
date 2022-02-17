@@ -88,8 +88,8 @@ $user_id = $decoded->data->id;
         }
 
         // for pick_detail
-        $query = "INSERT INTO pick_group(group_id, measure_id, measure_detail_id) 
-            select 0, measure_id, id from measure_detail where measure_id in (" . $ids . ")";
+        $query = "INSERT INTO pick_group(group_id, measure_id, measure_detail_id, crt_user, crt_time) 
+            select 0, measure_id, id, " . $user_id . ", now() from measure_detail where measure_id in (" . $ids . ")";
 
         $stmt = $conn->prepare($query);
 

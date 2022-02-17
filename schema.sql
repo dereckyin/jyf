@@ -764,3 +764,26 @@ ADD COLUMN `change` decimal(10, 2) default 0.0 AFTER amount;
 
 ALTER TABLE payment
 ADD COLUMN `courier` decimal(10, 2) default 0.0 AFTER `change`;
+
+
+-- 20220217 add pick group creator and date change
+ALTER TABLE pick_group
+ADD COLUMN `crt_user` varchar(128) DEFAULT '' AFTER measure_detail_id;
+
+ALTER TABLE pick_group
+ADD COLUMN `crt_time` timestamp NULL AFTER crt_user;
+
+ALTER TABLE pick_group
+ADD COLUMN `mdf_user` varchar(128) DEFAULT '' AFTER crt_time;
+
+ALTER TABLE pick_group
+ADD COLUMN `mdf_time` timestamp NULL AFTER mdf_user;
+
+ALTER TABLE pick_group
+ADD COLUMN `del_user` varchar(128) DEFAULT '' AFTER mdf_time;
+
+ALTER TABLE pick_group
+ADD COLUMN `del_time` timestamp NULL AFTER del_user;
+
+-- 20211229
+ALTER TABLE pick_group ADD COLUMN `status` INT DEFAULT 0 AFTER measure_detail_id;

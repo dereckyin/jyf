@@ -192,8 +192,8 @@ $(function(){
             </table>
         </div>
             <div class="modal-footer">
-              <button type="button" class="btn orange" style="background-color: lightgrey;" onclick="toggleCheckboxSupplier();">全選 / 全取消</button>
-              <button type="button" class="btn btn-primary" onclick="getSupplier()">Confirm / 確認</button>
+              <button type="button" class="btn orange" style="background-color: lightgrey;" onclick="toggleCheckboxSupplier();">全選 / 全取消<br>Select All / Undo</button>
+              <button type="button" class="btn btn-primary" onclick="getSupplier()">確認<br>Confirm</button>
             </div> 
           </div>
 
@@ -228,8 +228,8 @@ $(function(){
             </table>
         </div>
             <div class="modal-footer">
-              <button type="button" class="btn orange" style="background-color: lightgrey;" onclick="toggleCheckbox();">全選 / 全取消</button>
-              <button type="button" class="btn btn-primary" onclick="getCustomer()">Confirm / 確認</button>
+              <button type="button" class="btn orange" style="background-color: lightgrey;" onclick="toggleCheckbox();">全選 / 全取消<br>Select All / Undo</button>
+              <button type="button" class="btn btn-primary" onclick="getCustomer()">確認<br>Confirm</button>
             </div> 
           </div>
 
