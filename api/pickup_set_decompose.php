@@ -107,7 +107,7 @@ $user_id = $decoded->data->id;
 
         // for group
         $query = "update pick_group 
-                    set group_id = 0, mdf_user = " . $user_id . ", mdf_time = now() 
+                    set group_id = 0, mdf_user = '" . $user . "', mdf_time = now() 
             WHERE group_id in (" . $id . ")";
 
         $stmt = $conn->prepare($query);

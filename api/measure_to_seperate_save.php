@@ -161,7 +161,7 @@ switch ($method) {
         }
 
         // delete pick_group
-        $query = "update pick_group set `status` = -1, del_user = " . $user_id . ", del_time = now() where measure_detail_id = " . $measure_array["id"];
+        $query = "update pick_group set `status` = -1, del_user = '" . $user . "', del_time = now() where measure_detail_id = " . $measure_array["id"];
         $stmt = $conn->prepare($query);
  
         try {
@@ -273,10 +273,10 @@ switch ($method) {
                 $stmt = $conn->prepare($query);
 
                 $stmt->bind_param(
-                    "iii",
+                    "iis",
                     $measure_id,
                     $last_measuer_id,
-                    $user_id
+                    $user
                 );
 
                 try {
@@ -397,10 +397,10 @@ switch ($method) {
                 $stmt = $conn->prepare($query);
 
                 $stmt->bind_param(
-                    "iii",
+                    "iis",
                     $measure_id,
                     $last_measuer_id,
-                    $user_id
+                    $user
                 );
                 
                 try {

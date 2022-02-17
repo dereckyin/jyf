@@ -65,7 +65,7 @@ $user_id = $decoded->data->id;
 
         // for payment
         $query = "update pick_group 
-                    set group_id = " . $group_id . ", mdf_user = " . $user_id . ", mdf_time = now()
+                    set group_id = " . $group_id . ", mdf_user = '" . $user . "', mdf_time = now()
             WHERE measure_detail_id in (" . $id . ")";
 
         $stmt = $conn->prepare($query);
