@@ -92,9 +92,14 @@ if($jwt){
             $pre_group_id = $row['group_id'];
             $measure_detail_id = $row['measure_detail_id'];
 
-            $mes = GetMeasureDetail($measure_detail_id, $db);
-            if(!empty($mes))
-                $items = array_merge($items, $mes);
+            if(!existsInArray($measure_detail_id, $items))
+            {
+                $mes = GetMeasureDetail($measure_detail_id, $db);
+                if(!empty($mes))
+                {
+                    $items = array_merge($items, $mes);
+                }
+            }
         }
 
         if($id != 0)
@@ -255,6 +260,16 @@ function GetMeasureDetail($measure_detail_id, $db){
     return $merged_results;
 }
 
+function existsInArray($entry, $array) {
+    
+    foreach ($array as $compare) {
+        if ($compare["id"] == $entry) {
+            return true;
+        }
+    }
+    return false;
+
+}
 
 function GetAr($array)
 {
