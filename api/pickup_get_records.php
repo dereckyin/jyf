@@ -271,17 +271,6 @@ function existsInArray($entry, $array) {
 
 }
 
-function existsInArray($entry, $array) {
-    
-    foreach ($array as $compare) {
-        if ($compare["id"] == $entry) {
-            return true;
-        }
-    }
-    return false;
-
-}
-
 function GetAr($array)
 {
     $amount = 0;
