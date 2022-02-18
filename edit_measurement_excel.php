@@ -232,7 +232,7 @@ foreach ($result as $measure)
         $sheet->setCellValue('F' . $i, $measure["kilo"]);
         $sheet->setCellValue('G' . $i, $measure["cuft"]);
         $sheet->setCellValue('H' . $i, $measure["kilo"] == "" ? "" : ($measure["kilo"] < 3000 ? 36.5 : 34.5));
-        $sheet->setCellValue('I' . $i, $measure["cuft"] == "" ? "" : ($measure["cuft"] < 300 ? 365 : 345));
+        $sheet->setCellValue('I' . $i, $measure["cuft"] == "" ? "" : ($measure["cuft"] < 300 ? 385 : 365));
         $sheet->setCellValue('J' . $i, $measure["charge"]);
         $sheet->setCellValue('K' . $i, $rec["supplier"]);
         $sheet->setCellValue('L' . $i, $rec["remark"]);

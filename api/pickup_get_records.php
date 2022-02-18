@@ -40,10 +40,10 @@ if($jwt){
         $query = "
             SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
                 FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-            WHERE  group_id <> 0 and group_id IN (
+            WHERE  group_id <> 0 and pick_group.status <> -1 and group_id IN (
             
                 select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-                WHERE group_id <> 0";
+                WHERE group_id <> 0 and pick_group.status <> -1 ";
 
         if($keyword == 'N')
             $query .= " AND measure_detail.pickup_status = '' ";
@@ -121,7 +121,7 @@ if($jwt){
         $query = "
             SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
                 FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-            WHERE  group_id = 0";
+            WHERE  group_id = 0 and pick_group.status <> -1 ";
 
         if($keyword == 'N')
             $query .= " AND measure_detail.pickup_status = '' ";
@@ -260,6 +260,16 @@ function GetMeasureDetail($measure_detail_id, $db){
     return $merged_results;
 }
 
+function existsInArray($entry, $array) {
+    
+    foreach ($array as $compare) {
+        if ($compare["id"] == $entry) {
+            return true;
+        }
+    }
+    return false;
+
+}
 
 function existsInArray($entry, $array) {
     

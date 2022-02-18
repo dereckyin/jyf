@@ -174,6 +174,9 @@ let mainState = {
     snap_me:false,
     pic_list: [],
 
+    // don't repeat submit
+    submit : false,
+
 };
 
 var app = new Vue({
@@ -1026,6 +1029,7 @@ var app = new Vue({
           },
 
         createReceiveRecord: function() {
+            let _this = this;
             console.log("createReceiveRecord");
 
             if (this.validateForm()) {
@@ -1044,6 +1048,11 @@ var app = new Vue({
                   $(window).scrollTop(0);
                   return false;
                 } 
+
+                if(this.submit == true)
+                    return;
+
+                this.submit = true;
 
                 form_Data.append('date_receive', this.formatDate(this.date_receive))
                 form_Data.append('customer', this.customer)
@@ -1118,11 +1127,14 @@ var app = new Vue({
                         //handle success
                         console.log(response)
 
+                        _this.submit = false;
+
                         app.resetForm();
 
                     })
                     .catch(function(response) {
                         //handle error
+                        _this.submit = false;
                         console.log(response)
                     });
             }
@@ -1147,6 +1159,13 @@ var app = new Vue({
                   $(window).scrollTop(0);
                   return false;
                 } 
+
+                let _this = this;
+
+                if(this.submit == true)
+                        return;
+
+                this.submit = true;
 
                 form_Data.append('date_receive', this.formatDate(this.date_receive))
                 form_Data.append('customer', this.customer)
@@ -1219,12 +1238,14 @@ var app = new Vue({
                     .then(function(response) {
                         //handle success
                         console.log(response)
+                        _this.submit = false;
 
                         app.resetForm();
 
                     })
                     .catch(function(response) {
                         //handle error
+                        _this.submit = false;
                         console.log(response)
                     });
             }
@@ -1307,6 +1328,13 @@ var app = new Vue({
               return false;
             } 
 
+            let _this = this;
+
+            if(this.submit == true)
+                    return;
+
+            this.submit = true;
+
             //if (!this.isDate(this.record.date_receive) && !this.record.date_receive == "") 
             //{
             //      this.error_date_receive = '必須是日期 (date required)';
@@ -1381,6 +1409,8 @@ var app = new Vue({
                         //const index = app.receive_records.findIndex((e) => e.id === this.record.id);
                         //if (index !== -1) 
                         //    app.receive_records[index] = this.record;
+
+                        _this.submit = false;
                         
                         app.resetForm();
                       
@@ -1388,6 +1418,7 @@ var app = new Vue({
                 })
                 .catch(function(response) {
                     //handle error
+                    _this.submit = false;
                     console.log(response)
                 });
         },
@@ -1419,6 +1450,13 @@ var app = new Vue({
             //      return false;
                 
             //}
+
+            let _this = this;
+
+                if(this.submit == true)
+                        return;
+
+                this.submit = true;
 
 
             form_Data.append('date_receive', this.formatDate(this.record.date_receive))
@@ -1486,13 +1524,14 @@ var app = new Vue({
                         //const index = app.receive_records.findIndex((e) => e.id === this.record.id);
                         //if (index !== -1) 
                         //    app.receive_records[index] = this.record;
-                        
+                        _this.submit = false;
                         app.resetForm();
                       
                   }
                 })
                 .catch(function(response) {
                     //handle error
+                    _this.submit = false;
                     console.log(response)
                 });
         },
@@ -1500,6 +1539,13 @@ var app = new Vue({
 
         delReceiveRecord: function(id) {
             console.log("delReceiveRecord")
+
+            let _this = this;
+
+            if(this.submit == true)
+                    return;
+
+            this.submit = true;
 
             //targetId = this.record.id;
             var form_Data = new FormData();
@@ -1538,10 +1584,12 @@ var app = new Vue({
                     if (response.data !== "")
                         console.log(response.data);
                     //this.$forceUpdate();
+                    _this.submit = false;
                     app.resetForm();
                 })
                 .catch(function(response) {
                     //handle error
+                    _this.submit = false;
                     console.log(response)
                 });
         },
@@ -1575,6 +1623,8 @@ var app = new Vue({
             this.file_receive = [];
             this.cam_receive_1 = [];
             this.file_receive_1 = [];
+
+            this.submit = false;
 
             $('#adddate').datepicker('setDate', "");
             $('#adddate1').datepicker('setDate', "");
@@ -1811,6 +1861,7 @@ var app = new Vue({
                   return false;
               } 
 
+/*
               var email_array = this.record.email.split(';');
               
               for(var i = 0; i < email_array.length; i++)
@@ -1822,6 +1873,7 @@ var app = new Vue({
                     return false;
                 } 
               }
+              */
 
               if (!this.isNumeric(this.record.kilo) && !this.record.kilo == "")
               {
@@ -1860,6 +1912,7 @@ var app = new Vue({
                   return false;
               } 
 
+              /*
               email_array = this.email.split(';');
               
               for(var i = 0; i < email_array.length; i++)
@@ -1871,6 +1924,7 @@ var app = new Vue({
                     return false;
                 } 
               }
+              */
 
               if (!this.isNumeric(this.kilo) && !this.kilo == "")
               {

@@ -51,8 +51,8 @@ header('Access-Control-Allow-Origin: *');
 $method = $_SERVER['REQUEST_METHOD'];
 
 $user = $decoded->data->username;
-
-
+$user_id = $decoded->data->id;
+    
 switch ($method) {
 
     case 'POST':
@@ -72,7 +72,7 @@ switch ($method) {
         $row = array();
 
         // get pick_group
-        $query = "select measure_id, measure_detail_id from pick_group where id = " . $pick_id;
+        $query = "select measure_id, measure_detail_id from pick_group where id = " . $pick_id . " and `status` <> -1";
         $result = mysqli_query($conn,$query);
 
         $measure_id = 0;
@@ -161,7 +161,7 @@ switch ($method) {
         }
 
         // delete pick_group
-        $query = "delete from pick_group where measure_detail_id = " . $measure_array["id"];
+        $query = "update pick_group set `status` = -1, del_user = '" . $user . "', del_time = now() where measure_detail_id = " . $measure_array["id"];
         $stmt = $conn->prepare($query);
  
         try {
@@ -266,16 +266,17 @@ switch ($method) {
                     }
                 }
 
-                $query = "INSERT INTO pick_group (group_id, measure_id, measure_detail_id)
-                        values(0, ?, ?)";
+                $query = "INSERT INTO pick_group (group_id, measure_id, measure_detail_id, crt_user, crt_time)
+                        values(0, ?, ?, ?, now())";
 
                 // prepare the query
                 $stmt = $conn->prepare($query);
 
                 $stmt->bind_param(
-                    "ii",
+                    "iis",
                     $measure_id,
-                    $last_measuer_id
+                    $last_measuer_id,
+                    $user
                 );
 
                 try {
@@ -389,16 +390,17 @@ switch ($method) {
                     }
                 }
 
-                $query = "INSERT INTO pick_group (group_id, measure_id, measure_detail_id)
-                        values(0, ?, ?)";
+                $query = "INSERT INTO pick_group (group_id, measure_id, measure_detail_id, crt_user, crt_time)
+                        values(0, ?, ?, ?, now())";
 
                 // prepare the query
                 $stmt = $conn->prepare($query);
 
                 $stmt->bind_param(
-                    "ii",
+                    "iis",
                     $measure_id,
-                    $last_measuer_id
+                    $last_measuer_id,
+                    $user
                 );
                 
                 try {

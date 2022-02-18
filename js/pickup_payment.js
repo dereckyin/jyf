@@ -71,6 +71,9 @@ let mainState = {
     group_a : [],
     group_b : [],
 
+    // don't repeat submit
+    submit : false,
+
 };
 
 var app = new Vue({
@@ -178,14 +181,14 @@ var app = new Vue({
     B_change_B: function(){
       let row = this.group_b;
         nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
-        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
+        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 385 : 365) * (row.cuft == "" ? 0 : row.cuft);
       
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         if(row.cuft != "")
         {
             num = parseFloat(row.cuft == "" ? 0 : row.cuft);
-            row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+            row.cuft_price = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
         }
 
         if(row.cuft == "")
@@ -247,14 +250,14 @@ var app = new Vue({
     A_change_B: function(){
       let row = this.group_a;
         nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
-        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
+        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 385 : 365) * (row.cuft == "" ? 0 : row.cuft);
       
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         if(row.cuft != "")
         {
             num = parseFloat(row.cuft == "" ? 0 : row.cuft);
-            row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+            row.cuft_price = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
         }
 
         if(row.cuft == "")
@@ -316,14 +319,14 @@ var app = new Vue({
     change_B: function(){
       let row = this.measure_to_edit;
         nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
-        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
+        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 385 : 365) * (row.cuft == "" ? 0 : row.cuft);
       
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         if(row.cuft != "")
         {
             num = parseFloat(row.cuft == "" ? 0 : row.cuft);
-            row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+            row.cuft_price = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
         }
 
         if(row.cuft == "")
@@ -568,6 +571,10 @@ var app = new Vue({
               this.seperate_record_cancel();
               return;
             }
+
+            if(this.submit == true)
+              return;
+            this.submit = true;
               
 
             obj_a = {
@@ -615,7 +622,7 @@ var app = new Vue({
                   icon: "info",
                   confirmButtonText: "OK",
                 });
-      
+                _this.submit = false;
                 _this.seperate_record_cancel();
       
               })
@@ -626,6 +633,7 @@ var app = new Vue({
                   icon: "info",
                   confirmButtonText: "OK",
                 });
+                _this.submit = false;
                 _this.seperate_record_cancel();
               });
           },
@@ -640,7 +648,10 @@ var app = new Vue({
       
             form_Data.append("detail", JSON.stringify(this.measure_to_edit));
         
-      
+            if(this.submit == true)
+                    return;
+            this.submit = true;
+
             axios({
               method: "post",
               headers: {
@@ -656,7 +667,7 @@ var app = new Vue({
                   icon: "info",
                   confirmButtonText: "OK",
                 });
-      
+                _this.submit = false;
                 _this.edit_measurement_cancel();
       
               })
@@ -667,6 +678,7 @@ var app = new Vue({
                   icon: "info",
                   confirmButtonText: "OK",
                 });
+                _this.submit = false;
                 _this.edit_measurement_cancel();
               });
           },
@@ -698,13 +710,14 @@ var app = new Vue({
                 else
                 {
                   num = parseFloat(this.receive_records[i]['cuft'] == "" ? 0 : this.receive_records[i]['cuft']);
-                  this.receive_records[i]['cuft_price'] = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+                  this.receive_records[i]['cuft_price'] = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
                 }
               }
         },
 
         decompose_item: async function () {
           let favorite = [];
+      
 
           for (i = 0; i < this.receive_records.length; i++) {
               if(this.receive_records[i].is_checked == 1)
@@ -722,13 +735,27 @@ var app = new Vue({
               }
             }
 
+            if(favorite.length == 0) {
+              Swal.fire({
+                  title: 'Info',
+                  text: 'Please select records to decompose',
+                  type: 'Info',
+                  confirmButtonText: 'OK'
+              });
+                return;
+            }
+
             let _this = this;
 
         var form_data = new FormData();
         form_data.append('id', favorite.join(","));
  
         let token = localStorage.getItem("accessToken");
-  
+
+        if(this.submit == true)
+            return;
+        this.submit = true;
+
         try {
           let res = await axios({
             method: 'post',
@@ -742,7 +769,19 @@ var app = new Vue({
         } catch (err) {
           console.log(err)
           alert('error')
+          _this.submit = false;
+            _this.getMeasures();
+            return;
         }
+
+        this.submit = false;
+
+        Swal.fire({
+          title: 'Info',
+          text: 'Decompose Successfully',
+          type: 'Info',
+          confirmButtonText: 'OK'
+      });
 
         this.getMeasures();
 
@@ -764,9 +803,12 @@ var app = new Vue({
 
             let favorite = [];
 
+            var row_selected = 0;
+
             for (i = 0; i < this.receive_records.length; i++) {
                 if(this.receive_records[i].is_checked == 1)
                 {
+                  row_selected += 1;
                     let measure = this.receive_records[i].measure;
                     for (j = 0; j < measure.length; j++) {
                       if(measure[j].payment_status != "")
@@ -781,12 +823,26 @@ var app = new Vue({
                 }
               }
 
+              if(row_selected < 2) {
+                Swal.fire({
+                    title: 'Info',
+                    text: 'Please select records to merge',
+                    type: 'Info',
+                    confirmButtonText: 'OK'
+                });
+                  return;
+              }
+
               let _this = this;
 
           var form_data = new FormData();
           form_data.append('id', favorite.join(","));
    
           let token = localStorage.getItem("accessToken");
+
+          if(this.submit == true)
+            return;
+        this.submit = true;
     
           try {
             let res = await axios({
@@ -801,7 +857,19 @@ var app = new Vue({
           } catch (err) {
             console.log(err)
             alert('error')
+            _this.submit = false;
+            _this.getMeasures();
+            return;
           }
+
+          this.submit = false;
+
+        Swal.fire({
+          title: 'Info',
+          text: 'Merge Successfully',
+          type: 'Info',
+          confirmButtonText: 'OK'
+      });
 
           this.getMeasures();
 
@@ -1013,6 +1081,11 @@ var app = new Vue({
            form_data.append('encode_status', '');
    
           let token = localStorage.getItem("accessToken");
+
+          if(this.submit == true)
+            return;
+
+          this.submit = true;
     
           try {
             let res = await axios({
@@ -1029,6 +1102,8 @@ var app = new Vue({
             alert('error')
           }
 
+          this.submit = false;
+
           this.getMeasures();
         },
 
@@ -1042,6 +1117,11 @@ var app = new Vue({
            form_data.append('encode_status', '');
    
           let token = localStorage.getItem("accessToken");
+
+          if(this.submit == true)
+            return;
+
+          this.submit = true;
     
           try {
             let res = await axios({
@@ -1057,6 +1137,8 @@ var app = new Vue({
             console.log(err)
             alert('error')
           }
+
+          this.submit = false;
 
           this.getMeasures();
         },
@@ -1071,6 +1153,11 @@ var app = new Vue({
            form_data.append('encode_status', 'C');
    
           let token = localStorage.getItem("accessToken");
+
+          if(this.submit == true)
+            return;
+
+          this.submit = true;
     
           try {
             let res = await axios({
@@ -1086,6 +1173,8 @@ var app = new Vue({
             console.log(err)
             alert('error')
           }
+
+          this.submit = false;
 
           this.getMeasures();
         },
@@ -1149,13 +1238,34 @@ var app = new Vue({
         pickup: async function(keyword) {
           var favorite = [];
 
+          if(this.submit == true)
+                return;
+
             for (i = 0; i < this.loading_records.length; i++) 
             {
               if(this.loading_records[i].is_checked == 1)
                 favorite.push(this.loading_records[i].id);
             }
 
+            if(favorite.length == 0)
+            {
+              Swal.fire({
+                title: 'Info',
+                text: 'Please select records to pickup',
+                type: 'Info',
+                confirmButtonText: 'OK'
+            });
+            return;
+            }
+              
+
+              
+
+              this.submit = true;
+
             await this.add_pickup(favorite.join(","));
+
+     
 
             this.load_measurement();
             this.getMeasures();
@@ -1214,6 +1324,8 @@ var app = new Vue({
                     console.log(response.data);
                     _this.receive_records = response.data;
 
+                    _this.submit = false;
+
                 })
                 .catch(function(error) {
                     console.log(error);
@@ -1228,6 +1340,8 @@ var app = new Vue({
                     app.measure_records = response.data;
 
                     console.log("getMeasureRecords");
+
+                    _this.submit = false;
 
                 })
                 .catch(function(error) {

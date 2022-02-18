@@ -171,7 +171,10 @@ let mainState = {
     r_kilo : 0.0,
     n_kilo : 0.0,
     r_cuft : 0.0,
-    n_cuft : 0.0
+    n_cuft : 0.0,
+
+    // don't repeat submit
+    submit : false,
 
 };
 
@@ -314,6 +317,12 @@ var app = new Vue({
                     return;
                 }
 
+                let _this = this;
+                if(this.submit == true)
+                    return;
+
+                this.submit = true;
+
                 formData.append('shipping_mark', this.shipping_mark)
                 formData.append('estimate_weight', this.estimate_weight)
                 formData.append('actual_weight', this.actual_weight)
@@ -349,12 +358,13 @@ var app = new Vue({
                     .then(function(response) {
                         //handle success
                         console.log(response)
-
+                        _this.submit = false;
                         app.resetForm();
 
                     })
                     .catch(function(response) {
                         //handle error
+                        _this.submit = false;
                         console.log(response)
                     });
             }
@@ -458,6 +468,12 @@ var app = new Vue({
                 
             //}
 
+            let _this = this;
+
+            if(this.submit == true)
+                    return;
+
+            this.submit = true;
 
             formData.append('date_receive', this.record.date_receive)
             formData.append('customer', this.record.customer)
@@ -495,13 +511,14 @@ var app = new Vue({
                         //const index = app.receive_records.findIndex((e) => e.id === this.record.id);
                         //if (index !== -1) 
                         //    app.receive_records[index] = this.record;
-                        
+                        _this.submit = false;
                         app.resetForm();
                       
                   }
                 })
                 .catch(function(response) {
                     //handle error
+                    _this.submit = false;
                     console.log(response)
                 });
         },
@@ -529,6 +546,12 @@ var app = new Vue({
 
         delReceiveRecord: function(id) {
             console.log("delReceiveRecord")
+
+            let _this = this;
+            if(this.submit == true)
+                    return;
+
+            this.submit = true;
 
             //targetId = this.record.id;
             let formData = new FormData();
@@ -563,6 +586,7 @@ var app = new Vue({
                 .then(function(response) {
                     //handle success
                     console.log(response)
+                    _this.submit = false;
                     if (response.data !== "")
                         console.log(response.data);
                     //this.$forceUpdate();
@@ -570,6 +594,7 @@ var app = new Vue({
                 })
                 .catch(function(response) {
                     //handle error
+                    _this.submit = false;
                     console.log(response)
                 });
         },
@@ -595,6 +620,8 @@ var app = new Vue({
             this.remark = '';
             this.isEditing = false;
             this.record = {};
+
+            this.submit = false;
 
             $('#date_sent').datepicker('setDate', "");
             $('#etd_date').datepicker('setDate', "");

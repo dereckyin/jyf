@@ -98,6 +98,9 @@ let mainState = {
 
     perPage: 12,
 
+    // don't repeat submit
+    submit : false,
+
 };
 
 var app = new Vue({
@@ -174,6 +177,11 @@ var app = new Vue({
                   return;
             }
 
+
+                if(this.submit == true)
+                        return;
+
+                this.submit = true;
       
             var token = localStorage.getItem("token");
             var form_Data = new FormData();
@@ -207,6 +215,7 @@ var app = new Vue({
                   confirmButtonText: "OK",
                 });
       
+                _this.submit = false;
                 _this.resetForm();
              
       
@@ -218,6 +227,8 @@ var app = new Vue({
                   icon: "info",
                   confirmButtonText: "OK",
                 });
+
+                _this.submit = false;
       
               });
           },
@@ -270,14 +281,14 @@ var app = new Vue({
 
         change_B: function(row){
             nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
-            ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
+            ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 385 : 365) * (row.cuft == "" ? 0 : row.cuft);
           
             row.charge = (ncuft > nkilo) ? ncuft : nkilo;
 
             if(row.cuft != "")
             {
                 num = parseFloat(row.cuft == "" ? 0 : row.cuft);
-                row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+                row.cuft_price = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
             }
 
             if(row.cuft == "")
@@ -297,6 +308,25 @@ var app = new Vue({
             new_record = [];
 
             order = 0;
+
+            var is_selected = false;
+            for (i = 0; i < this.receive_records.length; i++) {
+                if(this.receive_records[i].is_checked == 1)
+                {
+                    is_selected = true;
+                    break;
+                }
+              }
+
+              if(is_selected == false) {
+                Swal.fire({
+                    title: 'Info',
+                    text: 'Please select records to decompose',
+                    type: 'Info',
+                    confirmButtonText: 'OK'
+                });
+                  return;
+              }
             
             for (i = 0; i < this.receive_records.length; i++) {
                 if(this.receive_records[i].is_checked != 1 && this.receive_records[i].record.length > 1)
@@ -404,6 +434,13 @@ var app = new Vue({
               this.receive_records = [].concat(group_record, new_record);
              this.need_to_update = true;
 
+             Swal.fire({
+                title: 'Info',
+                text: 'Decompose Successfully',
+                type: 'Info',
+                confirmButtonText: 'OK'
+            });
+
         },
 
         sortedIndex(array, value) {
@@ -423,15 +460,28 @@ var app = new Vue({
             obj = [];
             new_record = [];
 
+            var is_selected = 0;
+
             for (i = 0; i < this.receive_records.length; i++) {
                 if(this.receive_records[i].is_checked == 1)
                 {
+                    is_selected += 1;
                     ary = this.shallowCopy(
                         this.receive_records.find((element) => element.order == this.receive_records[i].order)
                       ).record;
                     for (j = 0; j < ary.length; j++)
                         obj.push(ary[j]);
                 }
+              }
+
+              if(is_selected < 2) {
+                Swal.fire({
+                    title: 'Info',
+                    text: 'Please select records to merge',
+                    type: 'Info',
+                    confirmButtonText: 'OK'
+                });
+                  return;
               }
 
             order = 1;
@@ -487,6 +537,13 @@ var app = new Vue({
 
               this.receive_records = new_record;
               this.need_to_update = true;
+
+              Swal.fire({
+                title: 'Info',
+                text: 'Merge Successfully',
+                type: 'Info',
+                confirmButtonText: 'OK'
+            });
         },
 
         getContactors: function(keyword) {
@@ -862,6 +919,11 @@ var app = new Vue({
 
                 const token = sessionStorage.getItem('token');
 
+                let _this = this;
+                if(this.submit == true)
+                        return;
+                this.submit = true;
+
                 axios({
                         method: 'post',
                         headers: {
@@ -874,12 +936,13 @@ var app = new Vue({
                     .then(function(response) {
                         //handle success
                         console.log(response)
-
+                        _this.submit = false;
                         app.resetForm();
 
                     })
                     .catch(function(response) {
                         //handle error
+                        _this.submit = false;
                         console.log(response)
                     });
             }
@@ -915,6 +978,12 @@ var app = new Vue({
                     return;
                 }
 
+                let _this = this;
+                if(this.submit == true)
+                    return;
+
+                this.submit = true;
+
                 form_Data.append('date_encode', this.formatDate(this.date_encode))
                 form_Data.append('date_cr', this.formatDate(this.date_cr))
                 form_Data.append('loading_id', favorite.join(","))
@@ -936,12 +1005,14 @@ var app = new Vue({
                     .then(function(response) {
                         //handle success
                         console.log(response)
+                        _this.submit = true;
 
                         app.resetForm();
 
                     })
                     .catch(function(response) {
                         //handle error
+                        _this.submit = true;
                         console.log(response)
                     });
             }
@@ -962,6 +1033,13 @@ var app = new Vue({
                   $(window).scrollTop(0);
                   return false;
                 } 
+
+                let _this = this;
+
+                if(this.submit == true)
+                        return;
+
+                this.submit = true;
 
                 form_Data.append('date_receive', this.formatDate(this.date_receive))
                 form_Data.append('customer', this.customer)
@@ -998,12 +1076,13 @@ var app = new Vue({
                     .then(function(response) {
                         //handle success
                         console.log(response)
-
+                        _this.submit = false;
                         app.resetForm();
 
                     })
                     .catch(function(response) {
                         //handle error
+                        _this.submit = false;
                         console.log(response)
                     });
             }
@@ -1072,7 +1151,10 @@ var app = new Vue({
             //      return false;
                 
             //}
-
+            let _this = this;
+            if(this.submit == true)
+                    return;
+            this.submit = true;
 
             form_Data.append('date_receive', this.formatDate(this.record.date_receive))
             form_Data.append('customer', this.record.customer)
@@ -1110,13 +1192,14 @@ var app = new Vue({
                         //const index = app.receive_records.findIndex((e) => e.id === this.record.id);
                         //if (index !== -1) 
                         //    app.receive_records[index] = this.record;
-                        
+                        _this.submit = false;
                         app.resetForm();
                       
                   }
                 })
                 .catch(function(response) {
                     //handle error
+                    _this.submit = false;
                     console.log(response)
                 });
         },
@@ -1130,6 +1213,11 @@ var app = new Vue({
             form_Data.append('ids', ids);
 
             const token = sessionStorage.getItem('token');
+
+            let _this = this;
+            if(this.submit == true)
+                    return;
+            this.submit = true;
 
             axios({
                     method: 'post',
@@ -1146,10 +1234,12 @@ var app = new Vue({
                     if (response.data !== "")
                         console.log(response.data);
                     //this.$forceUpdate();
+                    _this.submit = false;
                     app.resetForm();
                 })
                 .catch(function(response) {
                     //handle error
+                    _this.submit = false;
                     console.log(response)
                 });
         },
@@ -1168,6 +1258,8 @@ var app = new Vue({
 
             this.show_record = false;
             this.show_detail = false;
+
+            this.submit = false;
            
             $('#date_encode').datepicker('setDate', "");
             $('#date_cr').datepicker('setDate', "");
