@@ -181,14 +181,14 @@ var app = new Vue({
     B_change_B: function(){
       let row = this.group_b;
         nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
-        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
+        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 385 : 365) * (row.cuft == "" ? 0 : row.cuft);
       
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         if(row.cuft != "")
         {
             num = parseFloat(row.cuft == "" ? 0 : row.cuft);
-            row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+            row.cuft_price = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
         }
 
         if(row.cuft == "")
@@ -250,14 +250,14 @@ var app = new Vue({
     A_change_B: function(){
       let row = this.group_a;
         nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
-        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
+        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 385 : 365) * (row.cuft == "" ? 0 : row.cuft);
       
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         if(row.cuft != "")
         {
             num = parseFloat(row.cuft == "" ? 0 : row.cuft);
-            row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+            row.cuft_price = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
         }
 
         if(row.cuft == "")
@@ -319,14 +319,14 @@ var app = new Vue({
     change_B: function(){
       let row = this.measure_to_edit;
         nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
-        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
+        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 385 : 365) * (row.cuft == "" ? 0 : row.cuft);
       
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
         if(row.cuft != "")
         {
             num = parseFloat(row.cuft == "" ? 0 : row.cuft);
-            row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+            row.cuft_price = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
         }
 
         if(row.cuft == "")
@@ -710,7 +710,7 @@ var app = new Vue({
                 else
                 {
                   num = parseFloat(this.receive_records[i]['cuft'] == "" ? 0 : this.receive_records[i]['cuft']);
-                  this.receive_records[i]['cuft_price'] = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+                  this.receive_records[i]['cuft_price'] = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
                 }
               }
         },

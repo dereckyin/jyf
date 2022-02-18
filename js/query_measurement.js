@@ -351,14 +351,14 @@ var app = new Vue({
 
         change_B: function(row){
             nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
-            ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 365 : 345) * (row.cuft == "" ? 0 : row.cuft);
+            ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 385 : 365) * (row.cuft == "" ? 0 : row.cuft);
           
             row.charge = (ncuft > nkilo) ? ncuft : nkilo;
 
             if(row.cuft != "")
             {
                 num = parseFloat(row.cuft == "" ? 0 : row.cuft);
-                row.cuft_price = (num < 300 ? 365 : 345).toLocaleString('en-US', {maximumFractionDigits:2});  
+                row.cuft_price = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
             }
 
             if(row.cuft == "")
@@ -641,7 +641,7 @@ var app = new Vue({
 
         getLoadingRecords: function(keyword) {
           console.log("getLoadingRecords");
-            axios.get('api/measure_get_measure_ph.php')
+            axios.get('api/measure_get_measure_ph_qry.php')
                 .then(function(response) {
                     console.log(response.data);
                     app.loading_records = response.data;

@@ -1861,6 +1861,7 @@ var app = new Vue({
                   return false;
               } 
 
+/*
               var email_array = this.record.email.split(';');
               
               for(var i = 0; i < email_array.length; i++)
@@ -1872,6 +1873,7 @@ var app = new Vue({
                     return false;
                 } 
               }
+              */
 
               if (!this.isNumeric(this.record.kilo) && !this.record.kilo == "")
               {
@@ -1910,6 +1912,7 @@ var app = new Vue({
                   return false;
               } 
 
+              /*
               email_array = this.email.split(';');
               
               for(var i = 0; i < email_array.length; i++)
@@ -1921,6 +1924,7 @@ var app = new Vue({
                     return false;
                 } 
               }
+              */
 
               if (!this.isNumeric(this.kilo) && !this.kilo == "")
               {
