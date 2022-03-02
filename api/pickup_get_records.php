@@ -94,7 +94,7 @@ if($jwt){
 
             if(!existsInArray($measure_detail_id, $items))
             {
-                $mes = GetMeasureDetail($measure_detail_id, $db);
+                $mes = GetMeasureDetail($measure_detail_id, $group_id, $db);
                 if(!empty($mes))
                 {
                     $items = array_merge($items, $mes);
@@ -146,7 +146,7 @@ if($jwt){
             $group_id = $row['group_id'];
             $measure_detail_id = $row['measure_detail_id'];
 
-            $items = GetMeasureDetail($measure_detail_id, $db);
+            $items = GetMeasureDetail($measure_detail_id, $group_id, $db);
 
             $merged_results[] = array( 
                 "is_checked" => 0,
@@ -189,7 +189,7 @@ else{
     echo json_encode(array("message" => "Access denied."));
 }
 
-function GetMeasureDetail($measure_detail_id, $db){
+function GetMeasureDetail($measure_detail_id, $group_id, $db){
     $query = "
             SELECT distinct 0 as is_checked, measure_detail.id, kilo, cuft, kilo_price, cuft_price, charge, encode, encode_status, pickup_status, payment_status, DATE_FORMAT(measure_detail.crt_time, '%Y/%m/%d') crt_time, 
             (SELECT date_arrive FROM measure_ph WHERE measure_detail.measure_id = measure_ph.id) date_arrive,
@@ -229,7 +229,7 @@ function GetMeasureDetail($measure_detail_id, $db){
         $record = GetMeasureDetailRecord($row['id'], $db);
         $record_cust = GetMeasurePersonRecord($row['id'], $db);
 
-        $payment = GetPaymentRecord($row['id'], $db);
+        $payment = GetPaymentRecord($row['id'], $group_id, $db);
         
         for($i = 0; $i < count($payment); $i++)
           $payment[$i]['ar'] = $charge;
@@ -416,13 +416,33 @@ function GetMeasureDetailRecord($id, $db){
 }
 
 
-function GetPaymentRecord($id, $db){
+function GetPaymentRecord($id, $group_id, $db){
+    /*
+    if($group_id <> 0)
+    {
+        $query = "SELECT id, detail_id, `type`, issue_date, payment_date, person, amount, `change`, courier, remark
+        FROM payment    
+            WHERE detail_id in (select measure_detail_id from pick_group where group_id = " . $group_id . ")
+    AND `status` <> -1 order by payment_date 
+        ";
+    }
+    else
+    {
+        $query = "SELECT id, detail_id, `type`, issue_date, payment_date, person, amount, `change`, courier, remark
+            FROM payment
+                            
+                WHERE detail_id = " . $id . "
+        AND `status` <> -1 order by payment_date 
+        ";
+    }
+    */
+
     $query = "SELECT id, detail_id, `type`, issue_date, payment_date, person, amount, `change`, courier, remark
-                FROM payment
-                                 
-                    WHERE detail_id = " . $id . "
-            AND `status` <> -1 order by payment_date 
-    ";
+            FROM payment
+                            
+                WHERE detail_id = " . $id . "
+        AND `status` <> -1 order by payment_date 
+        ";
 
     // prepare the query
     $stmt = $db->prepare($query);

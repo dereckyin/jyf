@@ -150,7 +150,66 @@ $user_id = $decoded->data->id;
                 die();
             }
 
-                
+        }
+
+         // if group id <> 0 then update detail in group ids 
+        $group_id = GetGroupId($detail_id, $conn);
+
+        if($group_id != 0)
+        {
+            // for status
+            $query = "UPDATE measure_detail
+                SET
+                payment_status = '" . $encode_status . "'
+                WHERE id in (select measure_detail_id from pick_group where group_id = " . $group_id . ")";
+
+            $stmt = $conn->prepare($query);
+
+            try {
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
+                    $conn->rollback();
+                    http_response_code(501);
+                    echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                $conn->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+            }
+
+            // for receive record
+            if($encode_status == 'C')
+            {
+                $query = "UPDATE receive_record
+                    SET
+                    real_payment_time = '" . date("Y/m/d") . "'
+                    WHERE id in (SELECT record_id from measure_record_detail WHERE detail_id in (select measure_detail_id from pick_group where group_id = " . $group_id . "))";
+
+                $stmt = $conn->prepare($query);
+
+                try {
+                    // execute the query, also check if query was successful
+                    if (!$stmt->execute()) {
+                        $conn->rollback();
+                        http_response_code(501);
+                        echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                        die();
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    $conn->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
+                }
+            }
+        }
+        else
+        {
             // for status
             $query = "UPDATE measure_detail
                 SET
@@ -201,7 +260,6 @@ $user_id = $decoded->data->id;
                     die();
                 }
             }
-            
         }
 
         $conn->commit();
@@ -210,5 +268,18 @@ $user_id = $decoded->data->id;
     // Close connection
     mysqli_close($conn);
 
-
+function GetGroupId($detail_id, $db)
+{
+    $group_id = 0;
+    $query = "select group_id from pick_group where measure_detail_id = " . $detail_id;
+    $result = $db->query($query);
+    if($result->num_rows > 0)
+    {
+        while($row = $result->fetch_assoc())
+        {
+            $group_id = $row['group_id'];
+        }
+    }
+    return $group_id;
+}
 ?>
