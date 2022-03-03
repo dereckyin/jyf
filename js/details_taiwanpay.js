@@ -371,7 +371,7 @@ var app = new Vue({
           item['is_edited'] = 1; 
           this.is_modifying = false;
 
-          _this.query();
+          this.query();
       },
 
         editRow:function(item){
