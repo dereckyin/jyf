@@ -220,6 +220,107 @@ class ReceiveRecord{
         return $merged_results;
     }
 
+    
+    function TaiwanPayQueryDetail($date_start, $date_end, $container_number){
+
+        $merged_results = array();
+
+        $query = "SELECT 1 is_edited,
+                        r.id, 
+                        r.date_receive, 
+                        r.customer, 
+                        r.email_customer, 
+                        r.description, 
+                        r.quantity, 
+                        r.supplier, 
+                        r.remark,
+                        coalesce(tp.ar_php, '') ar_php,
+                        coalesce(tp.ar, '') ar,
+                        coalesce(tp.amount, '') amount,
+                        coalesce(tp.payment_date, '') payment_date,
+                        coalesce(tp.note, '') note
+                        FROM receive_record r LEFT JOIN loading l 
+                        ON r.batch_num = l.id
+                        left join taiwan_pay_record tp on tp.record_id = r.id
+                        where taiwan_pay=1 
+                        and r.status = '' 
+                        and r.date_receive <> '' ";
+
+        if(!empty($date_start)) {
+            $query = $query . " and r.date_receive >= '$date_start' ";
+        }
+
+        if(!empty($date_end)) {
+            $query = $query . " and r.date_receive <= '$date_end' ";
+        }
+
+        if(!empty($container_number)) {
+            $container_number = rtrim($container_number, ',');
+            $container = explode(",", $container_number);
+            $container_str = "'".implode("','",array_map("trim",array_filter($container)))."'";
+
+            $query = $query . " and l.container_number in($container_str) ";
+        }
+
+        $query = $query . " order by r.date_receive ";
+
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+            $merged_results[] = $row;
+
+        
+        
+        // no date_receive
+        $query = "SELECT 1 is_edited,
+             r.id, 
+            r.date_receive, 
+            r.customer, 
+            r.email_customer, 
+            r.description, 
+            r.quantity, 
+            r.supplier, 
+            r.remark,
+            coalesce(tp.ar_php, '') ar_php,
+            coalesce(tp.ar, '') ar,
+            coalesce(tp.amount, '') amount,
+            coalesce(tp.payment_date, '') payment_date,
+            coalesce(tp.note, '') note
+            FROM receive_record r LEFT JOIN loading l 
+            ON r.batch_num = l.id 
+            left join taiwan_pay_record tp on tp.record_id = r.id
+            where taiwan_pay=1 
+            and r.status = '' 
+            and r.date_receive = '' ";
+
+        if(!empty($date_start)) {
+        $query = $query . " and r.date_receive >= '$date_start' ";
+        }
+
+        if(!empty($date_end)) {
+        $query = $query . " and r.date_receive <= '$date_end' ";
+        }
+
+        if(!empty($container_number)) {
+        $container_number = rtrim($container_number, ',');
+        $container = explode(",", $container_number);
+        $container_str = "'".implode("','",array_map("trim",array_filter($container)))."'";
+
+        $query = $query . " and l.container_number in($container_str) ";
+        }
+
+        $query = $query . " order by r.id ";
+
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+            $merged_results[] = $row;
+
+        return $merged_results;
+    }
+
     function CourierPayQuery($date_start, $date_end, $container_number){
 
         $merged_results = array();

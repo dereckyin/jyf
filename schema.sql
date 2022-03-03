@@ -787,3 +787,20 @@ ADD COLUMN `del_time` timestamp NULL AFTER del_user;
 
 -- 20211229
 ALTER TABLE pick_group ADD COLUMN `status` INT DEFAULT 0 AFTER measure_detail_id;
+
+create table taiwan_pay_record
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `record_id` bigint(20) UNSIGNED NOT NULL,
+	`ar_php` DECIMAL(10, 2) NULL,
+  `ar` DECIMAL(10, 2) NULL,
+  `amount` DECIMAL(10, 2) NULL,
+  `payment_date` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `note` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+  `mdf_time` timestamp NULL,
+	`mdf_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
