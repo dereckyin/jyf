@@ -92,15 +92,12 @@ if($jwt){
                 $sheet->setCellValue('E1', '重量');
                 $sheet->setCellValue('F1', '材積');
                 $sheet->setCellValue('G1', '寄貨人');
-                $sheet->setCellValue('H1', '請款金額');
-                $sheet->setCellValue('I1', '付款金額');
-                $sheet->setCellValue('J1', '付款日期');
-                $sheet->setCellValue('K1', '備註');
-                $sheet->setCellValue('L1', '請款金額(菲幣)');
-                $sheet->setCellValue('M1', '請款金額(台幣)');
-                $sheet->setCellValue('N1', '付款金額');
-                $sheet->setCellValue('O1', '付款日期');
-                $sheet->setCellValue('P1', '補充說明');
+                $sheet->setCellValue('H1', '備註');
+                $sheet->setCellValue('I1', '請款金額(菲幣)');
+                $sheet->setCellValue('J1', '請款金額(台幣)');
+                $sheet->setCellValue('K1', '付款金額');
+                $sheet->setCellValue('L1', '付款日期');
+                $sheet->setCellValue('M1', '補充說明');
 
                 $i = 2;
                 foreach($recode as $row)
@@ -109,26 +106,23 @@ if($jwt){
                     $sheet->setCellValue('B' . $i, $row['customer']);
                     $sheet->setCellValue('C' . $i, $row['description']);
                     $sheet->setCellValue('D' . $i, $row['quantity']);
-                    $sheet->setCellValue('E' . $i, '');
-                    $sheet->setCellValue('F' . $i, '');
+                    $sheet->setCellValue('E' . $i, $row['kilo']);
+                    $sheet->setCellValue('F' . $i, $row['cuft']);
                     $sheet->setCellValue('G' . $i, $row['supplier']);
-                    $sheet->setCellValue('H' . $i, '');
-                    $sheet->setCellValue('I' . $i, '');
-                    $sheet->setCellValue('J' . $i, '');
-                    $sheet->setCellValue('K' . $i, $row['remark']);
-                    $sheet->setCellValue('L' . $i, $row['ar_php']);
-                    $sheet->setCellValue('M' . $i, $row['ar']);
-                    $sheet->setCellValue('N' . $i, $row['amount']);
-                    $sheet->setCellValue('O' . $i, $row['payment_date']);
-                    $sheet->setCellValue('P' . $i, $row['note']);
+                    $sheet->setCellValue('H' . $i, $row['remark']);
+                    $sheet->setCellValue('I' . $i, $row['ar_php']);
+                    $sheet->setCellValue('J' . $i, $row['ar']);
+                    $sheet->setCellValue('K' . $i, $row['amount']);
+                    $sheet->setCellValue('L' . $i, $row['payment_date']);
+                    $sheet->setCellValue('M' . $i, $row['note']);
 
-                    $sheet->getStyle('A'. $i. ':' . 'P' . $i)->applyFromArray($styleArray);
+                    $sheet->getStyle('A'. $i. ':' . 'M' . $i)->applyFromArray($styleArray);
 
                     $i++;
                 }
 
-                $sheet->getStyle('A1:' . 'P1')->getFont()->setBold(true);
-                $sheet->getStyle('A1:' . 'P' . --$i)->applyFromArray($styleArray);
+                $sheet->getStyle('A1:' . 'M1')->getFont()->setBold(true);
+                $sheet->getStyle('A1:' . 'M' . --$i)->applyFromArray($styleArray);
 
            
 
