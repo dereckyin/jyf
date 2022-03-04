@@ -30,8 +30,43 @@
             padding: 0;
         }
 
-        .mainlist div.tablebox > ul > li{
+        .mainlist div.tablebox > ul > li {
             font-size: 14px;
+        }
+
+        .mainlist div.tablebox > ul.header > li:nth-of-type(1) {
+            min-width: 100px;
+        }
+
+        .mainlist div.tablebox > ul.header > li:nth-of-type(2), .mainlist div.tablebox > ul.header > li:nth-of-type(3), .mainlist div.tablebox > ul.header > li:nth-of-type(7)  {
+            min-width: 230px;
+        }
+
+        .mainlist div.tablebox > ul.header > li:nth-of-type(4) {
+            min-width: 80px;
+        }
+
+        .mainlist div.tablebox > ul.header > li:nth-of-type(5), .mainlist div.tablebox > ul.header > li:nth-of-type(6) {
+            min-width: 60px;
+        }
+
+        .mainlist div.tablebox > ul.header > li:nth-of-type(8), .mainlist div.tablebox > ul.header > li:nth-of-type(13) {
+            min-width: 260px;
+        }
+
+        .mainlist div.tablebox > ul.header > li:nth-of-type(9), .mainlist div.tablebox > ul.header > li:nth-of-type(10), .mainlist div.tablebox > ul.header > li:nth-of-type(11) {
+            min-width: 120px;
+        }
+
+        .mainlist div.tablebox > ul.header > li:nth-of-type(12) {
+            min-width: 160px;
+        }
+
+        div.tablebox > ul > li > input[type='date']{
+            width: 160px;
+            height: 32.8px;
+            border-radius: 5px;
+            border: 1px solid rgb(153,153,153);
         }
 
         .listheader > .pageblock select {
@@ -107,11 +142,11 @@
             </div>
 
 
-            <div class="block record show" style="overflow-x: auto;">
+            <div class="block record show">
                 <h6>收貨紀錄
                     <eng>Receiving Records</eng>
                 </h6>
-                <div class="mainlist">
+                <div class="mainlist" style="overflow-x: auto;">
 
                     <div class="listheader">
                         <div class="pageblock" style="float:right;"> Page Size:
