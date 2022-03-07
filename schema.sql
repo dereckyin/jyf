@@ -804,3 +804,18 @@ create table taiwan_pay_record
 	`mdf_user` varchar(128) DEFAULT '',
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- 20220307 details_ntd_php
+CREATE TABLE details_ntd_php (
+  id INT NOT NULL AUTO_INCREMENT, 
+  `payment` JSON,
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+  `mdf_time` timestamp NULL,
+	`mdf_user` varchar(128) DEFAULT '',
+  `del_time` timestamp NULL DEFAULT NULL,
+  `del_user` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  PRIMARY KEY(id)
+);
