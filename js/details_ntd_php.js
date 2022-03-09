@@ -457,7 +457,7 @@ var app = new Vue({
           const link = document.createElement("a");
           link.href = url;
 
-          link.setAttribute("download", "store_sales_recorder.xlsx");
+          link.setAttribute("download", "details_ntd_php.xlsx");
 
           document.body.appendChild(link);
           link.click();
