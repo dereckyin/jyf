@@ -47,18 +47,47 @@ else
         // decode jwt
         $decoded = JWT::decode($jwt, $key, array('HS256'));
 
-        $query = "SELECT id, `status`, payment from details_ntd_php ss where 1=1  ";
+        $query = "SELECT ss.id, 
+                        client_name, 
+                        payee_name, 
+                        amount, 
+                        amount_php, 
+                        rate, 
+                        rate_yahoo, 
+                        total_receive,
+                        overpayment,
+                        pay_date,
+                        payee,
+                        remark,
+                        ss.`status` from details_ntd_php ss left join details_ntd_php_record sr
+                        on ss.id = sr.sales_id
+                        where 1=1  ";
 
         if($start_date!='') {
-            $query = $query . " and ss.crt_time >= '$start_date' ";
+            $query = $query . " and sr.receive_date >= '$start_date' ";
         }
 
         if($end_date!='') {
-            $query = $query . " and ss.crt_time <= '$end_date" . " 23:59:59' ";
+            $query = $query . " and sr.receive_date <= '$end_date" . " 23:59:59' ";
         }
 
         if($keyword != '')
-            $query .= " AND (LOWER(JSON_EXTRACT(payment, \"$.client_name\")) like '%" . strtolower($keyword) . "%' or LOWER(JSON_EXTRACT(payment, \"$.payee_name\")) like '%" . strtolower($keyword) . "%' or LOWER(JSON_EXTRACT(payment, \"$.remark\")) like '%" . strtolower($keyword) . "%' or LOWER(JSON_EXTRACT(payment, \"$.payee\")) like '%" . strtolower($keyword) . "%') ";
+            $query .= " AND (ss.client_name like '%" . $keyword . "%' or ss.payee_name like '%" . $keyword . "%' or ss.remark like '%" . $keyword . "%' or ss.payee like '%" . $keyword . "%') ";
+
+        $query .= "group by
+            ss.id, 
+            ss.client_name, 
+            ss.payee_name, 
+            ss.amount,
+            ss.amount_php,
+            ss.rate,
+            ss.rate_yahoo,
+            ss.total_receive,
+            ss.overpayment,
+            ss.pay_date,
+            ss.payee,
+            ss.remark,
+            ss.`status` ";
 
         $stmt = $db->prepare($query);
         $stmt->execute();
@@ -67,7 +96,39 @@ else
         
         $items = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $merged_results[] = $row;
+            $id = $row['id'];
+            $client_name = $row['client_name'];
+            $payee_name = $row['payee_name'];
+            $amount = $row['amount'];
+            $amount_php = $row['amount_php'];
+            $rate = $row['rate'];
+            $rate_yahoo = $row['rate_yahoo'];
+            $total_receive = $row['total_receive'];
+            $overpayment = $row['overpayment'];
+            $pay_date = $row['pay_date'];
+            $payee = $row['payee'];
+            $remark = $row['remark'];
+            $status = $row['status'];
+ 
+            $items = GetSalesDetail($id, $db);
+           
+            $merged_results[] = array( 
+                "is_edited" => 1,
+                "id" => $id,
+                "client_name" => $client_name,
+                "payee_name" => $payee_name,
+                "amount" => $amount,
+                "amount_php" => $amount_php,
+                "rate" => $rate,
+                "rate_yahoo" => $rate_yahoo,
+                "total_receive" => $total_receive,
+                "overpayment" => $overpayment,
+                "pay_date" => $pay_date,
+                "payee" => $payee,
+                "remark" => $remark,
+                "details"=> $items,
+                "status" => $status
+            );
         }
 
         // response in json format
@@ -85,4 +146,44 @@ else
             "error" => $e->getMessage()
         ));
     }
+}
+
+
+
+function GetSalesDetail($sales_id, $db){
+    $query = "
+            SELECT 0 as is_checked, id, receive_date, payment_method, account_number, check_details, receive_amount
+                FROM details_ntd_php_record
+            WHERE  sales_id = " . $sales_id . "
+            AND `status` <> -1 
+    ";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $merged_results = [];
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $is_checked = $row['is_checked'];
+        $id = $row['id'];
+        $receive_date = $row['receive_date'] == "" ? "" : $row['receive_date'];
+        $payment_method = $row['payment_method'] == "" ? "" : $row['payment_method'];
+        $account_number = $row['account_number'] == "" ? "" : $row['account_number'];
+        $check_details = $row['check_details'] == "" ? "" : $row['check_details'];
+        $receive_amount = $row['receive_amount'] == "" ? "" : $row['receive_amount'];
+    
+       
+        $merged_results[] = array(
+            "is_checked" => $is_checked,
+            "id" => $id,
+            "receive_date" => $receive_date,
+            "payment_method" => $payment_method,
+            "account_number" => $account_number,
+            "check_details" => $check_details,
+           "receive_amount" => $receive_amount,
+        );
+    }
+
+    return $merged_results;
 }

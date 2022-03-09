@@ -116,7 +116,7 @@ var app = new Vue({
             total_receive: '',
             overpayment : '',
             remark: '',
-            paydate : '',
+            pay_date : '',
             payee: '',
             status: '',
         }
@@ -448,7 +448,7 @@ var app = new Vue({
 
       axios({
         method: "post",
-        url: "api/store_sales_recorder_print",
+        url: "api/details_ntd_php_print.php",
         data: form_Data,
         responseType: "blob",
       })
@@ -550,15 +550,8 @@ var app = new Vue({
         })
         .then(
           (res) => {
-            _this.items = [];
-            res.data.forEach(function(value){
-              obj = JSON.parse(value.payment);
-              obj.id = value.id;
-              obj.status = value.status;
-              obj.is_edited = 1;
-   
-              _this.items.push(obj);
-            });
+       
+            _this.items = res.data;
     
             _this.items.forEach((element, index) => {
               if(element.status != "-1") {
@@ -572,14 +565,15 @@ var app = new Vue({
             this.displayedPosts();
           },
           (err) => {
-            alert(err.response);
+            alert(err.res);
           }
         )
         .finally(() => {});
     },
     displayedPosts: function() {
-      this.setPages();
-      return this.paginate(this.items);
+      //this.setPages();
+      //return this.paginate(this.items);
+      return this.items;
     },
     
     getUserName: function() {
@@ -644,6 +638,7 @@ var app = new Vue({
       this.setupRecord();
       this.getRecords();      
       this.get_today();
+      this.submit = false;
     },
 
     reload: function() {

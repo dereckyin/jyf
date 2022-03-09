@@ -25,8 +25,8 @@ try {
             $decoded = JWT::decode($jwt, $key, array('HS256'));
             $user_id = $decoded->data->id;
 
-if(!$decoded->data->status_1)
-header( 'location:parts_index.php' );
+if(!$decoded->data->report1)
+header( 'location:index.php' );
 
 // 可以存取Expense Recorder的人員名單如下：Dennis Lin(2), Glendon Wendell Co(4), Kristel Tan(6), Kuan(3), Mary Jude Jeng Articulo(9), Thalassa Wren Benzon(41), Stefanie Mika C. Santos(99)
 // 為了測試先加上testmanager(87) by BB
@@ -42,7 +42,7 @@ header( 'location:parts_index.php' );
 }
 catch (Exception $e){
 
-header( 'location:parts_index.php' );
+header( 'location:index.php' );
 }
 
 
@@ -52,7 +52,7 @@ header( 'location:parts_index.php' );
 // if decode fails, it means jwt is invalid
 catch (Exception $e){
 
-header( 'location:parts_index.php' );
+header( 'location:index.php' );
 }
 
 ?>
@@ -325,17 +325,31 @@ header( 'location:parts_index.php' );
 <div id="app">
 
     <div style="background: rgb(30, 107, 168); padding: 0.5vh; height: 70px; display: flex; align-items: center; justify-content: space-between;">
+        
+        <?php
+            if($decoded->data->status_1 == "1")
+        {
+        ?>
         <a @click="logout()" style="margin-left: 25px; font-size: 25px;">
             <span style="color: rgb(255, 255, 255); cursor: pointer">☰</span>
         </a>
+        <?php
+        }
+        ?>
 
+<?php
+            if($decoded->data->status_1 != "1")
+        {
+        ?>
         <a href="main.php" style="margin-left: 25px; font-size: 25px; text-decoration: none;">
             <span style="color: rgb(255, 255, 255); cursor: pointer">☰</span>
         </a>
-
+        <?php
+        }
+        ?>
         <div>
             <?php
-                if($decoded->data->status_1)
+                if($decoded->data->status_1 == "1")
             {
             ?>
             <a class="nav_link" href="staff_list.php">
@@ -351,25 +365,20 @@ header( 'location:parts_index.php' );
             <a class="nav_link" href="details_ntd_php.php">
                 <eng>NTD~PHP</eng>
             </a>
-            <?php
-                }
-            ?>
-
-            <?php
-                if($decoded->data->status_2)
-            {
-            ?>
             <a class="nav_link" href="expense_recorder_v2.php">
                 <eng>Expense Recorder2</eng>
             </a>
-            <?php
-                }
-            ?>
             <button data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
                     aria-controls="collapseOne" class=""
                     style="border: none; margin-right: 25px; font-weight: 700; font-size: x-large; background-color: rgb(30, 107, 168); color: rgb(255, 255, 255);">
                 <i aria-hidden="true" class="fas fa-plus-square fa-lg"></i>
             </button>
+            <?php
+                }
+            ?>
+
+           
+            
         </div>
     </div>
 
@@ -425,7 +434,7 @@ header( 'location:parts_index.php' );
                                 </li>
 
                                 <li>
-                                    <input type="text" class="form-control" v-model="record.amount">
+                                    <input type="number" class="form-control" v-model="record.amount">
                                 </li>
                             </ul>
 
@@ -455,7 +464,7 @@ header( 'location:parts_index.php' );
                                 </li>
 
                                 <li>
-                                    <input type="text" class="form-control" v-model="record.amount_php" @change="calculate_total()">
+                                    <input type="number" class="form-control" v-model="record.amount_php" @change="calculate_total()">
                                 </li>
                             </ul>
 
@@ -757,18 +766,32 @@ header( 'location:parts_index.php' );
                                 <div v-show="item.is_edited == 1">
                                     <label>{{ item.pay_date }}</label>
                                 </div>
+                            <?php
+                            if($decoded->data->status_1 != "1")
+                            {
+                            ?>
                                 <input v-show="item.is_edited == 0" type="date" v-model="item.pay_date">
+                            <?php
+                            }
+                            ?>
                             </td>
                             <td :rowspan="item.details.length" class="yellow">
                                 <div v-show="item.is_edited == 1">
                                     <label>{{ item.payee }}</label>
                                 </div>
+                            <?php
+                            if($decoded->data->status_1 != "1")
+                            {
+                            ?>
                                 <input v-show="item.is_edited == 0" type="text" v-model="item.payee">
+                            <?php
+                            }
+                            ?>
                             </td>
                             <td :rowspan="item.details.length" class="text-nowrap" v-show="item.status !== '-1'">
                             
                             <?php
-                                if($decoded->data->status_1)
+                                if($decoded->data->status_1 == "1")
                                 {
                             ?>
                             
@@ -785,7 +808,7 @@ header( 'location:parts_index.php' );
                             ?>
 
                             <?php
-                                if($decoded->data->status_2)
+                                if($decoded->data->status_1 != "1")
                                 {
                             ?>
                                 <button v-show="item.is_edited == 1" @click="editRow(item)">修改</button>
