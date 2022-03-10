@@ -211,24 +211,26 @@ try {
         `payee` = :payee,
         `remark` = :remark, ";
 
-        if ($amount != ''  && !is_null($amount)) {
+        //if ($amount != ''  && !is_null($amount)) {
             $query .= "`amount` = :amount, ";
-        }
-        if ($amount_php != ''  && !is_null($amount_php)) {
+        //}
+        //if ($amount_php != ''  && !is_null($amount_php)) {
             $query .= "`amount_php` = :amount_php, ";
-        }
-        if ($total_receive != ''  && !is_null($total_receive)) {
+        //}
+        //if ($total_receive != ''  && !is_null($total_receive)) {
             $query .= "`total_receive` = :total_receive, ";
-        }
-        if ($overpayment != ''  && !is_null($overpayment)) {
+        //}
+        //if ($overpayment != ''  && !is_null($overpayment)) {
             $query .= "`overpayment` = :overpayment, ";
-        }
+        //}
 
         $query .= "
         `status` = 1,
         `mdf_user` = :mdf_user,
         `mdf_time` = now()
         where id = :id";
+
+        $nul = null;
 
         // prepare the query
         $stmt = $db->prepare($query);
@@ -245,15 +247,26 @@ try {
         if ($amount != '' && !is_null($amount)) {
             $stmt->bindParam(':amount', $amount);
         }
+        else
+            $stmt->bindParam(':amount', $nul);
+
         if ($amount_php != '' && !is_null($amount_php)) {
             $stmt->bindParam(':amount_php', $amount_php);
         }
+        else
+            $stmt->bindParam(':amount_php', $nul);
+
         if ($total_receive != '' && !is_null($total_receive)) {
             $stmt->bindParam(':total_receive', $total_receive);
         }
+        else
+            $stmt->bindParam(':total_receive', $nul);
+
         if ($overpayment != '' && !is_null($overpayment)) {
             $stmt->bindParam(':overpayment', $overpayment);
         }
+        else
+            $stmt->bindParam(':overpayment', $nul);
 
         $stmt->bindParam(':mdf_user', $user_name);
         $stmt->bindParam(':id', $id);
