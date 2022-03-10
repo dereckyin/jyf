@@ -144,11 +144,24 @@ header( 'location:index.php' );
             top: 0.75rem !important;
         }
 
+        a.nav_link{
+           color: #FFFFFF;
+            font-weight: bold;
+            padding: 0 20px;
+            text-decoration: none;
+            cursor: pointer;
+            border-right: 2px solid #FFFFFF;
+        }
+
+        a.nav_link:last-of-type{
+            border-right: none;
+            margin-right: 20px;
+        }
+
         .panel-body {
             border: 3px solid rgb(222, 226, 230);
             border-top: none;
             padding: 20px 20px 0;
-
         }
 
         .panel-body .tb_add_record {
@@ -178,6 +191,7 @@ header( 'location:index.php' );
 
         .panel-body .tb_add_record > ul > li:nth-of-type(2) input[type="date"],
         .panel-body .tb_add_record > ul > li:nth-of-type(2) input[type="text"],
+        .panel-body .tb_add_record > ul > li:nth-of-type(2) input[type="number"],
         .panel-body .tb_add_record > ul > li:nth-of-type(2) select {
             width: 380px;
         }
@@ -476,7 +490,7 @@ header( 'location:index.php' );
                                         </td>
 
                                         <td>
-                                            <select class="form-control" style="width: 190px;" v-model="payment_method">
+                                            <select class="form-control" style="width: 205px;" v-model="payment_method">
                                                 <option value="">Choose Payment Method</option>
                                                 <option value="Cash">Cash</option>
                                                 <option value="Deposit">Deposit</option>
@@ -497,7 +511,7 @@ header( 'location:index.php' );
                                         </td>
 
                                         <td>
-                                            <input type="number" class="form-control" style="width: 200px;" v-model="receive_amount"
+                                            <input type="number" class="form-control" style="width: 225px;" v-model="receive_amount"
                                                    placeholder="Encode Received Amount">
                                         </td>
 
