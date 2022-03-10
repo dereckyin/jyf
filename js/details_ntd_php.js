@@ -124,7 +124,11 @@ var app = new Vue({
 
     calculate_total_amount: function() {
 
-      this.record.overpayment = ((this.record.amount_php == '' ? 0.0 : Number(this.record.amount_php)) - Number(this.record.total_receive)).toFixed(2);
+      this.record.overpayment = (Number(this.record.total_receive) - (this.record.amount_php == '' ? 0.0 : Number(this.record.amount_php))).toFixed(2);
+
+      if(this.record.overpayment <= 0.0) {
+        this.record.overpayment = '';
+      }
     },
 
     calculate_total: function() {
@@ -135,7 +139,11 @@ var app = new Vue({
 
       this.record.total_receive = amount.toFixed(2);
 
-      this.record.overpayment = ((this.record.amount_php == '' ? 0.0 : Number(this.record.amount_php)) - amount).toFixed(2);
+      this.record.overpayment = (amount - (this.record.amount_php == '' ? 0.0 : Number(this.record.amount_php))).toFixed(2);
+
+      if(this.record.overpayment <= 0.0) {
+        this.record.overpayment = '';
+      }
     },
 
     save_item: function() {
@@ -375,6 +383,7 @@ var app = new Vue({
             .then(function(response) {
               //handle success
               //_this.items = response.data
+              _this.reload();
             })
             .catch(function(response) {
               //handle error
@@ -383,8 +392,9 @@ var app = new Vue({
                 icon: "error",
                 confirmButtonText: "OK",
               });
+              _this.reload();
             });
-          _this.reload();
+          
         } else {
           return;
         }
