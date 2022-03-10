@@ -244,6 +244,15 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
+								<input class="form-check-input" type="checkbox" name="report1" required id="A1"
+                                           :true-value="1" v-model:checked="report1" @change="update_report1"> 啟用報表1
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
                                     <input class="form-check-input" type="checkbox" name="is_admin" required id="A1"
                                            :true-value="1" v-model:checked="is_admin" @change="updateIsAdmin"> 是否為管理者
                                 </li>
@@ -356,6 +365,14 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
+								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.report1" @change="update_edit_report1" required> 啟用報表1
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
                                     <input class="form-check-input" type="checkbox" id="B2" :true-value="1"  v-model:checked="record.is_admin" @change="updateEditIsAdmin" required> 是否為管理者
                                 </li>
                             </ul>
@@ -388,6 +405,7 @@ include 'menu.php';
                             <th>啟用零件支出記錄2</th>
                             <th>啟用台灣唯讀</th>
                             <th>啟用菲律賓唯讀</th>
+                            <th>啟用報表1</th>
                             <th>是否為管理者</th>
                             <th>上次登入日期</th>
                         </tr>
@@ -406,6 +424,7 @@ include 'menu.php';
                             <td>{{ (rec.status_2 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.taiwan_read == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.phili_read == '1') ? "是 (yes)" : "否 (no)" }}</td>
+                            <td>{{ (rec.report1 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.is_admin == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td> {{ rec.login_time }}</td>
                         </tr>

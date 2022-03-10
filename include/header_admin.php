@@ -151,6 +151,10 @@ if ( isset( $jwt ) ) {
         <a href="loading.php">貨物裝櫃
             <eng>Loading Goods into Container</eng>
         </a>
+        
+        <a href="details_taiwanpay.php">台灣付明細
+            <eng>Details of Taiwan Pay</eng>
+        </a>
 
         <a href="query_receive.php">收貨記錄查詢
             <eng>Query For Receiving Records</eng>

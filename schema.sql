@@ -787,3 +787,66 @@ ADD COLUMN `del_time` timestamp NULL AFTER del_user;
 
 -- 20211229
 ALTER TABLE pick_group ADD COLUMN `status` INT DEFAULT 0 AFTER measure_detail_id;
+
+create table taiwan_pay_record
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `record_id` bigint(20) UNSIGNED NOT NULL,
+	`ar_php` DECIMAL(10, 2) NULL,
+  `ar` DECIMAL(10, 2) NULL,
+  `amount` DECIMAL(10, 2) NULL,
+  `payment_date` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `note` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+  `mdf_time` timestamp NULL,
+	`mdf_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- 20220307 details_ntd_php
+CREATE TABLE details_ntd_php (
+  `id` INT NOT NULL AUTO_INCREMENT, 
+  `client_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `payee_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `amount` decimal(10,2) null,
+  `amount_php` decimal(10,2) null,
+  `rate` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `rate_yahoo` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `total_receive` decimal(10,2) null,
+  `overpayment` decimal(10,2) null,
+  `pay_date` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `payee` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `remark` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+  `mdf_time` timestamp NULL,
+	`mdf_user` varchar(128) DEFAULT '',
+  `del_time` timestamp NULL DEFAULT NULL,
+  `del_user` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  PRIMARY KEY(id)
+);
+
+create table details_ntd_php_record
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `sales_id` bigint(20) unsigned NOT NULL,
+  `receive_date` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `payment_method` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `account_number` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `check_details` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`receive_amount` decimal(10,2) DEFAULT 0.0,
+	`status` varchar(2) DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+	`mdf_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`mdf_user` varchar(128) DEFAULT '',
+	`del_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`del_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE user ADD COLUMN report1 INT DEFAULT 0;
