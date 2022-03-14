@@ -187,15 +187,15 @@
                             </div>
                         </div>
                         <div class="left_function">
-                            <select>
-                                <option>Date Sent</option>
-                                <option selected>Date C/R</option>
+                            <select v-model="fil_category">
+                                <option value="1">Date Sent</option>
+                                <option selected value="2">Date C/R</option>
                             </select>
 
-                            <input style="margin-left: 10px;" type="date"> ~ <input type="date">
+                            <input style="margin-left: 10px;" type="date" id="start" v-model="date_start"> ~ <input type="date" id="end" v-model="date_end">
 
-                            <button style="margin-left: 20px;"><i aria-hidden="true" class="fas fa-filter"></i></button>
-                            <button><i aria-hidden="true" class="fas fa-file-export"></i></button>
+                            <button style="margin-left: 20px;" @click="query()"><i aria-hidden="true" class="fas fa-filter"></i></button>
+                            <button @click="print()"><i aria-hidden="true" class="fas fa-file-export"></i></button>
                         </div>
 
                         <!-- <div class="searchblock" style="float:left;">搜尋<input type="text"></div> -->
@@ -234,9 +234,9 @@
                             </li>
                         </ul>
                         <ul v-for='(item, index) in displayedPosts'>
-                            <li><template v-for='(it, index) in item.loading'>{{it.eta_date}}</template></li>
-                            <li><template v-for='(it, index) in item.loading'>{{it.date_arrive}}</template></li>
-                            <li><template v-for='(it, index) in item.loading'>{{it.container_number}}</template></li>
+                            <li><p v-for='(it, index) in item.loading'>{{it.eta_date}}</template></li>
+                            <li><p v-for='(it, index) in item.loading'>{{it.date_arrive}}</template></li>
+                            <li><p v-for='(it, index) in item.loading'>{{it.container_number}}</template></li>
                             <li>{{ item.charge_kilo !== undefined ? Number(item.charge_kilo).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
                             <li>{{ item.charge_cuft !== undefined ? Number(item.charge_cuft).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
                             <li>{{ item.charge !== undefined ? Number(item.charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
@@ -272,8 +272,8 @@
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-<!-- <script type="text/javascript" src="js/report_container_ac.js?random=<?php echo uniqid(); ?>" defer></script> -->
-<script type="text/javascript" src="js/report_container_ac.js" defer></script>
+<script type="text/javascript" src="js/report_container_ac.js?random=<?php echo uniqid(); ?>" defer></script>
+
 <script defer src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 <!-- jQuery和js載入 -->

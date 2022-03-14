@@ -29,10 +29,12 @@ $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 $date_start = (isset($_POST['date_start']) ?  $_POST['date_start'] : '');
 $date_end = (isset($_POST['date_end']) ?  $_POST['date_end'] : '');
-$container_number = (isset($_POST['container_number']) ?  $_POST['container_number'] : '');
+$type = (isset($_POST['type']) ?  $_POST['type'] : '');
 // if jwt is not empty
 if($jwt){
  
+    $date_start = str_replace('-', '/', $date_start);
+    $date_end = str_replace('-', '/', $date_end);
     // if decode succeed, show user details
     try {
  
@@ -41,21 +43,8 @@ if($jwt){
 
         // response in json format
         http_response_code(200);
-
-        if($date_start == '' && $date_end == '')
-        {
-            $date_start = date('Y');
-
-            $this_year = date("Y/m/d",strtotime($date_start . '-01-01' . " first day of 0 year"));
-            $last_year = date("Y/m/d",strtotime($date_start . '-01-01' . " first day of 1 year"));
-
-            $date_start    = $this_year;
-            $date_end      = $last_year;
-        }
-
             
         $merged_results = array();
-
 
         $query = "select mp.id,
                     sum(IF(abs(charge - (md.kilo * md.kilo_price)) > abs(charge - (md.cuft * md.cuft_price)), 0, charge)) charge_kilo,
@@ -97,9 +86,52 @@ if($jwt){
             
         }
 
+        if($date_end != '' && $date_start != '' && $type == "1")
+        {
+            $merged_results = array_filter($merged_results, function($a) use ($date_end, $date_start) {
+                $in_value = false;
+
+                foreach($a['loading'] as $item)
+                {
+                    if($item['eta_date'] <= $date_end && $item['eta_date'] >= $date_start)
+                    {
+                        $in_value = true;
+                    }
+                
+                }
+
+                return $in_value;
+            });
+        }
+
+        if($date_end != '' && $date_start != '' && $type == "2")
+        {
+            $merged_results = array_filter($merged_results, function($a) use ($date_end, $date_start) {
+                $in_value = false;
+
+                foreach($a['loading'] as $item)
+                {
+                    if($item['date_arrive'] <= $date_end && $item['date_arrive'] >= $date_start)
+                    {
+                        $in_value = true;
+                    }
+                
+                }
+
+                return $in_value;
+            });
+        }
+
+        if($type == '1')
+            usort($merged_results, "compare_eta");
+        else
+            usort($merged_results, "compare_arrive");
+
         echo json_encode($merged_results, JSON_UNESCAPED_SLASHES);
                 
     }
+
+    
  
     // if decode fails, it means jwt is invalid
     catch (Exception $e){
@@ -124,13 +156,85 @@ else{
     echo json_encode(array("message" => "Access denied."));
 }
 
+function compare_eta($a, $b)
+{
+    $last_a = '';
+    $last_b = '';
+
+    foreach($a['loading'] as $item)
+    {
+        if($item['eta_date'] > $last_a)
+        {
+            $last_a = $item['eta_date'];
+        }
+    }
+
+    foreach($b['loading'] as $item)
+    {
+        if($item['eta_date'] > $last_b)
+        {
+            $last_b = $item['eta_date'];
+        }
+    }
+
+   return ($last_a > $last_b);
+}
+
+function compare_arrive($a, $b)
+{
+    $last_a = '';
+    $last_b = '';
+
+    foreach($a['loading'] as $item)
+    {
+        if($item['date_arrive'] > $last_a)
+        {
+            $last_a = $item['date_arrive'];
+        }
+    }
+
+    foreach($b['loading'] as $item)
+    {
+        if($item['date_arrive'] > $last_b)
+        {
+            $last_b = $item['date_arrive'];
+        }
+    }
+
+   return ($last_a > $last_b);
+
+}
+
+function filter_eta($a, $b)
+{
+    $last_a = '';
+    $last_b = '';
+
+    foreach($a['loading'] as $item)
+    {
+        if($item['eta_date'] > $last_a)
+        {
+            $last_a = $item['eta_date'];
+        }
+    }
+
+    foreach($b['loading'] as $item)
+    {
+        if($item['eta_date'] > $last_b)
+        {
+            $last_b = $item['eta_date'];
+        }
+    }
+
+   return ($last_a > $last_b);
+}
 
 function GetLoadingDetail($conn, $id){
     $sql = "select 
     mp.id, 
     l.container_number,
-    ldh.eta_date,
-    ldh.date_arrive 
+    CONCAT_WS(',', l.eta_date, IFNULL(ldh.eta_date, '')) eta_date,
+    CONCAT_WS(',', l.date_arrive, IFNULL(ldh.date_arrive, '')) date_arrive
 from measure_ph mp 
     left join loading l on mp.id = l.measure_num 
     left join loading_date_history ldh on l.id = ldh.loading_id  
@@ -146,8 +250,8 @@ where mp.id =  ($id)";
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $loading_id = $row['id'];
         $container_number = $row['container_number'];
-        $eta_date_ary = explode(",", $row['eta_date']);
-        $date_arrive_ary = explode(",", $row['date_arrive']);
+        $eta_date_ary = explode(",", rtrim($row['eta_date'], ','));
+        $date_arrive_ary = explode(",", rtrim($row['date_arrive'], ','));
 
         $merged_results[] = array( 
             "loading_id" => $loading_id,

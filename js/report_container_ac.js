@@ -54,6 +54,12 @@ let mainState = {
     ar_total: 0,
     charge_total: 0,
 
+    // fil
+    fil_start_date: "",
+    fil_end_date: "",
+    fil_creator: "",
+    fil_category: "2",
+
 };
 
 var app = new Vue({
@@ -64,6 +70,53 @@ var app = new Vue({
 
     created () {
       console.log('Vue created');
+
+      let _this = this;
+    let uri = window.location.href.split('?');
+
+    let id = 0;
+/*
+    if (uri.length >= 2)
+    {
+      let vars = uri[1].split('&');
+      
+      let tmp = '';
+      vars.forEach(function(v){
+        tmp = v.split('=');
+        if(tmp.length == 2)
+        {
+          switch (tmp[0]) {
+            case "d":
+              document.getElementById("start").value = tmp[1];
+              _this.fil_start_date = tmp[1];
+              break;
+            case "e":
+              document.getElementById("end").value = tmp[1];
+              _this.fil_end_date = tmp[1];
+              break;
+            case "c":
+              _this.fil_category = tmp[1];
+              break;
+            case "p":
+              _this.fil_creator = decodeURI(tmp[1]);
+              break;
+            case "pg":
+              _this.pg = tmp[1];
+              break;
+            case "page":
+              _this.page = tmp[1];
+              break;
+            case "size":
+              _this.perPage = tmp[1];
+              break;
+            default:
+              console.log(`Too many args`);
+          }
+          //_this.proof_id = tmp[1];
+        }
+      });
+    }
+*/
       this.query();
       this.perPage = this.inventory.find(i => i.id === this.perPage);
     },
@@ -212,11 +265,48 @@ var app = new Vue({
                 });
         },
 
+        print() {
+          var token = localStorage.getItem("token");
+          var form_Data = new FormData();
+          let _this = this;
+          form_Data.append("jwt", token);
+          form_Data.append('date_start', this.date_start);
+          form_Data.append('date_end', this.date_end);
+          form_Data.append('type', this.fil_category);
+        
+    
+          axios({
+            method: "post",
+            url: "api/report_container_ac_print.php",
+            data: form_Data,
+            responseType: "blob",
+          })
+              .then(function(response) {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                   
+                      link.setAttribute('download', 'Report Container AC.xlsx');
+                   
+                    document.body.appendChild(link);
+                    link.click();
+    
+              })
+              .catch(function(response) {
+                  //handle error
+                  console.log(response)
+              });
+        },
+
         query: function() {
          
             var form_Data = new FormData();
             const token = sessionStorage.getItem('token');
             let _this = this;
+
+            form_Data.append('date_start', this.date_start);
+            form_Data.append('date_end', this.date_end);
+            form_Data.append('type', this.fil_category);
 
             axios({
                     method: 'post',
@@ -231,9 +321,9 @@ var app = new Vue({
                     //handle success
                     app.receive_records = response.data;
 
-                    this.container_total = 0.0;
-                    this.ar_total = 0.0;
-                    this.charge_total = 0.0;
+                    _this.container_total = 0.0;
+                    _this.ar_total = 0.0;
+                    _this.charge_total = 0.0;
 
                     for (var i = 0; i < app.receive_records.length; i++) {
                         _this.container_total += (app.receive_records[i].loading.length);
@@ -251,46 +341,6 @@ var app = new Vue({
 
         },
 
-        print: function() {
-            var taiwan_pay = window.document.getElementById('taiwan_pay').value;
-            var date_start = window.document.getElementById('date_start').value;
-            var date_end = window.document.getElementById('date_end').value;
-            var container_number = window.document.getElementById('container_number').value;
-            
-            var form_Data = new FormData();
-
-            form_Data.append('date_start', this.formatDate(date_start))
-            form_Data.append('date_end', this.formatDate(date_end))
-            form_Data.append('taiwan_pay', taiwan_pay)
-            form_Data.append('container_number', container_number)
-
-            const filename = taiwan_pay;
-
-            const token = sessionStorage.getItem('token');
-
-            axios({
-                    method: 'post',
-                    url: 'api/taiwanpay_print.php',
-                    data: form_Data,
-                    responseType: 'blob', // important
-                })
-                .then(function(response) {
-                      const url = window.URL.createObjectURL(new Blob([response.data]));
-                      const link = document.createElement('a');
-                      link.href = url;
-                      if(filename == 1)
-                        link.setAttribute('download', '台灣付費明細.xlsx');
-                      else
-                        link.setAttribute('download', '代墊紀錄表.xlsx');
-                      document.body.appendChild(link);
-                      link.click();
-
-                })
-                .catch(function(response) {
-                    //handle error
-                    console.log(response)
-                });
-        },
 
         getIndex(index) {
             return ((this.page - 1) * this.perPage.id) + index
