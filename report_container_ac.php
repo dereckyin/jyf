@@ -246,11 +246,11 @@
                         <ul class="total">
                             <li>Total</li>
                             <li></li>
+                            <li>{{ container_total }}</li>
                             <li></li>
                             <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
+                            <li>{{ charge_total !== undefined ? Number(charge_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>{{ ar_total !== undefined ? Number(ar_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
                         </ul>
                     </div>
                 </div>
@@ -272,7 +272,8 @@
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-<script type="text/javascript" src="js/report_container_ac.js?random=<?php echo uniqid(); ?>" defer></script>
+<!-- <script type="text/javascript" src="js/report_container_ac.js?random=<?php echo uniqid(); ?>" defer></script> -->
+<script type="text/javascript" src="js/report_container_ac.js" defer></script>
 <script defer src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 <!-- jQuery和js載入 -->

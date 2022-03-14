@@ -49,6 +49,11 @@ let mainState = {
     c_keyword:'',
     // image
 
+    // total
+    container_total: 0,
+    ar_total: 0,
+    charge_total: 0,
+
 };
 
 var app = new Vue({
@@ -189,19 +194,16 @@ var app = new Vue({
                     console.log(response.data);
                     app.receive_records = response.data;
 
-                    //this.r_kilo = 0.0;
-                    //this.n_kilo = 0.0;
-                    //this.r_cuft = 0.0;
-                    //this.n_cuft = 0.0;
-                    
-                    
+                    this.container_total = 0.0;
+                    this.ar_total = 0.0;
+                    this.charge_total = 0.0;
 
-                    //console.log(this.n_kilo);
-                    //console.log(this.n_cuft);
-                    //console.log(this.r_kilo);
-                    //console.log(this.r_cuft);
-
-                    //this.$refs.showUser1.$el.DataTable();
+                    for (var i = 0; i < app.receive_records.length; i++) {
+                        this.container_total += (app.receive_records[i].loading.length);
+                        this.ar_total += parseFloat(app.receive_records[i].ar);
+                        this.charge_total += parseFloat(app.receive_records[i].charge);
+                    }
+        
                     console.log("getReceiveRecords");
 
                 })
@@ -212,14 +214,9 @@ var app = new Vue({
 
         query: function() {
          
-            
             var form_Data = new FormData();
-
-   
-
             const token = sessionStorage.getItem('token');
-
-       
+            let _this = this;
 
             axios({
                     method: 'post',
@@ -233,6 +230,18 @@ var app = new Vue({
                 .then(function(response) {
                     //handle success
                     app.receive_records = response.data;
+
+                    this.container_total = 0.0;
+                    this.ar_total = 0.0;
+                    this.charge_total = 0.0;
+
+                    for (var i = 0; i < app.receive_records.length; i++) {
+                        _this.container_total += (app.receive_records[i].loading.length);
+                        _this.ar_total += parseFloat(app.receive_records[i].ar);
+                        _this.charge_total += parseFloat(app.receive_records[i].charge);
+                    }
+
+                    console.log(_this.ar_total)
 
                 })
                 .catch(function(response) {
