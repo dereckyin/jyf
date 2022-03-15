@@ -552,7 +552,7 @@ switch ($method) {
                               values (?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param(
-                    "dssss",
+                    "dsssss",
                     $last_id,
                     $date_sent,
                     $etd_date,
