@@ -262,6 +262,7 @@ header( 'location:index.php' );
                                 <eng>Remark</eng>
                                 備註
                             </li>
+                            <li><eng>Date C/R</eng>貨櫃到倉日期</li>
                             <li>
                                 <eng>A/R (PHP)</eng>
                                 請款金額(菲幣)
@@ -278,6 +279,7 @@ header( 'location:index.php' );
                                 <eng>Paid Date</eng>
                                 付款日期
                             </li>
+                            <li><eng>Currency Rate</eng>匯率</li>
                             <li>
                                 <eng>Notes</eng>
                                 補充說明
@@ -296,7 +298,7 @@ header( 'location:index.php' );
                             <li>{{ receive_record.cuft }}</li>
                             <li>{{ receive_record.supplier }}</li>
                             <li><p v-html="receive_record.remark.replace(/(?:\r\n|\r|\n)/g, '&nbsp')"></p></li>
-
+                            <li>{{ receive_record.date_arrive }}</li>
                             <li>
                                 <div v-show="receive_record.is_edited == 1">
                                     <label> {{receive_record.ar_php}}</label>
@@ -327,6 +329,13 @@ header( 'location:index.php' );
 
                             <li>
                                 <div v-show="receive_record.is_edited == 1">
+                                    <label> {{ receive_record.rate}}</label>
+                                </div>
+                                <input type="text" name="rate" v-show="receive_record.is_edited == 0" v-model="receive_record.rate">
+                            </li>
+
+                            <li>
+                                <div v-show="receive_record.is_edited == 1">
                                     <label> {{receive_record.note}}</label>
                                 </div>
                                 <input type="text" name="note" v-show="receive_record.is_edited == 0" v-model="receive_record.note" maxlength="512">
@@ -338,9 +347,10 @@ header( 'location:index.php' );
                                     if($decoded->data->taiwan_read != "1")
                                     {
                                 ?>
-                                <button v-show="receive_record.is_edited == 1" @click="editRow(receive_record)">修改</button>
+                                <button v-show="receive_record.is_edited == 1 && receive_record.status == ''" @click="editRow(receive_record)">修改</button>
                                 <button v-show="receive_record.is_edited == 0" @click="confirmRow(receive_record)">確認</button>
                                 <button v-show="receive_record.is_edited == 0" @click="cancelRow(receive_record)">取消</button>
+                                <button v-show="receive_record.is_edited == 1 && receive_record.status == ''" @click="completeRow(receive_record)">完成</button>
                                 <?php
                                     }
                                 ?>
@@ -404,7 +414,7 @@ header( 'location:index.php' );
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-<script type="text/javascript" src="js/details_taiwanpay.js" defer></script>
+<script type="text/javascript" src="js/details_taiwanpay.js?rand=<?php echo uniqid(); ?>" defer></script>
 <script defer src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 <!-- jQuery和js載入 -->
