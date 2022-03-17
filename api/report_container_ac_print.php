@@ -178,6 +178,7 @@ if($jwt){
     $container_total = 0;
     $ar_total = 0;
     $charge_total = 0;
+    $total_total = 0;
                 
                 $sheet->setCellValue('A1', 'Date Sent 結關日期');
                 $sheet->setCellValue('B1', 'Date C/R 到倉日期');
@@ -201,13 +202,14 @@ if($jwt){
                         $sheet->setCellValue('A' . $i, $rec["eta_date"]);
                         $sheet->setCellValue('B' . $i, $rec["date_arrive"]);
                         $sheet->setCellValue('C' . $i, $rec["container_number"]);
-                        $sheet->setCellValue('D' . $i, number_format((float)$measure["charge_kilo"], 2, '.', ''));
-                        $sheet->setCellValue('E' . $i, number_format((float)$measure["charge_cuft"], 2, '.', ''));
-                        $sheet->setCellValue('F' . $i, number_format((float)$measure["charge"], 2, '.', ''));
-                        $sheet->setCellValue('G' . $i, number_format((float)$measure["ar"], 2, '.', ''));
+                        $sheet->setCellValue('D' . $i, '₱ ' . number_format((float)$measure["charge_kilo"], 2, '.', ''));
+                        $sheet->setCellValue('E' . $i, '₱ ' . number_format((float)$measure["charge_cuft"], 2, '.', ''));
+                        $sheet->setCellValue('F' . $i, '₱ ' . number_format((float)$measure["charge_kilo"] + (float)$measure["charge_cuft"], 2, '.', ''));
+                        $sheet->setCellValue('G' . $i, '₱ ' . number_format((float)$measure["charge"], 2, '.', ''));
+                        $sheet->setCellValue('H' . $i, '₱ ' . number_format((float)$measure["ar"], 2, '.', ''));
                       
 
-                        $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
+                        $sheet->getStyle('A'. $i. ':' . 'H' . $i)->applyFromArray($styleArray);
                         $i++;
                     }
 
@@ -217,11 +219,12 @@ if($jwt){
                         $sheet->mergeCells('E' . $j . ':E' . ($i -1));
                         $sheet->mergeCells('F' . $j . ':F' . ($i -1));
                         $sheet->mergeCells('G' . $j . ':G' . ($i -1));
-                  
+                        $sheet->mergeCells('H' . $j . ':H' . ($i -1));
                     }
 
                     $ar_total += $measure["ar"];
                     $charge_total += $measure["charge"];
+                    $total_total += $measure["charge_kilo"] + $measure["charge_cuft"];
 
                 }
 
@@ -230,17 +233,17 @@ if($jwt){
 
                 $sheet->setCellValue('C' . $i, $container_total);
        
-            
-                $sheet->setCellValue('F' . $i, number_format((float)$ar_total, 2, '.', ''));
-                $sheet->setCellValue('G' . $i, number_format((float)$charge_total, 2, '.', ''));
+                $sheet->setCellValue('F' . $i, '₱ ' . number_format((float)$total_total, 2, '.', ''));
+                $sheet->setCellValue('G' . $i, '₱ ' . number_format((float)$charge_total, 2, '.', ''));
+                $sheet->setCellValue('H' . $i, '₱ ' . number_format((float)$ar_total, 2, '.', ''));
 
-                $sheet->getStyle('A' . $i . ':' . 'G' . $i)->getFont()->setBold(true);
+                $sheet->getStyle('A' . $i . ':' . 'H' . $i)->getFont()->setBold(true);
                 //$sheet->getStyle('A'. $i. ':' . 'J' . $i)->applyFromArray($styleArray);
 
                 $i = $i + 2;
 
-                $sheet->getStyle('A1:' . 'G1')->getFont()->setBold(true);
-                $sheet->getStyle('A1:' . 'G' . --$i)->applyFromArray($styleArray);
+                $sheet->getStyle('A1:' . 'H1')->getFont()->setBold(true);
+                $sheet->getStyle('A1:' . 'H' . --$i)->applyFromArray($styleArray);
 
             
 

@@ -1,4 +1,62 @@
 <?php include 'check.php';?>
+<?php
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
+$uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
+if ( !isset( $jwt ) ) {
+  header( 'location:index' );
+}
+
+include_once 'api/config/core.php';
+include_once 'api/libs/php-jwt-master/src/BeforeValidException.php';
+include_once 'api/libs/php-jwt-master/src/ExpiredException.php';
+include_once 'api/libs/php-jwt-master/src/SignatureInvalidException.php';
+include_once 'api/libs/php-jwt-master/src/JWT.php';
+include_once 'api/config/database.php';
+
+
+use \Firebase\JWT\JWT;
+
+$test_manager = "0";
+
+try {
+        // decode jwt
+        try {
+            // decode jwt
+            $decoded = JWT::decode($jwt, $key, array('HS256'));
+            $user_id = $decoded->data->id;
+
+if(!$decoded->data->report1)
+header( 'location:index.php' );
+
+// 可以存取Expense Recorder的人員名單如下：Dennis Lin(2), Glendon Wendell Co(4), Kristel Tan(6), Kuan(3), Mary Jude Jeng Articulo(9), Thalassa Wren Benzon(41), Stefanie Mika C. Santos(99)
+// 為了測試先加上testmanager(87) by BB
+// if($user_id == 1 || $user_id == 4 || $user_id == 6 || $user_id == 2 || $user_id == 41 || $user_id == 3 || $user_id == 9 || $user_id == 87 || $user_id == 99)
+// {
+//     $access3 = true;
+// }
+// else
+// {
+//     header( 'location:index' );
+// }
+
+}
+catch (Exception $e){
+
+header( 'location:index.php' );
+}
+
+
+//if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
+//    header( 'location:index.php' );
+}
+// if decode fails, it means jwt is invalid
+catch (Exception $e){
+
+header( 'location:index.php' );
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -119,7 +177,7 @@
             border-top-left-radius: 9px;
         }
 
-        div.tablebox > ul.header > li:nth-of-type(7) {
+        div.tablebox > ul.header > li:nth-of-type(8) {
             border-right: 2px solid #94BABB;
             border-top-right-radius: 9px;
         }
@@ -133,7 +191,7 @@
             border-bottom-left-radius: 9px;
         }
 
-        div.tablebox > ul.total > li:nth-of-type(7) {
+        div.tablebox > ul.total > li:nth-of-type(8) {
             border-right: 2px solid #94BABB;
             border-bottom-right-radius: 9px;
         }
@@ -225,6 +283,10 @@
                                 應收帳款(根據材積)
                             </li>
                             <li>
+                                <eng>A/R</eng>
+                                應收帳款
+                            </li>
+                            <li>
                                 <eng>Amount Received</eng>
                                 已收金額
                             </li>
@@ -237,10 +299,11 @@
                             <li><p v-for='(it, index) in item.loading'>{{it.eta_date}}</template></li>
                             <li><p v-for='(it, index) in item.loading'>{{it.date_arrive}}</template></li>
                             <li><p v-for='(it, index) in item.loading'>{{it.container_number}}</template></li>
-                            <li>{{ item.charge_kilo !== undefined ? Number(item.charge_kilo).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
-                            <li>{{ item.charge_cuft !== undefined ? Number(item.charge_cuft).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
-                            <li>{{ item.charge !== undefined ? Number(item.charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
-                            <li>{{ item.ar !== undefined ? Number(item.ar).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ item.charge_kilo !== undefined ? Number(item.charge_kilo).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ item.charge_cuft !== undefined ? Number(item.charge_cuft).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ Number(item.charge_kilo) + Number(item.charge_cuft) !== undefined ? Number(Number(item.charge_kilo) + Number(item.charge_cuft)).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ item.charge !== undefined ? Number(item.charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ item.ar !== undefined ? Number(item.ar).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
                         </ul>
                      
                         <ul class="total">
@@ -249,8 +312,9 @@
                             <li>{{ container_total }}</li>
                             <li></li>
                             <li></li>
-                            <li>{{ charge_total !== undefined ? Number(charge_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
-                            <li>{{ ar_total !== undefined ? Number(ar_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ total_total !== undefined ? Number(total_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ charge_total !== undefined ? Number(charge_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ ar_total !== undefined ? Number(ar_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
                         </ul>
                     </div>
                 </div>
