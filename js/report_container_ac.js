@@ -53,6 +53,7 @@ let mainState = {
     container_total: 0,
     ar_total: 0,
     charge_total: 0,
+    total_total: 0,
 
     // fil
     fil_start_date: "",
@@ -250,11 +251,14 @@ var app = new Vue({
                     this.container_total = 0.0;
                     this.ar_total = 0.0;
                     this.charge_total = 0.0;
+                    this.total_total = 0.0;
 
                     for (var i = 0; i < app.receive_records.length; i++) {
                         this.container_total += (app.receive_records[i].loading.length);
                         this.ar_total += parseFloat(app.receive_records[i].ar);
                         this.charge_total += parseFloat(app.receive_records[i].charge);
+
+                        this.total_total += parseFloat(app.receive_records[i].charge_kilo) + parseFloat(app.receive_records[i].charge_cuft);
                     }
         
                     console.log("getReceiveRecords");
@@ -324,11 +328,14 @@ var app = new Vue({
                     _this.container_total = 0.0;
                     _this.ar_total = 0.0;
                     _this.charge_total = 0.0;
+                    _this.total_total = 0.0;
 
                     for (var i = 0; i < app.receive_records.length; i++) {
                         _this.container_total += (app.receive_records[i].loading.length);
                         _this.ar_total += parseFloat(app.receive_records[i].ar);
                         _this.charge_total += parseFloat(app.receive_records[i].charge);
+
+                        _this.total_total += parseFloat(app.receive_records[i].charge_kilo) + parseFloat(app.receive_records[i].charge_cuft);
                     }
 
                     console.log(_this.ar_total)
