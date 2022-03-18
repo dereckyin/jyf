@@ -270,6 +270,15 @@ header( 'location:index.php' );
             margin: 0 5px;
         }
 
+        div.block > .listheader{
+            width: 100%;
+            padding: 5px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
     </style>
 
 
@@ -368,14 +377,41 @@ header( 'location:index.php' );
                 <cht>提貨與付款記錄</cht>
             </h6>
 
-            <select style="margin: 5px 0px 10px; text-align: left; width: 520px;" @change="getMeasures()"
-                    v-model="filter">
-                <option value="F">List "All Except For All Completed" (全部列出，除了已提貨且已付款)</option>
-                <option value="N">List "Not Yet Pickup" (僅列出未提貨)</option>
-                <option value="A">List "Already Pickup Not Yet Paid" (僅列出已提貨但未付款)</option>
-                <option value="D">List "Already Pickup And Paid" (僅列出已提貨且已付款)</option>
-                <option value="">List "All" (全部列出)</option>
-            </select>
+            <div class="listheader">
+
+                <select style="text-align: left; width: 610px;" @change="getMeasures()"
+                        v-model="filter">
+                    <option value="F">List "All Except For All Completed" (全部列出，除了已提貨且已付款)</option>
+                    <option value="N">List "Not Yet Pickup" (僅列出未提貨)</option>
+                    <option value="A">List "Already Pickup Not Yet Paid" (僅列出已提貨但未付款)</option>
+                    <option value="D">List "Already Pickup And Paid" (僅列出已提貨且已付款)</option>
+                    <option value="">List "All" (全部列出)</option>
+                </select>
+
+                <div class="pageblock"> Page Size:
+                    <select v-model="perPage">
+                        <option v-for="item in inventory" :value="item" :key="item.id">
+                            {{ item.name }}
+                        </option>
+                    </select> Page:
+                    <div class="pageblock" style="display: inline-block;">
+                        <a class="first micons" @click="page=1">first_page</a>
+                        <a class="prev micons" :disabled="page == 1"
+                           @click="page < 1 ? page = 1 : page--">chevron_left</a>
+                        <select v-model="page">
+                            <option v-for="pg in pages" :value="pg">
+                                {{ pg }}
+                            </option>
+                        </select>
+
+                        <a class="next micons" :disabled="page == pages.length"
+                           @click="page++">chevron_right</a>
+                        <a class="last micons" @click="page=pages.length">last_page</a>
+                    </div>
+                </div>
+
+            </div>
+
 
             <div class="mainlist">
                 <table class="tb_measure">
@@ -541,11 +577,37 @@ header( 'location:index.php' );
                 <cht>提貨與付款記錄</cht>
             </h6>
 
-            <select style="margin: 5px 0 10px 0; text-align: left; width: 520px;">
-                <option selected>List "All" (全部列出)</option>
-                <option>List "Not Yet Pickup" (僅列出未提貨)</option>
-                <option>List "Already Pickup Not Yet Paid" (僅列出已提貨但未付款)</option>
-            </select>
+            <div class="listheader">
+
+                <select style="text-align: left; width: 610px;">
+                    <option selected>List "All" (全部列出)</option>
+                    <option>List "Not Yet Pickup" (僅列出未提貨)</option>
+                    <option>List "Already Pickup Not Yet Paid" (僅列出已提貨但未付款)</option>
+                </select>
+
+                <div class="pageblock"> Page Size:
+                    <select v-model="perPage">
+                        <option v-for="item in inventory" :value="item" :key="item.id">
+                            {{ item.name }}
+                        </option>
+                    </select> Page:
+                    <div class="pageblock">
+                        <a class="first micons" @click="page=1">first_page</a>
+                        <a class="prev micons" :disabled="page == 1"
+                           @click="page < 1 ? page = 1 : page--">chevron_left</a>
+                        <select v-model="page">
+                            <option v-for="pg in pages" :value="pg">
+                                {{ pg }}
+                            </option>
+                        </select>
+
+                        <a class="next micons" :disabled="page == pages.length"
+                           @click="page++">chevron_right</a>
+                        <a class="last micons" @click="page=pages.length">last_page</a>
+                    </div>
+                </div>
+                <!-- <div class="searchblock" style="float:left;">搜尋<input type="text"></div> -->
+            </div>
 
             <div class="mainlist">
                 <table class="tb_measure">
