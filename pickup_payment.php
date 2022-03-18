@@ -388,7 +388,7 @@ header( 'location:index.php' );
                     <option value="">List "All" (全部列出)</option>
                 </select>
 
-                <div class="pageblock"> Page Size:
+                <div class="pageblock" v-show="filter == '' || filter == 'D'"> Page Size:
                     <select v-model="perPage">
                         <option v-for="item in inventory" :value="item" :key="item.id">
                             {{ item.name }}

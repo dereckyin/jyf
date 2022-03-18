@@ -11,6 +11,7 @@ let mainState = {
     // table
     clicked : 0,
 
+
     // measure
     measure_id: 0,
     date_encode:'',
@@ -95,15 +96,18 @@ var app = new Vue({
     },
 
     watch: {
-
+      page() {
+        if(this.filter == 'D' || this.filter == ''){
+          this.getMeasures();
+        }
+      }
     },
 
     computed: {
       displayedLoading () {
         console.log('displayedLoading');
 
-        this.setPages();
-        return this.paginate(this.loading_records);
+        return this.loading_records;
 
       },
 
@@ -919,10 +923,10 @@ var app = new Vue({
             this.getRecords();
         },
 
-        setPages () {
+        setPages (data) {
             console.log('setPages');
             this.pages = [];
-            let numberOfPages = Math.ceil(this.loading_records.length / this.perPage.id);
+            let numberOfPages = Math.ceil(data / this.perPage.id);
             if(numberOfPages == 1)
               this.page = 1;
             for (let index = 1; index <= numberOfPages; index++) {
@@ -1319,7 +1323,27 @@ var app = new Vue({
         getMeasures: function() {
             let _this = this;
 
-            axios.get('api/pickup_get_records.php?keyword=' + this.filter)
+            if(this.filter == "D"  || this.filter == '')
+            {
+              
+              axios.get('api/pickup_get_records_page.php?keyword=' + this.filter + '&page=' + this.page + '&size=' + this.perPage.id)
+                .then(function(response) {
+                    console.log(response.data);
+                    _this.receive_records = response.data;
+
+                    totalRows = _this.receive_records[0]['total'];
+                    _this.setPages(totalRows);
+
+                    _this.submit = false;
+
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+            }
+            else
+            {
+            axios.get('api/pickup_get_records.php?keyword=' + this.filter + '&page=' + this.page + '&size=12')
                 .then(function(response) {
                     console.log(response.data);
                     _this.receive_records = response.data;
@@ -1330,6 +1354,7 @@ var app = new Vue({
                 .catch(function(error) {
                     console.log(error);
                 });
+              }
         },
 
         getMeasureRecords: function(keyword) {
