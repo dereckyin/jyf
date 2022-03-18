@@ -279,6 +279,35 @@ try {
             opacity: 0;
         }
 
+        div.tablebox.s02 > ul > li:nth-of-type(1), div.tablebox.s02 > ul > li:nth-of-type(5){
+            width: 86px;
+        }
+
+        div.tablebox.s02 > ul > li:nth-of-type(3), div.tablebox.s02 > ul > li:nth-of-type(6), div.tablebox.s02 > ul > li:nth-of-type(7), div.tablebox.s02 > ul > li:nth-of-type(10), div.tablebox.s02 > ul > li:nth-of-type(13){
+            min-width: 264px;
+            max-width: 264px;
+        }
+
+        div.tablebox.s02 > ul > li:nth-of-type(4){
+            min-width: 264px;
+            max-width: 264px;
+            overflow-x: auto;
+        }
+
+        div.tablebox.s02 > ul > li:nth-of-type(8), div.tablebox.s02 > ul > li:nth-of-type(9), div.tablebox.s02 > ul > li:nth-of-type(11){
+            min-width: 109px;
+            max-width: 109px;
+        }
+
+         div.tablebox.s02 > ul > li:nth-of-type(12){
+            min-width: 144px;
+            max-width: 144px;
+        }
+
+        div.tablebox.s02 > ul > li {
+            padding: 8px 20px;
+        }
+
     </style>
 
     <script>
