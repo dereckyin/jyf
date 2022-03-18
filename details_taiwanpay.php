@@ -89,7 +89,7 @@ header( 'location:index.php' );
             font-size: 14px;
         }
 
-        .mainlist div.tablebox > ul.header > li:nth-of-type(1), .mainlist div.tablebox > ul.header > li:nth-of-type(9) {
+        .mainlist div.tablebox > ul.header > li:nth-of-type(1) {
             min-width: 100px;
         }
 
@@ -109,12 +109,13 @@ header( 'location:index.php' );
             min-width: 260px;
         }
 
-        .mainlist div.tablebox > ul.header > li:nth-of-type(10), .mainlist div.tablebox > ul.header > li:nth-of-type(11), .mainlist div.tablebox > ul.header > li:nth-of-type(12), .mainlist div.tablebox > ul.header > li:nth-of-type(14) {
-            min-width: 120px;
+        .mainlist div.tablebox > ul.header > li:nth-of-type(9), .mainlist div.tablebox > ul.header > li:nth-of-type(10), .mainlist div.tablebox > ul.header > li:nth-of-type(11), .mainlist div.tablebox > ul.header > li:nth-of-type(12), .mainlist div.tablebox > ul.header > li:nth-of-type(13), .mainlist div.tablebox > ul.header > li:nth-of-type(14) {
+            min-width: 150px;
         }
 
-        .mainlist div.tablebox > ul.header > li:nth-of-type(13) {
-            min-width: 160px;
+        .mainlist div.tablebox > ul > li > div > label
+        {
+            margin-bottom: 0;
         }
 
         div.tablebox > ul > li > input[type='date']{
