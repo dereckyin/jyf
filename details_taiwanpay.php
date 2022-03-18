@@ -89,7 +89,7 @@ header( 'location:index.php' );
             font-size: 14px;
         }
 
-        .mainlist div.tablebox > ul.header > li:nth-of-type(1) {
+        .mainlist div.tablebox > ul.header > li:nth-of-type(1), .mainlist div.tablebox > ul.header > li:nth-of-type(9) {
             min-width: 100px;
         }
 
@@ -101,19 +101,19 @@ header( 'location:index.php' );
             min-width: 80px;
         }
 
-        .mainlist div.tablebox > ul.header > li:nth-of-type(5), .mainlist div.tablebox > ul.header > li:nth-of-type(6) {
+        .mainlist div.tablebox > ul.header > li:nth-of-type(5), .mainlist div.tablebox > ul.header > li:nth-of-type(6), .mainlist div.tablebox > ul.header > li:nth-of-type(16)  {
             min-width: 60px;
         }
 
-        .mainlist div.tablebox > ul.header > li:nth-of-type(8), .mainlist div.tablebox > ul.header > li:nth-of-type(13) {
+        .mainlist div.tablebox > ul.header > li:nth-of-type(8), .mainlist div.tablebox > ul.header > li:nth-of-type(15) {
             min-width: 260px;
         }
 
-        .mainlist div.tablebox > ul.header > li:nth-of-type(9), .mainlist div.tablebox > ul.header > li:nth-of-type(10), .mainlist div.tablebox > ul.header > li:nth-of-type(11) {
+        .mainlist div.tablebox > ul.header > li:nth-of-type(10), .mainlist div.tablebox > ul.header > li:nth-of-type(11), .mainlist div.tablebox > ul.header > li:nth-of-type(12), .mainlist div.tablebox > ul.header > li:nth-of-type(14) {
             min-width: 120px;
         }
 
-        .mainlist div.tablebox > ul.header > li:nth-of-type(12) {
+        .mainlist div.tablebox > ul.header > li:nth-of-type(13) {
             min-width: 160px;
         }
 
