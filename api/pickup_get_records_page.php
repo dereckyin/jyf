@@ -98,7 +98,7 @@ if($jwt){
         }
 
         $page = ! empty( $_GET['page'] ) ? (int) $_GET['page'] : 1;
-        $size = ! empty( $_GET['size'] ) ? (int) $_GET['size'] : 12;
+        $size = ! empty( $_GET['size'] ) ? (int) $_GET['size'] : 10;
         // get count from pageing by group_id
         $index = 0;
         $g_id = 0;

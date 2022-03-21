@@ -58,12 +58,12 @@ let mainState = {
     pages: [],
 
     inventory: [
-        {name: '12', id: 12},
+        {name: '10', id: 10},
         {name: '25', id: 25},
         {name: '50', id: 50},
       ],
 
-    perPage: 12,
+    perPage: 10,
 
 
     pick_id: 0,
