@@ -388,12 +388,12 @@ header( 'location:index.php' );
                     <option value="">List "All" (全部列出)</option>
                 </select>
 
-                <div class="pageblock" v-show="filter == '' || filter == 'D'"> Page Size:
+                <div class="pageblock" v-show="filter == '' || filter == 'D'"> <!--Page Size:
                     <select v-model="perPage">
                         <option v-for="item in inventory" :value="item" :key="item.id">
                             {{ item.name }}
                         </option>
-                    </select> Page:
+                    </select> --> Page:
                     <div class="pageblock" style="display: inline-block;">
                         <a class="first micons" @click="page=1">first_page</a>
                         <a class="prev micons" :disabled="page == 1"
@@ -585,12 +585,12 @@ header( 'location:index.php' );
                     <option>List "Already Pickup Not Yet Paid" (僅列出已提貨但未付款)</option>
                 </select>
 
-                <div class="pageblock"> Page Size:
+                <div class="pageblock"> <!--Page Size:
                     <select v-model="perPage">
                         <option v-for="item in inventory" :value="item" :key="item.id">
                             {{ item.name }}
                         </option>
-                    </select> Page:
+                    </select> --> Page:
                     <div class="pageblock">
                         <a class="first micons" @click="page=1">first_page</a>
                         <a class="prev micons" :disabled="page == 1"
