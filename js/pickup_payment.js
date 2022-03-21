@@ -96,6 +96,12 @@ var app = new Vue({
     },
 
     watch: {
+
+      filter(value) {
+        if(value == '' || value == 'D')
+          this.page = 1;
+      },
+
       page() {
         if(this.filter == 'D' || this.filter == ''){
           this.getMeasures();
