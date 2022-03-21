@@ -279,35 +279,19 @@ try {
             opacity: 0;
         }
 
-        div.tablebox.s02 > ul > li {
-            padding: 8px 20px;
-        }
-
-        div.tablebox.s02 > ul > li:nth-of-type(1){
+        div.tablebox.s02 > ul > li:nth-of-type(1), div.tablebox.s02 > ul > li:nth-of-type(5){
             width: 86px;
         }
 
-        div.tablebox.s02 > ul > li:nth-of-type(6), div.tablebox.s02 > ul > li:nth-of-type(7), div.tablebox.s02 > ul > li:nth-of-type(10), div.tablebox.s02 > ul > li:nth-of-type(13){
+        div.tablebox.s02 > ul > li:nth-of-type(3), div.tablebox.s02 > ul > li:nth-of-type(6), div.tablebox.s02 > ul > li:nth-of-type(7), div.tablebox.s02 > ul > li:nth-of-type(10), div.tablebox.s02 > ul > li:nth-of-type(13){
             min-width: 264px;
             max-width: 264px;
-        }
-
-        div.tablebox.s02 > ul > li:nth-of-type(3){
-            min-width: 284px;
-            max-width: 284px;
-            padding: 8px 20px 8px 0;
-        }
-
-        div.tablebox.s02 > ul > li:nth-of-type(5){
-            width: 106px;
-            padding: 8px 0 8px 20px;
         }
 
         div.tablebox.s02 > ul > li:nth-of-type(4){
             min-width: 264px;
             max-width: 264px;
             overflow-x: auto;
-            padding: 8px 0;
         }
 
         div.tablebox.s02 > ul > li:nth-of-type(8), div.tablebox.s02 > ul > li:nth-of-type(9), div.tablebox.s02 > ul > li:nth-of-type(11){
@@ -320,6 +304,9 @@ try {
             max-width: 144px;
         }
 
+        div.tablebox.s02 > ul > li {
+            padding: 8px 20px;
+        }
 
     </style>
 

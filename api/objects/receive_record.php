@@ -240,7 +240,10 @@ class ReceiveRecord{
                         coalesce(tp.ar, '') ar,
                         coalesce(tp.amount, '') amount,
                         coalesce(tp.payment_date, '') payment_date,
-                        coalesce(tp.note, '') note
+                        coalesce(tp.note, '') note,
+                        coalesce(tp.rate, '') rate,
+                        coalesce(tp.status, '') status,
+                        l.date_arrive
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id
                         left join taiwan_pay_record tp on tp.record_id = r.id

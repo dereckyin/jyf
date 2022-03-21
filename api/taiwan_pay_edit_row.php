@@ -75,6 +75,8 @@ switch ($method) {
         $amount = isset($_POST["amount"]) ? $_POST["amount"] : "";
         $payment_date = isset($_POST["payment_date"]) ? $_POST["payment_date"] : "";
         $note = isset($_POST["note"]) ? $_POST["note"] : "";
+        $status = isset($_POST["status"]) ? $_POST["status"] : "";
+        $rate = isset($_POST["rate"]) ? $_POST["rate"] : "";
       
         $record_id == '' ? $record_id = 0 : $record_id = $record_id;
         $ar_php == '' ? $ar_php = null : $ar_php = $ar_php;
@@ -92,18 +94,19 @@ switch ($method) {
         $conn->begin_transaction();
 
         if($payment_id == 0){
-            $query = "INSERT INTO taiwan_pay_record(record_id, ar_php, ar, amount, payment_date, note, crt_time, crt_user) values(?, ?, ?, ?, ?, ?, now(), ?)";
+            $query = "INSERT INTO taiwan_pay_record(record_id, ar_php, ar, amount, payment_date, note, rate, crt_time, crt_user) values(?, ?, ?, ?, ?, ?, ?, now(), ?)";
 
 
             $stmt = $conn->prepare($query);
             $stmt->bind_param(
-                "ddddsss",
+                "ddddssss",
                 $record_id,
                 $ar_php,
                 $ar,
                 $amount,
                 $payment_date,
                 $note,
+                $rate,
                 $user
             );
 
@@ -150,7 +153,7 @@ switch ($method) {
             }
                 
             $query .=  "payment_date = '" . $payment_date . "', " .
-                "note = '" . $note . "'  WHERE id = " . $payment_id . "";
+                "note = '" . $note . "', rate = '". $rate . "', status = '". $status . "'  WHERE id = " . $payment_id . "";
 
             $stmt = $conn->prepare($query);
 
@@ -171,6 +174,42 @@ switch ($method) {
                 http_response_code(501);
                 echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
+            }
+
+            if($status == "1")
+            {
+                $query = "select detail_id from measure_record_detail where record_id = " . $record_id;
+                $result = mysqli_query($conn, $query);
+                $detail_id = 0;
+                while ($row = mysqli_fetch_array($result)) {
+                    $detail_id = $row['detail_id'];
+                }
+                if($detail_id != 0)
+                {
+                    $php_amount = $ar_php != '' ? $ar_php : 0;
+                    $tw_amount = $ar != '' ? $ar : 0;
+                    $php_note = "P" . $php_amount . "=nt" . $tw_amount . "(rate=" . $rate . ")" . ($note == '' ? '' : "," . $note);
+                    $query = "insert into payment(detail_id, type, payment_date, amount, remark, status, crt_time, crt_user) values(". $detail_id . ", 4, '" . $payment_date . "', " . $php_amount . ", '" . $php_note . "', '0' , now(), '" . $user . "')";
+                    $stmt = $conn->prepare($query);
+    
+                    try {
+                        // execute the query, also check if query was successful
+                        if (!$stmt->execute()) {
+                            $conn->rollback();
+                            http_response_code(501);
+                            echo json_encode("Failure3 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                            die();
+                        }
+                    } catch (Exception $e) {
+                        error_log($e->getMessage());
+                        $conn->rollback();
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                        die();
+                    }
+                }
+            
+                
             }
         }
         

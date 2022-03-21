@@ -850,3 +850,6 @@ create table details_ntd_php_record
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE user ADD COLUMN report1 INT DEFAULT 0;
+
+-- 20220317
+ALTER TABLE taiwan_pay_record ADD COLUMN `rate` varchar(128) DEFAULT '' AFTER ar;

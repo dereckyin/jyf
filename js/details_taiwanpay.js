@@ -54,6 +54,8 @@ let mainState = {
     amount: '',
     payment_date : '',
     note: '',
+    status: '',
+    rate: '',
 
 };
 
@@ -367,6 +369,8 @@ var app = new Vue({
           this.amount = '';
           this.payment_date = '';
           this.note = '';
+          this.status = '';
+          this.rate = '';
 
           item['is_edited'] = 1; 
           this.is_modifying = false;
@@ -387,10 +391,69 @@ var app = new Vue({
           this.amount = item['amount'];
           this.payment_date = item['payment_date'];
           this.note = item['note'];
+          this.status = item['status'];
+          this.rate = item['rate'];
       
 
           console.log(item);
       },
+
+
+      completeRow: function(item){
+        let _this = this;
+        
+        let formData = new FormData();
+
+        if(item.payment_date == '')
+        {
+          alert('請輸入付款日期');
+          return;
+        }
+
+        if(item.ar_php == '')
+        {
+          alert('請輸入請款金額(菲幣)');
+          return;
+        }
+
+        // alert to confirm execute
+        if(!confirm('確定要完成此筆資料?'))
+          return;
+
+        formData.append('record_id', item.id)
+        formData.append('ar_php', item.ar_php)
+        formData.append('ar', item.ar)
+        formData.append('amount', item.amount)
+        formData.append('payment_date', item.payment_date)
+        formData.append('note', item.note)
+        formData.append('status', '1')
+        formData.append('rate', item.rate)
+
+        const token = sessionStorage.getItem('token');
+
+        axios({
+                method: 'post',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`
+                },
+                url: 'api/taiwan_pay_edit_row.php',
+                data: formData
+            })
+            .then(function(response) {
+                //handle success
+                console.log(response)
+                _this.query()
+
+            })
+            .catch(function(response) {
+                //handle error
+                console.log(response)
+            });
+
+        item['is_edited'] = 1; 
+        this.is_modifying = false;
+    },
 
       confirmRow: function(item){
         let _this = this;
@@ -403,7 +466,8 @@ var app = new Vue({
         formData.append('amount', item.amount)
         formData.append('payment_date', item.payment_date)
         formData.append('note', item.note)
-      
+        formData.append('status', item.status)
+        formData.append('rate', item.rate)
 
         const token = sessionStorage.getItem('token');
 
@@ -454,6 +518,8 @@ var app = new Vue({
             this.amount = '';
             this.payment_date = '';
             this.note = '';
+            this.status = '';
+            this.rate = '';
 
             $('#adddate').datepicker('setDate', "");
             $('#adddate1').datepicker('setDate', "");
