@@ -196,6 +196,9 @@ try {
             <a class="nav_link" href="expense_recorder.php">
                 <eng>Expense Recorder</eng>
             </a>
+            <a class="nav_link" href="details_ntd_php.php">
+                <eng>NTD~PHP</eng>
+            </a>
             <?php
                 }
             ?>
