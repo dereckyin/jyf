@@ -116,6 +116,7 @@ if ( isset( $jwt ) ) {
             $phili_read = $decoded->data->phili_read;
 
             $report1 = $decoded->data->report1;
+            $report2 = $decoded->data->report2;
 
 	        if($decoded->data->is_admin)
         echo "<a href='admin/main.php'>後台管理
@@ -131,8 +132,20 @@ if ( isset( $jwt ) ) {
 
         }
         }
-
         ?>
+        <?php
+            if($report2 == "1")
+            {
+        ?>
+
+        <a href="report_container_ac.php">貨櫃帳款報表
+                    <eng>A/R Report of Containers</eng>
+        </a>
+        <?php
+            }
+            ?>
+
+        
 <?php
     if($report1 == "1")
     {
@@ -140,9 +153,7 @@ if ( isset( $jwt ) ) {
 <a href="details_ntd_php.php">幫客人匯款記錄表
             <eng>NTD~PHP</eng>
 </a>
-<a href="report_container_ac.php">貨櫃帳款報表
-            <eng>A/R Report of Containers</eng>
-</a>
+
 <?php
     }
     ?>
