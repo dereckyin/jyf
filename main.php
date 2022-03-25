@@ -315,9 +315,20 @@ try {
             max-width: 109px;
         }
 
-         div.tablebox.s02 > ul > li:nth-of-type(12){
+        div.tablebox.s02 > ul > li:nth-of-type(12){
             min-width: 144px;
             max-width: 144px;
+        }
+
+        button.quick_move{
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            font-size: 25px;
+            font-weight: 700;
+            background-color: rgba(7, 220, 237, 0.5);
+            z-index: 999;
         }
 
 
@@ -339,6 +350,11 @@ try {
         </header>
         <!-- header end -->
         <div id='receive_record'>
+            <button class="quick_move" style="left: 5px; top: calc(50vh - 30px)" onclick="location.href='#receive_record'">↑</button>
+            <button class="quick_move" style="left: 5px; top: calc(50vh + 30px)" onclick="move_left();">←</button>
+            <button class="quick_move" style="right: 5px; top: calc(50vh - 30px)" onclick="location.href='#flag_bottom'">↓</button>
+            <button class="quick_move" style="right: 5px; top: calc(50vh + 30px)" onclick="move_right();">→</button>
+
             <div class="mainContent">
                 <h6>階段 - 收貨</h6>
                 <p>
@@ -685,11 +701,11 @@ if($taiwan_read == "0")
                 </div>
 
 
-                <div class="block record show">
+                <div class="block record show" id="container_receive_records">
                     <h6>收貨紀錄
                         <eng>Receiving Records</eng>
                     </h6>
-                    <div class="mainlist" style="overflow-x: auto;">
+                    <div class="mainlist" style="overflow-x: auto;" id="table_receive_records">
 
                         <div class="listheader">
                             <div class="pageblock" style="float:right;"> Page Size:
@@ -822,7 +838,7 @@ if($taiwan_read == "0")
                                 </li>
                             </ul>
                         </div>
-                        <div class="btnbox"><a class="btn small selbtn" style="color:white;" @click="toggleCheckbox();">全選 /
+                        <div class="btnbox" id="flag_bottom"><a class="btn small selbtn" style="color:white;" @click="toggleCheckbox();">全選 /
                                 全取消
                                 <p>All/Undo</p>
                             </a> 
@@ -1206,6 +1222,16 @@ if($taiwan_read == "0")
             mainState.c_keyword = '';
 
             $("#supModal").dialog('close');
+        };
+
+        function move_left() {
+            const step = document.getElementById('container_receive_records').clientWidth - 50;
+            document.getElementById('table_receive_records').scrollLeft -= step;
+        };
+
+        function move_right() {
+            const step = document.getElementById('container_receive_records').clientWidth - 50;
+            document.getElementById('table_receive_records').scrollLeft += step;
         };
     </script>
 
