@@ -80,6 +80,7 @@ include 'menu.php';
                                 <th>貨品件數</th>
                                 <th>聯絡方式1</th>
                                 <th>聯絡方式2</th>
+                                <th>來源</th>
                                 <th>登記日期</th>
                             </tr>
 
@@ -94,6 +95,7 @@ include 'menu.php';
                                 <td>{{ (receive_record.number == 0) ? "" : receive_record.number }}</td>
 								<td>{{ receive_record.emailinfo }}</td>
 								<td>{{ receive_record.telinfo }}</td>
+                                <td>{{ receive_record.source == 'j' ? "中亞菲" : "盛盛" }}</td>
                                 <td>{{ receive_record.crt_time }}</td>
                             </tr>
 
