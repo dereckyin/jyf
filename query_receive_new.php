@@ -66,16 +66,16 @@ $(function(){
             <li>收貨日期 <eng>Date Receive</eng></li>
             <li>
               <!--<input type="text" id="datepicker" name="datepicker" style="width: calc(40% - 40px);" > -->
-              <date-picker id="date_start"  @update-date="updateDate" v-model="date_start" style="width: calc(30% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-picker>
+              <date-picker id="date_start"  @update-date="updateDate"  style="width: calc(30% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-picker>
 				&nbsp; &nbsp; ~ &nbsp; &nbsp;
-				<date-picker id="date_end"  @update-date="updateDate" v-model="date_end" style="width: calc(30% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-picker>
+				<date-picker id="date_end"  @update-date="updateDate"  style="width: calc(30% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-picker>
             </li>
           </ul>
           <ul>
 			  <li class="header"></li>
             <li>收件人 <eng>Company / Customer</eng></li>
             <li>
-                  <input type="text" class="goods_num" id="customer" maxlength="256" name="customer" v-model="customer" style="width: calc(80% - 40px);"> 
+                  <input type="text" class="goods_num" id="customer" maxlength="256" name="customer" style="width: calc(80% - 40px);"> 
               <button type="button" class="btn btn-primary" id="create-customer"><i class="fas fa-address-card"></i></button>
             </li>
           </ul>
@@ -83,7 +83,7 @@ $(function(){
 			  <li class="header"></li>
             <li>寄貨人 <eng>Supplier</eng></li>
             <li>
-              <input type="text" class="goods_num" id="supplier" maxlength="256" name="supplier" v-model="supplier" style="width: calc(80% - 40px);"> 
+              <input type="text" class="goods_num" id="supplier" maxlength="256" name="supplier"  style="width: calc(80% - 40px);"> 
               <button type="button" class="btn btn-primary" id="create-supplier"><i class="fas fa-address-card"></i></button>
             </li>
           </ul>
