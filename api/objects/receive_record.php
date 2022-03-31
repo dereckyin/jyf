@@ -613,24 +613,26 @@ class ReceiveRecord{
         $sup_str = "";
 
         if(!empty($customer)) {
-            $customer = rtrim($customer, '|||||||');
+            $customer = rtrim($customer, '||');
             $customer = str_replace('\'', '\\\'', $customer);
-            $cust = explode("|||||||", $customer);
+            $cust = explode("||", $customer);
 
             foreach ($cust as &$value) {
-                $cus_str .= " r.customer like '%" . trim($value) . "%' or ";
+                $value = str_replace("'", "\'", trim($value));
+                $cus_str .= " r.customer like '%" . $value . "%' or ";
             }
 
             $cus_str = rtrim($cus_str, 'or ');
         }
 
         if(!empty($supplier)) {
-            $supplier = rtrim($supplier, '|||||||');
+            $supplier = rtrim($supplier, '||');
             $supplier = str_replace('\'', '\\\'', $supplier);
-            $sup = explode("|||||||", $supplier);
+            $sup = explode("||", $supplier);
 
             foreach ($sup as &$value) {
-                $sup_str .= " r.supplier like '%" . trim($value) . "%' or ";
+                $value = str_replace("'", "\'", trim($value));
+                $sup_str .= " r.supplier like '%" . $value . "%' or ";
             }
 
             $sup_str = rtrim($sup_str, 'or ');
