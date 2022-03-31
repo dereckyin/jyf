@@ -855,3 +855,7 @@ ALTER TABLE user ADD COLUMN report1 INT DEFAULT 0;
 ALTER TABLE taiwan_pay_record ADD COLUMN `rate` varchar(128) DEFAULT '' AFTER ar;
 -- 20220325
 ALTER TABLE user ADD COLUMN report2 INT DEFAULT 0;
+
+-- 20220328
+ALTER TABLE contact_us
+ADD COLUMN `source` varchar(2) DEFAULT '' AFTER telinfo;
