@@ -1449,7 +1449,7 @@ var app = new Vue({
       this.$refs.detail4.value = "";
       this.$refs.detail5.value = "";
 
-      this.get_today();
+      //this.get_today();
     },
     reload: function() {
       let _this = this;
