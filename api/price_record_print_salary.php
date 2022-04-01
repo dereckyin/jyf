@@ -103,7 +103,7 @@ if($jwt){
                 $sql1 = $sql1 . " and details like '%$keyword%'";
             }
 
-            $sql = $sql .$sql1 . $sql2. $sql3 . " order by account , created_at  ";
+            $sql = $sql .$sql1 . $sql2. $sql3 . " order by paid_date  ";
 
             $stmt = $db->prepare( $sql );
             $stmt->execute();
