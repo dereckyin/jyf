@@ -911,6 +911,13 @@ if($taiwan_read == "0")
                                 </tr>
                             </thead>
                             <tbody id="contact">
+                                <tr v-for="(item, index) in c_filter" onclick="data(this)">
+                                    <td>{{ item.shipping_mark }}</td>
+                                    <td>{{ item.customer }}</td>
+                                    <td>{{ item.c_phone }}</td>
+                                    <td>{{ item.c_fax }}</td>
+                                    <td>{{ item.c_email }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -966,6 +973,12 @@ if($taiwan_read == "0")
                                         </tr>
                                     </thead>
                                     <tbody id="supplier">
+                                    <tr v-for="(item, index) in s_filter" onclick="data1(this)">
+                                        <td>{{ item.supplier }}</td>
+                                        <td>{{ item.s_phone }}</td>
+                                        <td>{{ item.s_fax }}</td>
+                                        <td>{{ item.company_title }}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -1141,7 +1154,7 @@ if($taiwan_read == "0")
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script type="text/javascript" src="js/main.js" defer></script>
+    <script type="text/javascript" src="js/main.js?rand=<?php echo uniqid(); ?>" defer></script>
     <script defer src="js/a076d05399.js"></script>
 
     <!-- jQuery和js載入 -->
