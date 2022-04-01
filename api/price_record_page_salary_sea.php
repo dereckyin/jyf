@@ -108,7 +108,7 @@ $sql3 = "";
                 $sql = $sql . " and details like '%$keyword%'";
             }
             
-            $query = $query.$sql.$sql2.$sql3." order by created_at asc";
+            $query = $query.$sql.$sql2.$sql3." order by paid_date asc";
 
 if(!empty($_GET['page'])) {
     $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);

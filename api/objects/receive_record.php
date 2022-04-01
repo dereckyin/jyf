@@ -612,30 +612,34 @@ class ReceiveRecord{
         $cus_str = "";
         $sup_str = "";
 
+
         if(!empty($customer)) {
             $customer = rtrim($customer, '||');
-            $customer = str_replace('\'', '\\\'', $customer);
+      
             $cust = explode("||", $customer);
 
             foreach ($cust as &$value) {
-                $value = str_replace("'", "\'", trim($value));
-                $cus_str .= " r.customer like '%" . $value . "%' or ";
+                $value = addslashes(trim($value));
+                $cus_str .= " r.customer like '%" . $value . "%' ESCAPE '|' or ";
             }
 
             $cus_str = rtrim($cus_str, 'or ');
+  
         }
 
         if(!empty($supplier)) {
             $supplier = rtrim($supplier, '||');
-            $supplier = str_replace('\'', '\\\'', $supplier);
+    
             $sup = explode("||", $supplier);
 
             foreach ($sup as &$value) {
-                $value = str_replace("'", "\'", trim($value));
-                $sup_str .= " r.supplier like '%" . $value . "%' or ";
+                $value = addslashes(trim($value));
+                $sup_str .= " r.supplier like '%" . $value . "%'  ESCAPE '|' or ";
+
             }
 
             $sup_str = rtrim($sup_str, 'or ');
+       
 
         }
 
@@ -678,6 +682,7 @@ class ReceiveRecord{
         if(!empty($cus_str)) {
             $query = $query . " and ($cus_str) ";
         }
+
 
         $query = $query . " order by r.date_receive ";
 
@@ -786,6 +791,10 @@ class ReceiveRecord{
         while($row = $stmt->fetch(PDO::FETCH_ASSOC))
             $merged_results[] = $row;
 
+        usort($merged_results, function ($item1, $item2) {
+            return $item1['name'] <=> $item2['name'];
+        });
+        
         return $merged_results;
     }
 
@@ -805,6 +814,10 @@ class ReceiveRecord{
 
         while($row = $stmt->fetch(PDO::FETCH_ASSOC))
             $merged_results[] = $row;
+
+        usort($merged_results, function ($item1, $item2) {
+            return $item1['name'] <=> $item2['name'];
+        });
 
         return $merged_results;
     }

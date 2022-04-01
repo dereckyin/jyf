@@ -150,6 +150,12 @@ let mainState = {
 
     s_keyword:'',
     c_keyword:'',
+
+    c_options : [],
+    s_options : [],
+
+    c_filter    : [],
+    s_filter    : [],
     // image
     selectedImage: null,
 
@@ -202,6 +208,8 @@ var app = new Vue({
         this.cuft = '';
       if(this.courier_money == 0)
         this.courier_money = '';
+
+        this.getCustomers();
     },
 
     watch: {
@@ -219,66 +227,33 @@ var app = new Vue({
       s_keyword: function (value) {
             //console.log(s_keyword);
 
-            $.ajax({
-            url: 'api/contactor.php?s_keyword=' + value,
-            type: 'GET',
-            data: '',
-            dataType: "json",
-            async: true,
-            success: function(json) {
-              // Add response in Modal body
-                var html = "";
+            this.s_filter = [];
 
-                var contentJson = eval(json);
-                //contentJson = contentJson.Replace("<", "\u003c").Replace(">", "\u003e");
-                //console.log(contentJson);
-               // contentJson = contentJson.Replace("\u003c", "<").Replace("\u003e", ">");
-                var spNo, deliverTitle, status;
-                for (var i = 0; i < contentJson.length; i++) {
-                    customer = contentJson[i].supplier;
-                    c_phone = contentJson[i].s_phone;
-                    c_fax = contentJson[i].s_fax;
-                    c_email = contentJson[i].company_title;
-                    
-                    html += "<tr onclick='data1(this)'><td>" + customer.replace(/</g, '&lt;').replace(/>/g, '&gt') + "</td><td>" + c_phone + "</td><td>" + c_fax + "</td><td>" + c_email + "</td></tr>";
-                    //$("#contact").append("<tr onclick='data(this)'><td>" + customer + "</td><td>" + c_phone + "</td><td>" + c_fax + "</td><td>" + c_email + "</td></tr>");
-                }
-                
-                $('#supplier').html(html);
+            if (value != '') {
+                this.s_filter = this.s_options.filter(option => {
+                    return option.company_title.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+                           option.s_phone.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+                            option.s_fax.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+                            option.supplier.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                });
             }
-          });
           
         },
 
         c_keyword: function (value) {
             //console.log(c_keyword);
 
-            $.ajax({
-            url: 'api/contactor.php?c_keyword=' + value,
-            type: 'GET',
-            data: '',
-            dataType: "json",
-            async: true,
-            success: function(json) {
-              // Add response in Modal body
-                var html = "";
+            this.c_filter = [];
 
-                var contentJson = eval(json);
-                var spNo, deliverTitle, status;
-                for (var i = 0; i < contentJson.length; i++) {
-                    shipping_mark = contentJson[i].shipping_mark;
-                    customer = contentJson[i].customer;
-                    c_phone = contentJson[i].c_phone;
-                    c_fax = contentJson[i].c_fax;
-                    c_email = contentJson[i].c_email;
-                    
-                    html += "<tr onclick='data(this)'><td>" + shipping_mark.replace(/</g, '&lt;').replace(/>/g, '&gt') + "</td><td>" + customer.replace(/</g, '&lt;').replace(/>/g, '&gt') + "</td><td>" + c_phone + "</td><td>" + c_fax + "</td><td>" + c_email + "</td></tr>";
-                    //$("#contact").append("<tr onclick='data(this)'><td>" + customer + "</td><td>" + c_phone + "</td><td>" + c_fax + "</td><td>" + c_email + "</td></tr>");
-                }
-                
-                $('#contact').html(html);
+            if (value != '') {
+                this.c_filter = this.c_options.filter(option => {
+                    return option.shipping_mark.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+                           option.customer.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+                            option.c_fax.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+                            option.c_email.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+                            option.c_phone.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                });
             }
-          });
           
         }
 
@@ -401,7 +376,7 @@ var app = new Vue({
 
 
             $("#create-user1").button().unbind('click').on("click", function() {
-
+/*
                 $.ajax({
                 url: 'api/contactor.php',
                 type: 'GET',
@@ -428,12 +403,12 @@ var app = new Vue({
                     $('#contact').html(html);
                 }
               });
-
+*/
                 dialog.dialog("open");
             });
 
             $("#create-supplier1").button().unbind('click').on("click", function() {
-
+/*
                 $.ajax({
                 url: 'api/contactor.php',
                 type: 'GET',
@@ -459,7 +434,7 @@ var app = new Vue({
                     $('#supplier').html(html);
                 }
               });
-
+*/
                 supdialog.dialog("open");
             });
         }
@@ -527,7 +502,7 @@ var app = new Vue({
             });
 
             $("#create-user").button().unbind('click').on("click", function() {
-
+/*
                 $.ajax({
                 url: 'api/contactor.php',
                 type: 'GET',
@@ -554,7 +529,7 @@ var app = new Vue({
                     $('#contact').html(html);
                 }
               });
-
+*/
                 dialog.dialog("open");
             });
 
@@ -570,7 +545,7 @@ var app = new Vue({
 
             $("#create-supplier").button().unbind('click').on("click", function() {
 
-
+/*
 
                 $.ajax({
                 url: 'api/contactor.php',
@@ -597,7 +572,7 @@ var app = new Vue({
                     $('#supplier').html(html);
                 }
               });
-
+*/
                 supdialog.dialog("open");
             });
         }
@@ -611,6 +586,19 @@ var app = new Vue({
     },
 
     methods: {
+
+        getCustomers: function() {
+            axios.get('api/contactor.php')
+            .then(function(response) {
+                console.log(response.data);
+                app.c_options = response.data;
+                app.s_options = response.data;
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        },
+
         download_pic : function (id) {
             let _this = this;
             this.takeASnap(id);

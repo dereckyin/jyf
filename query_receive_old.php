@@ -66,16 +66,16 @@ $(function(){
             <li>收貨日期 <eng>Date Receive</eng></li>
             <li>
               <!--<input type="text" id="datepicker" name="datepicker" style="width: calc(40% - 40px);" > -->
-              <date-picker id="date_start"  @update-date="updateDate"  style="width: calc(30% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-picker>
+              <date-picker id="date_start"  @update-date="updateDate" v-model="date_start" style="width: calc(30% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-picker>
 				&nbsp; &nbsp; ~ &nbsp; &nbsp;
-				<date-picker id="date_end"  @update-date="updateDate"  style="width: calc(30% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-picker>
+				<date-picker id="date_end"  @update-date="updateDate" v-model="date_end" style="width: calc(30% - 40px); border: 1px solid #999; border-radius: 5px; background-color: #fff; padding: 5px;"></date-picker>
             </li>
           </ul>
           <ul>
 			  <li class="header"></li>
             <li>收件人 <eng>Company / Customer</eng></li>
             <li>
-                  <input type="text" class="goods_num" id="customer" maxlength="256" name="customer" style="width: calc(80% - 40px);"> 
+                  <input type="text" class="goods_num" id="customer" maxlength="256" name="customer" v-model="customer" style="width: calc(80% - 40px);"> 
               <button type="button" class="btn btn-primary" id="create-customer"><i class="fas fa-address-card"></i></button>
             </li>
           </ul>
@@ -83,7 +83,7 @@ $(function(){
 			  <li class="header"></li>
             <li>寄貨人 <eng>Supplier</eng></li>
             <li>
-              <input type="text" class="goods_num" id="supplier" maxlength="256" name="supplier"  style="width: calc(80% - 40px);"> 
+              <input type="text" class="goods_num" id="supplier" maxlength="256" name="supplier" v-model="supplier" style="width: calc(80% - 40px);"> 
               <button type="button" class="btn btn-primary" id="create-supplier"><i class="fas fa-address-card"></i></button>
             </li>
           </ul>
@@ -188,13 +188,6 @@ $(function(){
                 </tr>
               </thead>
               <tbody id="s_contact">
-                <tr v-for="(item, index) in s_filter" >
-                      <td onclick="data(this)">
-                        <input type="checkbox" class="form-check-input" :value="item.name">
-                        <label class="form-check-label">&nbsp</label>
-                      </td>
-                      <td> {{item.name}} </td>
-                    </tr>
               </tbody>
             </table>
         </div>
@@ -231,14 +224,6 @@ $(function(){
                 </tr>
               </thead>
               <tbody id="c_contact">
-                  <tr v-for="(item, index) in c_filter" >
-                      <td onclick="data(this)">
-                        <input type="checkbox" class="form-check-input" :value="item.name">
-                        <label class="form-check-label">&nbsp</label>
-                      </td>
-                      <td> {{item.name}} </td>
-                    </tr>
-                  </tr>
               </tbody>
             </table>
         </div>
@@ -274,7 +259,7 @@ $(function(){
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-<script type="text/javascript" src="js/queryreceive_new.js?rand=<?php echo uniqid(); ?>" defer></script> 
+<script type="text/javascript" src="js/queryreceive.js" defer></script> 
 <script defer src="https://kit.fontawesome.com/a076d05399.js"></script> 
 
 <!-- jQuery和js載入 --> 
