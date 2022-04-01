@@ -158,7 +158,7 @@ if($jwt){
             foreach($merged_results as $row)
             {
                 // $sheet->setCellValue('A' . $i, getAccount($row['account']));
-                $sheet->setCellValue('A' . $i, getFormatDate($row['created_at']));
+                $sheet->setCellValue('A' . $i, getFormatDate($row['paid_date']));
                 $sheet->setCellValue('B' . $i, $row['category']);
                 $sheet->setCellValue('C' . $i, $row['sub_category']);
                 // $sheet->setCellValue('E' . $i, $row['project_name']);

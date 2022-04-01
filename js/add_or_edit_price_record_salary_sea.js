@@ -29,7 +29,7 @@ var app = new Vue({
     cash_out: 0.0,
     remarks: "",
     keyword: "",
-    select_date_type: 0,
+    select_date_type: 1,
     select_category: 'All',
     select_sub_category: "",
 
@@ -249,7 +249,9 @@ var app = new Vue({
       var token = localStorage.getItem("token");
       var form_Data = new FormData();
       let _this = this;
-      var paidat = this.sliceDate(this.paid_date).replace(/-/g, "/");
+      //var paidat = this.sliceDate(this.paid_date).replace(/-/g, "/");
+      paidat = document.getElementById("todays-date").value;
+
       var payee = this.payee.toString();
       if (edd == 1) {
         this.update(this.id, 0);
@@ -307,6 +309,7 @@ var app = new Vue({
 
           this.filename = final_id;
           this.fileArray = final_array;
+
 
 
 
@@ -579,7 +582,8 @@ var app = new Vue({
       var token = localStorage.getItem("token");
       var form_Data = new FormData();
       let _this = this;
-      var paidat = this.sliceDate(this.paid_date).replace(/-/g, "/");
+      //var paidat = this.sliceDate(this.paid_date).replace(/-/g, "/");
+      var paidat = document.getElementById("todays-date").value;
       var payee = this.payee.toString();
 
       if (this.operation_type == 1) {
@@ -951,6 +955,7 @@ var app = new Vue({
       form_Data.append("sub_category", this.sub_category);
       form_Data.append("project_name", this.project_name);
       form_Data.append("keyword", this.keyword);
+      form_Data.append("select_date_type", this.select_date_type);
 
       axios({
         method: "post",
