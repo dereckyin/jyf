@@ -419,6 +419,138 @@ var app = new Vue({
     },
 
     methods: {
+        
+        append_pic() {
+            if(this.snap_me == true) {
+              this.snap_me = false;
+            }
+            else
+              return;
+      
+            var file;
+      
+            if (document.getElementById("base64image") !== null)
+              file = document.getElementById("base64image").src;
+            else file = "";
+      
+            var obj = {
+              check: '1',
+              file: file,
+              url: file,
+            };
+      
+            this.pic_list.push(obj);
+          },
+
+
+          download_pic : function (id) {
+            let _this = this;
+            this.takeASnap(id);
+        },
+
+        choose_picture: function (){
+            if(this.isEditing == true)
+            {
+                for (var i = 0; i < this.pic_list.length; i++) {
+
+                    if(this.pic_list[i].check)
+                        this.cam_receive_1.push(this.pic_list[i]);
+                
+                }
+            }
+            else
+            {
+        
+                for (var i = 0; i < this.pic_list.length; i++) {
+
+                    if(this.pic_list[i].check)
+                        this.cam_receive.push(this.pic_list[i]);
+
+                        //this.customer = this.pic_lib[i].customer;
+                        //this.supplier = this.pic_lib[i].supplier;
+                        //this.date_receive = this.pic_lib[i].date_receive;
+                        //$('#adddate').datepicker('setDate', this.date_receive);
+                        //this.quantity = this.pic_lib[i].quantity;
+                        //this.remark = this.pic_lib[i].remark;
+                    
+                }
+            }
+            
+            this.pic_list = [];
+            this.snap_me = false;
+            document.getElementById('results').innerHTML = '';
+
+              //window.jQuery(".mask").toggle();
+              //window.jQuery("#photoModal").toggle();
+              $( "#webcam" ).dialog('close');
+              HideCam();
+
+        },
+
+        takeASnap : function (id) {
+            const canvas = document.getElementById('hello_kitty_' + id);
+
+            var dataURI = canvas.src;
+                var byteString;
+                if (dataURI.split(',')[0].indexOf('base64') >= 0)
+                    byteString = atob(dataURI.split(',')[1]);
+                else
+                    byteString = unescape(dataURI.split(',')[1]);
+
+                // separate out the mime component
+                var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+                // write the bytes of the string to a typed array
+                var ia = new Uint8Array(byteString.length);
+                for (var i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+
+            this.download(new Blob([ia], {type:mimeString}), id);
+            
+        },
+
+        async download_lib(uri) {
+            const a = document.createElement("a");
+            a.href = await this.toDataURL(uri);
+            a.download = "screenshot.jpg";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+    },
+
+    toDataURL(url) {
+        let headers = new Headers();
+
+        return fetch(url, {
+            method : "GET",
+            mode: 'cors',
+            credentials: 'include',
+            headers: headers
+        }).then((response) => {
+                return response.blob();
+            }).then(blob => {
+                return URL.createObjectURL(blob);
+            });
+    },
+/*
+        download_lib : function(uri) {
+            // uses the <a download> to download a Blob
+            let a = document.createElement('a'); 
+            a.href = uri;
+            a.download = 'screenshot' + '.jpg';
+            document.body.appendChild(a);
+            a.click();
+          },
+*/
+        download : function(blob, id) {
+            // uses the <a download> to download a Blob
+            let a = document.createElement('a'); 
+            a.href = URL.createObjectURL(blob);
+            a.download = 'screenshot' + id + '.jpg';
+            document.body.appendChild(a);
+            a.click();
+          },
         choose_library: function (){
             if(this.isEditing == true)
             {
@@ -468,6 +600,12 @@ var app = new Vue({
 
         },
 
+        bulk_toggle_library: function(){
+            let toogle = document.getElementById('bulk_select_all_library').checked;
+            for(var i = 0; i < this.pic_lib.length; i++) {
+              this.pic_lib[i].is_checked = toogle;
+          }
+        },
         
         getPicLibrary: function(keyword) {
             let _this = this;
