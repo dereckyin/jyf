@@ -333,7 +333,7 @@ header( 'location:index.php' );
                         <li><input type="text" name="neck_cabinet" v-model="record.date_arrive"></li>
                     </ul>
                 </div>
-                <div class="tablebox lo01">
+                <div class="tablebox d01">
                     <ul><!-- 配色底用 --></ul>
                     <ul>
                         <li>備註
