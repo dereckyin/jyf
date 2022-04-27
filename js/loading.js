@@ -176,6 +176,21 @@ let mainState = {
     // don't repeat submit
     submit : false,
 
+    // show photo
+    pic_lib : [],
+    pic_receive: [],
+    cam_receive: [],
+    file_receive: [],
+    cam_receive_1: [],
+    file_receive_1: [],
+    url_ip: "https://storage.googleapis.com/feliiximg/",
+
+    pic_preview: [],
+
+    // pictures
+    snap_me:false,
+    pic_list: [],
+
 };
 
 var app = new Vue({
@@ -219,7 +234,124 @@ var app = new Vue({
     },
 
     updated: function() {
-        console.log('Vue updated')
+        if (this.isEditing) {
+     
+
+            var photoModal;
+
+            var webcam;
+
+            //    $('header').load('Include/header.htm');
+            toggleme($('a.btn.detail'), $('.block.record'), 'show');
+
+            $.widget("ui.dialog", $.ui.dialog, {
+                // customize open method to register the click
+                open: function() {
+                    var me = this;
+                    $(document).on('click', ".ui-widget-overlay", function(e) {
+                        //call dialog close function
+
+                        me.close();
+                    });
+
+                    // Invoke parent open method
+                    this._super();
+                },
+                close: function() {
+                    // Remove click handler for the current .ui-widget-overlay
+                    $(document).off("click", ".ui-widget-overlay");
+                    // Invoke parent close method
+                    this._super();
+                }
+            });
+
+      
+
+            photoModal = $("#photoModal").dialog({
+                autoOpen: false,
+                height: 540,
+                width: 900,
+                modal: true,
+            });
+
+            webcam = $("#webcam").dialog({
+                autoOpen: false,
+                height: 700,
+                width: 900,
+                modal: true,
+            });
+
+            $("#get_photo_library_1").button().unbind('click').on("click", function() {
+                app.getPicLibrary();
+                photoModal.dialog("open");
+            });
+
+            $("#web_cam_1").button().unbind('click').on("click", function() {
+          
+                ShowCam();
+                webcam.dialog("open");
+            });
+
+        }
+        else
+        {
+
+          var photoModal;
+
+          var webcam;
+
+            //    $('header').load('Include/header.htm');
+            toggleme($('a.btn.detail'), $('.block.record'), 'show');
+
+            $.widget("ui.dialog", $.ui.dialog, {
+                // customize open method to register the click
+                open: function() {
+                    var me = this;
+
+                    $(document).on('click', ".ui-widget-overlay", function(e) {
+                        //call dialog close function
+                        me.close();
+                    });
+
+                    // Invoke parent open method
+                    this._super();
+                },
+
+                close: function() {
+                    // Remove click handler for the current .ui-widget-overlay
+                    $(document).off("click", ".ui-widget-overlay");
+                    // Invoke parent close method
+                    this._super();
+                }
+            });
+
+
+            photoModal = $("#photoModal").dialog({
+                autoOpen: false,
+                height: 540,
+                width: 900,
+                modal: true,
+            });
+
+            webcam = $("#webcam").dialog({
+                autoOpen: false,
+                height: 700,
+                width: 900,
+                modal: true,
+            });
+
+
+            $("#get_photo_library").button().unbind('click').on("click", function() {
+                app.getPicLibrary();
+                photoModal.dialog("open");
+            });
+
+            $("#web_cam").button().unbind('click').on("click", function() {
+                ShowCam();
+                webcam.dialog("open");
+            });
+
+        }
         /*
         var table = $('#showUser1').DataTable();
         $('#showUser1 tbody').on( 'click', 'tr', function () {
@@ -230,6 +362,196 @@ var app = new Vue({
     },
 
     methods: {
+        download_pic : function (id) {
+            let _this = this;
+            this.takeASnap(id);
+        },
+
+        takeASnap : function (id) {
+            const canvas = document.getElementById('hello_kitty_' + id);
+
+            var dataURI = canvas.src;
+                var byteString;
+                if (dataURI.split(',')[0].indexOf('base64') >= 0)
+                    byteString = atob(dataURI.split(',')[1]);
+                else
+                    byteString = unescape(dataURI.split(',')[1]);
+
+                // separate out the mime component
+                var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+                // write the bytes of the string to a typed array
+                var ia = new Uint8Array(byteString.length);
+                for (var i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+
+            this.download(new Blob([ia], {type:mimeString}), id);
+            
+        },
+
+        async download_lib(uri) {
+            const a = document.createElement("a");
+            a.href = await this.toDataURL(uri);
+            a.download = "screenshot.jpg";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+    },
+
+    bulk_toggle_library: function(){
+        let toogle = document.getElementById('bulk_select_all_library').checked;
+        for(var i = 0; i < this.pic_lib.length; i++) {
+          this.pic_lib[i].is_checked = toogle;
+      }
+    },
+
+    toDataURL(url) {
+        let headers = new Headers();
+
+        return fetch(url, {
+            method : "GET",
+            mode: 'cors',
+            credentials: 'include',
+            headers: headers
+        }).then((response) => {
+                return response.blob();
+            }).then(blob => {
+                return URL.createObjectURL(blob);
+            });
+    },
+/*
+        download_lib : function(uri) {
+            // uses the <a download> to download a Blob
+            let a = document.createElement('a'); 
+            a.href = uri;
+            a.download = 'screenshot' + '.jpg';
+            document.body.appendChild(a);
+            a.click();
+          },
+*/
+        download : function(blob, id) {
+            // uses the <a download> to download a Blob
+            let a = document.createElement('a'); 
+            a.href = URL.createObjectURL(blob);
+            a.download = 'screenshot' + id + '.jpg';
+            document.body.appendChild(a);
+            a.click();
+          },
+
+          choose_picture: function (){
+            if(this.isEditing == true)
+            {
+                for (var i = 0; i < this.pic_list.length; i++) {
+
+                    if(this.pic_list[i].check)
+                        this.cam_receive_1.push(this.pic_list[i]);
+                
+                }
+            }
+            else
+            {
+        
+                for (var i = 0; i < this.pic_list.length; i++) {
+
+                    if(this.pic_list[i].check)
+                        this.cam_receive.push(this.pic_list[i]);
+
+                        //this.customer = this.pic_lib[i].customer;
+                        //this.supplier = this.pic_lib[i].supplier;
+                        //this.date_receive = this.pic_lib[i].date_receive;
+                        //$('#adddate').datepicker('setDate', this.date_receive);
+                        //this.quantity = this.pic_lib[i].quantity;
+                        //this.remark = this.pic_lib[i].remark;
+                    
+                }
+            }
+            
+            this.pic_list = [];
+            this.snap_me = false;
+            document.getElementById('results').innerHTML = '';
+
+              //window.jQuery(".mask").toggle();
+              //window.jQuery("#photoModal").toggle();
+              $( "#webcam" ).dialog('close');
+              HideCam();
+
+        },
+        
+        append_pic() {
+            if(this.snap_me == true) {
+              this.snap_me = false;
+            }
+            else
+              return;
+      
+            var file;
+      
+            if (document.getElementById("base64image") !== null)
+              file = document.getElementById("base64image").src;
+            else file = "";
+      
+            var obj = {
+              check: '1',
+              file: file,
+              url: file,
+            };
+      
+            this.pic_list.push(obj);
+          },
+
+
+
+        choose_library: function (){
+            if(this.isEditing == true)
+            {
+                for (var i = 0; i < this.pic_lib.length; i++) {
+                    if(this.pic_lib[i].is_checked == true) {
+                        let pid = this.pic_lib[i].pid;
+                        var found = false;
+                        for(var j = 0; j < this.record.pic.length; j++) {
+                            if (this.record.pic[j].pid == pid) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if(found == false) {
+                            this.record.pic.push(this.shallowCopy(
+                                this.pic_lib.find((element) => element.pid == pid)
+                            ));
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                this.pic_receive = [];
+                for (var i = 0; i < this.pic_lib.length; i++) {
+                    if(this.pic_lib[i].is_checked == true) {
+                        let pid = this.pic_lib[i].pid;
+                        this.pic_receive.push(this.shallowCopy(
+                            this.pic_lib.find((element) => element.pid == pid)
+                        ));
+
+                        //this.customer = this.pic_lib[i].customer;
+                        //this.supplier = this.pic_lib[i].supplier;
+                        //this.date_receive = this.pic_lib[i].date_receive;
+                        //$('#adddate').datepicker('setDate', this.date_receive);
+                        //this.quantity = this.pic_lib[i].quantity;
+                        //this.remark = this.pic_lib[i].remark;
+                    }
+                }
+            }
+            
+
+              //window.jQuery(".mask").toggle();
+              //window.jQuery("#photoModal").toggle();
+              $( "#photoModal" ).dialog('close');
+
+        },
+
+
         getReceiveRecords: function(keyword) {
           console.log("getReceiveRecords");
             axios.get('api/receive_record.php')
@@ -343,6 +665,49 @@ var app = new Vue({
                 formData.append('record', favorite.toString());
                 formData.append('crud', "insert");
                 formData.append('id', '');
+
+                
+                let delete_me = [];
+                for(var i = 0; i < this.pic_receive.length; i++) {
+                    if(this.pic_receive[i].is_checked == true) {
+                        delete_me.push(this.pic_receive[i].pid);
+                    }
+                }
+
+                formData.append("photo", delete_me.join());
+
+                // camera
+                var count = 0;
+                for (var i = 0; i < this.cam_receive.length; i++)
+                {
+                    if(this.cam_receive[i].check)
+                    {
+                    formData.append("files" + count, this.cam_receive[i].url);
+                    count = count + 1;
+                    }
+                }
+                formData.append("file_count", count);
+                
+
+                var f_count = 0;
+                // files
+                for (var i = 0; i < this.file_receive.length; i++)
+                {
+                    if(this.file_receive[i].check)
+                    {
+                    formData.append("f_files" + f_count, this.file_receive[i].file);
+                    f_count = f_count + 1;
+                    }
+                }
+
+                formData.append("f_file_count", f_count);
+
+           
+                var receive_record = {};
+                formData.forEach(function(value, key) {
+                    receive_record[key] = value;
+                });
+
 
                 const token = sessionStorage.getItem('token');
 
@@ -621,7 +986,16 @@ var app = new Vue({
             this.isEditing = false;
             this.record = {};
 
+            this.pic_lib = [];
+            this.pic_list = [];
+
             this.submit = false;
+
+            this.pic_receive = [];
+            this.cam_receive = [];
+            this.file_receive = [];
+            this.cam_receive_1 = [];
+            this.file_receive_1 = [];
 
             $('#date_sent').datepicker('setDate', "");
             $('#etd_date').datepicker('setDate', "");
@@ -646,6 +1020,170 @@ var app = new Vue({
 
         },
 
+        getPicLibrary: function(keyword) {
+            let _this = this;
+            if(this.pic_lib.length > 0) {
+                return;
+            }
+            console.log("getPicLibrary");
+              axios.get('api/get_pic_library_loading.php')
+                  .then(function(response) {
+                      console.log(response.data);
+                      _this.pic_lib = response.data;
+
+                  })
+                  .catch(function(error) {
+                      console.log(error);
+                  });
+          },
+
+          delete_library : function () {
+            let _this = this;
+            let delete_me = [];
+            for(var i = 0; i < this.pic_lib.length; i++) {
+                if(this.pic_lib[i].is_checked == true) {
+                    delete_me.push(this.pic_lib[i].pid);
+                }
+            }
+
+            if(delete_me.length > 0)
+            {
+                Swal.fire({
+                    title: "Submit",
+                    text: "確定要刪除? Are you sure to delete?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes",
+                  }).then((result) => {
+                    if (result.value) {
+                        var token = localStorage.getItem("token");
+                        var form_Data = new FormData();
+                        form_Data.append("jwt", token);
+                        form_Data.append("ids", delete_me.join());
+                        form_Data.append("crud", "del");
+
+                        axios({
+                            method: "post",
+                            headers: {
+                            "Content-Type": "multipart/form-data",
+                            },
+                            url: "api/receive_library_delete.php",
+                            data: form_Data,
+                        })
+                        .then(function(response) {
+                        //handle success
+                            Swal.fire({
+                                html: response.data.message,
+                                icon: "info",
+                                confirmButtonText: "OK",
+                            });
+
+                            //window.jQuery(".mask").toggle();
+                            //window.jQuery("#photoModal").toggle();
+                            $( "#photoModal" ).dialog('close');
+                            _this.pic_lib = [];
+                            _this.getPicLibrary();
+                        })
+                        .catch(function(error) {
+                            //handle error
+                            Swal.fire({
+                                text: JSON.stringify(error),
+                                icon: "info",
+                                confirmButtonText: "OK",
+                            });
+
+                            //window.jQuery(".mask").toggle();
+                            //window.jQuery("#photoModal").toggle();
+                            $( "#photoModal" ).dialog('close');
+                            
+                        });
+                    } else {
+                        return;
+                    }
+                });
+            }
+        },
+
+          
+        onFileChange_1(e) {
+            const file = e.target.files[0];
+            let _this = this;
+            var reader = new FileReader();
+
+            //Read the contents of Image File.
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+
+                //Initiate the JavaScript Image object.
+                var image = new Image();
+
+                //Set the Base64 string return from FileReader as source.
+                image.src = e.target.result;
+
+                //Validate the File Height and Width.
+                image.onload = function () {
+                    var height = this.height;
+                    var width = this.width;
+                    if (height > 800 || width > 800) {
+                        alert("圖片的長必須小於等於800個像素、圖片的寬必須小於等於800個像素");
+                        return false;
+                    }
+                    else
+                    {
+                        var obj = {
+                            check: '1',
+                            file: file,
+                            url: URL.createObjectURL(file),
+                          };
+                    
+                          _this.file_receive_1.push(obj);
+                    }
+                };
+            };
+        },
+
+        onFileChange(e) {
+            const file = e.target.files[0];
+            let _this = this;
+            var reader = new FileReader();
+
+            //Read the contents of Image File.
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+
+                //Initiate the JavaScript Image object.
+                var image = new Image();
+
+                //Set the Base64 string return from FileReader as source.
+                image.src = e.target.result;
+
+                //Validate the File Height and Width.
+                image.onload = function () {
+                    var height = this.height;
+                    var width = this.width;
+                    if (height > 800 || width > 800) {
+                        alert("圖片的長必須小於等於800個像素、圖片的寬必須小於等於800個像素");
+                        return false;
+                    }
+                    else
+                    {
+                        var obj = {
+                            check: '1',
+                            file: file,
+                            url: URL.createObjectURL(file),
+                          };
+                    
+                          _this.file_receive.push(obj);
+                    }
+                };
+            };
+
+
+            
+        
+        },
 
         deleteRecord() {
           console.log("deleteRecord");

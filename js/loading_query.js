@@ -176,7 +176,9 @@ let mainState = {
     r_kilo : 0.0,
     n_kilo : 0.0,
     r_cuft : 0.0,
-    n_cuft : 0.0
+    n_cuft : 0.0,
+
+    url_ip: "https://storage.googleapis.com/feliiximg/",
 
 };
 
