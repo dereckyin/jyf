@@ -399,7 +399,7 @@ function GetRecordDetail($id, $conn){
     $merged_results = array();
 
     $sql = "SELECT rc.id, customer, date_receive, lo.date_sent, lo.eta_date, email, email_customer, description, quantity, supplier, 
-    mail_note, picname, photo  FROM receive_record rc
+    mail_note, rc.picname, rc.photo  FROM receive_record rc
     LEFT JOIN loading lo ON lo.id = rc.batch_num WHERE rc.id = ?";
     if ($stmt = mysqli_prepare($conn, $sql)) {
 
