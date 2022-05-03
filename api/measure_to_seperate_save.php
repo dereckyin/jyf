@@ -72,7 +72,7 @@ switch ($method) {
         $row = array();
 
         // get pick_group
-        $query = "select measure_id, measure_detail_id from pick_group where id = " . $pick_id . " and `status` <> -1";
+        $query = "select measure_id, measure_detail_id from pick_group where id = " . $pick_id . " and `status` = 0";
         $result = mysqli_query($conn,$query);
 
         $measure_id = 0;
