@@ -28,6 +28,7 @@ $data = json_decode(file_get_contents("php://input"));
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 $keyword = (isset($_GET['keyword']) ? $_GET['keyword'] : "");
+$search = (isset($_GET['search']) ? $_GET['search'] : "");
 
 // if jwt is not empty
 if($jwt){
@@ -56,6 +57,9 @@ if($jwt){
 
         if($keyword == 'D')
             $query .= " AND (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
+
+        if($search != '')
+            $query .= " AND (measure_detail.encode = '$search' ) ";
 
         $query .= ") order by group_id desc";
 
@@ -86,6 +90,9 @@ if($jwt){
 
         if($keyword == 'D')
             $query .= " AND (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
+
+        if($search != '')
+            $query .= " AND (measure_detail.encode = '$search' ) ";
 
         $query .= " order by group_id desc";
 

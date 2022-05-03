@@ -75,6 +75,7 @@ let mainState = {
     // don't repeat submit
     submit : false,
 
+    search: "",
 };
 
 var app = new Vue({
@@ -809,6 +810,63 @@ var app = new Vue({
             return low;
         },
 
+        archive_record: async function () {
+
+          let favorite = [];
+
+          for (i = 0; i < this.receive_records.length; i++) {
+              if(this.receive_records[i].is_checked == 1)
+              {
+                
+                    favorite.push(this.receive_records[i].id);
+                
+              }
+            }
+
+
+            let _this = this;
+
+        var form_data = new FormData();
+        form_data.append('id', favorite.join(","));
+ 
+        let token = localStorage.getItem("accessToken");
+
+        if(this.submit == true)
+          return;
+      this.submit = true;
+  
+        try {
+          let res = await axios({
+            method: 'post',
+            url: 'api/pickup_set_archive.php',
+            data: form_data,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+        });
+          
+        } catch (err) {
+          console.log(err)
+          alert('error')
+          _this.submit = false;
+          _this.getMeasures();
+          return;
+        }
+
+        this.submit = false;
+
+      Swal.fire({
+        title: 'Info',
+        text: 'Archive Successfully',
+        type: 'Info',
+        confirmButtonText: 'OK'
+    });
+
+        this.getMeasures();
+
+      },
+
+
         merge_item: async function () {
 
             let favorite = [];
@@ -1332,7 +1390,7 @@ var app = new Vue({
             if(this.filter == "D"  || this.filter == '')
             {
               
-              axios.get('api/pickup_get_records_page.php?keyword=' + this.filter + '&page=' + this.page + '&size=' + this.perPage.id)
+              axios.get('api/pickup_get_records_page.php?keyword=' + this.filter + '&page=' + this.page + '&size=' + this.perPage.id + '&search=' + this.search)
                 .then(function(response) {
                     console.log(response.data);
                     _this.receive_records = response.data;
