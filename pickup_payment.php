@@ -388,8 +388,8 @@ header( 'location:index.php' );
                     <option value="">List "All" (全部列出)</option>
                 </select>
 
-                <div>
-                    <input type="text" v-model="search" v-show="filter == '' || filter == 'D'" placeholder="Only Search for DR" style="width: 200px; margin-right: 10px;">
+                <div v-show="filter == '' || filter == 'D'">
+                    <input type="text" v-model="search" placeholder="Only Search for DR" style="width: 200px; margin-right: 10px;">
                     <button @click="getMeasures()">Search</button>
                 </div>
 

@@ -41,10 +41,10 @@ if($jwt){
         $query = "
             SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
                 FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-            WHERE  group_id <> 0 and pick_group.status <> -1 and group_id IN (
+            WHERE  group_id <> 0 and pick_group.status = 0 and group_id IN (
             
                 select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-                WHERE group_id <> 0 and pick_group.status <> -1 ";
+                WHERE group_id <> 0 and pick_group.status = 0 ";
 
         if($keyword == 'N')
             $query .= " AND measure_detail.pickup_status = '' ";
@@ -77,7 +77,7 @@ if($jwt){
         $query = "
             SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
                 FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-            WHERE  group_id = 0 and pick_group.status <> -1 ";
+            WHERE  group_id = 0 and pick_group.status = 0 ";
 
         if($keyword == 'N')
             $query .= " AND measure_detail.pickup_status = '' ";
