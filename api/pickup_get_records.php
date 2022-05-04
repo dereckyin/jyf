@@ -267,6 +267,21 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
         );
     }
 
+    // if any record of merged_result payment_status = 'C' then all merged_result payment_status = 'C'
+    $payment_complete = false;
+    for($i = 0; $i < count($merged_results); $i++){
+        if($merged_results[$i]['payment_status'] == 'C'){
+            $payment_complete = true;
+        }
+    }
+
+    if($payment_complete){
+        for($i = 0; $i < count($merged_results); $i++){
+            $merged_results[$i]['payment_status'] = 'C';
+        }
+    }
+
+
     return $merged_results;
 }
 
