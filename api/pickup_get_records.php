@@ -50,13 +50,13 @@ if($jwt){
             $query .= " AND measure_detail.pickup_status = '' ";
 
         if($keyword == 'A')
-            $query .= " AND measure_detail.pickup_status = 'C' and measure_detail.payment_status = '' ";
+            $query .= " AND measure_detail.pickup_status = 'C' and group_id not in (select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id group by group_id, pick_group.status, payment_status  having group_id <> 0 and pick_group.status = 0 and payment_status = 'C')";
 
         if($keyword == 'F')
-            $query .= " AND NOT (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
+            $query .= " AND NOT (measure_detail.pickup_status = 'C' and group_id in (select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id group by group_id, pick_group.status, payment_status  having group_id <> 0 and pick_group.status = 0 and payment_status = 'C')) ";
 
         if($keyword == 'D')
-            $query .= " AND (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
+            $query .= " AND (measure_detail.pickup_status = 'C' and group_id in (select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id group by group_id, pick_group.status, payment_status  having group_id <> 0 and pick_group.status = 0 and payment_status = 'C')) ";
 
         if($search != '')
             $query .= " AND (measure_detail.encode = '$search' ) ";
