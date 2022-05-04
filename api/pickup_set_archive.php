@@ -54,36 +54,60 @@ $user_id = $decoded->data->id;
         case 'POST':
     
         $id = (isset($_POST['id']) ?  $_POST['id'] : "");
-        $group_id = 1;
-      
+        $gid = (isset($_POST['gid']) ?  $_POST['gid'] : "");
+  
         $conn->begin_transaction();
 
-        $query = "SELECT max(group_id) + 1 gid FROM `pick_group`";
-        $result = $conn->query($query);
-        $row = $result->fetch_assoc();
-        $group_id = $row['gid'];
+        // for pickup id
+        if($id != "")
+        {
+            $query = "update pick_group 
+                        set status = 2, mdf_user = '" . $user . "', mdf_time = now()
+                WHERE id in (" . $id . ")";
 
-        // for payment
-        $query = "update pick_group 
-                    set status = 2, mdf_user = '" . $user . "', mdf_time = now()
-            WHERE id in (" . $id . ")";
+            $stmt = $conn->prepare($query);
 
-        $stmt = $conn->prepare($query);
-
-        try {
-            // execute the query, also check if query was successful
-            if (!$stmt->execute()) {
+            try {
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
+                    $conn->rollback();
+                    http_response_code(501);
+                    echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
                 $conn->rollback();
                 http_response_code(501);
-                echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
             }
-        } catch (Exception $e) {
-            error_log($e->getMessage());
-            $conn->rollback();
-            http_response_code(501);
-            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-            die();
+        }
+        
+        // for group id
+        if($gid != "")
+        {
+            $query = "update pick_group 
+                        set status = 2, mdf_user = '" . $user . "', mdf_time = now()
+                WHERE group_id in (" . $gid . ")";
+
+            $stmt = $conn->prepare($query);
+
+            try {
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
+                    $conn->rollback();
+                    http_response_code(501);
+                    echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                $conn->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+            }
         }
 
         $conn->commit();

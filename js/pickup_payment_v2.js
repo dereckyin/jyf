@@ -813,12 +813,15 @@ var app = new Vue({
         archive_record: async function () {
 
           let favorite = [];
+          let gavorite = [];
 
           for (i = 0; i < this.receive_records.length; i++) {
               if(this.receive_records[i].is_checked == 1)
               {
-                
+                  if(this.receive_records[i].group_id == 0)
                     favorite.push(this.receive_records[i].id);
+                  else
+                    gavorite.push(this.receive_records[i].group_id);
                 
               }
             }
@@ -828,6 +831,7 @@ var app = new Vue({
 
         var form_data = new FormData();
         form_data.append('id', favorite.join(","));
+        form_data.append('gid', gavorite.join(","));
  
         let token = localStorage.getItem("accessToken");
 

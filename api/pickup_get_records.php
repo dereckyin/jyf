@@ -69,6 +69,7 @@ if($jwt){
         $merged_results = [];
         
         $pre_group_id = 0;
+        $pre_id = 0;
         $id = 0;
         $items = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -77,8 +78,8 @@ if($jwt){
             {
                 $merged_results[] = array( 
                     "is_checked" => 0,
-                    "id" => $row['id'],
-                    "order" => $row['id'],
+                    "id" => $pre_id,
+                    "order" => $pre_id,
                     "group_id" => $pre_group_id,
                     "measure" => $items,
                     "ar" => GetAr($items),
@@ -89,11 +90,13 @@ if($jwt){
 
                 $items = [];
                 $pre_group_id = $row['group_id'];
+                $pre_id = $row['id'];
             }
 
             $id = $row['id'];
             $group_id = $row['group_id'];
             $pre_group_id = $row['group_id'];
+            $pre_id = $row['id'];
             $measure_detail_id = $row['measure_detail_id'];
 
             if(!existsInArray($measure_detail_id, $items))
