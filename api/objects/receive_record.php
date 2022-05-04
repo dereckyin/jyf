@@ -99,7 +99,7 @@ class ReceiveRecord{
                                     description, 
                                     quantity,
                                     supplier, 
-                                    picname, 
+                                    rr.picname, 
                                     kilo, 
                                     cuft, 
                                     '' kilo_price,
