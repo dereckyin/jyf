@@ -81,7 +81,7 @@ if($jwt){
                     "id" => $pre_id,
                     "order" => $pre_id,
                     "group_id" => $pre_group_id,
-                    "measure" => $items,
+                    "measure" => UniformPaymentStatus($items),
                     "ar" => GetAr($items),
                     "ar_amount" => GetArAmount($items),
                     "payments" => GetPayments($items),
@@ -116,7 +116,7 @@ if($jwt){
                 "id" => $id,
                 "order" => $id,
                 "group_id" => $group_id,
-                "measure" => $items,
+                "measure" => UniformPaymentStatus($items),
                 "ar" => GetAr($items),
                 "ar_amount" => GetArAmount($items),
                 "payments" => GetPayments($items),
@@ -199,6 +199,24 @@ else{
     echo json_encode(array("message" => "Access denied."));
 }
 
+function UniformPaymentStatus($merged_results){
+    // if any record of merged_result payment_status = 'C' then all merged_result payment_status = 'C'
+    $payment_complete = false;
+    for($i = 0; $i < count($merged_results); $i++){
+        if($merged_results[$i]['payment_status'] == 'C'){
+            $payment_complete = true;
+        }
+    }
+
+    if($payment_complete){
+        for($i = 0; $i < count($merged_results); $i++){
+            $merged_results[$i]['payment_status'] = 'C';
+        }
+    }
+
+    return $merged_results;
+}
+
 function GetMeasureDetail($measure_detail_id, $group_id, $db){
     $query = "
             SELECT distinct 0 as is_checked, measure_detail.id, kilo, cuft, kilo_price, cuft_price, charge, encode, encode_status, pickup_status, payment_status, DATE_FORMAT(measure_detail.crt_time, '%Y/%m/%d') crt_time, 
@@ -266,21 +284,6 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
            "date_arrive" => $date_arrive,
         );
     }
-
-    // if any record of merged_result payment_status = 'C' then all merged_result payment_status = 'C'
-    $payment_complete = false;
-    for($i = 0; $i < count($merged_results); $i++){
-        if($merged_results[$i]['payment_status'] == 'C'){
-            $payment_complete = true;
-        }
-    }
-
-    if($payment_complete){
-        for($i = 0; $i < count($merged_results); $i++){
-            $merged_results[$i]['payment_status'] = 'C';
-        }
-    }
-
 
     return $merged_results;
 }

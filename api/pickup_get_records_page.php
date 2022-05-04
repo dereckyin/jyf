@@ -164,7 +164,7 @@ if($jwt){
                     "id" => $pre_id,
                     "order" => $pre_id,
                     "group_id" => $pre_group_id,
-                    "measure" => $items,
+                    "measure" => UniformPaymentStatus($items),
                     "ar" => GetAr($items),
                     "ar_amount" => GetArAmount($items),
                     "payments" => GetPayments($items),
@@ -203,7 +203,7 @@ if($jwt){
                     "id" => $row['id'],
                     "order" => $row['id'],
                     "group_id" => $group_id,
-                    "measure" => $items,
+                    "measure" => UniformPaymentStatus($items),
                     "ar" => GetAr($items),
                     "ar_amount" => GetArAmount($items),
                     "payments" => GetPayments($items),
@@ -221,7 +221,7 @@ if($jwt){
                 "id" => $row['id'],
                 "order" => $row['id'],
                 "group_id" => $group_id,
-                "measure" => $items,
+                "measure" => UniformPaymentStatus($items),
                 "ar" => GetAr($items),
                 "ar_amount" => GetArAmount($items),
                 "payments" => GetPayments($items),
@@ -257,6 +257,24 @@ else{
  
     // tell the user access denied
     echo json_encode(array("message" => "Access denied."));
+}
+
+function UniformPaymentStatus($merged_results){
+        // if any record of merged_result payment_status = 'C' then all merged_result payment_status = 'C'
+        $payment_complete = false;
+        for($i = 0; $i < count($merged_results); $i++){
+            if($merged_results[$i]['payment_status'] == 'C'){
+                $payment_complete = true;
+            }
+        }
+    
+        if($payment_complete){
+            for($i = 0; $i < count($merged_results); $i++){
+                $merged_results[$i]['payment_status'] = 'C';
+            }
+        }
+
+        return $merged_results;
 }
 
 function GetMeasureDetail($measure_detail_id, $group_id, $db){
@@ -325,20 +343,6 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
            "container_number" => $container_number,
            "date_arrive" => $date_arrive,
         );
-    }
-
-    // if any record of merged_result payment_status = 'C' then all merged_result payment_status = 'C'
-    $payment_complete = false;
-    for($i = 0; $i < count($merged_results); $i++){
-        if($merged_results[$i]['payment_status'] == 'C'){
-            $payment_complete = true;
-        }
-    }
-
-    if($payment_complete){
-        for($i = 0; $i < count($merged_results); $i++){
-            $merged_results[$i]['payment_status'] = 'C';
-        }
     }
 
     return $merged_results;
