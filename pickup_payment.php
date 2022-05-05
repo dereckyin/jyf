@@ -390,7 +390,7 @@ header( 'location:index.php' );
 
                 <div v-show="filter == '' || filter == 'D'">
                     <input type="text" v-model="search" placeholder="Only Search for DR" style="width: 200px; margin-right: 10px;">
-                    <button @click="getMeasures()">Search</button>
+                    <button @click="getMeasures('search')">Search</button>
                 </div>
 
                 <div class="pageblock" v-show="filter == '' || filter == 'D'"> <!--Page Size:
@@ -569,7 +569,7 @@ header( 'location:index.php' );
                         <cht>拆分丈量資料</cht>
                     </a>
 
-                    <a class="btn small" @click="archive_record()">
+                    <a class="btn small" @click="archive_record()" v-if="filter == 'D'">
                         Archive
                         <cht>歸檔</cht>
                     </a>

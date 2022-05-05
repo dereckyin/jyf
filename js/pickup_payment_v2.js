@@ -1392,8 +1392,11 @@ var app = new Vue({
                 });
         },
 
-        getMeasures: function() {
+        getMeasures: function(search) {
             let _this = this;
+
+            if(search !== 'search')
+              this.search = "";
 
             if(this.filter == "D"  || this.filter == '')
             {
