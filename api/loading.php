@@ -357,64 +357,64 @@ switch ($method) {
                         $result1 = mysqli_stmt_get_result($stmt);
 
                         if($result1 != null)
-            {
-                while($row = mysqli_fetch_assoc($result1))
-                {
-                    $is_edited = $row['is_edited'];
-                    $is_checked = $row['is_checked'];
-                    $id = $row['id'];
-                    $date_receive = $row['date_receive'];
-                    $customer = $row['customer'];
-                    $email_customer = $row['email_customer'];
-                    $email = $row['email'];
-                    $description = $row['description'];
-                    $quantity = $row['quantity'];
-                    $supplier = $row['supplier'];
-                    $kilo = $row['kilo'];
-                    $cuft = $row['cuft'];
-                    $taiwan_pay = $row['taiwan_pay'];
-                    $courier_pay = $row['courier_pay'];
-                    $courier_money = $row['courier_money'];
-                    $remark = $row['remark'];
-                    $picname = $row['picname'];
-                    $photo = $row['photo'];
-                    $crt_time = $row['crt_time'];
-                    $crt_user = $row['crt_user'];
-                    $mail_cnt = $row['mail_cnt'];
-                    $mail_note = $row['mail_note'];
-                    
-                    $pic = GetPic($picname, $photo, $id, $conn);
+                        {
+                            while($row = mysqli_fetch_assoc($result1))
+                            {
+                                $is_edited = $row['is_edited'];
+                                $is_checked = $row['is_checked'];
+                                $id = $row['id'];
+                                $date_receive = $row['date_receive'];
+                                $customer = $row['customer'];
+                                $email_customer = $row['email_customer'];
+                                $email = $row['email'];
+                                $description = $row['description'];
+                                $quantity = $row['quantity'];
+                                $supplier = $row['supplier'];
+                                $kilo = $row['kilo'];
+                                $cuft = $row['cuft'];
+                                $taiwan_pay = $row['taiwan_pay'];
+                                $courier_pay = $row['courier_pay'];
+                                $courier_money = $row['courier_money'];
+                                $remark = $row['remark'];
+                                $picname = $row['picname'];
+                                $photo = $row['photo'];
+                                $crt_time = $row['crt_time'];
+                                $crt_user = $row['crt_user'];
+                                $mail_cnt = $row['mail_cnt'];
+                                $mail_note = $row['mail_note'];
+                                
+                                $pic = GetPic($picname, $photo, $id, $conn);
 
-                    $merged_results[] = array(
-                        "is_edited" => $is_edited,
-                        "is_checked" => $is_checked,
-                        "id" => $id,
-                        "date_receive" => $date_receive,
-                        "customer" => $customer,
-                        "email_customer" => $email_customer,
-                        "email" => $email,
-                        "description" => $description,
-                        "quantity" => $quantity,
-                        "supplier" => $supplier,
-                        "kilo" => $kilo,
-                        "cuft" => $cuft,
-                        "taiwan_pay" => $taiwan_pay,
-                        "courier_pay" => $courier_pay,
-                        "courier_money" => $courier_money,
-                        "remark" => $remark,
-                        "picname" => $picname,
-                        "photo" => $photo,
-                        "crt_time" => $crt_time,
-                        "crt_user" => $crt_user,
-                        "mail_note" => $mail_note,
-                        "mail_cnt" => $mail_cnt,
+                                $merged_results[] = array(
+                                    "is_edited" => $is_edited,
+                                    "is_checked" => $is_checked,
+                                    "id" => $id,
+                                    "date_receive" => $date_receive,
+                                    "customer" => $customer,
+                                    "email_customer" => $email_customer,
+                                    "email" => $email,
+                                    "description" => $description,
+                                    "quantity" => $quantity,
+                                    "supplier" => $supplier,
+                                    "kilo" => $kilo,
+                                    "cuft" => $cuft,
+                                    "taiwan_pay" => $taiwan_pay,
+                                    "courier_pay" => $courier_pay,
+                                    "courier_money" => $courier_money,
+                                    "remark" => $remark,
+                                    "picname" => $picname,
+                                    "photo" => $photo,
+                                    "crt_time" => $crt_time,
+                                    "crt_user" => $crt_user,
+                                    "mail_note" => $mail_note,
+                                    "mail_cnt" => $mail_cnt,
 
-                        "pic" => $pic,
-                    
-                    );
-                }
-            
-            }
+                                    "pic" => $pic,
+                                
+                                );
+                            }
+                        
+                        }
                     }
                 }
             }
@@ -552,6 +552,8 @@ switch ($method) {
                 $crt_time = $row['crt_time'];
                 $crt_user = $row['crt_user'];
                 $ords = $row['ords'];
+                $cnt = isset($row['cnt']) ? $row['cnt'] : 0;
+                $mail_cnt = isset($row['mail_cnt']) ? $row['mail_cnt'] : 0;
                 
                 $pic = GetLoadingPic($picname, $photo, $id, $conn);
 
@@ -586,8 +588,8 @@ switch ($method) {
                     "crt_time" => $crt_time,
                     "crt_user" => $crt_user,
                     "ords" => $ords,
-
-
+                    "cnt" => $cnt,
+                    "mail_cnt" => $mail_cnt,
                     "pic" => $pic,
                 
                 );
