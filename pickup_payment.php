@@ -530,14 +530,14 @@ header( 'location:index.php' );
     ?>
                                 <button data-toggle="modal" data-target="#payment_modal"
                                         v-if="item.payment_status == ''"
-                                        @click="item_payment(row.payments, row.ar, row.measure_detail_id)">Encode
+                                        @click="item_payment(row.payments, row.ar, row.measure_detail_id, row.measure)">Encode
                                 </button>
                                 <?php
 }
 ?>
                                 <button data-toggle="modal" data-target="#payment_modal_detail"
                                         v-if="item.payment_status != ''"
-                                        @click="item_payment(row.payments, row.ar, row.measure_detail_id)">Detail
+                                        @click="item_payment(row.payments, row.ar, row.measure_detail_id, row.measure)">Detail
                                 </button>
                             </td>
                         </tr>

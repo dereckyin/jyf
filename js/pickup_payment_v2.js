@@ -76,6 +76,8 @@ let mainState = {
     submit : false,
 
     search: "",
+
+    payment_measure : [],
 };
 
 var app = new Vue({
@@ -1097,7 +1099,7 @@ var app = new Vue({
 
         },
 
-        item_payment: function(record, ar, detail_id) {
+        item_payment: function(record, ar, detail_id, measure) {
           this.payment = [];
           this.payment_record = [];
 
@@ -1108,6 +1110,8 @@ var app = new Vue({
           this.detail_id = detail_id;
 
           this.payment_record = this.shallowCopy(record);
+
+          this.payment_measure = this.shallowCopy(measure);
         },
 
         encode_save: async function() {
