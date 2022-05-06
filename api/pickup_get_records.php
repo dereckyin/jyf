@@ -28,6 +28,7 @@ $data = json_decode(file_get_contents("php://input"));
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 $keyword = (isset($_GET['keyword']) ? $_GET['keyword'] : "");
+$search = (isset($_GET['search']) ? $_GET['search'] : "");
 
 // if jwt is not empty
 if($jwt){
@@ -40,22 +41,25 @@ if($jwt){
         $query = "
             SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
                 FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-            WHERE  group_id <> 0 and pick_group.status <> -1 and group_id IN (
+            WHERE  group_id <> 0 and pick_group.status = 0 and group_id IN (
             
                 select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-                WHERE group_id <> 0 and pick_group.status <> -1 ";
+                WHERE group_id <> 0 and pick_group.status = 0 ";
 
         if($keyword == 'N')
             $query .= " AND measure_detail.pickup_status = '' ";
 
         if($keyword == 'A')
-            $query .= " AND measure_detail.pickup_status = 'C' and measure_detail.payment_status = '' ";
+            $query .= " AND measure_detail.pickup_status = 'C' and group_id not in (select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id group by group_id, pick_group.status, payment_status  having group_id <> 0 and pick_group.status = 0 and payment_status = 'C')";
 
         if($keyword == 'F')
-            $query .= " AND NOT (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
+            $query .= " AND NOT (measure_detail.pickup_status = 'C' and group_id in (select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id group by group_id, pick_group.status, payment_status  having group_id <> 0 and pick_group.status = 0 and payment_status = 'C')) ";
 
         if($keyword == 'D')
-            $query .= " AND (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
+            $query .= " AND (measure_detail.pickup_status = 'C' and group_id in (select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id group by group_id, pick_group.status, payment_status  having group_id <> 0 and pick_group.status = 0 and payment_status = 'C')) ";
+
+        if($search != '')
+            $query .= " AND (measure_detail.encode = '$search' ) ";
 
         $query .= ") order by group_id desc";
 
@@ -65,6 +69,7 @@ if($jwt){
         $merged_results = [];
         
         $pre_group_id = 0;
+        $pre_id = 0;
         $id = 0;
         $items = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -73,10 +78,10 @@ if($jwt){
             {
                 $merged_results[] = array( 
                     "is_checked" => 0,
-                    "id" => $row['id'],
-                    "order" => $row['id'],
+                    "id" => $pre_id,
+                    "order" => $pre_id,
                     "group_id" => $pre_group_id,
-                    "measure" => $items,
+                    "measure" => UniformPaymentStatus($items),
                     "ar" => GetAr($items),
                     "ar_amount" => GetArAmount($items),
                     "payments" => GetPayments($items),
@@ -85,11 +90,13 @@ if($jwt){
 
                 $items = [];
                 $pre_group_id = $row['group_id'];
+                $pre_id = $row['id'];
             }
 
             $id = $row['id'];
             $group_id = $row['group_id'];
             $pre_group_id = $row['group_id'];
+            $pre_id = $row['id'];
             $measure_detail_id = $row['measure_detail_id'];
 
             if(!existsInArray($measure_detail_id, $items))
@@ -109,7 +116,7 @@ if($jwt){
                 "id" => $id,
                 "order" => $id,
                 "group_id" => $group_id,
-                "measure" => $items,
+                "measure" => UniformPaymentStatus($items),
                 "ar" => GetAr($items),
                 "ar_amount" => GetArAmount($items),
                 "payments" => GetPayments($items),
@@ -121,7 +128,7 @@ if($jwt){
         $query = "
             SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
                 FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-            WHERE  group_id = 0 and pick_group.status <> -1 ";
+            WHERE  group_id = 0 and pick_group.status = 0 ";
 
         if($keyword == 'N')
             $query .= " AND measure_detail.pickup_status = '' ";
@@ -134,6 +141,9 @@ if($jwt){
 
         if($keyword == 'D')
             $query .= " AND (measure_detail.pickup_status = 'C' and measure_detail.payment_status = 'C') ";
+
+        if($search != '')
+            $query .= " AND (measure_detail.encode = '$search' ) ";
 
         $query .= " order by group_id desc";
 
@@ -187,6 +197,24 @@ else{
  
     // tell the user access denied
     echo json_encode(array("message" => "Access denied."));
+}
+
+function UniformPaymentStatus($merged_results){
+    // if any record of merged_result payment_status = 'C' then all merged_result payment_status = 'C'
+    $payment_complete = false;
+    for($i = 0; $i < count($merged_results); $i++){
+        if($merged_results[$i]['payment_status'] == 'C'){
+            $payment_complete = true;
+        }
+    }
+
+    if($payment_complete){
+        for($i = 0; $i < count($merged_results); $i++){
+            $merged_results[$i]['payment_status'] = 'C';
+        }
+    }
+
+    return $merged_results;
 }
 
 function GetMeasureDetail($measure_detail_id, $group_id, $db){

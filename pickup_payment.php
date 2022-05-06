@@ -388,6 +388,11 @@ header( 'location:index.php' );
                     <option value="">List "All" (全部列出)</option>
                 </select>
 
+                <div v-show="filter == '' || filter == 'D'">
+                    <input type="text" v-model="search" placeholder="Only Search for DR" style="width: 200px; margin-right: 10px;">
+                    <button @click="getMeasures('search')">Search</button>
+                </div>
+
                 <div class="pageblock" v-show="filter == '' || filter == 'D'"> <!--Page Size:
                     <select v-model="perPage">
                         <option v-for="item in inventory" :value="item" :key="item.id">
@@ -525,14 +530,14 @@ header( 'location:index.php' );
     ?>
                                 <button data-toggle="modal" data-target="#payment_modal"
                                         v-if="item.payment_status == ''"
-                                        @click="item_payment(row.payments, row.ar, row.measure_detail_id)">Encode
+                                        @click="item_payment(row.payments, row.ar, row.measure_detail_id, row.measure)">Encode
                                 </button>
                                 <?php
 }
 ?>
                                 <button data-toggle="modal" data-target="#payment_modal_detail"
                                         v-if="item.payment_status != ''"
-                                        @click="item_payment(row.payments, row.ar, row.measure_detail_id)">Detail
+                                        @click="item_payment(row.payments, row.ar, row.measure_detail_id, row.measure)">Detail
                                 </button>
                             </td>
                         </tr>
@@ -546,6 +551,8 @@ header( 'location:index.php' );
                 if($phili_read == "0")
 {
     ?>
+                    <a class="btn small" @click="toggleCheckbox()" v-if="filter == 'D'">Select All / Undo
+                        <cht>全選/全取消</cht></a>
                     <a class="btn small" @click="merge_item()">
                         Merge Items
                         <cht>合併項目</cht>
@@ -563,6 +570,12 @@ header( 'location:index.php' );
                         Decompose Measurement Data
                         <cht>拆分丈量資料</cht>
                     </a>
+
+                    <a class="btn small" @click="archive_record()" v-if="filter == 'D'">
+                        Archive
+                        <cht>歸檔</cht>
+                    </a>
+
                     <?php
 }
 ?>
@@ -571,232 +584,6 @@ header( 'location:index.php' );
 
         </div>
 
-
-        <div class="block record show" style="display: none;">
-            <h6>Pickup / Payment Records
-                <cht>提貨與付款記錄</cht>
-            </h6>
-
-            <div class="listheader">
-
-                <select style="text-align: left; width: 610px;">
-                    <option selected>List "All" (全部列出)</option>
-                    <option>List "Not Yet Pickup" (僅列出未提貨)</option>
-                    <option>List "Already Pickup Not Yet Paid" (僅列出已提貨但未付款)</option>
-                </select>
-
-                <div class="pageblock"> <!--Page Size:
-                    <select v-model="perPage">
-                        <option v-for="item in inventory" :value="item" :key="item.id">
-                            {{ item.name }}
-                        </option>
-                    </select> --> Page:
-                    <div class="pageblock">
-                        <a class="first micons" @click="page=1">first_page</a>
-                        <a class="prev micons" :disabled="page == 1"
-                           @click="page < 1 ? page = 1 : page--">chevron_left</a>
-                        <select v-model="page">
-                            <option v-for="pg in pages" :value="pg">
-                                {{ pg }}
-                            </option>
-                        </select>
-
-                        <a class="next micons" :disabled="page == pages.length"
-                           @click="page++">chevron_right</a>
-                        <a class="last micons" @click="page=pages.length">last_page</a>
-                    </div>
-                </div>
-                <!-- <div class="searchblock" style="float:left;">搜尋<input type="text"></div> -->
-            </div>
-
-            <div class="mainlist">
-                <table class="tb_measure">
-                    <thead>
-                    <tr>
-                        <th>
-                            <cht>勾選</cht>
-                            Check
-                        </th>
-                        <th>
-                            <cht>單號</cht>
-                            OR
-                        </th>
-                        <th>
-                            <cht>收件人(菲)</cht>
-                            Company/Customer(PH)
-                        </th>
-                        <th>
-                            <cht>丈量日期</cht>
-                            Date Encoded
-                        </th>
-                        <th>
-                            <cht>收貨記錄筆數</cht>
-                            Number of Goods Records
-                        </th>
-                        <th>
-                            <cht>重量</cht>
-                            Kilo
-                        </th>
-                        <th>
-                            <cht>才積</cht>
-                            Cuft
-                        </th>
-                        <th>
-                            <cht>收費金額</cht>
-                            Amount
-                        </th>
-                        <th>
-                            <cht>提貨狀態</cht>
-                            Pickup Status
-                        </th>
-                        <th>
-                            <cht>付款狀態</cht>
-                            Payment Status
-                        </th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="alone">
-                        </td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            JUNG YA FEI
-                        </td>
-                        <td>
-                            2021/06/10
-                        </td>
-                        <td>2</td>
-                        <td>700</td>
-                        <td>500</td>
-                        <td>20500</td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            <div class="ar">A/R: 20500</div>
-                            <button>Encode</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="alone">
-                        </td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            &lt;WME&gt; WALCO MOTOR SALES3530705
-                        </td>
-                        <td>
-                            2021/06/10
-                        </td>
-                        <td>1</td>
-                        <td>1300</td>
-                        <td>600</td>
-                        <td>37200</td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            <div class="ar">A/R: 37200</div>
-                            <button>Encode</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td rowspan="2">
-                            <input type="checkbox" class="alone">
-                        </td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            RR
-                        </td>
-                        <td>
-                            2021/06/10
-                        </td>
-                        <td>3</td>
-                        <td>2200</td>
-                        <td>500</td>
-                        <td>25000</td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td rowspan="2">
-                            <div class="ar">A/R: 34700</div>
-                            <button>Encode</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            RR 0917-5642162
-                        </td>
-                        <td>
-                            2021/06/13
-                        </td>
-                        <td>1</td>
-                        <td>300</td>
-                        <td>600</td>
-                        <td>9700</td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="alone">
-                        </td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            LYM-18; MDR CABINEL
-                        </td>
-                        <td>
-                            2021/06/13
-                        </td>
-                        <td>1</td>
-                        <td>7000</td>
-                        <td>3600</td>
-                        <td>88000</td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            <div class="ar">A/R: 88000</div>
-                            <button>Encode</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <div class="btnbox" style="border: none; margin-top: 10px;">
-
-                    <a class="btn small">
-                        Merge Items
-                        <cht>合併項目</cht>
-                    </a>
-                    <a class="btn small">
-                        Decompose Item
-                        <cht>拆分項目</cht>
-                    </a>
-
-                </div>
-            </div>
-        </div>
     </div>
 
 

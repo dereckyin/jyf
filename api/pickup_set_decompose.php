@@ -60,7 +60,7 @@ $user_id = $decoded->data->id;
         // for measure_detail
         $query = "update measure_detail 
                     set payment_status = ''
-            WHERE id in (select measure_detail_id from pick_group where group_id in (" . $id . ") and pick_group.status <> -1 )";
+            WHERE id in (select measure_detail_id from pick_group where group_id in (" . $id . ") and pick_group.status = 0 )";
 
         $stmt = $conn->prepare($query);
 
@@ -85,7 +85,7 @@ $user_id = $decoded->data->id;
                     set status = -1, 
                     mdf_time = now(),
                     mdf_user = '" . $user . "'
-            WHERE detail_id in (select measure_detail_id from pick_group where group_id in (" . $id . ") and pick_group.status <> -1)";
+            WHERE detail_id in (select measure_detail_id from pick_group where group_id in (" . $id . ") and pick_group.status = 0)";
 
         $stmt = $conn->prepare($query);
 

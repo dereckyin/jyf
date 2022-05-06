@@ -75,6 +75,9 @@ let mainState = {
     // don't repeat submit
     submit : false,
 
+    search: "",
+
+    payment_measure : [],
 };
 
 var app = new Vue({
@@ -809,6 +812,67 @@ var app = new Vue({
             return low;
         },
 
+        archive_record: async function () {
+
+          let favorite = [];
+          let gavorite = [];
+
+          for (i = 0; i < this.receive_records.length; i++) {
+              if(this.receive_records[i].is_checked == 1)
+              {
+                  if(this.receive_records[i].group_id == 0)
+                    favorite.push(this.receive_records[i].id);
+                  else
+                    gavorite.push(this.receive_records[i].group_id);
+                
+              }
+            }
+
+
+            let _this = this;
+
+        var form_data = new FormData();
+        form_data.append('id', favorite.join(","));
+        form_data.append('gid', gavorite.join(","));
+ 
+        let token = localStorage.getItem("accessToken");
+
+        if(this.submit == true)
+          return;
+      this.submit = true;
+  
+        try {
+          let res = await axios({
+            method: 'post',
+            url: 'api/pickup_set_archive.php',
+            data: form_data,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+        });
+          
+        } catch (err) {
+          console.log(err)
+          alert('error')
+          _this.submit = false;
+          _this.getMeasures();
+          return;
+        }
+
+        this.submit = false;
+
+      Swal.fire({
+        title: 'Info',
+        text: 'Archive Successfully',
+        type: 'Info',
+        confirmButtonText: 'OK'
+    });
+
+        this.getMeasures();
+
+      },
+
+
         merge_item: async function () {
 
             let favorite = [];
@@ -1035,7 +1099,7 @@ var app = new Vue({
 
         },
 
-        item_payment: function(record, ar, detail_id) {
+        item_payment: function(record, ar, detail_id, measure) {
           this.payment = [];
           this.payment_record = [];
 
@@ -1046,6 +1110,8 @@ var app = new Vue({
           this.detail_id = detail_id;
 
           this.payment_record = this.shallowCopy(record);
+
+          this.payment_measure = this.shallowCopy(measure);
         },
 
         encode_save: async function() {
@@ -1326,13 +1392,16 @@ var app = new Vue({
                 });
         },
 
-        getMeasures: function() {
+        getMeasures: function(search) {
             let _this = this;
+
+            if(search !== 'search')
+              this.search = "";
 
             if(this.filter == "D"  || this.filter == '')
             {
               
-              axios.get('api/pickup_get_records_page.php?keyword=' + this.filter + '&page=' + this.page + '&size=' + this.perPage.id)
+              axios.get('api/pickup_get_records_page.php?keyword=' + this.filter + '&page=' + this.page + '&size=' + this.perPage.id + '&search=' + this.search)
                 .then(function(response) {
                     console.log(response.data);
                     _this.receive_records = response.data;
