@@ -38,6 +38,9 @@ let mainState = {
     c_keyword:"",
     c_filter: [],
 
+    c_options : [],
+    s_options : [],
+
     // measure
     measure_id: 0,
     date_encode:'',
@@ -189,7 +192,36 @@ var app = new Vue({
         if(this.filter == 'D' || this.filter == ''){
           this.getMeasures();
         }
-      }
+      },
+
+      c_keyword: function (value) {
+        //console.log(c_keyword);
+        this.c_filter = [];
+
+        if (value != '') {
+            this.c_filter = this.c_options.filter(option => {
+                return option.container_number.toLowerCase().indexOf(value.toLowerCase()) > -1;
+            });
+        }
+        else
+          this.c_filter = this.c_options;
+      
+    },
+
+    s_keyword: function (value) {
+        //console.log(c_keyword);
+
+        this.s_filter = [];
+
+        if (value != '') {
+            this.s_filter = this.s_options.filter(option => {
+                return option.cust.toLowerCase().indexOf(value.toLowerCase()) > -1;
+            });
+        }
+        else
+          this.s_filter = this.s_options;
+      
+    }
     },
 
     computed: {
@@ -280,6 +312,7 @@ var app = new Vue({
             axios.get('api/query_pickup_payment_sold_to.php')
             .then(function(response) {
                 //console.log(response.data);
+                app.s_options = response.data;
                 app.s_filter = response.data;
             })
             .catch(function(error) {
@@ -291,6 +324,7 @@ var app = new Vue({
             axios.get('api/query_pickup_payment_container_number.php')
             .then(function(response) {
                 //console.log(response.data);
+                app.c_options = response.data;
                 app.c_filter = response.data;
             })
             .catch(function(error) {
