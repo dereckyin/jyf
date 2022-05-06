@@ -551,6 +551,8 @@ header( 'location:index.php' );
                 if($phili_read == "0")
 {
     ?>
+                    <a class="btn small" @click="toggleCheckbox()" v-if="filter == 'D'">Select All / Undo
+                        <cht>全選/全取消</cht></a>
                     <a class="btn small" @click="merge_item()">
                         Merge Items
                         <cht>合併項目</cht>
