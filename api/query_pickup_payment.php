@@ -155,14 +155,14 @@ if($jwt){
             );
         }
 
-        if($date_end != '')
+        if($date_end != '' && $date_start != '')
         {
-            $merged_results = array_filter($merged_results, function($a) use ($date_end) {
+            $merged_results = array_filter($merged_results, function($a) use ($date_start, $date_end) {
                 $in_value = false;
 
                 foreach($a['measure'] as $item)
                 {
-                    if($item['date_arrive'] <= $date_end)
+                    if($item['date_arrive'] <= $date_end && $item['date_arrive'] >= $date_start)
                     {
                         $in_value = true;
                     }
@@ -172,7 +172,7 @@ if($jwt){
                 return $in_value;
             });
         }
-
+/*
         if($date_start != '')
         {
             $merged_results = array_filter($merged_results, function($a) use ($date_start) {
@@ -190,7 +190,7 @@ if($jwt){
                 return $in_value;
             });
         }
-
+*/
         if(isset($solds))
         {
             $merged_results = array_filter($merged_results, function($a) use ($solds) {

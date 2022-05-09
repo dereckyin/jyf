@@ -218,8 +218,8 @@ var app = new Vue({
                 return option.cust.toLowerCase().indexOf(value.toLowerCase()) > -1;
             });
         }
-        else
-          this.s_filter = this.s_options;
+        //else
+        //  this.s_filter = this.s_options;
       
     }
     },
@@ -313,7 +313,7 @@ var app = new Vue({
             .then(function(response) {
                 //console.log(response.data);
                 app.s_options = response.data;
-                app.s_filter = response.data;
+                //app.s_filter = response.data;
             })
             .catch(function(error) {
                 console.log(error);
