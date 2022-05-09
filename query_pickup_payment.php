@@ -56,7 +56,7 @@ header( 'location:index.php' );
     <link rel="stylesheet" type="text/css" href="css/ui.css"/>
     <link rel="stylesheet" type="text/css" href="css/case.css"/>
     <link rel="stylesheet" type="text/css" href="css/mediaquires.css"/>
-    <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <style type="text/css">
         hr {
@@ -144,15 +144,15 @@ header( 'location:index.php' );
             background-color: #bbb;
         }
 
-        .tb_measure thead tr th:nth-of-type(2) {
+        .tb_measure thead tr th:nth-of-type(1) {
             min-width: 120px;
         }
 
-        .tb_measure thead tr th:nth-of-type(3) {
+        .tb_measure thead tr th:nth-of-type(2) {
             max-width: 300px;
         }
 
-        .tb_measure thead tr th:nth-of-type(6) {
+        .tb_measure thead tr th:nth-of-type(5) {
             max-width: 150px;
         }
 
@@ -281,6 +281,11 @@ header( 'location:index.php' );
 
         div.block > .tablebox li eng {
             display: block;
+        }
+
+        img.ui-datepicker-trigger {
+            padding-left: 10px;
+            margin: -8px;
         }
 
     </style>
