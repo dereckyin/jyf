@@ -279,6 +279,8 @@ header( 'location:index.php' );
             align-items: center;
         }
 
+        
+
     </style>
 
 
@@ -515,6 +517,10 @@ header( 'location:index.php' );
                                 <button data-toggle="modal" data-target="#encode_modal" v-if="item.encode_status == ''"
                                         @click="item_encode(item)">Encode
                                 </button>
+                               
+                                <button data-toggle="modal" data-target="#export_modal"
+                                        @click="item_export(item, row.payments, row.ar, item.id, row.measure)">Export
+                                </button>
                                 <?php
 }
 ?>
@@ -586,6 +592,203 @@ header( 'location:index.php' );
 
     </div>
 
+    <!-- The Modal -->
+    <div class="modal" id="export_modal">
+    <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 1400px;">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title">Export Payment Receipt
+                        <cht>匯出付款收據</cht>
+                    </h5>
+                </div>
+
+                <div class="modal-body">
+                    <div class="tablebox s02">
+                        <ul>
+                            <li>
+                                DR
+                            </li>
+                            <li>
+                                <input type="text" v-model="exp_dr">
+                            </li>
+                            <li>
+                            </li>
+                            <li>
+                                Date
+                            </li>
+                            <li>
+                                <input type="date" v-model="exp_date">
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                Sold TO
+                            </li>
+                            <li>
+                                <input type="text" v-model="exp_sold_to">
+                            </li>
+                            <li>
+                            </li>
+                            <li>
+                                
+                            </li>
+                            <li>
+                                
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                Quantity
+                            </li>
+                            <li>
+                                <textarea  v-model="exp_quantity"></textarea>
+                            </li>
+                            <li>
+                            </li>
+                            <li>
+                                Unit
+                            </li>
+                            <li>
+                                <textarea v-model="exp_unit"></textarea>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                Description
+                            </li>
+                            <li>
+                                <textarea v-model="exp_discription"></textarea>
+                            </li>
+                            <li>
+                            </li>
+                            <li>
+                                Amount
+                            </li>
+                            <li>
+                                <textarea v-model="exp_amount"></textarea>
+                            </li>
+                        </ul>
+
+
+                    </div>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="tablebox s02 payment">
+                        <ul class="header">
+                            <li>
+                                <cht>勾選</cht>
+                                Check
+                            </li>
+                            <li>
+                                <cht>支付方式</cht>
+                                Payment Method
+                            </li>
+                            <li>
+                                <cht>開立日期</cht>
+                                Issue Date
+                            </li>
+                            <li>
+                                <cht>收到日期</cht>
+                                Receive Date
+                            </li>
+                            <li>
+                                <cht>金額</cht>
+                                Amount
+                            </li>
+                          
+                            <li>
+                                <cht>備註</cht>
+                                Remark
+                            </li>
+                        </ul>
+
+                        <ul v-for="(item, j) in payment">
+                            <li><input class="alone" type="checkbox" :value="1" v-model="item.is_selected" /></li>
+                            <li>
+                                
+                                {{ item.type == "1" ? 'Cash 現金' : item.type == "2" ? 'Deposit 存款' : item.type == "3" ? 'Check 支票' : item.type == "4" ? 'Taiwan Pay 台灣付款' : item.type == "5" ? 'Advance Payment 預付款' : '' }}
+                            </li>
+                            <li>
+                                {{ item.issue_date }}
+                            </li>
+                            <li>
+                                {{ item.payment_date }}
+                            </li>
+                            <li>
+                                {{ item.amount }}
+                            </li>
+                          
+                            <li>
+                                {{ item.remark }}
+                            </li>
+                        </ul>
+
+
+                    </div>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="tablebox s02">
+                        <ul class="header">
+                            <li>
+                                <cht>勾選</cht>
+                                Check
+                            </li>
+                            <li>
+                                <cht>收貨日期</cht>
+                                Date Receive
+                            </li>
+                            <li>
+                                <cht>收件人</cht>
+                                Company/Customer
+                            </li>
+                            <li>
+                                <cht>貨品名稱</cht>
+                                Description
+                            </li>
+                            <li>
+                                <cht>件數</cht>
+                                Quantity
+                            </li>
+                            <li>
+                                <cht>寄貨人</cht>
+                                Supplier
+                            </li>
+                          
+                        </ul>
+
+                        <ul v-for="(item, j) in record">
+                            <li><input class="alone" type="checkbox" :value="1" v-model="item.is_selected" /></li>
+                            <li>{{ item.date_receive }}</li>
+                            <li>{{ item.customer }}</li>
+                            <li>{{ item.description }}</li>
+                            <li>{{ item.quantity }}</li>
+                            <li>{{ item.supplier }}</li>
+                         
+                        </ul>
+
+                    </div>
+                </div>
+
+                
+
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-warning">Cancel
+                        <cht>取消</cht>
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="export_save()">Export Word
+                        <cht>匯出 word</cht>
+                    </button>
+                   
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <!-- The Modal -->
     <div class="modal" id="encode_modal">
