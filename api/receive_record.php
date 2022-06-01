@@ -100,7 +100,7 @@ function GetPic($picname, $photo, $id, $conn){
     return $merged_results;
 }
 
-function insertContactor($customer, $supplier, $user, $conn) {
+function insertContactor($customer, $supplier, $user, $conn, $email) {
     $needToInsert = 0;
 
     $customer =trim($customer);
@@ -150,13 +150,38 @@ function insertContactor($customer, $supplier, $user, $conn) {
             $needToInsert = 1;
     }
 
+    $sql = "select c_email from contactor where customer = ? and supplier = ?";
+    $old_email = "other";
+    if ($stmt = mysqli_prepare($conn, $sql)) {
+        
+        mysqli_stmt_bind_param($stmt, "ss", $customer, $supplier);
+    
+        /* execute query */
+        mysqli_stmt_execute($stmt);
+
+        $result1 = mysqli_stmt_get_result($stmt);
+
+        while($row = mysqli_fetch_assoc($result1)) {
+            $old_email = $row['c_email'];
+        }
+    }
+
+    if($old_email == '')
+    {
+        $sql = "update contactor set c_email = ? where customer = ? and supplier = ? ";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sss", $email, $customer, $supplier);
+        $stmt->execute();
+
+    }
+
 
     if($needToInsert == 1)
     {
-        $sql = "insert into contactor (customer, supplier, crt_user) 
-                                    values (?, ?, ?)";
+        $sql = "insert into contactor (customer, supplier, c_email, crt_user) 
+                                    values (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", $customer, $supplier, $user);
+        $stmt->bind_param("ssss", $customer, $supplier, $email, $user);
         $stmt->execute();
 
         $last_id = mysqli_insert_id($conn);
@@ -678,7 +703,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                 
 
 
-                insertContactor($customer, $supplier, $user, $conn);
+                insertContactor($customer, $supplier, $user, $conn, $email);
 
                 echo $last_id;
 
@@ -958,7 +983,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                         sendMail($email, $date_receive, $customer, $description, $quantity, $supplier, $pic_mail_array);
                 }
 
-                insertContactor($customer, $supplier, $user, $conn);
+                insertContactor($customer, $supplier, $user, $conn, $email);
 
                 echo $last_id;
 
