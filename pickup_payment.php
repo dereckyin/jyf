@@ -684,24 +684,24 @@ header( 'location:index.php' );
                                 <cht>勾選</cht>
                                 Check
                             </li>
-                            <li style="width: 200px; min-width: 200px;">
+                            <li style="width: 230px; min-width: 230px;">
                                 <cht>支付方式</cht>
                                 Payment Method
                             </li>
-                            <li style="width: 200px; min-width: 200px;">
+                            <li style="width: 230px; min-width: 230px;">
                                 <cht>開立日期</cht>
                                 Issue Date
                             </li>
-                            <li style="width: 200px; min-width: 200px;">
+                            <li style="width: 230px; min-width: 230px;">
                                 <cht>收到日期</cht>
                                 Receive Date
                             </li>
-                            <li style="width: 200px; min-width: 200px;">
+                            <li style="width: 230px; min-width: 230px;">
                                 <cht>金額</cht>
                                 Amount
                             </li>
                           
-                            <li style="width: calc(100% - 905px);">
+                            <li style="width: calc(100% - 1025px);">
                                 <cht>備註</cht>
                                 Remark
                             </li>
@@ -748,7 +748,7 @@ header( 'location:index.php' );
                                 <cht>收件人</cht>
                                 Company/Customer
                             </li>
-                            <li style="width: 350px; min-width: 350px;">
+                            <li style="min-width: 350px;">
                                 <cht>貨品名稱</cht>
                                 Description
                             </li>
@@ -783,7 +783,7 @@ header( 'location:index.php' );
                         <cht>取消</cht>
                     </button>
                     <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="export_save()">Export Word
-                        <cht>匯出 word</cht>
+                        <cht>匯出 Word</cht>
                     </button>
                    
                 </div>
