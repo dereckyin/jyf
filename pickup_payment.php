@@ -279,7 +279,9 @@ header( 'location:index.php' );
             align-items: center;
         }
 
-        
+        #export_modal .tablebox.s02 textarea{
+            height: auto;
+        }
 
     </style>
 
@@ -515,11 +517,11 @@ header( 'location:index.php' );
 {
     ?>
                                 <button data-toggle="modal" data-target="#encode_modal" v-if="item.encode_status == ''"
-                                        @click="item_encode(item)">Encode
+                                        @click="item_encode(item)" style="margin: 3px 0;">Encode
                                 </button>
                                
                                 <button data-toggle="modal" data-target="#export_modal"
-                                        @click="item_export(item, row.payments, row.ar, item.id, row.measure)">Export
+                                        @click="item_export(item, row.payments, row.ar, item.id, row.measure)" style="margin: 3px 0;">Export
                                 </button>
                                 <?php
 }
@@ -594,7 +596,7 @@ header( 'location:index.php' );
 
     <!-- The Modal -->
     <div class="modal" id="export_modal">
-    <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 1400px;">
+    <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 1400px; margin: 80px auto;">
             <div class="modal-content">
 
                 <!-- Modal Header -->
@@ -643,7 +645,7 @@ header( 'location:index.php' );
                                 Quantity
                             </li>
                             <li>
-                                <textarea  v-model="exp_quantity"></textarea>
+                                <textarea  v-model="exp_quantity" rows="5"></textarea>
                             </li>
                             <li>
                             </li>
@@ -651,7 +653,7 @@ header( 'location:index.php' );
                                 Unit
                             </li>
                             <li>
-                                <textarea v-model="exp_unit"></textarea>
+                                <textarea v-model="exp_unit" rows="5"></textarea>
                             </li>
                         </ul>
                         <ul>
@@ -659,7 +661,7 @@ header( 'location:index.php' );
                                 Description
                             </li>
                             <li>
-                                <textarea v-model="exp_discription"></textarea>
+                                <textarea v-model="exp_discription" rows="5"></textarea>
                             </li>
                             <li>
                             </li>
@@ -667,7 +669,7 @@ header( 'location:index.php' );
                                 Amount
                             </li>
                             <li>
-                                <textarea v-model="exp_amount"></textarea>
+                                <textarea v-model="exp_amount" rows="5"></textarea>
                             </li>
                         </ul>
 
@@ -678,28 +680,28 @@ header( 'location:index.php' );
                 <div class="modal-body">
                     <div class="tablebox s02 payment">
                         <ul class="header">
-                            <li>
+                            <li style="width: 105px; min-width: 105px;">
                                 <cht>勾選</cht>
                                 Check
                             </li>
-                            <li>
+                            <li style="width: 200px; min-width: 200px;">
                                 <cht>支付方式</cht>
                                 Payment Method
                             </li>
-                            <li>
+                            <li style="width: 200px; min-width: 200px;">
                                 <cht>開立日期</cht>
                                 Issue Date
                             </li>
-                            <li>
+                            <li style="width: 200px; min-width: 200px;">
                                 <cht>收到日期</cht>
                                 Receive Date
                             </li>
-                            <li>
+                            <li style="width: 200px; min-width: 200px;">
                                 <cht>金額</cht>
                                 Amount
                             </li>
                           
-                            <li>
+                            <li style="width: calc(100% - 905px);">
                                 <cht>備註</cht>
                                 Remark
                             </li>
@@ -734,11 +736,11 @@ header( 'location:index.php' );
                 <div class="modal-body">
                     <div class="tablebox s02">
                         <ul class="header">
-                            <li>
+                            <li style="width: 105px; min-width: 105px;">
                                 <cht>勾選</cht>
                                 Check
                             </li>
-                            <li>
+                            <li style="width: 200px; min-width: 200px;">
                                 <cht>收貨日期</cht>
                                 Date Receive
                             </li>
@@ -746,7 +748,7 @@ header( 'location:index.php' );
                                 <cht>收件人</cht>
                                 Company/Customer
                             </li>
-                            <li>
+                            <li style="width: 350px; min-width: 350px;">
                                 <cht>貨品名稱</cht>
                                 Description
                             </li>
