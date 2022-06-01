@@ -1256,7 +1256,7 @@ var app = new Vue({
         },
 
         export_save: function() {
-   
+          let _this = this;
           var form_Data = new FormData();
 
           form_Data.append('id', this.detail_id);
@@ -1285,7 +1285,7 @@ var app = new Vue({
                     const link = document.createElement('a');
                     link.href = url;
                    
-                      link.setAttribute('download', 'Format_of_Payment_Receipt.docx');
+                      link.setAttribute('download', 'Format_of_Payment_Receipt_' + _this.detail_id + '.docx');
                    
                     document.body.appendChild(link);
                     link.click();

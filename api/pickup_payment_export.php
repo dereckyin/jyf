@@ -550,6 +550,16 @@ foreach ($real_goods as $good) {
    
 }
 
+if(count($real_goods) == 0)
+{
+    $table5->addRow();
+    $table5->addCell(2100, $styleHeadLeftUnderline)->addText("", array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
+    $table5->addCell(2100, $styleLeftUnderline)->addText("", array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
+    $table5->addCell(2100, $styleLeftUnderline)->addText("", array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
+    $table5->addCell(2100, $styleLeftUnderline)->addText("", array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
+    $table5->addCell(2100, $styleTailLeftUnderline)->addText("", array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
+}
+
 $section->addTextBreak(1);
 
 $table6 = $section->addTable('table6', [
