@@ -1113,7 +1113,7 @@ var app = new Vue({
 
       async get_export(detail_id) {
         let _this = this;
-  
+
         const params = {
           measure_id: detail_id,
         
@@ -1135,6 +1135,11 @@ var app = new Vue({
       },
 
         item_export: async function(item, record, ar, detail_id, measure) {
+
+          this.export_record = {};
+          this.exp_date = '';
+          this.exp_quantity = '';
+          this.exp_unit = '';
 
           await this.get_export(detail_id);
 
