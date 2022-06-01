@@ -1285,7 +1285,7 @@ var app = new Vue({
                     const link = document.createElement('a');
                     link.href = url;
                    
-                      link.setAttribute('download', 'Format_of_Payment_Receipt_' + _this.detail_id + '.docx');
+                      link.setAttribute('download', 'Payment_Receipt' + (_this.exp_dr !== '' ? '_' + _this.exp_dr : '') + '.docx');
                    
                     document.body.appendChild(link);
                     link.click();
