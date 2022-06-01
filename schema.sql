@@ -865,3 +865,26 @@ ALTER TABLE loading
 ADD COLUMN `picname` varchar(512) DEFAULT '' AFTER remark;
 ALTER TABLE loading
 ADD COLUMN `photo` varchar(12) DEFAULT '' AFTER remark;
+
+create table pickup_payment_export
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `measure_detail_id` bigint(20) unsigned NOT NULL,
+  `exp_dr` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `exp_date` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `exp_sold_to` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `exp_quantity` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `exp_unit` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `exp_discription` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `exp_amount` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`payment` JSON,
+	`record` JSON,
+	`status` varchar(2) DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+	`mdf_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`mdf_user` varchar(128) DEFAULT '',
+	`del_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`del_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

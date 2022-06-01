@@ -706,7 +706,7 @@ header( 'location:index.php' );
                         </ul>
 
                         <ul v-for="(item, j) in payment">
-                            <li><input class="alone" type="checkbox" :value="1" v-model="item.is_selected" /></li>
+                            <li><input class="alone" type="checkbox" true-value="1"  false-value="0" v-model="item.is_selected" /></li>
                             <li>
                                 
                                 {{ item.type == "1" ? 'Cash 現金' : item.type == "2" ? 'Deposit 存款' : item.type == "3" ? 'Check 支票' : item.type == "4" ? 'Taiwan Pay 台灣付款' : item.type == "5" ? 'Advance Payment 預付款' : '' }}
@@ -762,7 +762,7 @@ header( 'location:index.php' );
                         </ul>
 
                         <ul v-for="(item, j) in record">
-                            <li><input class="alone" type="checkbox" :value="1" v-model="item.is_selected" /></li>
+                            <li><input class="alone" type="checkbox" true-value="1"  false-value="0"  v-model="item.is_selected" /></li>
                             <li>{{ item.date_receive }}</li>
                             <li>{{ item.customer }}</li>
                             <li>{{ item.description }}</li>

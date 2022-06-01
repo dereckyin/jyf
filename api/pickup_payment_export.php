@@ -57,6 +57,7 @@ switch ($method) {
 
 case 'POST':
 
+$id = (isset($_POST['id']) ?  $_POST['id'] : 0);
 $exp_dr = (isset($_POST['exp_dr']) ?  $_POST['exp_dr'] : "");
 $exp_date = (isset($_POST['exp_date']) ?  $_POST['exp_date'] : "");
 $exp_sold_to = (isset($_POST['exp_sold_to']) ?  $_POST['exp_sold_to'] : "");
@@ -69,6 +70,111 @@ $record = (isset($_POST['record']) ?  $_POST['record'] : []);
 
 $payments = json_decode($payment);
 $goods = json_decode($record);
+
+if(IsExist($id, $conn))
+{
+    $query = "update pickup_payment_export set 
+        exp_dr = ?, 
+        exp_date = ?, 
+        exp_sold_to = ?, 
+        exp_quantity = ?, 
+        exp_unit = ?, 
+        exp_discription = ?, 
+        exp_amount = ?, 
+        payment = ?, 
+        record = ?, 
+        crt_user = ?, 
+        crt_time = now()
+        where measure_detail_id = ?";
+        // prepare the query
+        $stmt = $conn->prepare($query);
+
+        $stmt->bind_param(
+        "ssssssssssi",
+        $exp_dr,
+        $exp_date,
+        $exp_sold_to,
+        $exp_quantity,
+        $exp_unit,
+        $exp_discription,
+        $exp_amount,
+        $payment,
+        $record,
+        $user,
+        $id
+        );
+
+
+        try {
+        // execute the query, also check if query was successful
+        if (!$stmt->execute()) {
+  
+        http_response_code(501);
+        echo json_encode("Failure3 at " . date("Y-m-d") . " " . date("h:i:sa"));
+        die();
+        }
+
+        } catch (Exception $e) {
+        error_log($e->getMessage());
+  
+        http_response_code(501);
+        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+        die();
+        }
+}
+else
+{
+    $query = "insert into pickup_payment_export set 
+    measure_detail_id = ?,
+    exp_dr = ?, 
+    exp_date = ?, 
+    exp_sold_to = ?, 
+    exp_quantity = ?, 
+    exp_unit = ?, 
+    exp_discription = ?, 
+    exp_amount = ?, 
+    payment = ?, 
+    record = ?, 
+    crt_user = ?, 
+    crt_time = now()
+  ";
+    // prepare the query
+    $stmt = $conn->prepare($query);
+
+    $stmt->bind_param(
+    "issssssssss",
+    $id,
+    $exp_dr,
+    $exp_date,
+    $exp_sold_to,
+    $exp_quantity,
+    $exp_unit,
+    $exp_discription,
+    $exp_amount,
+    $payment,
+    $record,
+    $user
+    );
+
+
+    try {
+    // execute the query, also check if query was successful
+    if (!$stmt->execute()) {
+
+    http_response_code(501);
+    echo json_encode("Failure3 at " . date("Y-m-d") . " " . date("h:i:sa"));
+    die();
+    }
+
+    } catch (Exception $e) {
+    error_log($e->getMessage());
+
+    http_response_code(501);
+    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+    die();
+    }
+    
+}
 
 // Creating the new document...
 $phpWord = new PhpOffice\PhpWord\PhpWord();
@@ -136,7 +242,7 @@ $table2->addRow();
 $table2->addCell(1000)->addText(htmlspecialchars("SOLD TO: "), array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
 $table2->addCell(6500)->addText(htmlspecialchars($exp_sold_to), array('name' => 'Calibri', 'size' => 12, 'underline' => 'single'), array('align' => 'left'));
 $table2->addCell(800)->addText(htmlspecialchars("DATE: "), array('name' => 'Calibri', 'size' => 12), array('align' => 'right'));
-$table2->addCell(2200)->addText(htmlspecialchars(date("Y/m/d")), array('name' => 'Calibri', 'size' => 12, 'underline' => 'single'), array('align' => 'right'));
+$table2->addCell(2200)->addText(htmlspecialchars($exp_date), array('name' => 'Calibri', 'size' => 12, 'underline' => 'single'), array('align' => 'right'));
 
 $section->addTextBreak(1);
 
@@ -323,8 +429,8 @@ $table4 = $section->addTable('table5', [
 $real_payment = [];
 
 foreach ($payments as $payment) {
-    if (property_exists($payment, 'is_selected')) 
-    {
+    if (property_exists($payment, 'is_selected') && $payment->is_selected == 1) {
+        
         $kind = GetPaymentType($payment->type);
         $item = array(
             "kind" => $kind,
@@ -378,7 +484,7 @@ $table5 = $section->addTable('table5', [
 $real_goods = [];
 
 foreach ($goods as $good) {
-    if (property_exists($good, 'is_selected')) 
+    if (property_exists($good, 'is_selected') && $good->is_selected == 1) 
     {
         $item = array(
             "date_receive" => $good->date_receive,
@@ -601,5 +707,19 @@ function GetPaymentType($kind)
     }
     return $type;
 }
+
+function IsExist($id, $db)
+{
+    $is_exist = false;
+    $sql = "select id from pickup_payment_export where measure_detail_id = " . $id;
+
+    if ($result = $db->query($sql)) {
+        while ($row = $result->fetch_row()) {
+            $is_exist = true;
+        }
+
+    }
+    return $is_exist;
+}   
 
 ?>
