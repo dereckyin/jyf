@@ -78,6 +78,17 @@ let mainState = {
     search: "",
 
     payment_measure : [],
+
+    // export
+    exp_dr:"",
+    exp_date:"",
+    exp_sold_to:"",
+    exp_quantity:"",
+    exp_unit:"",
+    exp_discription:"",
+    exp_amount:"",
+
+    export_record: {},
 };
 
 var app = new Vue({
@@ -1099,6 +1110,102 @@ var app = new Vue({
 
         },
 
+
+      async get_export(detail_id) {
+        let _this = this;
+
+        const params = {
+          measure_id: detail_id,
+        
+        };
+  
+        let token = localStorage.getItem("accessToken");
+  
+        try {
+          let res = await axios.get("api/pickup_get_export.php", {
+            params,
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          
+          this.export_record = res.data;
+        } catch (err) {
+          console.log(err)
+          alert('error')
+        }
+      },
+
+        item_export: async function(item, record, ar, detail_id, measure) {
+
+          this.export_record = {};
+          this.exp_date = '';
+          this.exp_quantity = '';
+          this.exp_unit = '';
+
+          await this.get_export(detail_id);
+
+          this.payment = [];
+          this.payment_record = [];
+
+          //this.payment = [].concat(record);
+          this.payment = JSON.parse(JSON.stringify(record));
+          for(const element of this.payment) {
+            element.is_selected = 1;
+          }
+          this.ar = ar;
+
+          this.detail_id = detail_id;
+
+          this.payment_record = this.shallowCopy(record);
+
+          this.payment_measure = this.shallowCopy(measure);
+
+          this.record = JSON.parse(JSON.stringify(item.record));
+          if(this.record.constructor === Array)
+          {
+            for(const element of this.record) {
+                element.is_selected = 1;
+            }
+          }
+
+          this.exp_dr = item.encode;
+          this.exp_sold_to = item.record_cust.join();
+          this.exp_amount = (item.charge !== '' ? '₱ ' + Number(item.charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '');
+          
+          kilo_price = 0;
+          cuft_price = 0;
+
+          item.kilo_price !== "" ? kilo_price = item.kilo_price : kilo_price = (item.kilo < 3000 ? 36.5 : 34.5);
+          item.cuft_price !== "" ? cuft_price = item.cuft_price : cuft_price = (item.cuft < 300 ? 385 : 365);
+
+          nkilo = kilo_price * (item.kilo == "" ? 0 : item.kilo);
+          ncuft = cuft_price * (item.cuft == "" ? 0 : item.cuft);
+          charge = (ncuft > nkilo) ? Number(item.cuft).toFixed(2) + ' cuft @ ₱ ' + Number(item.cuft_price).toFixed(2) : Number(item.kilo).toFixed(2) + ' kilo @ ₱ ' + Number(item.kilo_price).toFixed(2);
+          this.exp_discription = charge;
+
+          if(this.export_record.length > 0)
+          {
+            this.exp_dr = this.export_record[0].exp_dr;
+            this.exp_date = this.export_record[0].exp_date;
+            this.exp_sold_to = this.export_record[0].exp_sold_to;
+            this.exp_quantity = this.export_record[0].exp_quantity;
+            this.exp_unit = this.export_record[0].exp_unit;
+            this.exp_discription = this.export_record[0].exp_discription;
+            this.exp_amount = this.export_record[0].exp_amount;
+
+            for(const element of JSON.parse(this.export_record[0].payment)) {
+              var result  = this.payment.filter(function(o){return o.id == element.id;} );
+              if(result.length > 0)
+                result[0].is_selected = element.is_selected;
+            }
+
+            for(const element of JSON.parse(this.export_record[0].record)) {
+              var result  = this.record.filter(function(o){return o.id == element.id;} );
+              if(result.length > 0)
+                result[0].is_selected = element.is_selected;
+            }
+          }
+        },
+
         item_payment: function(record, ar, detail_id, measure) {
           this.payment = [];
           this.payment_record = [];
@@ -1147,6 +1254,48 @@ var app = new Vue({
             this.record[obj].org_pick_date = this.record[obj].pick_date;
           }
         },
+
+        export_save: function() {
+          let _this = this;
+          var form_Data = new FormData();
+
+          form_Data.append('id', this.detail_id);
+          form_Data.append('exp_dr', this.exp_dr)
+          form_Data.append('exp_date', this.exp_date)
+          form_Data.append('exp_sold_to', this.exp_sold_to)
+          form_Data.append('exp_quantity', this.exp_quantity)
+          form_Data.append('exp_unit', this.exp_unit)
+          form_Data.append('exp_discription', this.exp_discription)
+          form_Data.append('exp_amount', this.exp_amount)
+          form_Data.append('payment', JSON.stringify(this.payment))
+          form_Data.append('record', JSON.stringify(this.record))
+        
+          const filename = "Format_of_Payment_Receipt";
+
+          const token = sessionStorage.getItem('token');
+
+          axios({
+                  method: 'post',
+                  url: 'api/pickup_payment_export.php',
+                  data: form_Data,
+                  responseType: 'blob', // important
+              })
+              .then(function(response) {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                   
+                      link.setAttribute('download', 'Payment_Receipt' + (_this.exp_dr !== '' ? '_' + _this.exp_dr : '') + '.docx');
+                   
+                    document.body.appendChild(link);
+                    link.click();
+
+              })
+              .catch(function(response) {
+                  //handle error
+                  console.log(response)
+              });
+      },
 
         record_save: async function() {
           let _this = this;
