@@ -15,6 +15,7 @@ class ContactUs{
     public $crt_time;
     public $status;
     public $number;
+    public $way;
 
     // constructor
     public function __construct($db){
@@ -32,6 +33,7 @@ class ContactUs{
                     emailinfo = :emailinfo,
                     telinfo = :telinfo,
                     number = :number,
+                    way = :way,
                     crt_time = now()";
     
         // prepare the query
@@ -50,6 +52,7 @@ class ContactUs{
         $stmt->bindParam(':emailinfo', $this->emailinfo);
         $stmt->bindParam(':telinfo', $this->telinfo);
         $stmt->bindParam(':number', $this->number);
+        $stmt->bindParam(':way', $this->way);
 
         // execute the query, also check if query was successful
         if($stmt->execute()){

@@ -189,7 +189,9 @@ $phpWord->setDefaultParagraphStyle(
 );
 
 // Adding an empty Section to the document...
-$section = $phpWord->addSection(["paperSize" => "A4", 'marginLeft' => 340.157480, 'marginRight' => 283.464567, 'marginTop' => 283.46456, 'marginBottom' => 283.46456]);
+//$section = $phpWord->addSection(["paperSize" => "A4", 'marginLeft' => 340.157480, 'marginRight' => 283.464567, 'marginTop' => 283.46456, 'marginBottom' => 283.46456]);
+//$section = $phpWord->addSection(["paperSize" => "A4", 'marginLeft' => 396.850393, 'marginRight' => 226.771654, 'marginTop' => 283.46456, 'marginBottom' => 283.46456]);
+$section = $phpWord->addSection(["paperSize" => "A4", 'marginLeft' => 368.503937, 'marginRight' => 255.118110, 'marginTop' => 283.46456, 'marginBottom' => 283.46456]);
 
 
 $capitalCell =
@@ -211,33 +213,43 @@ $valueCell =
     'border-size' => 0,
 ];
 
-$table = $section->addTable('table', [
+$table = $section->addTable([
     'border-style' => 'none',
     'border-size' => 0,
+    'cellMargin' => 56.692913,
 ]);
 
 
-$table->addRow(720);
+// 1cm = 566.929134
+
+$table->addRow(606.614173);
 $table->addCell(8503.937010, ['valign' => \PhpOffice\PhpWord\SimpleType\VerticalJc::CENTER])->addText(htmlspecialchars("FELIIX INC."), array('name' => 'Bodoni MT Black', 'bold' => true, 'size' => 20), array('align' => 'left'));
 $table->addCell(2768, ['valign' => \PhpOffice\PhpWord\SimpleType\VerticalJc::CENTER])->addText(htmlspecialchars("PAYMENT RECEIPT"), array('name' => 'Bodoni MT', 'bold' => true, 'size' => 12), array('align' => 'center', 'valign' => 'center'));
 
 
-$table->addRow(1440);
+$table->addRow(1326.614173);
 $cell = $table->addCell(8503.937010, array('space' => array('line' => 1000)));
-$cell->addText(htmlspecialchars("664 7th St. bet.7th & 8th Ave.,"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
-$cell->addText(htmlspecialchars("Brgy. 103 Zone 9, Dist. II, Caloocan City"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
-$cell->addText(htmlspecialchars("Tel. Nos. 8334-1716 * 8363-5116"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
-$cell->addText(htmlspecialchars("Office Hours: Mon-Fri 8:30am to 5:00pm Lunch Break: 12nn to 1pm"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
+$TextRun = $cell->addTextRun();
+$TextRun->addText(htmlspecialchars('664 7'), array('name' => 'Calibri', 'size' => 10));
+$TextRun->addText(htmlspecialchars('th'), array('name' => 'Calibri', 'size' => 10, 'superScript' => true));
+$TextRun->addText(htmlspecialchars(' St. bet.7'), array('name' => 'Calibri', 'size' => 10));
+$TextRun->addText(htmlspecialchars('th'), array('name' => 'Calibri', 'size' => 10, 'superScript' => true));
+$TextRun->addText(htmlspecialchars(' & 8'), array('name' => 'Calibri', 'size' => 10));
+$TextRun->addText(htmlspecialchars('th'), array('name' => 'Calibri', 'size' => 10, 'superScript' => true));
+$cell->addText(htmlspecialchars("Brgy. 103 Zone 9, Dist. II, Caloocan City"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left', 'spaceBefore' => '56.692913'));
+$cell->addText(htmlspecialchars("Tel. Nos. 8334-1716 * 8363-5116"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left', 'spaceBefore' => '56.692913'));
+$cell->addText(htmlspecialchars("Office Hours: Mon-Fri 8:30am to 5:00pm Lunch Break: 12nn to 1pm"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left', 'spaceBefore' => '56.692913'));
 
 $cell = $table->addCell(2768, ['valign' => \PhpOffice\PhpWord\SimpleType\VerticalJc::CENTER]);
 $cell->addText(htmlspecialchars("No.  " . $exp_dr), array('name' => 'Bodoni MT', 'size' => 20), array('align' => 'center', 'valign' => 'center'));
 
-$section->addTextBreak(1);
+$section->addTextBreak(1, array('name' => 'Calibri', 'size' => 12));
 
-$table2 = $section->addTable('table2', [
+$table2 = $section->addTable([
     'border-style' => 'none',
     'border-size' => 0,
-    'cellMargin' => 100,
+    'cellMarginLeft' => 56.692913,
+    'cellMarginRight' => 56.692913,
 ]);
 
 $table2->addRow();
@@ -245,9 +257,9 @@ $table2->addCell(1133.858268)->addText(htmlspecialchars("SOLD TO: "), array('nam
 $table2->addCell(6236.220474, ['borderBottomColor' => '000000', 'borderBottomSize' => 6])->addText(htmlspecialchars($exp_sold_to), array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
 $table2->addCell(396.850394)->addText("", array('name' => 'Calibri', 'size' => 12), array('align' => 'center'));
 $table2->addCell(850.393701)->addText(htmlspecialchars("DATE: "), array('name' => 'Calibri', 'size' => 12), array('align' => 'center'));
-$table2->addCell(2653.228347, ['borderBottomColor' => '000000', 'borderBottomSize' => 6])->addText(htmlspecialchars($exp_date), array('name' => 'Calibri', 'size' => 12), array('align' => 'right'));
+$table2->addCell(2653.228347, ['borderBottomColor' => '000000', 'borderBottomSize' => 6])->addText(htmlspecialchars($exp_date), array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
 
-$section->addTextBreak(1);
+$section->addTextBreak(1, array('name' => 'Calibri', 'size' => 12));
 
 $styleCellLeft =
 [
@@ -367,12 +379,10 @@ $styleHeadCenterUnderlineBold =
 ];
 
 
-$table3 = $section->addTable('table3', [
-    'borderSize' => 6,
-    'borderColor' => '000000',
+$table3 = $section->addTable( [
     'afterSpacing' => 0, 
-    'Spacing'=> 0, 
-    'cellMargin'=> 0
+    'Spacing' => 0,
+    'cellMargin' => 56.692913,
 ]);
 
 $styleTable = array('borderSize' => 6, 'borderColor' => '000000');
@@ -418,15 +428,13 @@ foreach ($strArr as $v) {
     $cell->addText(htmlspecialchars($v), array('name' => 'Calibri', 'size' => 12), array('align' => 'center'));
 }
 
-$section->addTextBreak(1);
+$section->addTextBreak(1, array('name' => 'Calibri', 'size' => 12));
 
 
-$table4 = $section->addTable('table5', [
-    'borderSize' => 6,
-    'borderColor' => '000000',
+$table4 = $section->addTable([
     'afterSpacing' => 0, 
     'Spacing'=> 0, 
-    'cellMargin'=> 0
+    'cellMargin' => 56.692913,
 ]);
 
 $real_payment = [];
@@ -473,15 +481,16 @@ else
     
 }
 
-$section->addTextBreak(1);
+$section->addTextBreak(1, array('name' => 'Calibri', 'size' => 12));
 
 
-$table5 = $section->addTable('table5', [
-    'borderSize' => 6,
-    'borderColor' => '000000',
+$table5 = $section->addTable([
     'afterSpacing' => 0, 
     'Spacing'=> 0, 
-    'cellMargin'=> 0
+    'cellMarginTop' => 56.692913,
+    'cellMarginBottom' => 56.692913,
+    'cellMarginLeft' => 113.385827,
+    'cellMarginRight' => 113.385827,
 ]);
 
 $real_goods = [];
@@ -563,45 +572,47 @@ if(count($real_goods) == 0)
     $table5->addCell(2100, $styleTailLeftUnderline)->addText("", array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
 }
 
-$section->addTextBreak(1);
+$section->addTextBreak(1, array('name' => 'Calibri', 'size' => 12));
 
-$table6 = $section->addTable('table6', [
-    'borderSize' => 0,
-    'borderColor' => 'ffffff', 
+$table6 = $section->addTable([
     'afterSpacing' => 0, 
     'Spacing'=> 0, 
-    'cellMargin'=> 0
+    'cellMarginLeft' => 56.692913,
+    'cellMarginRight' => 56.692913,
 ]);
 
 
 $table6->addRow();
-$table6->addCell(11270.551184, array('gridSpan' => 5, 'valign' => 'center', 'borderSize' => 0, 'borderColor' => 'ffffff'))->addText(htmlspecialchars("Present upon pick up:"), array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
+$table6->addCell(11270.551184, array('gridSpan' => 6, 'valign' => 'center', 'borderSize' => 0, 'borderColor' => 'ffffff'))->addText(htmlspecialchars("Present upon pick up:"), array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
 
 
 $table6->addRow();
 $cell = $table6->addCell(1440);
-$cell->addText(htmlspecialchars("●  TEXT"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
-$cell->addText(htmlspecialchars("●  FAX"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
+$cell->addText(htmlspecialchars("●  TEXT"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left', 'spaceAfter' => '56.692913'));
+$cell->addText(htmlspecialchars("●  FAX"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left', 'spaceAfter' => '56.692913'));
 $cell->addText(htmlspecialchars("●  EMAIL"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
 
 $cell = $table6->addCell(1440);
-$cell->addText(htmlspecialchars("●  VIBER"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
+$cell->addText(htmlspecialchars("●  VIBER"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left', 'spaceAfter' => '56.692913'));
 $cell->addText(htmlspecialchars("●  SKYPE"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
 
 $cell = $table6->addCell(1440);
-$cell->addText(htmlspecialchars("●  MESSENGER"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
+$cell->addText(htmlspecialchars("●  MESSENGER"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left', 'spaceAfter' => '56.692913'));
 $cell->addText(htmlspecialchars("●  OTHER"), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
 
-$cell = $table6->addCell(1440);
+$cell = $table6->addCell(2982.047245);
 $cell->addText(htmlspecialchars(""), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
 
-$cell = $table6->addCell(5510.551184);
+$cell = $table6->addCell(289.133858);
 $cell->addText(htmlspecialchars(""), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
 $cell->addText(htmlspecialchars(""), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
-$cell->addText(htmlspecialchars("STAMP HERE"), array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
+$cell->addText(htmlspecialchars("BY:"), array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
+
+$cell = $table6->addCell(3679.370081, ['borderBottomColor' => '000000', 'borderBottomSize' => 6]);
+$cell->addText(htmlspecialchars(""), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
 
 
-$section->addTextBreak(1);
+$section->addTextBreak(1, array('name' => 'Calibri', 'size' => 12));
 
 // Adding Text element with font customized using explicitly created font style object...
 $fontStyle = new \PhpOffice\PhpWord\Style\Font();
