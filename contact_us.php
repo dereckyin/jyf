@@ -116,7 +116,7 @@ $(function(){
                 <td>{{ receive_record.emailinfo }}</td>
                 <td>{{ receive_record.telinfo }}</td>
                                 <td>{{ receive_record.source == 'j' ? "中亞菲" : "盛盛" }}</td>
-                                <td>{{ receive_record.way == 'air' ? "空運" : "海運" }}</td>
+                                <td>{{ receive_record.way == 'air' ? "air" : "sea" }}</td>
                                 <td>{{ receive_record.crt_time }}</td>
                             </tr>
 
