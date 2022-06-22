@@ -494,7 +494,7 @@ var app = new Vue({
       form_Data.append("flight_date", this.flight_date);
       form_Data.append("currency", this.currency);
       form_Data.append("total", this.total);
-      form_Data.append("total_php", this.total_php);
+   
       form_Data.append("pay_date", this.pay_date);
       form_Data.append("pay_status", this.pay_status);
       form_Data.append("payee", this.payee);
