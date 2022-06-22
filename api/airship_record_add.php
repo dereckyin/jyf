@@ -103,8 +103,12 @@ try {
         `flight` = :flight,
         `flight_date` = :flight_date,
         `currency` = :currency,
-        `total` = :total,
- 
+        `total` = :total, ";
+
+if ($total_php != ''  && !is_null($total_php)) {
+    $query .= "`total_php` = :total_php, ";
+}
+        $query .= "
         `pay_date` = :pay_date,
         `pay_status` = :pay_status,
         `payee` = :payee,
@@ -135,7 +139,11 @@ try {
         $stmt->bindParam(':flight_date', $flight_date);
         $stmt->bindParam(':currency', $currency);
         $stmt->bindParam(':total', $total);
-      
+
+        if ($total_php != ''  && !is_null($total_php)) {
+            $stmt->bindParam(':total_php', $total_php);
+        }
+
         $stmt->bindParam(':pay_date', $pay_date);
         $stmt->bindParam(':pay_status', $pay_status);
         $stmt->bindParam(':payee', $payee);
@@ -174,8 +182,17 @@ try {
                 SET
                     `airship_id` = :airship_id,
                     `title` = :title,
-                    `qty` = :qty,
-                    `price` = :price,
+                    ";
+
+if ($details_array[$i]['qty'] != ''  && !is_null($details_array[$i]['qty'])) {
+    $query .= "`qty` = :qty, ";
+}
+      
+
+if ($details_array[$i]['price'] != ''  && !is_null($details_array[$i]['price'])) {
+    $query .= "`price` = :price, ";
+}
+        $query .= "
                     `type` = 'n',
                     `status` = 1,
                     `crt_user` = :crt_user,
@@ -187,8 +204,19 @@ try {
             // bind the values
             $stmt->bindParam(':airship_id', $last_id);
             $stmt->bindParam(':title', $details_array[$i]['title']);
-            $stmt->bindParam(':qty', $details_array[$i]['qty']);
-            $stmt->bindParam(':price', $details_array[$i]['price']);
+
+            if ($details_array[$i]['qty'] != ''  && !is_null($details_array[$i]['qty'])) {
+                $stmt->bindParam(':qty', $details_array[$i]['qty']);
+            }
+                  
+            
+            if ($details_array[$i]['price'] != ''  && !is_null($details_array[$i]['price'])) {
+                $stmt->bindParam(':price', $details_array[$i]['price']);
+            }
+
+
+            
+            
             $stmt->bindParam(':crt_user', $user_name);
 
             try {
@@ -214,9 +242,16 @@ try {
             $query = "INSERT INTO airship_records_detail
                 SET
                     `airship_id` = :airship_id,
-                    `title` = :title,
-                    `qty` = :qty,
-                    `price` = :price,
+                    `title` = :title, ";
+                    if ($details_php_array[$i]['qty'] != ''  && !is_null($details_php_array[$i]['qty'])) {
+    $query .= "`qty` = :qty, ";
+}
+      
+
+if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['price'])) {
+    $query .= "`price` = :price, ";
+}
+        $query .= "
                     `type` = 'p',
                     `status` = 1,
                     `crt_user` = :crt_user,
@@ -228,8 +263,15 @@ try {
             // bind the values
             $stmt->bindParam(':airship_id', $last_id);
             $stmt->bindParam(':title', $details_php_array[$i]['title']);
-            $stmt->bindParam(':qty', $details_php_array[$i]['qty']);
-            $stmt->bindParam(':price', $details_php_array[$i]['price']);
+            if ($details_php_array[$i]['qty'] != ''  && !is_null($details_php_array[$i]['qty'])) {
+                $stmt->bindParam(':qty', $details_php_array[$i]['qty']);
+            }
+                  
+            
+            if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['price'])) {
+                $stmt->bindParam(':price', $details_php_array[$i]['price']);
+            }
+
             $stmt->bindParam(':crt_user', $user_name);
 
             try {
@@ -266,8 +308,13 @@ try {
             `flight` = :flight,
             `flight_date` = :flight_date,
             `currency` = :currency,
-            `total` = :total,
-     
+            `total` = :total,";
+
+            if ($total_php != ''  && !is_null($total_php)) {
+                $query .= "`total_php` = :total_php, ";
+            }
+
+            $query .= "
             `pay_date` = :pay_date,
             `pay_status` = :pay_status,
             `payee` = :payee,
@@ -300,7 +347,11 @@ try {
         $stmt->bindParam(':flight_date', $flight_date);
         $stmt->bindParam(':currency', $currency);
         $stmt->bindParam(':total', $total);
-   
+
+         if ($total_php != ''  && !is_null($total_php)) {
+            $stmt->bindParam(':total_php', $total_php);
+        }
+
         $stmt->bindParam(':pay_date', $pay_date);
         $stmt->bindParam(':pay_status', $pay_status);
         $stmt->bindParam(':payee', $payee);
@@ -368,8 +419,17 @@ try {
                 SET
                     `airship_id` = :airship_id,
                     `title` = :title,
-                    `qty` = :qty,
-                    `price` = :price,
+                    ";
+
+if ($details_array[$i]['qty'] != ''  && !is_null($details_array[$i]['qty'])) {
+    $query .= "`qty` = :qty, ";
+}
+      
+
+if ($details_array[$i]['price'] != ''  && !is_null($details_array[$i]['price'])) {
+    $query .= "`price` = :price, ";
+}
+        $query .= "
                     `type` = 'n',
                     `status` = 1,
                     `crt_user` = :crt_user,
@@ -381,8 +441,15 @@ try {
             // bind the values
             $stmt->bindParam(':airship_id', $id);
             $stmt->bindParam(':title', $details_array[$i]['title']);
-            $stmt->bindParam(':qty', $details_array[$i]['qty']);
-            $stmt->bindParam(':price', $details_array[$i]['price']);
+
+            if ($details_array[$i]['qty'] != ''  && !is_null($details_array[$i]['qty'])) {
+                $stmt->bindParam(':qty', $details_array[$i]['qty']);
+            }
+                  
+            
+            if ($details_array[$i]['price'] != ''  && !is_null($details_array[$i]['price'])) {
+                $stmt->bindParam(':price', $details_array[$i]['price']);
+            }
             $stmt->bindParam(':crt_user', $user_name);
 
             try {
@@ -408,9 +475,16 @@ try {
             $query = "INSERT INTO airship_records_detail
                 SET
                     `airship_id` = :airship_id,
-                    `title` = :title,
-                    `qty` = :qty,
-                    `price` = :price,
+                    `title` = :title, ";
+                    if ($details_php_array[$i]['qty'] != ''  && !is_null($details_php_array[$i]['qty'])) {
+    $query .= "`qty` = :qty, ";
+}
+      
+
+if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['price'])) {
+    $query .= "`price` = :price, ";
+}
+        $query .= "
                     `type` = 'p',
                     `status` = 1,
                     `crt_user` = :crt_user,
@@ -422,8 +496,15 @@ try {
             // bind the values
             $stmt->bindParam(':airship_id', $id);
             $stmt->bindParam(':title', $details_php_array[$i]['title']);
-            $stmt->bindParam(':qty', $details_php_array[$i]['qty']);
-            $stmt->bindParam(':price', $details_php_array[$i]['price']);
+            
+            if ($details_php_array[$i]['qty'] != ''  && !is_null($details_php_array[$i]['qty'])) {
+                $stmt->bindParam(':qty', $details_php_array[$i]['qty']);
+            }
+                  
+            
+            if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['price'])) {
+                $stmt->bindParam(':price', $details_php_array[$i]['price']);
+            }
             $stmt->bindParam(':crt_user', $user_name);
 
             try {
