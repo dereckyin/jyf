@@ -1183,10 +1183,10 @@ header( 'location:index.php' );
                     <tr>
                         <th colspan="8">Total</th>
                         <th style="text-align: right;">
-                            
+                            <!--
                             {{ total !== undefined ?
                             Number(total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}
-                            
+                            -->
                         </th>
                         <th colspan="2"></th>
                         <th style="text-align: right;">

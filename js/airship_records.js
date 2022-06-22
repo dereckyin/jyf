@@ -717,11 +717,11 @@ var app = new Vue({
       form_Data.append("jwt", token);
       form_Data.append("start_date", this.start_date);
       form_Data.append("end_date", this.end_date);
-      form_Data.append("keyword", this.keyword);
+      form_Data.append("page", this.page);
 
       axios({
         method: "post",
-        url: "api/details_ntd_php_print.php",
+        url: "api/airship_record_print.php",
         data: form_Data,
         responseType: "blob",
       })
@@ -730,7 +730,7 @@ var app = new Vue({
           const link = document.createElement("a");
           link.href = url;
 
-          link.setAttribute("download", "details_ntd_php.xlsx");
+          link.setAttribute("download", "airship_record.xlsx");
 
           document.body.appendChild(link);
           link.click();
