@@ -104,7 +104,7 @@ try {
         `flight_date` = :flight_date,
         `currency` = :currency,
         `total` = :total,
-        `total_php` = :total_php, 
+ 
         `pay_date` = :pay_date,
         `pay_status` = :pay_status,
         `payee` = :payee,
@@ -135,7 +135,7 @@ try {
         $stmt->bindParam(':flight_date', $flight_date);
         $stmt->bindParam(':currency', $currency);
         $stmt->bindParam(':total', $total);
-        $stmt->bindParam(':total_php', $total_php);
+      
         $stmt->bindParam(':pay_date', $pay_date);
         $stmt->bindParam(':pay_status', $pay_status);
         $stmt->bindParam(':payee', $payee);
@@ -267,7 +267,7 @@ try {
             `flight_date` = :flight_date,
             `currency` = :currency,
             `total` = :total,
-            `total_php` = :total_php, 
+     
             `pay_date` = :pay_date,
             `pay_status` = :pay_status,
             `payee` = :payee,
@@ -300,7 +300,7 @@ try {
         $stmt->bindParam(':flight_date', $flight_date);
         $stmt->bindParam(':currency', $currency);
         $stmt->bindParam(':total', $total);
-        $stmt->bindParam(':total_php', $total_php);
+   
         $stmt->bindParam(':pay_date', $pay_date);
         $stmt->bindParam(':pay_status', $pay_status);
         $stmt->bindParam(':payee', $payee);
