@@ -119,6 +119,12 @@ var app = new Vue({
     pages: [],
     cnt : 0,
 
+    rec_total : 0.0,
+    rec_amount : 0.0,
+    rec_amount_php : 0.0,
+
+    date_type : "",
+
   },
 
   created() {
@@ -558,6 +564,7 @@ var app = new Vue({
       form_Data.append("jwt", token);
       form_Data.append("action", this.action);
       form_Data.append("start_date", this.start_date);
+      form_Data.append("date_type", this.date_type);
       form_Data.append("end_date", this.end_date);
       form_Data.append("category", this.category);
       form_Data.append("sub_category", this.sub_category);
@@ -716,6 +723,7 @@ var app = new Vue({
       let _this = this;
       form_Data.append("jwt", token);
       form_Data.append("start_date", this.start_date);
+      form_Data.append("date_type", this.date_type);
       form_Data.append("end_date", this.end_date);
       form_Data.append("page", this.page);
 
@@ -833,14 +841,15 @@ var app = new Vue({
     getRecords: function() {
       let _this = this;
       _this.clear();
-      _this.total = 0.0;
-      _this.amount = 0.0;
-      _this.amount_php = 0.0;
+      _this.rec_total = 0.0;
+      _this.rec_amount = 0.0;
+      _this.rec_amount_php = 0.0;
  
 
       const params = {
         start_date: _this.start_date,
         end_date: _this.end_date,
+        date_type: _this.date_type,
         keyword: _this.keyword,
         page: _this.page,
       };
@@ -861,9 +870,9 @@ var app = new Vue({
     
             _this.items.forEach((element, index) => {
               if(element.status != "-1") {
-                _this.total += parseFloat(element.total == '' ? 0 : element.total);
-                _this.amount += parseFloat(element.amount == '' ? 0 : element.amount);
-                _this.amount_php += parseFloat(element.amount_php == '' ? 0 : element.amount_php);
+                _this.rec_total += parseFloat(element.total == '' ? 0 : element.total);
+                _this.rec_amount += parseFloat(element.amount == '' ? 0 : element.amount);
+                _this.rec_amount_php += parseFloat(element.amount_php == '' ? 0 : element.amount_php);
               }
             });
 

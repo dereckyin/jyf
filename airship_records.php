@@ -974,6 +974,11 @@ header( 'location:index.php' );
             <div class="function_list">
 
                 <div class="function_filter">
+                <select style="width: 200px; margin-right: 10px;" v-model="date_type">
+                    <option value="">抵達客人住址時間 Time Delivery Arrived</option>
+                    <option value="r">收件日期 Date Received</option>
+                    <option value="p">付款日期 Date Paid</option>
+                </select>
                     <input type="date" v-model="start_date">&nbsp; to &nbsp;<input type="date" v-model="end_date">
 
                     <input class="hide" type="text" v-model="keyword" style="width:15vw; margin-left:1vw;"
@@ -1144,7 +1149,7 @@ header( 'location:index.php' );
                         </td>
 
                         <td>
-                            {{ item.pay_status == 't' ? 'Taiwan Paid' : 'Philippines Paid' }}
+                            {{ item.pay_status == 't' ? 'Taiwan Paid' : ( item.pay_status == 'p' ? 'Philippines Paid' : '') }}
                         </td>
 
                         <td>
@@ -1192,13 +1197,13 @@ header( 'location:index.php' );
                         <th style="text-align: right;">
                             
                             {{ amount !== undefined ?
-                            Number(amount).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}
+                            Number(rec_amount).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}
                             
                         </th>
                         <th style="text-align: right;">
                             
                             {{ amount_php !== undefined ?
-                                Number(amount_php).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}
+                                Number(rec_amount_php).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}
                             
                         </th>
                         <th></th>
