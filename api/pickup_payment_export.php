@@ -74,7 +74,7 @@ $assist_by = (isset($_POST['assist_by']) ?  $_POST['assist_by'] : "");
 $payments = json_decode($payment);
 $goods = json_decode($record);
 
-$file_name = 'Payment_Receipt' . ($exp_dr !== '' ? '_' . $exp_dr : '') . uniqid() . '.docx';
+$file_name = 'Payment_Receipt' . ($exp_dr !== '' ? '_' . $exp_dr : '') . '_' . date('Ymd') . '.docx';
 
 if(IsExist($id, $conn))
 {
