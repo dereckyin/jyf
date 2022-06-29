@@ -25,8 +25,11 @@ try {
             $decoded = JWT::decode($jwt, $key, array('HS256'));
             $user_id = $decoded->data->id;
 
-if(!$decoded->data->sea_expense)
-header( 'location:index.php' );
+            $airship = $decoded->data->airship;
+            $airship_read = $decoded->data->airship_read;
+
+            if(!($airship == "1" || $airship_read == "1"))
+                header( 'location:index.php' );
 
 // 可以存取Expense Recorder的人員名單如下：Dennis Lin(2), Glendon Wendell Co(4), Kristel Tan(6), Kuan(3), Mary Jude Jeng Articulo(9), Thalassa Wren Benzon(41), Stefanie Mika C. Santos(99)
 // 為了測試先加上testmanager(87) by BB
@@ -558,9 +561,16 @@ header( 'location:index.php' );
         <a href="main.php"><span>&#9776;</span></a>
 
         <div>
+        <?php
+                                                    if($airship == 1)
+                                                    {
+                                            ?>
             <button :class="[is_viewer == '1'? 'hide' : '']" data-toggle="collapse" data-parent="#accordion"
                     href="#collapseOne" @click="reset()"
                     aria-expanded="true" aria-controls="collapseOne"><i class="fas fa-plus-square fa-lg"></i></button>
+                    <?php
+                                                    }
+                                            ?>
         </div>
 
     </div>
@@ -787,8 +797,11 @@ header( 'location:index.php' );
                                         <td>{{ item.qty }}</td>
                                         <td>{{ item.price }}</td>
                                         <td>
+                                            
                                             <i class="fas fa-edit" @click="edit_plus_detail(item)"></i>
                                             <i class="fas fa-trash-alt" @click="del_plus_detail(item)"></i>
+                                            
+
                                         </td>
                                     </tr>
 
@@ -1175,8 +1188,15 @@ header( 'location:index.php' );
                         </td>
 
                         <td>
+                        <?php
+                                                    if($airship == 1)
+                                                    {
+                                            ?>
                             <i class="fas fa-edit fa-lg" @click="edit(item)" aria-hidden="true" v-if="item.status != -1"></i>
                             <i class="fas fa-trash-alt fa-lg" @click="deleteRecord(item)" aria-hidden="true" v-if="item.status != -1"></i>
+                            <?php
+                                                    }
+                                            ?>
                         </td>
                     </tr>
 

@@ -117,6 +117,8 @@ if ( isset( $jwt ) ) {
 
             $report1 = $decoded->data->report1;
             $report2 = $decoded->data->report2;
+            $airship = $decoded->data->airship;
+            $airship_read = $decoded->data->airship_read;
 
 	        if($decoded->data->is_admin)
         echo "<a href='admin/main.php'>後台管理
@@ -154,6 +156,14 @@ if ( isset( $jwt ) ) {
             <eng>NTD~PHP</eng>
 </a>
 
+<?php
+            if($airship == "1" || $airship_read == "1")
+            {
+        ?>
+<a href="airship_records.php">空運記錄 <eng>Airship Record</eng></a>
+<?php
+            }
+            ?>
 <?php
     }
     ?>

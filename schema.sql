@@ -952,3 +952,9 @@ ALTER TABLE pickup_payment_export
 ADD COLUMN `upd_user` varchar(128) DEFAULT '' AFTER del_user;
 ALTER TABLE pickup_payment_export
 ADD COLUMN `upd_time` timestamp NULL AFTER del_user;
+
+-- 20220629 airship privileage
+ALTER TABLE user
+ADD COLUMN `airship` INT DEFAULT 0;
+ALTER TABLE user
+ADD COLUMN `airship_read` INT DEFAULT 0;

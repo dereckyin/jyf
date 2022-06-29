@@ -223,6 +223,15 @@ include 'menu.php';
                                            :true-value="1" v-model:checked="status_2" @change="updateStatus_2"> 啟用零件支出記錄2
                                 </li>
                             </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
+								<input class="form-check-input" type="checkbox" name="airship" required id="A1"
+                                           :true-value="1" v-model:checked="airship" @change="update_airship"> 啟用空運業務
+                                </li>
+                            </ul>
                             <ul>
                                 <li>
                                 </li>
@@ -237,6 +246,14 @@ include 'menu.php';
                                 <li>
 								<input class="form-check-input" type="checkbox" name="phili_read" required id="A1"
                                            :true-value="1" v-model:checked="phili_read" @change="update_phili_read"> 啟用菲律賓唯讀
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
+								<input class="form-check-input" type="checkbox" name="airship_read" required id="A1"
+                                           :true-value="1" v-model:checked="airship_read" @change="update_airship_read"> 啟用空運唯讀
                                 </li>
                             </ul>
 
@@ -358,6 +375,14 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
+								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.airship" @change="update_edit_airship" required> 啟用空運業務
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
 								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.taiwan_read" @change="update_edit_taiwan_read" required> 啟用台灣唯讀
                                 </li>
                             </ul>
@@ -369,7 +394,13 @@ include 'menu.php';
 								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.phili_read" @change="update_edit_phili_read" required> 啟用菲律賓唯讀
                                 </li>
                             </ul>
-
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
+								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.airship_read" @change="update_edit_airship_read" required> 啟用空運唯讀
+                                </li>
+                            </ul>
                             <ul>
                                 <li>
                                 </li>
@@ -420,8 +451,10 @@ include 'menu.php';
                             <th>啟用海運支出記錄2</th>
                             <th>啟用零件支出記錄</th>
                             <th>啟用零件支出記錄2</th>
+                            <th>啟用空運業務</th>
                             <th>啟用台灣唯讀</th>
                             <th>啟用菲律賓唯讀</th>
+                            <th>啟用空運唯讀</th>
                             <th>啟用報表1</th>
                             <th>啟用報表2</th>
                             <th>是否為管理者</th>
@@ -440,8 +473,10 @@ include 'menu.php';
                             <td>{{ (rec.sea_expense_v2 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.status_1 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.status_2 == '1') ? "是 (yes)" : "否 (no)" }}</td>
+                            <td>{{ (rec.airship == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.taiwan_read == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.phili_read == '1') ? "是 (yes)" : "否 (no)" }}</td>
+                            <td>{{ (rec.airship_read == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.report1 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.report2 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.is_admin == '1') ? "是 (yes)" : "否 (no)" }}</td>

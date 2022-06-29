@@ -19,6 +19,8 @@ class User{
     public $phili_read;
     public $report1;
     public $report2;
+    public $airship;
+    public $airship_read;
     public $sea_expense;
     public $sea_expense_v2;
     public $is_admin;
@@ -45,6 +47,8 @@ class User{
                     phili_read = :phili_read,
                     report1 = :report1,
                     report2 = :report2,
+                    airship = :airship,
+                    airship_read = :airship_read,
                     sea_expense = :sea_expense,
                     sea_expense_v2 = :sea_expense_v2,
                     is_admin = :is_admin";
@@ -69,6 +73,8 @@ class User{
         $stmt->bindParam(':phili_read', $this->phili_read);
         $stmt->bindParam(':report1', $this->report1);
         $stmt->bindParam(':report2', $this->report2);
+        $stmt->bindParam(':airship', $this->airship);
+        $stmt->bindParam(':airship_read', $this->airship_read);
         $stmt->bindParam(':sea_expense', $this->sea_expense);
         $stmt->bindParam(':sea_expense_v2', $this->sea_expense_v2);
         $stmt->bindParam(':is_admin', $this->is_admin);
@@ -89,7 +95,7 @@ class User{
     function userExists(){
     
         // query to check if email exists
-        $query = "SELECT id, username, status, phili, status_1, status_2, taiwan_read, phili_read, report1, report2, sea_expense, sea_expense_v2, password
+        $query = "SELECT id, username, status, phili, status_1, status_2, taiwan_read, phili_read, report1, report2, airship, airship_read, sea_expense, sea_expense_v2, password
                 FROM " . $this->table_name . "
                 WHERE username = ?
                 LIMIT 0,1";
@@ -127,6 +133,8 @@ class User{
             $this->phili_read = $row['phili_read'];
             $this->report1 = $row['report1'];
             $this->report2 = $row['report2'];
+            $this->airship = $row['airship'];
+            $this->airship_read = $row['airship_read'];
             $this->sea_expense = $row['sea_expense'];
             $this->sea_expense_v2 = $row['sea_expense_v2'];
     
@@ -140,7 +148,7 @@ class User{
 
     function userCanLogin(){
         // query to check if email exists
-        $query = "SELECT id, username, password, status, phili, status_1, status_2, taiwan_read, phili_read, report1, report2, is_admin, sea_expense, sea_expense_v2
+        $query = "SELECT id, username, password, status, phili, status_1, status_2, taiwan_read, phili_read, report1, report2, airship, airship_read, is_admin, sea_expense, sea_expense_v2
                 FROM " . $this->table_name . "
                 WHERE username = ? 
                 LIMIT 0,1";
@@ -178,6 +186,8 @@ class User{
             $this->phili_read = $row['phili_read'];
             $this->report1 = $row['report1'];
             $this->report2 = $row['report2'];
+            $this->airship = $row['airship'];
+            $this->airship_read = $row['airship_read'];
             $this->sea_expense = $row['sea_expense'];
             $this->sea_expense_v2 = $row['sea_expense_v2'];
             $this->is_admin = $row['is_admin'];
@@ -269,6 +279,8 @@ class User{
                     phili_read = :phili_read,
                     report1 = :report1,
                     report2 = :report2,
+                    airship = :airship,
+                    airship_read = :airship_read,
                     sea_expense = :sea_expense,
                     sea_expense_v2 = :sea_expense_v2,
                     is_admin = :is_admin
@@ -290,6 +302,8 @@ class User{
         $stmt->bindParam(':phili_read', $this->phili_read);
         $stmt->bindParam(':report1', $this->report1);
         $stmt->bindParam(':report2', $this->report2);
+        $stmt->bindParam(':airship', $this->airship);
+        $stmt->bindParam(':airship_read', $this->airship_read);
         $stmt->bindParam(':sea_expense', $this->sea_expense);
         $stmt->bindParam(':sea_expense_v2', $this->sea_expense_v2);
         $stmt->bindParam(':is_admin', $this->is_admin);
