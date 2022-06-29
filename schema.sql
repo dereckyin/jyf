@@ -889,7 +889,6 @@ create table pickup_payment_export
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
 -- 20220620 airship_records
 CREATE TABLE airship_records (
   `id` INT NOT NULL AUTO_INCREMENT, 
@@ -940,3 +939,16 @@ create table airship_records_detail
 	`del_user` varchar(128) DEFAULT '',
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 20220628 dr too short
+alter table pickup_payment_export change exp_dr exp_dr varchar(15);
+
+-- 20220628 sign data pick
+ALTER TABLE pickup_payment_export
+ADD COLUMN `assist_by` varchar(64) DEFAULT '' AFTER measure_detail_id;
+ALTER TABLE pickup_payment_export
+ADD COLUMN `file_export` varchar(512) DEFAULT '' AFTER measure_detail_id;
+ALTER TABLE pickup_payment_export
+ADD COLUMN `upd_user` varchar(128) DEFAULT '' AFTER del_user;
+ALTER TABLE pickup_payment_export
+ADD COLUMN `upd_time` timestamp NULL AFTER del_user;

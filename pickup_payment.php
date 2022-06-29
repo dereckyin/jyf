@@ -270,6 +270,11 @@ header( 'location:index.php' );
             margin: 0 5px;
         }
 
+        .tb_measure tbody div.export_file i {
+            display: inline-block;
+            margin: 10px;
+        }
+
         div.block > .listheader{
             width: 100%;
             padding: 5px;
@@ -523,6 +528,13 @@ header( 'location:index.php' );
                                 <button data-toggle="modal" data-target="#export_modal"
                                         @click="item_export(item, row.payments, row.ar, item.id, row.measure)" style="margin: 3px 0;">Export
                                 </button>
+
+                                <div class="export_file" v-if="item.export.length > 0 && item.export[0].file_export != ''">
+                                    <a :href="'https://storage.googleapis.com/feliiximg/' + item.export[0].file_export"><i class="fas fa-file fa-lg" aria-hidden="true"></i></a>
+                                    <br>
+                                    {{ item.export[0].upd_time }}
+                                </div>
+
                                 <?php
 }
 ?>
@@ -634,10 +646,15 @@ header( 'location:index.php' );
                             <li>
                             </li>
                             <li>
-                                
+                                Assist By
                             </li>
                             <li>
-                                
+                                <select v-model="assist_by">
+                                    <option></option>
+                                    <option value="Lailani">Lailani</option>
+                                    <option value="Ana">Ana</option>
+                                    <option value="Merryl">Merryl</option>
+                                </select>
                             </li>
                         </ul>
                         <ul>
