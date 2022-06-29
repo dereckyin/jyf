@@ -25,6 +25,8 @@ let mainState = {
     sea_expense: 0,
     sea_expense_v2: 0,
     is_admin: '',
+    airship:0,
+    airship_read:0,
 
         // paging
     page: 1,
@@ -236,6 +238,8 @@ var app = new Vue({
             formData.append('phili_read', this.record.phili_read)
             formData.append('report1', this.record.report1)
             formData.append('report2', this.record.report2)
+            formData.append('airship', this.record.airship)
+            formData.append('airship_read', this.record.airship_read)
             formData.append('sea_expense', this.record.sea_expense)
             formData.append('sea_expense_v2', this.record.sea_expense_v2)
             formData.append('is_admin', this.record.is_admin)
@@ -389,6 +393,28 @@ var app = new Vue({
             }
         },
 
+        update_airship: function(event) {
+          console.log("update_airship");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.airship = 1;
+            } else {
+                this.airship = 0;
+            }
+        },
+
+        update_airship_read: function(event) {
+          console.log("update_airship_read");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.airship_read = 1;
+            } else {
+                this.airship_read = 0;
+            }
+        },
+
         update_edit_taiwan_read: function(event) {
           console.log("update_taiwan_read");
             let checked = event.target.checked;
@@ -430,6 +456,26 @@ var app = new Vue({
                 this.record.report2 = 1;
             } else {
                 this.record.report2 = 0;
+            }
+        },
+        update_edit_airship: function(event) {
+   
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.record.airship = 1;
+            } else {
+                this.record.airship = 0;
+            }
+        },
+        update_edit_airship_read: function(event) {
+
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.record.airship_read = 1;
+            } else {
+                this.record.airship_read = 0;
             }
         },
 
@@ -569,6 +615,8 @@ var app = new Vue({
             formData.append('phili_read', this.record.phili_read)
             formData.append('report1', this.record.report1)
             formData.append('report2', this.record.report2)
+            formData.append('airship', this.record.airship)
+            formData.append('airship_read', this.record.airship_read)
             formData.append('sea_expense', this.record.sea_expense)
             formData.append('sea_expense_v2', this.record.sea_expense_v2)
             formData.append('is_admin', this.record.is_admin)
@@ -661,6 +709,8 @@ var app = new Vue({
             formData.append('phili_read', this.phili_read)
             formData.append('report1', this.report1)
             formData.append('report2', this.report2)
+            formData.append('airship', this.airship)
+            formData.append('airship_read', this.airship_read)
             formData.append('sea_expense', this.sea_expense)
             formData.append('sea_expense_v2', this.sea_expense_v2)
             formData.append('is_admin', this.is_admin)
@@ -711,6 +761,8 @@ var app = new Vue({
             this.phili_read = 0;
             this.report1 = 0;
             this.report2 = 0;
+            this.airship = 0;
+            this.airship_read = 0;
             this.sea_expense = 0;
             this.sea_expense_v2 = 0;
             this.is_admin = '';

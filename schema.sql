@@ -888,3 +888,73 @@ create table pickup_payment_export
 	`del_user` varchar(128) DEFAULT '',
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 20220620 airship_records
+CREATE TABLE airship_records (
+  `id` INT NOT NULL AUTO_INCREMENT, 
+  `date_receive` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `customer` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `address` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `description` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `quantity` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `kilo` decimal(10,2) null,
+  `supplier` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `flight` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `flight_date` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `currency` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `total` decimal(10,2) null,
+  `total_php` decimal(10,2) null,
+  `pay_date` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `pay_status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `payee` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `date_arrive` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `receiver` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `remark` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `amount` decimal(10,2) null,
+  `amount_php` decimal(10,2) null,
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+  `mdf_time` timestamp NULL,
+	`mdf_user` varchar(128) DEFAULT '',
+  `del_time` timestamp NULL DEFAULT NULL,
+  `del_user` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  PRIMARY KEY(id)
+);
+
+create table airship_records_detail
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `airship_id` bigint(20) unsigned NOT NULL,
+  `title` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `qty` decimal(10,2) null,
+  `price` decimal(10,2) null,
+  `type` varchar(128) DEFAULT '',
+	`status` varchar(2) DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+	`mdf_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`mdf_user` varchar(128) DEFAULT '',
+	`del_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`del_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 20220628 dr too short
+alter table pickup_payment_export change exp_dr exp_dr varchar(15);
+
+-- 20220628 sign data pick
+ALTER TABLE pickup_payment_export
+ADD COLUMN `assist_by` varchar(64) DEFAULT '' AFTER measure_detail_id;
+ALTER TABLE pickup_payment_export
+ADD COLUMN `file_export` varchar(512) DEFAULT '' AFTER measure_detail_id;
+ALTER TABLE pickup_payment_export
+ADD COLUMN `upd_user` varchar(128) DEFAULT '' AFTER del_user;
+ALTER TABLE pickup_payment_export
+ADD COLUMN `upd_time` timestamp NULL AFTER del_user;
+
+-- 20220629 airship privileage
+ALTER TABLE user
+ADD COLUMN `airship` INT DEFAULT 0;
+ALTER TABLE user
+ADD COLUMN `airship_read` INT DEFAULT 0;
