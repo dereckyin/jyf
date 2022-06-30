@@ -1154,7 +1154,7 @@ header( 'location:index.php' );
                         <td>{{ item.flight }}<br>{{ item.flight_date }}</td>
 
                         <td>
-                            {{ item.total !== undefined ? Number(item.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} {{ item.currency }}
+                            {{ item.total !== null ? Number(item.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '' }} {{ item.currency }}
                         </td>
 
                         <td>
@@ -1166,12 +1166,12 @@ header( 'location:index.php' );
                         </td>
 
                         <td>
-                            <span>{{ item.amount !== undefined ? Number(item.amount).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                            <span>{{ item.amount !== null ? Number(item.amount).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '' }}</span>
                             <i class="fas fa-info-circle fa-lg" aria-hidden="true" @click="show_ntd(item)"></i>
                         </td>
 
                         <td>
-                            <span>{{ item.amount_php !== undefined ? Number(item.amount_php).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                            <span>{{ item.amount_php !== null ? Number(item.amount_php).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '' }}</span>
                             <i class="fas fa-info-circle fa-lg" aria-hidden="true" @click="show_php(item)"></i>
                         </td>
 
