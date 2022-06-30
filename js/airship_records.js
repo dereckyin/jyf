@@ -541,7 +541,7 @@ var app = new Vue({
             confirmButtonText: "OK",
           });
 
-          _this.reload();
+          // _this.reload();
         });
 
     },

@@ -61,12 +61,12 @@ $customer = (isset($_POST['customer']) ?  $_POST['customer'] : '');
 $address = (isset($_POST['address']) ?  $_POST['address'] : '');
 $description = (isset($_POST['description']) ?  $_POST['description'] : '');
 $quantity = (isset($_POST['quantity']) ?  $_POST['quantity'] : '');
-$kilo = (isset($_POST['kilo']) ?  $_POST['kilo'] : 0);
+$kilo = (isset($_POST['kilo']) ?  $_POST['kilo'] : '');
 $supplier = (isset($_POST['supplier']) ?  $_POST['supplier'] : '');
 $flight = (isset($_POST['flight']) ?  $_POST['flight'] : '');
 $flight_date = (isset($_POST['flight_date']) ?  $_POST['flight_date'] : '');
 $currency = (isset($_POST['currency']) ?  $_POST['currency'] : '');
-$total = (isset($_POST['total']) ?  $_POST['total'] : 0);
+$total = (isset($_POST['total']) ?  $_POST['total'] : '');
 $total_php = (isset($_POST['total_php']) ?  $_POST['total_php'] : 0);
 $pay_date = (isset($_POST['pay_date']) ?  $_POST['pay_date'] : '');
 $pay_status = (isset($_POST['pay_status']) ?  $_POST['pay_status'] : '');
@@ -97,13 +97,21 @@ try {
         `customer` = :customer,
         `address` = :address,
         `description` = :description,
-        `quantity` = :quantity,
-        `kilo` = :kilo,
+        `quantity` = :quantity, ";
+
+    if ($kilo != ''  && !is_null($kilo)) {
+        $query .= "`kilo` = :kilo, ";
+    }
+
+    $query .= "
         `supplier` = :supplier, 
         `flight` = :flight,
         `flight_date` = :flight_date,
-        `currency` = :currency,
-        `total` = :total, ";
+        `currency` = :currency, ";
+    
+if ($total != ''  && !is_null($total)) {
+    $query .= "`total` = :total, ";
+}
 
 if ($total_php != ''  && !is_null($total_php)) {
     $query .= "`total_php` = :total_php, ";
@@ -133,12 +141,17 @@ if ($total_php != ''  && !is_null($total_php)) {
         $stmt->bindParam(':address', $address);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':quantity', $quantity);
-        $stmt->bindParam(':kilo', $kilo);
+        if ($kilo != ''  && !is_null($kilo)) {
+            $stmt->bindParam(':kilo', $kilo);
+        }
         $stmt->bindParam(':supplier', $supplier);
         $stmt->bindParam(':flight', $flight);
         $stmt->bindParam(':flight_date', $flight_date);
         $stmt->bindParam(':currency', $currency);
-        $stmt->bindParam(':total', $total);
+        
+        if ($total != ''  && !is_null($total)) {
+            $stmt->bindParam(':total', $total);
+        }
 
         if ($total_php != ''  && !is_null($total_php)) {
             $stmt->bindParam(':total_php', $total_php);
@@ -302,13 +315,21 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
             `customer` = :customer,
             `address` = :address,
             `description` = :description,
-            `quantity` = :quantity,
-            `kilo` = :kilo,
+            `quantity` = :quantity, ";
+
+            if ($kilo != ''  && !is_null($kilo)) {
+                $query .= "`kilo` = :kilo, ";
+            }
+
+            $query .= "
             `supplier` = :supplier, 
             `flight` = :flight,
             `flight_date` = :flight_date,
-            `currency` = :currency,
-            `total` = :total,";
+            `currency` = :currency, ";
+
+            if ($total != ''  && !is_null($total)) {
+                $query .= "`total` = :total, ";
+            }
 
             if ($total_php != ''  && !is_null($total_php)) {
                 $query .= "`total_php` = :total_php, ";
@@ -341,12 +362,17 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
         $stmt->bindParam(':address', $address);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':quantity', $quantity);
-        $stmt->bindParam(':kilo', $kilo);
+        if ($kilo != ''  && !is_null($kilo)) {
+            $stmt->bindParam(':kilo', $kilo);
+        }
         $stmt->bindParam(':supplier', $supplier);
         $stmt->bindParam(':flight', $flight);
         $stmt->bindParam(':flight_date', $flight_date);
         $stmt->bindParam(':currency', $currency);
-        $stmt->bindParam(':total', $total);
+
+        if ($total != ''  && !is_null($total)) {
+            $stmt->bindParam(':total', $total);
+        }
 
          if ($total_php != ''  && !is_null($total_php)) {
             $stmt->bindParam(':total_php', $total_php);
