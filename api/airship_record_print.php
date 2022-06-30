@@ -34,7 +34,7 @@ $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 $keyword = (isset($_POST['keyword']) ? $_POST['keyword'] : "");
 $start_date = (isset($_POST['start_date']) ? $_POST['start_date'] : "");
 $end_date = (isset($_POST['end_date']) ? $_POST['end_date'] : "");
-$date_type = (isset($_GET['date_type']) ? $_GET['date_type'] : "");
+$date_type = (isset($_POST['date_type']) ? $_POST['date_type'] : "");
 $page = (isset($_POST['page']) ? $_POST['page'] : 1);
 $size  = (isset($_POST['size']) ? $_POST['size'] : 25);
 
@@ -81,12 +81,12 @@ if($date_type == "")
 {
         if($start_date!='') {
             $query = $query . " and ss.date_arrive >= '$start_date' ";
-            $query_cnt = $query_cnt . " and ss.date_arrive >= '$start_date' ";
+            //$query_cnt = $query_cnt . " and ss.date_arrive >= '$start_date' ";
         }
 
         if($end_date!='') {
             $query = $query . " and ss.date_arrive <= '$end_date" . "T23:59:59' ";
-            $query_cnt = $query_cnt . " and ss.date_arrive <= '$end_date" . "T23:59:59' ";
+            //$query_cnt = $query_cnt . " and ss.date_arrive <= '$end_date" . "T23:59:59' ";
         }
 }
 
@@ -94,12 +94,12 @@ if($date_type == "r")
 {
         if($start_date!='') {
             $query = $query . " and ss.date_receive >= '$start_date' ";
-            $query_cnt = $query_cnt . " and ss.date_receive >= '$start_date' ";
+            //$query_cnt = $query_cnt . " and ss.date_receive >= '$start_date' ";
         }
 
         if($end_date!='') {
             $query = $query . " and ss.date_receive <= '$end_date" . "' ";
-            $query_cnt = $query_cnt . " and ss.date_receive <= '$end_date" . "' ";
+            //$query_cnt = $query_cnt . " and ss.date_receive <= '$end_date" . "' ";
         }
 }
 
@@ -107,12 +107,12 @@ if($date_type == "p")
 {
         if($start_date!='') {
             $query = $query . " and ss.pay_date >= '$start_date' ";
-            $query_cnt = $query_cnt . " and ss.pay_date >= '$start_date' ";
+           // $query_cnt = $query_cnt . " and ss.pay_date >= '$start_date' ";
         }
 
         if($end_date!='') {
             $query = $query . " and ss.pay_date <= '$end_date" . "' ";
-            $query_cnt = $query_cnt . " and ss.pay_date <= '$end_date" . "' ";
+           // $query_cnt = $query_cnt . " and ss.pay_date <= '$end_date" . "' ";
         }
 }
 
