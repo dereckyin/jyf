@@ -88,6 +88,8 @@ let mainState = {
     exp_discription:"",
     exp_amount:"",
 
+    assist_by:"",
+
     export_record: {},
 };
 
@@ -1192,6 +1194,8 @@ var app = new Vue({
             this.exp_discription = this.export_record[0].exp_discription;
             this.exp_amount = this.export_record[0].exp_amount;
 
+            this.assist_by = this.export_record[0].assist_by;
+
             for(const element of JSON.parse(this.export_record[0].payment)) {
               var result  = this.payment.filter(function(o){return o.id == element.id;} );
               if(result.length > 0)
@@ -1261,6 +1265,7 @@ var app = new Vue({
 
           form_Data.append('id', this.detail_id);
           form_Data.append('exp_dr', this.exp_dr)
+          form_Data.append('assist_by', this.assist_by)
           form_Data.append('exp_date', this.exp_date)
           form_Data.append('exp_sold_to', this.exp_sold_to)
           form_Data.append('exp_quantity', this.exp_quantity)
@@ -1289,6 +1294,8 @@ var app = new Vue({
                    
                     document.body.appendChild(link);
                     link.click();
+
+                    _this.getMeasures();
 
               })
               .catch(function(response) {

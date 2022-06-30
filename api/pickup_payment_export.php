@@ -40,6 +40,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PhpOffice\PhpWord\IOFactory;
 
+use Google\Cloud\Storage\StorageClient;
+
 require '../PHPMailer-master/src/Exception.php';
 require '../PHPMailer-master/src/PHPMailer.php';
 require '../PHPMailer-master/src/SMTP.php';
@@ -67,14 +69,18 @@ $exp_discription = (isset($_POST['exp_discription']) ?  $_POST['exp_discription'
 $exp_amount = (isset($_POST['exp_amount']) ?  $_POST['exp_amount'] : "");
 $payment = (isset($_POST['payment']) ?  $_POST['payment'] : []);
 $record = (isset($_POST['record']) ?  $_POST['record'] : []);
+$assist_by = (isset($_POST['assist_by']) ?  $_POST['assist_by'] : "");
 
 $payments = json_decode($payment);
 $goods = json_decode($record);
+
+$file_name = 'Payment_Receipt' . ($exp_dr !== '' ? '_' . $exp_dr : '') . '_' . uniqid() . '.docx';
 
 if(IsExist($id, $conn))
 {
     $query = "update pickup_payment_export set 
         exp_dr = ?, 
+        assist_by = ?,
         exp_date = ?, 
         exp_sold_to = ?, 
         exp_quantity = ?, 
@@ -84,14 +90,18 @@ if(IsExist($id, $conn))
         payment = ?, 
         record = ?, 
         crt_user = ?, 
-        crt_time = now()
+        crt_time = now(),
+        upd_time = now(),
+        upd_user = ?,
+        file_export = ?
         where measure_detail_id = ?";
         // prepare the query
         $stmt = $conn->prepare($query);
 
         $stmt->bind_param(
-        "ssssssssssi",
+        "sssssssssssssi",
         $exp_dr,
+        $assist_by,
         $exp_date,
         $exp_sold_to,
         $exp_quantity,
@@ -101,6 +111,8 @@ if(IsExist($id, $conn))
         $payment,
         $record,
         $user,
+        $user,
+        $file_name,
         $id
         );
 
@@ -127,6 +139,7 @@ else
     $query = "insert into pickup_payment_export set 
     measure_detail_id = ?,
     exp_dr = ?, 
+    assist_by = ?,
     exp_date = ?, 
     exp_sold_to = ?, 
     exp_quantity = ?, 
@@ -136,15 +149,19 @@ else
     payment = ?, 
     record = ?, 
     crt_user = ?, 
-    crt_time = now()
+    crt_time = now(),
+    upd_time = now(),
+    upd_user = ?,
+    file_export = ?
   ";
     // prepare the query
     $stmt = $conn->prepare($query);
 
     $stmt->bind_param(
-    "issssssssss",
+    "isssssssssssss",
     $id,
     $exp_dr,
+    $assist_by,
     $exp_date,
     $exp_sold_to,
     $exp_quantity,
@@ -153,14 +170,16 @@ else
     $exp_amount,
     $payment,
     $record,
-    $user
+    $user,
+    $user,
+    $file_name
     );
 
 
     try {
     // execute the query, also check if query was successful
     if (!$stmt->execute()) {
-
+       
     http_response_code(501);
     echo json_encode("Failure3 at " . date("Y-m-d") . " " . date("h:i:sa"));
     die();
@@ -579,6 +598,7 @@ $table6 = $section->addTable([
     'Spacing'=> 0, 
     'cellMarginLeft' => 56.692913,
     'cellMarginRight' => 56.692913,
+    'cellMarginBottom' => 56.692913
 ]);
 
 
@@ -606,10 +626,18 @@ $cell->addText(htmlspecialchars(""), array('name' => 'Calibri', 'size' => 10), a
 $cell = $table6->addCell(289.133858);
 $cell->addText(htmlspecialchars(""), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
 $cell->addText(htmlspecialchars(""), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
+$cell->addText(htmlspecialchars(""), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
 $cell->addText(htmlspecialchars("BY:"), array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
 
 $cell = $table6->addCell(3679.370081, ['borderBottomColor' => '000000', 'borderBottomSize' => 6]);
-$cell->addText(htmlspecialchars(""), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
+$TextRun = $cell->addTextRun();
+$TextRun->addText(htmlspecialchars('     '), array('name' => 'Calibri', 'size' => 12));
+if($assist_by == 'Lailani')
+    $TextRun->addImage('https://storage.googleapis.com/feliiximg/1656033523_s_lailani.png', array('width' => 50, 'height' => 50));
+if($assist_by == 'Ana')
+    $TextRun->addImage('https://storage.googleapis.com/feliiximg/1656033523_s_ana.png', array('width' => 50, 'height' => 50));
+if($assist_by == 'Merryl')
+    $TextRun->addImage('https://storage.googleapis.com/feliiximg/1656033523_s_merryl.png', array('width' => 50, 'height' => 50));
 
 
 $section->addTextBreak(1, array('name' => 'Calibri', 'size' => 12));
@@ -635,6 +663,90 @@ $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007', $d
     header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
     header('Pragma: public'); // HTTP/1.0
+
+
+    $conf = new Conf();
+    $path = $conf::$upload_path . "tmp/";
+
+    if (!file_exists($path)) {
+        mkdir($path, 0777, true);
+    }
+    else
+    {
+        $files = glob($path . "*"); // get all file names
+        foreach($files as $file){ // iterate files
+            if(is_file($file)) {
+                unlink($file); // delete file
+            }
+        }
+    }
+
+    $objWriter->save($path . $file_name);
+
+    $storage = new StorageClient([
+        'projectId' => 'predictive-fx-284008',
+        'keyFilePath' => $conf::$gcp_key
+    ]);
+
+    $bucket = $storage->bucket('feliiximg');
+
+    $upload_name = $file_name;
+
+    $file_size = filesize($conf::$upload_path . "tmp/" . $file_name);
+    $size = 0;
+
+    $obj = $bucket->upload(
+        fopen($conf::$upload_path . "tmp/" . $file_name, 'r'),
+        ['name' => $upload_name]
+    );
+
+    $info = $obj->info();
+    $size = $info['size'];
+
+    $batch_type = "pickup_exp";
+
+    if ($size == $file_size && $file_size != 0 && $size != 0) {
+        $query = "INSERT INTO gcp_storage_file
+        SET
+            batch_id = ?,
+            batch_type = ?,
+            filename = ?,
+            gcp_name = ?,
+
+            create_id = ?,
+            created_at = now()";
+
+        // prepare the query
+        $stmt = $conn->prepare($query);
+
+        // bind the values
+        $stmt->bind_param(
+            "isssi",
+            $id,
+            $batch_type,
+            $file_name,
+            $upload_name,
+            $create_id
+        );
+
+        try {
+            // execute the query, also check if query was successful
+            if ($stmt->execute()) {
+                mysqli_insert_id($conn);
+            } else {
+                error_log(mysqli_errno($conn));
+            }
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            mysqli_rollback($conn);
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            die();
+        }
+
+        unlink($conf::$upload_path . "tmp/" . $file_name);
+    }
+
 
     $objWriter->save('php://output');
 

@@ -258,6 +258,8 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
         $record_cust = GetMeasurePersonRecord($row['id'], $db);
 
         $payment = GetPaymentRecord($row['id'], $group_id, $db);
+
+        $export = GetExportRecord($row['id'], $db);
         
         for($i = 0; $i < count($payment); $i++)
           $payment[$i]['ar'] = $charge;
@@ -282,6 +284,7 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
            "crt_time" => $crt_time,
            "container_number" => $container_number,
            "date_arrive" => $date_arrive,
+           "export" => $export,
         );
     }
 
@@ -379,6 +382,34 @@ function GetMeasurePersonRecord($id, $db){
     
         $merged_results[] = $row['cust'];
   
+    }
+
+    return $merged_results;
+}
+
+
+function GetExportRecord($id, $db){
+    $query = "SELECT DATE_FORMAT(upd_time, '%Y/%m/%d') upd_time, file_export from
+               pickup_payment_export
+                    WHERE measure_detail_id = " . $id . "
+           
+    ";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $merged_results = [];
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $upd_time = $row['upd_time'];
+        $file_export = $row['file_export'];
+       
+        $merged_results[] = array(
+            "upd_time" => $upd_time,
+            "file_export" => $file_export,
+          
+        );
     }
 
     return $merged_results;
