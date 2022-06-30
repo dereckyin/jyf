@@ -155,15 +155,16 @@ if ( isset( $jwt ) ) {
 <a href="details_ntd_php.php">幫客人匯款記錄表
             <eng>NTD~PHP</eng>
 </a>
-
+<?php
+            }
+            ?>
+            
 <?php
             if($airship == "1" || $airship_read == "1")
             {
         ?>
 <a href="airship_records.php">空運記錄 <eng>Airship Record</eng></a>
-<?php
-            }
-            ?>
+
 <?php
     }
     ?>
