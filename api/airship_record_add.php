@@ -66,7 +66,7 @@ $supplier = (isset($_POST['supplier']) ?  $_POST['supplier'] : '');
 $flight = (isset($_POST['flight']) ?  $_POST['flight'] : '');
 $flight_date = (isset($_POST['flight_date']) ?  $_POST['flight_date'] : '');
 $currency = (isset($_POST['currency']) ?  $_POST['currency'] : '');
-$total = (isset($_POST['total']) ?  $_POST['total'] : 0);
+$total = (isset($_POST['total']) ?  $_POST['total'] : '');
 $total_php = (isset($_POST['total_php']) ?  $_POST['total_php'] : 0);
 $pay_date = (isset($_POST['pay_date']) ?  $_POST['pay_date'] : '');
 $pay_status = (isset($_POST['pay_status']) ?  $_POST['pay_status'] : '');
@@ -102,8 +102,11 @@ try {
         `supplier` = :supplier, 
         `flight` = :flight,
         `flight_date` = :flight_date,
-        `currency` = :currency,
-        `total` = :total, ";
+        `currency` = :currency, ";
+    
+if ($total != ''  && !is_null($total)) {
+    $query .= "`total` = :total, ";
+}
 
 if ($total_php != ''  && !is_null($total_php)) {
     $query .= "`total_php` = :total_php, ";
@@ -138,7 +141,10 @@ if ($total_php != ''  && !is_null($total_php)) {
         $stmt->bindParam(':flight', $flight);
         $stmt->bindParam(':flight_date', $flight_date);
         $stmt->bindParam(':currency', $currency);
-        $stmt->bindParam(':total', $total);
+        
+        if ($total != ''  && !is_null($total)) {
+            $stmt->bindParam(':total', $total);
+        }
 
         if ($total_php != ''  && !is_null($total_php)) {
             $stmt->bindParam(':total_php', $total_php);
@@ -307,8 +313,11 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
             `supplier` = :supplier, 
             `flight` = :flight,
             `flight_date` = :flight_date,
-            `currency` = :currency,
-            `total` = :total,";
+            `currency` = :currency, ";
+
+            if ($total != ''  && !is_null($total)) {
+                $query .= "`total` = :total, ";
+            }
 
             if ($total_php != ''  && !is_null($total_php)) {
                 $query .= "`total_php` = :total_php, ";
@@ -346,7 +355,10 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
         $stmt->bindParam(':flight', $flight);
         $stmt->bindParam(':flight_date', $flight_date);
         $stmt->bindParam(':currency', $currency);
-        $stmt->bindParam(':total', $total);
+
+        if ($total != ''  && !is_null($total)) {
+            $stmt->bindParam(':total', $total);
+        }
 
          if ($total_php != ''  && !is_null($total_php)) {
             $stmt->bindParam(':total_php', $total_php);

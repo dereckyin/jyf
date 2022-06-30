@@ -123,7 +123,7 @@ var app = new Vue({
     rec_amount : 0.0,
     rec_amount_php : 0.0,
 
-    date_type : "",
+    date_type : "r",
 
   },
 
@@ -541,7 +541,7 @@ var app = new Vue({
             confirmButtonText: "OK",
           });
 
-          _this.reload();
+          // _this.reload();
         });
 
     },
