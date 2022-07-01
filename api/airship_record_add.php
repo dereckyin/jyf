@@ -87,6 +87,9 @@ $details_php_array = json_decode($details_php, true);
 
 $id = $id == '' ? 0 : $id;
 
+$total = $total == 'null' ? null : $total;
+$kilo = $kilo == 'null' ? null : $kilo;
+
 try {
 
     if($id == 0) {
@@ -99,7 +102,7 @@ try {
         `description` = :description,
         `quantity` = :quantity, ";
 
-    if ($kilo != ''  && !is_null($kilo)) {
+    if (1==1) {
         $query .= "`kilo` = :kilo, ";
     }
 
@@ -109,11 +112,11 @@ try {
         `flight_date` = :flight_date,
         `currency` = :currency, ";
     
-if ($total != ''  && !is_null($total)) {
+if (1==1) {
     $query .= "`total` = :total, ";
 }
 
-if ($total_php != ''  && !is_null($total_php)) {
+if (1==1) {
     $query .= "`total_php` = :total_php, ";
 }
         $query .= "
@@ -141,9 +144,14 @@ if ($total_php != ''  && !is_null($total_php)) {
         $stmt->bindParam(':address', $address);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':quantity', $quantity);
+
         if ($kilo != ''  && !is_null($kilo)) {
             $stmt->bindParam(':kilo', $kilo);
         }
+        else
+            $stmt->bindParam(':kilo', $kilo);
+
+
         $stmt->bindParam(':supplier', $supplier);
         $stmt->bindParam(':flight', $flight);
         $stmt->bindParam(':flight_date', $flight_date);
@@ -152,10 +160,14 @@ if ($total_php != ''  && !is_null($total_php)) {
         if ($total != ''  && !is_null($total)) {
             $stmt->bindParam(':total', $total);
         }
+        else
+            $stmt->bindParam(':total', $total);
 
         if ($total_php != ''  && !is_null($total_php)) {
             $stmt->bindParam(':total_php', $total_php);
         }
+        else
+            $stmt->bindParam(':total_php', $total_php);
 
         $stmt->bindParam(':pay_date', $pay_date);
         $stmt->bindParam(':pay_status', $pay_status);
@@ -317,7 +329,7 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
             `description` = :description,
             `quantity` = :quantity, ";
 
-            if ($kilo != ''  && !is_null($kilo)) {
+            if (1==1) {
                 $query .= "`kilo` = :kilo, ";
             }
 
@@ -327,11 +339,11 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
             `flight_date` = :flight_date,
             `currency` = :currency, ";
 
-            if ($total != ''  && !is_null($total)) {
+            if (1==1) {
                 $query .= "`total` = :total, ";
             }
 
-            if ($total_php != ''  && !is_null($total_php)) {
+            if (1==1) {
                 $query .= "`total_php` = :total_php, ";
             }
 
@@ -362,9 +374,13 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
         $stmt->bindParam(':address', $address);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':quantity', $quantity);
+
         if ($kilo != ''  && !is_null($kilo)) {
             $stmt->bindParam(':kilo', $kilo);
         }
+        else
+            $stmt->bindParam(':kilo', $kilo);
+
         $stmt->bindParam(':supplier', $supplier);
         $stmt->bindParam(':flight', $flight);
         $stmt->bindParam(':flight_date', $flight_date);
@@ -373,10 +389,14 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
         if ($total != ''  && !is_null($total)) {
             $stmt->bindParam(':total', $total);
         }
+        else
+            $stmt->bindParam(':total', $total);
 
          if ($total_php != ''  && !is_null($total_php)) {
             $stmt->bindParam(':total_php', $total_php);
         }
+        else
+            $stmt->bindParam(':total_php', $total_php);
 
         $stmt->bindParam(':pay_date', $pay_date);
         $stmt->bindParam(':pay_status', $pay_status);
