@@ -87,8 +87,8 @@ $details_php_array = json_decode($details_php, true);
 
 $id = $id == '' ? 0 : $id;
 
-$total = $total == 'null' ? null : $total;
-$kilo = $kilo == 'null' ? null : $kilo;
+$total = $total == 'null' ? '' : $total;
+$kilo = $kilo == 'null' ? '' : $kilo;
 
 try {
 
@@ -102,9 +102,10 @@ try {
         `description` = :description,
         `quantity` = :quantity, ";
 
-    if (1==1) {
+    if ($kilo != ''  && !is_null($kilo)) {
         $query .= "`kilo` = :kilo, ";
-    }
+    }else
+        $query .= "`kilo` = null, ";
 
     $query .= "
         `supplier` = :supplier, 
@@ -112,13 +113,16 @@ try {
         `flight_date` = :flight_date,
         `currency` = :currency, ";
     
-if (1==1) {
+if ($total != ''  && !is_null($total)) {
     $query .= "`total` = :total, ";
-}
+}else
+    $query .= "`total` = null, ";
 
-if (1==1) {
+if ($total_php != ''  && !is_null($total_php)) {
     $query .= "`total_php` = :total_php, ";
-}
+}else
+    $query .= "`total_php` = null, ";
+
         $query .= "
         `pay_date` = :pay_date,
         `pay_status` = :pay_status,
@@ -148,10 +152,7 @@ if (1==1) {
         if ($kilo != ''  && !is_null($kilo)) {
             $stmt->bindParam(':kilo', $kilo);
         }
-        else
-            $stmt->bindParam(':kilo', $kilo);
-
-
+       
         $stmt->bindParam(':supplier', $supplier);
         $stmt->bindParam(':flight', $flight);
         $stmt->bindParam(':flight_date', $flight_date);
@@ -160,14 +161,12 @@ if (1==1) {
         if ($total != ''  && !is_null($total)) {
             $stmt->bindParam(':total', $total);
         }
-        else
-            $stmt->bindParam(':total', $total);
+        
 
         if ($total_php != ''  && !is_null($total_php)) {
             $stmt->bindParam(':total_php', $total_php);
         }
-        else
-            $stmt->bindParam(':total_php', $total_php);
+      
 
         $stmt->bindParam(':pay_date', $pay_date);
         $stmt->bindParam(':pay_status', $pay_status);
@@ -329,9 +328,11 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
             `description` = :description,
             `quantity` = :quantity, ";
 
-            if (1==1) {
+            if ($kilo != ''  && !is_null($kilo)) {
                 $query .= "`kilo` = :kilo, ";
             }
+            else
+                $query .= "`kilo` = null, ";
 
             $query .= "
             `supplier` = :supplier, 
@@ -339,13 +340,17 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
             `flight_date` = :flight_date,
             `currency` = :currency, ";
 
-            if (1==1) {
+            if ($total != ''  && !is_null($total)) {
                 $query .= "`total` = :total, ";
             }
+            else
+                $query .= "`total` = null, ";
 
-            if (1==1) {
+            if ($total_php != ''  && !is_null($total_php)) {
                 $query .= "`total_php` = :total_php, ";
             }
+            else
+                $query .= "`total_php` = null, ";
 
             $query .= "
             `pay_date` = :pay_date,
@@ -378,8 +383,7 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
         if ($kilo != ''  && !is_null($kilo)) {
             $stmt->bindParam(':kilo', $kilo);
         }
-        else
-            $stmt->bindParam(':kilo', $kilo);
+        
 
         $stmt->bindParam(':supplier', $supplier);
         $stmt->bindParam(':flight', $flight);
@@ -389,14 +393,11 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
         if ($total != ''  && !is_null($total)) {
             $stmt->bindParam(':total', $total);
         }
-        else
-            $stmt->bindParam(':total', $total);
-
+       
          if ($total_php != ''  && !is_null($total_php)) {
             $stmt->bindParam(':total_php', $total_php);
         }
-        else
-            $stmt->bindParam(':total_php', $total_php);
+       
 
         $stmt->bindParam(':pay_date', $pay_date);
         $stmt->bindParam(':pay_status', $pay_status);
