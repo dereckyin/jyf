@@ -200,7 +200,7 @@
 
     input[type=range], input[type=text], input[type=password], input[type=file], input[type=date], input[type=number], input[type=url], input[type=email], input[type=tel], input[list], input[type=button], input[type=submit], button, textarea, select, output {
         box-sizing: border-box;
-        border: 2px solid #4D576C;
+        border: 2px solid #1E6BA8;
         background-color: transparent;
         padding: 8px;
         vertical-align: middle;
@@ -223,7 +223,7 @@
     }
 
     select {
-        background-image: url(../images/ui/icon_form_select_arrow_blue.svg);
+        background-image: url(../images/ui/icon_form_select_arrow_lightblue.svg);
         background-size: auto 100%;
         background-position: 100% center;
         background-repeat: no-repeat;
@@ -233,7 +233,6 @@
         padding: 6px 10px 6px 10px \9;
     }
 
-
     header {
         display: block;
         width: 100%;
@@ -241,7 +240,7 @@
         position: fixed;
         top: 0;
         left: 0;
-        background-color: #4D576C;
+        background-color: #1E6BA8;
         color: #FFF;
         padding: 10px;
         box-shadow: 2px 2px 2px rgb(0 0 0 / 40%);
@@ -256,12 +255,12 @@
 
     #app {
         text-align: center;
-        color: #2c3e50;
+        color:  #000000;
         margin-top: 60px;
     }
 
     .mainContent {
-        padding: 80px 12px 30px;
+        padding: 30px 12px 30px;
         width: 100%;
         min-height: calc(100vh - 100px);
     }
@@ -269,7 +268,7 @@
     .mainContent > .block {
         display: none;
         width: 100%;
-        border: 2px solid #4D576C;
+        border: 2px solid #1E6BA8;
     }
 
     .mainContent > .block.focus {
@@ -281,7 +280,7 @@
         font-size: 36px;
         font-weight: 700;
         color: #4D576C;
-        border-bottom: 2px solid #4D576C;
+        border-bottom: 2px solid #1E6BA8;
         padding: 10px 20px;
     }
 
@@ -294,7 +293,7 @@
     }
 
     .block .formbox {
-        border: 2px solid #4D576C;
+        border: 2px solid #1E6BA8;
         padding: 20px;
         width: 100%;
     }
@@ -312,7 +311,7 @@
     }
 
     .block .formbox dd {
-        border: 2px solid #4D576C;
+        border: 2px solid #1E6BA8;
         border-radius: 10px;
         margin-bottom: 20px;
     }
