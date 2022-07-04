@@ -204,6 +204,22 @@
         background-color: transparent;
         padding: 8px;
         vertical-align: middle;
+        font-size: 18px;
+    }
+
+    textarea {
+        resize: none;
+    }
+
+    input, select {
+        font-size: 18px;
+        font-family: Lato, Arial, Helvetica, 'Noto Sans TC', 'LiHei Pro', "微軟正黑體", "新細明體", 'Microsoft JhengHei', sans-serif;
+        font-weight: 500;
+        display: inline-block;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        outline: 0 none;
     }
 
     select {
@@ -234,6 +250,8 @@
 
     body {
         background-color: #F0F0F0;
+        font-family: "M PLUS 1p", Arial, Helvetica, "LiHei Pro", 微軟正黑體, "Microsoft JhengHei", 新細明體, sans-serif;
+        font-weight: 300;
     }
 
     #app {
@@ -381,7 +399,7 @@
                         <!-- <dd v-if="showPhoto"><input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()" accept="image/*" capture="camera"></dd> -->
                         <dd>
                             <div id="Cam" class="container"
-                                 style="display:flex; flex-direction: column; align-items: center;"><b>Camera
+                                 style="display:flex; flex-direction: column; align-items: center;"><b style="margin-top: 10px;">Camera
                                 Preview</b>
                                 <div id="my_camera"></div>
                                 <form>
@@ -401,10 +419,10 @@
                            <dt>Time In</dt>
                            <dd><input type="text" placeholder="" v-model="time" :readonly="true"></dd>  -->
 
-                        <dt v-if="showPhoto">Photo Taken Time</dt>
-                        <dd v-if="showPhoto"><input type="text" id="photo_time" placeholder="" :readonly="true"></dd>
-                        <dt v-if="showPhoto">Photo Taken GPS</dt>
-                        <dd v-if="showPhoto"><input type="text" id="photo_gps" placeholder="" :readonly="true"></dd>
+                        <dt v-if="showPhoto" style="display: none;">Photo Taken Time</dt>
+                        <dd v-if="showPhoto" style="display: none;"><input type="text" id="photo_time" placeholder="" :readonly="true"></dd>
+                        <dt v-if="showPhoto" style="display: none;">Photo Taken GPS</dt>
+                        <dd v-if="showPhoto" style="display: none;"><input type="text" id="photo_gps" placeholder="" :readonly="true"></dd>
                         <p id="map-link" style="font-size: 20px; font-weight: 500;" v-if="showPhoto"></p>
                     </dl>
                     <div class="btnbox">
