@@ -364,7 +364,7 @@
                         </dd>
                         <dt>Date</dt>
                         <dd>
-                            <input id="" type="date" v-model="today" :min="yesterday" :max="calendar_today">
+                            <input id="myDate" type="date" v-model="today" :min="yesterday" :max="calendar_today">
                         </dd>
                         <dt>Type</dt>
                         <dd>
@@ -425,5 +425,20 @@
 <script defer src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script defer src="js/on_duty.js"></script>
+<script>
+    $(document).ready(function() {
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = year + "-" + month + "-" + day +"T00:00";       
+    $("#myDate").attr("value", today);
+});
+</script>
 
 </html>
