@@ -371,6 +371,10 @@ var app = new Vue({
             this.err_msg = '';
             this.submit = false;
 
+            document.getElementById('photo_gps').value = '';
+            document.getElementById('photo_time').value = '';
+            document.getElementById('results').innerHTML = '';
+
             this.getLocation();
             this.getToday();
             this.getTimeNow();
