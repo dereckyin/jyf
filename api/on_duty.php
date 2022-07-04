@@ -97,14 +97,14 @@ try {
     if(empty($id))
     {
         http_response_code(200);
-        echo json_encode(array("message" => "Punch Fail at" . date("Y-m-d") . " " . date("h:i:sa")));
+        echo json_encode(array("message" => "Punch Fail at" . date("Y-m-d") . " " . date("h:i:sa"). " " . "Latitude:" . $piclatitude. " " . "Longitude:" . $piclongitude));
     }else
     {
         http_response_code(200);
         if($type == 'A')
-            echo json_encode(array("message" => "Punch in success at " . date("Y-m-d") . " " . date("h:i:sa")));
+            echo json_encode(array("message" => "Punch in success at " . date("Y-m-d") . " " . date("h:i:sa"). " " . "Latitude:" . $piclatitude. " " . "Longitude:" . $piclongitude));
         if($type == 'B')
-            echo json_encode(array("message" => "Punch out success at " . date("Y-m-d") . " " . date("h:i:sa")));
+            echo json_encode(array("message" => "Punch out success at " . date("Y-m-d") . " " . date("h:i:sa"). " " . "Latitude:" . $piclatitude. " " . "Longitude:" . $piclongitude));
     }
 
 }
