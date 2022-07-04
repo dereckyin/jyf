@@ -82,7 +82,7 @@ var app = new Vue({
       var mm = String(previous.getMonth() + 1).padStart(2, '0'); //January is 0!
       var yyyy = previous.getFullYear();
 
-      this.yesterday = yyyy + '/' + mm + '/' + dd;
+      this.yesterday = yyyy + '-' + mm + '-' + dd;
 
     },
 
@@ -93,8 +93,8 @@ var app = new Vue({
       var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
       var yyyy = today.getFullYear();
 
-      this.today = yyyy + '/' + mm + '/' + dd;
-      this.calendar_today = yyyy + '/' + mm + '/' + dd;
+      this.today = yyyy + '-' + mm + '-' + dd;
+      this.calendar_today = yyyy + '-' + mm + '-' + dd;
 
       //setInterval(self.getToday, 1000 * 60)
     },
