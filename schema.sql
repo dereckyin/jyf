@@ -958,3 +958,28 @@ ALTER TABLE user
 ADD COLUMN `airship` INT DEFAULT 0;
 ALTER TABLE user
 ADD COLUMN `airship_read` INT DEFAULT 0;
+
+-- 20220704 jyf on_duty
+CREATE TABLE `on_duty` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `duty_date` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `duty_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `location` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `remark` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `duty_time` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `explain` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `pos_lat` decimal(24,12) DEFAULT 0.000000000000,
+  `pos_lng` decimal(24,12) DEFAULT 0.000000000000,
+  `pic_url` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `pic_time` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `pic_lat` decimal(24,12) DEFAULT 0.000000000000,
+  `pic_lng` decimal(24,12) DEFAULT 0.000000000000,
+  `pic_server_time` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `pic_server_lat` decimal(24,12) DEFAULT 0.000000000000,
+  `pic_server_lng` decimal(24,12) DEFAULT 0.000000000000,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=36478 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
