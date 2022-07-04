@@ -364,11 +364,11 @@
                         </dd>
                         <dt>Date</dt>
                         <dd>
-                            <input type="date" v-model="today" min="昨天" max="今天">
+                            <input id="" type="date" v-model="today" :min="yesterday" :max="calendar_today">
                         </dd>
                         <dt>Type</dt>
                         <dd>
-                            <select name="" id="" v-model="type">
+                            <select name="" id="mobiscroll" v-model="type">
                                 <option value="A">Time In</option>
                                 <option value="B">Time Out</option>
                             </select>

@@ -4,8 +4,10 @@ var app = new Vue({
   data:{
     name: "",
     today: "",
+    calendar_today: "",
+    yesterday : "",
     type: "",
-    location: "",
+    location: "W",
     remark: "",
     time: "",
     latitude: 0,
@@ -38,13 +40,14 @@ var app = new Vue({
     },
 
     showPhoto: function(){
-      return (this.location=='A' || this.location=='M' || this.location=='B' || this.location=='C' || this.location=='D' || this.location=='E' || this.location=='F');
+      return (this.location=='W');
     }
   },
 
   mounted(){
     this.getTimeNow();
     this.getToday();
+    this.getYesterday();
    
   },
 
@@ -70,6 +73,18 @@ var app = new Vue({
       this.longitude = position.coords.longitude;
     },
 
+    
+    getYesterday: function() {
+      const previous = new Date();
+      previous.setDate(previous.getDate() - 1);
+
+      var dd = String(previous.getDate()).padStart(2, '0');
+      var mm = String(previous.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = previous.getFullYear();
+
+      this.yesterday = yyyy + '-' + mm + '-' + dd;
+
+    },
 
     getToday: function() {
       var self = this;
@@ -78,7 +93,8 @@ var app = new Vue({
       var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
       var yyyy = today.getFullYear();
 
-      this.today = yyyy + '/' + mm + '/' + dd;
+      this.today = yyyy + '-' + mm + '-' + dd;
+      this.calendar_today = yyyy + '-' + mm + '-' + dd;
 
       //setInterval(self.getToday, 1000 * 60)
     },
@@ -357,10 +373,9 @@ var app = new Vue({
       },
 
       reset: function() {
-          
-            this.today = '';
+        this.name = '';
             this.type = '';
-            this.location = '';
+            this.location = 'W';
             this.remark = '';
             this.time = '';
             this.explanation = '';
@@ -370,6 +385,7 @@ var app = new Vue({
             this.getLocation();
             this.getToday();
             this.getTimeNow();
+            this.getYesterday();
             
         },
  
