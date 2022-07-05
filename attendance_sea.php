@@ -372,7 +372,7 @@ header( 'location:index.php' );
                         <li>{{ record.username }}</li>
                         <li><p v-html="record.duty_date.split('<br>').join('<br />')"></li>
                         <li><p v-html="record.duty_out.split('<br>').join('<br />')"></li>
-                        <li><a v-bind:href="'attendance_detail?uid='+ record.id + '&date=' + record.date"><b :class="record.is_checked == 1 && record.leave == 0 ? 'light' : ''"></b></a></li>
+                        <li><a v-bind:href="'attendance_detail_sea?username='+ record.username + '&date=' + record.date"><b :class="record.is_checked == 1 && record.leave == 0 ? 'light' : ''"></b></a></li>
                     </ul>
 
                 </div>
