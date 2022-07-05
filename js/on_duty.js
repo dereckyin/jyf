@@ -25,13 +25,17 @@ var app = new Vue({
     photo_time:'',
     photo_gps:'',
     submit: false,
+    verified:false,
+
+    username : [],
 
   },
 
   created () {
 
       this.getLocation()
-
+      this.getUsers()
+      this.getUUID()
   },
 
   computed: {
@@ -53,6 +57,17 @@ var app = new Vue({
 
   methods:{
 
+    getUsers: function() {
+      axios.get('api/duty_get_user.php')
+      .then(function(response) {
+          console.log(response.data);
+          app.username = response.data;
+      })
+      .catch(function(error) {
+          console.log(error);
+      });
+  },
+
 
     getLocation: function() {
       if (navigator.geolocation) {
@@ -65,6 +80,14 @@ var app = new Vue({
         })
 
       }
+    },
+
+    getUUID: function() {
+      //var uuid = new DeviceUUID().get();
+      //if(uuid != 'd520c7a8-421b-4563-b955-f5abc56b97eb')
+      //  window.location = "index.html";
+      //else
+        this.verified = true;
     },
 
 

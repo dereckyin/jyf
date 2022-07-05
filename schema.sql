@@ -983,3 +983,20 @@ CREATE TABLE `on_duty` (
   `status` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `duty_user` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `created_by` varchar(128) DEFAULT 'admin',
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+insert into `duty_user` (`username`) VALUES('Arnel Tangi');
+insert into `duty_user` (`username`) VALUES('Bobby Rase');
+insert into `duty_user` (`username`) VALUES('Francis Tablate');
+insert into `duty_user` (`username`) VALUES('Marlon Suaner');
+insert into `duty_user` (`username`) VALUES('Melody Ludivico');
+insert into `duty_user` (`username`) VALUES('Ralph Adrianne Cruz');
+insert into `duty_user` (`username`) VALUES('Reynjeline Nerizon');

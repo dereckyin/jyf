@@ -357,7 +357,7 @@
     <!-- header -->
     <header></header>
     <!-- header end -->
-    <div id='app' class="mainContent">
+    <div id='app' class="mainContent" v-show="verified">
         <!-- Blocks -->
         <div class="block A focus">
             <h6>Time In and Out</h6>
@@ -370,13 +370,8 @@
                         <dt>Employee Name</dt>
                         <dd>
                             <select v-model="name">
-                                <option value="Arnel Tangi">Arnel Tangi</option>
-                                <option value="Bobby Rase">Bobby Rase</option>
-                                <option value="Francis Tablate">Francis Tablate</option>
-                                <option value="Marlon Suaner">Marlon Suaner</option>
-                                <option value="Melody Ludivico">Melody Ludivico</option>
-                                <option value="Ralph Adrianne Cruz">Ralph Adrianne Cruz</option>
-                                <option value="Reynjeline Nerizon">Reynjeline Nerizon</option>
+                            <option v-for='(record, index) in username' :value="record.username">{{ record.username }}</option>
+                              
                             </select>
                         </dd>
                         <dt>Date</dt>
@@ -441,6 +436,7 @@
 <script defer src="js/axios.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script defer src="js/device-uuid.min.js"></script>
 <script defer src="js/on_duty.js"></script>
 <script>
     $(document).ready(function() {
