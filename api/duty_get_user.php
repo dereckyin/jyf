@@ -28,9 +28,6 @@ $data = json_decode(file_get_contents("php://input"));
 // if decode succeed, show user details
 try {
 
-    // decode jwt
-    $decoded = JWT::decode($jwt, $key, array('HS256'));
-    
     http_response_code(200);
 
     $merged_results = array();
