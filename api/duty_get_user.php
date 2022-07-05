@@ -25,54 +25,39 @@ $db = $database->getConnection();
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
  
-// get jwt
-$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
- 
-// if jwt is not empty
-if($jwt){
- 
-    // if decode succeed, show user details
-    try {
- 
-        // decode jwt
-        $decoded = JWT::decode($jwt, $key, array('HS256'));
-        
-        http_response_code(200);
+// if decode succeed, show user details
+try {
 
-        $merged_results = array();
-
-        $query = "SELECT * from duty_user where status = 0";
-
-        $stmt = $db->prepare( $query);
-        $stmt->execute();
-
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC))
-            $merged_results[] = $row;
+    // decode jwt
+    $decoded = JWT::decode($jwt, $key, array('HS256'));
     
-        // response in json format
-        echo json_encode($merged_results);
-    }
- 
-    // if decode fails, it means jwt is invalid
-    catch (Exception $e){
-    
-        // set response code
-        http_response_code(401);
-    
-        // show error message
-        echo json_encode(array(
-            "message" => "Access denied.",
-            "error" => $e->getMessage()
-        ));
-    }
+    http_response_code(200);
+
+    $merged_results = array();
+
+    $query = "SELECT * from duty_user where status = 0";
+
+    $stmt = $db->prepare( $query);
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+        $merged_results[] = $row;
+
+    // response in json format
+    echo json_encode($merged_results);
 }
-// show error message if jwt is empty
-else{
- 
+
+// if decode fails, it means jwt is invalid
+catch (Exception $e){
+
     // set response code
     http_response_code(401);
- 
-    // tell the user access denied
-    echo json_encode(array("message" => "Access denied."));
+
+    // show error message
+    echo json_encode(array(
+        "message" => "Access denied.",
+        "error" => $e->getMessage()
+    ));
 }
+
 ?>
