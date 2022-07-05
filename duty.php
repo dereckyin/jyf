@@ -260,7 +260,7 @@
     }
 
     .mainContent {
-        padding: 30px 12px 30px;
+        padding: 50px 12px 30px;
         width: 100%;
         min-height: calc(100vh - 100px);
     }
@@ -279,7 +279,7 @@
     .block h6 {
         font-size: 36px;
         font-weight: 700;
-        color: #4D576C;
+        color: #1E6BA8;
         border-bottom: 2px solid #1E6BA8;
         padding: 10px 20px;
     }
@@ -393,7 +393,7 @@
                         <!-- <dd v-if="showPhoto"><input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()" accept="image/*" capture="camera"></dd> -->
                         <dd>
                             <div id="Cam" class="container"
-                                 style="display:flex; flex-direction: column; align-items: center;"><b style="margin-top: 10px;">Camera
+                                 style="display:flex; flex-direction: column; align-items: center;"><b style="margin-top: 15px;">Camera
                                 Preview</b>
                                 <div id="my_camera"></div>
                                 <form>
