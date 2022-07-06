@@ -208,7 +208,12 @@
     }
 
     textarea {
+        font-family: Lato, Arial, Helvetica, 'Noto Sans TC', 'LiHei Pro', "微軟正黑體", "新細明體", 'Microsoft JhengHei', sans-serif;
         resize: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        outline: 0 none;
     }
 
     input, select {
@@ -357,7 +362,7 @@
     <!-- header -->
     <header></header>
     <!-- header end -->
-    <div id='app' class="mainContent" v-show="verified">
+    <div id='app' class="mainContent">
         <!-- Blocks -->
         <div class="block A focus">
             <h6>Time In and Out</h6>
@@ -370,8 +375,13 @@
                         <dt>Employee Name</dt>
                         <dd>
                             <select v-model="name">
-                            <option v-for='(record, index) in username' :value="record.username">{{ record.username }}</option>
-                              
+                                <option value="Arnel Tangi">Arnel Tangi</option>
+                                <option value="Bobby Rase">Bobby Rase</option>
+                                <option value="Francis Tablate">Francis Tablate</option>
+                                <option value="Marlon Suaner">Marlon Suaner</option>
+                                <option value="Melody Ludivico">Melody Ludivico</option>
+                                <option value="Ralph Adrianne Cruz">Ralph Adrianne Cruz</option>
+                                <option value="Reynjeline Nerizon">Reynjeline Nerizon</option>
                             </select>
                         </dd>
                         <dt>Date</dt>

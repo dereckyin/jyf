@@ -217,7 +217,7 @@ header( 'location:index.php' );
     }
 
     .mainContent {
-        padding: 50px 12px 30px;
+        padding: 110px 12px 30px;
         width: 100%;
         min-height: calc(100vh - 100px);
     }
@@ -273,7 +273,7 @@ header( 'location:index.php' );
     }
 
     .block .tablebox1 ul.head li, .block .tablebox2 ul.head li {
-        font-weight: 800;
+        font-weight: 700;
     }
 
     .tablebox1 > ul > li {
@@ -372,7 +372,7 @@ header( 'location:index.php' );
                         <li>{{ record.username }}</li>
                         <li><p v-html="record.duty_date.split('<br>').join('<br />')"></li>
                         <li><p v-html="record.duty_out.split('<br>').join('<br />')"></li>
-                        <li><a v-bind:href="'attendance_detail_sea.php?username='+ record.username + '&date=' + record.date"><b :class="record.is_checked == 1 && record.leave == 0 ? 'light' : ''"></b></a></li>
+                        <li><a v-bind:href="'attendance_detail_sea.php?username='+ record.username + '&date=' + record.date"><b :class="record.is_checked == 1 ? 'light' : ''"></b></a></li>
                     </ul>
 
                 </div>

@@ -217,7 +217,7 @@ header( 'location:index.php' );
     }
 
     .mainContent {
-        padding: 50px 12px 30px;
+        padding: 110px 12px 30px;
         width: 100%;
         min-height: calc(100vh - 100px);
     }
@@ -259,13 +259,18 @@ header( 'location:index.php' );
     }
 
     .block .formbox2 ul li.head {
-        font-weight: 800;
+        font-weight: 700;
         border-bottom: none;
     }
 
     .block .formbox2 ul li img {
         max-width: 100%;
-        max-height: 480px;
+        max-height: 300px;
+    }
+
+    .block .formbox2 ul li span {
+        display: block;
+        margin-bottom: 5px;
     }
 
     a.nav_link {
