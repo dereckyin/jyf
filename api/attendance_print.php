@@ -266,7 +266,7 @@ function SetFirstPage($sheet, $merged_results, $conf, $styleArray)
         {
             $link = $conf::$mail_ip . 'img/' . $row['pic_url'];
             $sheet->setCellValue('E' . $i, 'Photo');
-            $sheet->getCellByColumnAndRow(7,$i)->getHyperlink()->setUrl($link);
+            $sheet->getCellByColumnAndRow(5,$i)->getHyperlink()->setUrl($link);
         }
         else
             $sheet->setCellValue('E' . $i, '');
