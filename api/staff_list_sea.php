@@ -50,7 +50,7 @@ else
             $keyword = urldecode($keyword);
 
 
-            $sql = "SELECT 0 as is_checked, id, `staff`, phone, email, `address`, crt_time, crt_user  FROM staff_list_sea where status <> 'D' ".($id ? " and id=$id" : ''); 
+            $sql = "SELECT 0 as is_checked, id, `staff`, phone, email, `address`, punch, crt_time, crt_user  FROM staff_list_sea where status <> 'D' ".($id ? " and id=$id" : ''); 
 
             if($keyword != "") {
                 $sql = $sql . " and (`staff` like '%" . $keyword . "%' ";
@@ -104,6 +104,7 @@ else
             $phone = (isset($_POST['phone']) ?  $_POST['phone'] : '');
             $email = (isset($_POST['email']) ?  $_POST['email'] : '');
             $address = (isset($_POST['address']) ?  $_POST['address'] : '');
+            $punch = (isset($_POST['punch']) ?  $_POST['punch'] : 0);
          
             $crud = stripslashes($_POST["crud"]);
             $id = stripslashes($_POST["id"]);
@@ -116,14 +117,16 @@ else
                                                 phone, 
                                                 email, 
                                                 address,
+                                                punch,
                                                 crt_user) 
-                                            values (?, ?, ?, ?, ?)";
+                                            values (?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql); 
-                $stmt->bind_param("sssss",
+                $stmt->bind_param("ssssds",
                                     $staff, 
                                     $phone, 
                                     $email, 
                                     $address, 
+                                    $punch, 
                                     $user);
                 $stmt->execute();
                 $stmt->close();
@@ -141,15 +144,17 @@ else
                                                     phone = ?, 
                                                     email = ?, 
                                                     address = ?, 
+                                                    punch = ?, 
                                                     mdf_time = now(),
                                                     mdf_user = ?
                                                 where id = ?";
                     $stmt = $conn->prepare($sql); 
-                    $stmt->bind_param("sssssd",
+                    $stmt->bind_param("ssssdsd",
                                         $staff, 
                                         $phone, 
                                         $email, 
                                         $address, 
+                                        $punch, 
                                         $mdf_user, 
                                         $id);
                     $stmt->execute();
