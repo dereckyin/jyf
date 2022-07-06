@@ -55,7 +55,7 @@ if($jwt){
 
             $merged_results = array();
 
-            $sql = "SELECT username, duty_date, duty_type, location, duty_time, `explain`, on_duty.pic_url, remark, pos_lat, pos_lng  FROM on_duty 
+            $sql = "SELECT username, duty_date, duty_type, location, DATE_FORMAT(created_at, '%Y/%m/%d %h:%i %p') duty_time, `explain`, on_duty.pic_url, remark, pos_lat, pos_lng  FROM on_duty 
             WHERE 1=1 ";
 
             if(!empty($apply_start)) {
