@@ -375,13 +375,8 @@
                         <dt>Employee Name</dt>
                         <dd>
                             <select v-model="name">
-                                <option value="Arnel Tangi">Arnel Tangi</option>
-                                <option value="Bobby Rase">Bobby Rase</option>
-                                <option value="Francis Tablate">Francis Tablate</option>
-                                <option value="Marlon Suaner">Marlon Suaner</option>
-                                <option value="Melody Ludivico">Melody Ludivico</option>
-                                <option value="Ralph Adrianne Cruz">Ralph Adrianne Cruz</option>
-                                <option value="Reynjeline Nerizon">Reynjeline Nerizon</option>
+                                <option v-for='(record, index) in username' :value="record.username">{{ record.username }}</option>
+                                
                             </select>
                         </dd>
                         <dt>Date</dt>
