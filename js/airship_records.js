@@ -125,6 +125,9 @@ var app = new Vue({
 
     date_type : "r",
 
+    edit_once_kilo : false,
+    edit_once_currency : false,
+
   },
 
   created() {
@@ -140,10 +143,20 @@ var app = new Vue({
   watch: {
 
     kilo: function() {
+      if(this.edit_once_kilo == true)
+      {
+        this.edit_once_kilo = false;
+        return;
+      }
       this.refresh_kilo();
     },
 
     currency: function() {
+      if(this.edit_once_currency == true)
+      {
+        this.edit_once_currency = false;
+        return;
+      }
       if(this.kilo != ""){
         if(this.currency == 'NTD')
           this.total = this.kilo * 395;
@@ -775,6 +788,9 @@ var app = new Vue({
       if(this.is_edited == true) {
         return;
       }
+
+      this.edit_once_kilo = true;
+      this.edit_once_currency = true;
 
       this.id = row.id;
       
