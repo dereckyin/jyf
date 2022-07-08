@@ -2100,7 +2100,7 @@ try {
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
-<script src="https://cdn.bootcss.com/moment.js/2.21.0/moment.js"></script>
+<!-- <script src="https://cdn.bootcss.com/moment.js/2.21.0/moment.js"></script> -->
 <script src="js/vue-select.js"></script>
 <script src="js/axios.min.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
