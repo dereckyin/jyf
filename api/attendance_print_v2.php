@@ -55,8 +55,8 @@ if($jwt){
 
             $merged_results = array();
 
-            $sql = "SELECT username, duty_date, duty_type, location, DATE_FORMAT(created_at, '%Y/%m/%d %h:%i %p') duty_time, `explain`, pic_url, remark, pos_lat, pos_lng  FROM on_duty_v2 
-            WHERE 1=1 ";
+            $sql = "SELECT username, duty_date, duty_type, location, DATE_FORMAT(created_at, '%Y/%m/%d %h:%i %p') duty_time, `explain`, pic_url, remark, pos_lat, pos_lng  FROM on_duty_v2 a left join staff_list_sea b on a.username = b.staff  
+            WHERE b.punch = 1 ";
 
             if(!empty($apply_start)) {
                 $sql = $sql . " and duty_date >= '$apply_start' ";
