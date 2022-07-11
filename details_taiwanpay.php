@@ -85,6 +85,11 @@ header( 'location:index.php' );
             padding: 0;
         }
 
+        .mainlist {
+            overflow: auto;
+            height: calc(100vh - 420px);
+        }
+
         .mainlist div.tablebox > ul > li {
             font-size: 14px;
         }
@@ -123,6 +128,13 @@ header( 'location:index.php' );
             height: 32.8px;
             border-radius: 5px;
             border: 1px solid rgb(153,153,153);
+        }
+
+        .mainlist .listheader {
+            position: sticky;
+            top: 0;
+            left: 0;
+            background-color: white;
         }
 
         .listheader > .pageblock select {
@@ -202,7 +214,7 @@ header( 'location:index.php' );
                 <h6>收貨紀錄
                     <eng>Receiving Records</eng>
                 </h6>
-                <div class="mainlist" style="overflow-x: auto;">
+                <div class="mainlist">
 
                     <div class="listheader">
                         <div class="pageblock" style="float:right;"> Page Size:
@@ -230,7 +242,7 @@ header( 'location:index.php' );
 
                     <div class="tablebox s02">
                         <!-- <table class="table table-hover table-striped table-sm table-bordered" id="showUser1" ref="showUser1"> -->
-                        <ul class="header">
+                        <ul class="header" style="position: sticky; top: 40px; left: 0;">
                             <li>
                                 <eng>Date Received</eng>
                                 收件日期
