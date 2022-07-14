@@ -217,7 +217,7 @@ var app = new Vue({
       obj = {
         "id" : 3,
         "title" : "報關費",
-        "qty" : 1,
+        "qty" : "",
         "price": 1000,
       }, 
       this.details.push(obj);
@@ -225,7 +225,7 @@ var app = new Vue({
       obj = {
         "id" : 4,
         "title" : "文件費",
-        "qty" : 1,
+        "qty" : "",
         "price": 600,
       }, 
       this.details.push(obj);
@@ -233,7 +233,7 @@ var app = new Vue({
       obj = {
         "id" : 5,
         "title" : "傳輸費",
-        "qty" : 1,
+        "qty" : "",
         "price": 240,
       }, 
       this.details.push(obj);
@@ -241,7 +241,7 @@ var app = new Vue({
       obj = {
         "id" : 6,
         "title" : "保險費",
-        "qty" : 1,
+        "qty" : "",
         "price": 400,
       }, 
       this.details.push(obj);
@@ -277,10 +277,10 @@ var app = new Vue({
     },
 
     refresh_kilo: function() {
-      var element = this.details.find(({ title }) => title === '空運費');
-      element.qty = this.kilo;
-      var element = this.details.find(({ title }) => title === '過檢費');
-      element.qty = this.kilo;
+      //var element = this.details.find(({ title }) => title === '空運費');
+      //element.qty = this.kilo;
+      //var element = this.details.find(({ title }) => title === '過檢費');
+      //element.qty = this.kilo;
       var element = this.details_php.find(({ title }) => title === 'Broker Charge');
       element.qty = this.kilo;
 
