@@ -789,9 +789,17 @@ var app = new Vue({
         return;
       }
 
-      this.edit_once_kilo = true;
-      this.edit_once_currency = true;
+      if(this.currency !== row.currency)
+        this.edit_once_currency = true;
+      else
+        this.edit_once_currency = false;
 
+
+      if(this.kilo !== row.kilo)
+        this.edit_once_kilo = true;
+      else
+        this.edit_once_kilo = false;
+      
       this.id = row.id;
       
       this.date_receive = row.date_receive;
