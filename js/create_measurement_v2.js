@@ -1434,11 +1434,11 @@ var app = new Vue({
                 return false;
             }
 
-            if (!this.isDate(this.date_cr) || this.date_cr == "") 
-            {
-                this.error_message = 'date required';
-                return false;
-            }
+            // if (!this.isDate(this.date_cr) || this.date_cr == "") 
+            // {
+            //     this.error_message = 'date required';
+            //     return false;
+            // }
 
             if(this.measure_container == '')
             {
