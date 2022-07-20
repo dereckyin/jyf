@@ -331,7 +331,7 @@ try {
                         
                     </li>
                     <li>
-                        Date C/R (Date Container arrived Manila)
+                        Date C/R (Date Container arrived Caloocan)
                         <cht>貨櫃到倉日期</cht>
                     </li>
                     <li>
