@@ -1186,21 +1186,21 @@ var app = new Vue({
 
           if(this.export_record.length > 0)
           {
-            this.exp_dr = this.export_record[0].exp_dr;
+            //this.exp_dr = this.export_record[0].exp_dr;
             this.exp_date = this.export_record[0].exp_date;
-            this.exp_sold_to = this.export_record[0].exp_sold_to;
+            //this.exp_sold_to = this.export_record[0].exp_sold_to;
             this.exp_quantity = this.export_record[0].exp_quantity;
             this.exp_unit = this.export_record[0].exp_unit;
-            this.exp_discription = this.export_record[0].exp_discription;
-            this.exp_amount = this.export_record[0].exp_amount;
+            //this.exp_discription = this.export_record[0].exp_discription;
+            //this.exp_amount = this.export_record[0].exp_amount;
 
             this.assist_by = this.export_record[0].assist_by;
 
-            for(const element of JSON.parse(this.export_record[0].payment)) {
-              var result  = this.payment.filter(function(o){return o.id == element.id;} );
-              if(result.length > 0)
-                result[0].is_selected = element.is_selected;
-            }
+            // for(const element of JSON.parse(this.export_record[0].payment)) {
+            //   var result  = this.payment.filter(function(o){return o.id == element.id;} );
+            //   if(result.length > 0)
+            //     result[0].is_selected = element.is_selected;
+            // }
 
             for(const element of JSON.parse(this.export_record[0].record)) {
               var result  = this.record.filter(function(o){return o.id == element.id;} );
