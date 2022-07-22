@@ -14,6 +14,7 @@ let mainState = {
     phone: '',
     email: '',
     address: '',
+    punch : 0,
 
     error_staff: '',
     error_phone: '',
@@ -155,6 +156,7 @@ var app = new Vue({
                 formData.append('phone', this.phone)
                 formData.append('email', this.email)
                 formData.append('address', this.address)
+                formData.append('punch', this.punch)
             
                 formData.append('crud', "insert");
                 formData.append('id', '');
@@ -206,6 +208,7 @@ var app = new Vue({
             formData.append('phone', this.record.phone)
             formData.append('email', this.record.email)
             formData.append('address', this.record.address)
+            formData.append('punch', this.record.punch)
           
             formData.append('crud', "update");
             formData.append('id', this.record.id);
@@ -251,6 +254,7 @@ var app = new Vue({
             formData.append('phone', "")
             formData.append('email', "")
             formData.append('address', "")
+            ormData.append('punch', "")
           
             formData.append('crud', "del");
             formData.append('id', id);
@@ -286,6 +290,7 @@ var app = new Vue({
             this.phone = '';
             this.email = '';
             this.address = '';
+            this.punch = 0;
         
          
             this.isEditing = false;
@@ -299,6 +304,27 @@ var app = new Vue({
             this.getRecords('');
         },
 
+        setPunch: function(event) {
+     
+          let checked = event.target.checked;
+          let value = event.target.value;
+          if (checked) {
+              this.punch = 1;
+          } else {
+              this.punch = 0;
+          }
+      },
+
+      updatePunch: function(event) {
+   
+          let checked = event.target.checked;
+          let value = event.target.value;
+          if (checked) {
+              this.record.punch = 1;
+          } else {
+              this.record.punch = 0;
+          }
+      },
 
         resetError: function() {
           console.log("resetError");

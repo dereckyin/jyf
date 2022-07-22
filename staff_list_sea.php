@@ -183,6 +183,15 @@ try {
                                 <span class="text-danger" v-if="error_address" v-text="error_address"></span>
                             </li>
                         </ul>
+                        <ul>
+                            <li>Punch
+                            </li>
+                            <li>
+                                <input id="punch" type="checkbox" name="punch" :true-value="1" name="punch" v-model:checked="punch" @change="setPunch">
+                                <label for="punch">Need Punch</label>
+                              
+                            </li>
+                        </ul>
                 </div>
 
                 <div class="btnbox">
@@ -222,6 +231,14 @@ try {
                                 <span class="text-danger" v-if="error_address" v-text="error_address"></span>
                             </li>
                         </ul>
+                        <ul>
+                            <li>Punch
+                            </li>
+                            <li>
+                                <input id="record_punch" type="checkbox" name="record_punch" :true-value="1" name="record_punch" v-model:checked="record.punch" @change="updatePunch">
+                                <label for="record_punch">Need Punch</label>
+                            </li>
+                        </ul>
                 </div>
 
                 <div class="btnbox">
@@ -257,6 +274,7 @@ try {
                             <li>Phone</li>
                             <li>E-mail</li>
                             <li>Address</li>
+                            <li>Punch</li>
                         </ul>
                         <ul v-for='(contactor, index) in displayedPosts'>
                         <li>
@@ -266,6 +284,7 @@ try {
                                     <li>{{ contactor.phone }}</li>
                                     <li>{{ contactor.email }}</li>
                                     <li>{{ contactor.address }}</li>
+                                    <li>{{ contactor.punch == 1 ? 'yes' : 'no' }}</li>
                         </ul>
                     </div>
                 </div>
