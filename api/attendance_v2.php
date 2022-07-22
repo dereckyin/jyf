@@ -45,7 +45,7 @@ $subquery = "";
 
 $merged_results = array();
 
-$sql = "SELECT id, staff username FROM staff_list_sea where status = 0 and punch = 1 order by staff";
+$sql = "SELECT id, staff username FROM staff_list_sea where status <> 'D' and punch = 1 order by staff";
 
 $stmt = $db->prepare( $sql );
 $stmt->execute();
