@@ -109,7 +109,7 @@
                 constraints: {
                     width: 800,
                     height: 600,
-                    facingMode: "environment"
+                    facingMode: "user"
                 }
             });
             Webcam.attach('#my_camera');
