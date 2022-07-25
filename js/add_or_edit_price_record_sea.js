@@ -222,6 +222,18 @@ var app = new Vue({
   component: {},
 
   methods: {
+    onChange(event) {
+      console.log(event.target.value)
+      let category = event.target.value;
+
+      if (category == "Cash on Hand" || category == "Petty") 
+        this.operation_type = "1";  // Cash In
+
+      if (category == "Cash Expenses" || category == "Cash Expenses Petty" || category == "Prepaid Load" || category == "Change for Customer" || category == "Helper Fees" || category == "Other" || category == "Prepaid Load" || category == "Salary Petty") 
+        this.operation_type = "2";  // Cash Out
+
+  },
+
     getAllPriceRecord: function() {
       var token = localStorage.getItem("token");
       var form_Data = new FormData();

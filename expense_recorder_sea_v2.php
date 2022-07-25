@@ -188,6 +188,10 @@ try {
                         if($decoded->data->sea_expense)
                         {
                     ?>
+                    <a class="nav_link" href="attendance_sea_v2.php">
+                        <eng>Attendance</eng>
+                    </a>
+
                     <a class="nav_link" href="staff_list_sea.php">
                         <eng>Staff List</eng>
                     </a>

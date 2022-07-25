@@ -32,7 +32,7 @@ try {
 
     $merged_results = array();
 
-    $query = "SELECT id, staff username from staff_list where status = 0 and punch = 1 order by staff";
+    $query = "SELECT id, staff username from staff_list where status <> 'D' and punch = 1 order by staff";
 
     $stmt = $db->prepare( $query);
     $stmt->execute();

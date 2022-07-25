@@ -321,7 +321,7 @@ header( 'location:index.php' );
                         if($decoded->data->sea_expense)
             {
             ?>
-            <a class="nav_link" href="attendance_sea.php">
+            <a class="nav_link" href="attendance_sea_v2.php">
                 <eng>Attendance</eng>
             </a>
 
