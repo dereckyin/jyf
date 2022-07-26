@@ -314,7 +314,6 @@ try {
                                     <option>Other</option>
                                     <option>Petty</option>
                                     <option>Prepaid Load</option>
-                                    <option>Receipt</option>
                                     <option>Salary Petty</option>
                                 </select>
                             </td>
