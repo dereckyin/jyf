@@ -213,6 +213,18 @@ var app = new Vue({
   component: {},
 
   methods: {
+    onChange(event) {
+      console.log(event.target.value)
+      let category = event.target.value;
+
+      if (category == "Staff Return Money" || category == "Petty") 
+        this.operation_type = "1";  // Cash In
+
+      if (category == "Salary" || category == "Overtime" || category == "Allowance" || category == "Incentive" || category == "Staff Borrow Money" || category == "Bonus" || category == "Separation pay" || category == "Perfect Attendance") 
+        this.operation_type = "2";  // Cash Out
+
+  },
+
     getAllPriceRecord: function() {
       var token = localStorage.getItem("token");
       var form_Data = new FormData();

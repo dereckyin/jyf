@@ -301,7 +301,7 @@ try {
                                 </td>
 
                                 <td style="text-align: left;">
-                                    <select class="form-control" style="width:25vw;" v-model="category">
+                                    <select class="form-control" @change="onChange($event)" style="width:25vw;" v-model="category" >
                                     <option>Salary</option>
                                     <option>Overtime</option>
                                     <option>Allowance</option>
