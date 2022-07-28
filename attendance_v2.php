@@ -318,32 +318,37 @@ header( 'location:index.php' );
 
         <div>
             <?php
-                        if($decoded->data->sea_expense)
+                        if($decoded->data->status_1)
             {
             ?>
-            <a class="nav_link" href="attendance_sea.php">
+            <a class="nav_link" href="attendance_v2.php">
                 <eng>Attendance</eng>
             </a>
 
-            <a class="nav_link" href="staff_list_sea.php">
+            <a class="nav_link" href="staff_list.php">
                 <eng>Staff List</eng>
             </a>
 
-            <a class="nav_link" href="salary_recorder_sea.php">
+            <a class="nav_link" href="salary_recorder.php">
                 <eng>Salary Recorder</eng>
             </a>
 
-            <a class="nav_link" href="expense_recorder_sea.php">
+            <a class="nav_link" href="expense_recorder.php">
                 <eng>Expense Recorder</eng>
             </a>
+
+            <a class="nav_link" href="details_ntd_php.php">
+                <eng>NTD~PHP</eng>
+            </a>
+
             <?php
                         }
                     ?>
             <?php
-                        if($decoded->data->sea_expense_v2)
+                        if($decoded->data->status_2)
             {
             ?>
-            <a class="nav_link" href="expense_recorder_sea_v2.php">
+            <a class="nav_link" href="expense_recorder_v2.php">
                 <eng>Expense Recorder2</eng>
             </a>
             <?php
