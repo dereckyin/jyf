@@ -744,11 +744,14 @@ var app = new Vue({
         decompose_item: async function () {
           let favorite = [];
       
+          row_selected = 0;
 
           for (i = 0; i < this.receive_records.length; i++) {
               if(this.receive_records[i].is_checked == 1)
               {
-                let measure = this.receive_records[i].measure;
+                  let measure = this.receive_records[i].measure;
+                  row_selected = 0
+                  
                     for (j = 0; j < measure.length; j++) {
                       if(measure[j].payment_status != "")
                       {
@@ -756,10 +759,28 @@ var app = new Vue({
                         this.getMeasures();
                         return;
                       }
+                      else
+                      {
+                        row_selected++;
+                      }
                     }
-                  favorite.push(this.receive_records[i].group_id);
+
+                    if(row_selected < 2)
+                    {
+                      Swal.fire({
+                        title: 'Info',
+                        text: 'This item cannot be decomposed.',
+                        type: 'Info',
+                        confirmButtonText: 'OK'
+                      });
+                      return;
+                    }
+                    
+                    favorite.push(this.receive_records[i].group_id);
               }
             }
+
+            
 
             if(favorite.length == 0) {
               Swal.fire({

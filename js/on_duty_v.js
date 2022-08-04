@@ -83,10 +83,10 @@ var app = new Vue({
     },
 
     getUUID: function() {
-      //var uuid = new DeviceUUID().get();
-      //if(uuid != 'd520c7a8-421b-4563-b955-f5abc56b97eb')
-      //  window.location = "index.html";
-      //else
+      var uuid = new DeviceUUID().get();
+      if(uuid != '28218b4c-5657-4cd0-bb65-528169d7922e')
+       window.location = "index.html";
+      else
         this.verified = true;
     },
 

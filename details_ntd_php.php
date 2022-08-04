@@ -366,6 +366,10 @@ header( 'location:index.php' );
                 if($decoded->data->status_1 == "1")
             {
             ?>
+            <a class="nav_link" href="attendance_v2.php">
+                <eng>Attendance</eng>
+            </a>
+
             <a class="nav_link" href="staff_list.php">
                 <eng>Staff List</eng>
             </a>
