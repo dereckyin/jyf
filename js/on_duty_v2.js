@@ -29,13 +29,27 @@ var app = new Vue({
 
     username : [],
 
+    receive_records: [],
+
+    attendance_records:[],
+
+    sel_date: "",
+    yes_date: "",
+
   },
 
   created () {
 
+    this.getTimeNow();
+    this.getToday();
+    this.getYesterday();
+
       this.getLocation()
       this.getUsers()
       this.getUUID()
+
+      this.getRecords(this.sel_date)
+      this.getYesRecords()
   },
 
   computed: {
@@ -45,17 +59,47 @@ var app = new Vue({
 
     showPhoto: function(){
       return (this.location=='W');
-    }
+    },
+
   },
 
   mounted(){
-    this.getTimeNow();
-    this.getToday();
-    this.getYesterday();
+  
    
   },
 
+  watch:{
+    sel_date: function() {
+      this.getRecords(this.sel_date);
+    }
+  },
+
   methods:{
+
+    getRecords: function(keyword) {
+      axios.get('api/attendance_v2_sea.php?mdate='+keyword)
+          .then(function(response) {
+              console.log(response.data);
+              app.receive_records = response.data;
+
+          })
+          .catch(function(error) {
+              console.log(error);
+          });
+  },
+
+  getYesRecords: function() {
+    axios.get('api/attendance_v2_sea_row.php')
+        .then(function(response) {
+            console.log(response.data);
+            app.attendance_records = response.data;
+
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+},
+
 
     getUsers: function() {
       axios.get('api/duty_get_user_v2.php')
@@ -119,7 +163,16 @@ var app = new Vue({
       this.today = yyyy + '-' + mm + '-' + dd;
       this.calendar_today = yyyy + '-' + mm + '-' + dd;
 
-      //setInterval(self.getToday, 1000 * 60)
+      this.sel_date = this.today;
+
+      // yesterday
+      var yesdate = new Date();
+      yesdate.setDate(yesdate.getDate() - 1);
+      dd = String(yesdate.getDate()).padStart(2, '0');
+      mm = String(yesdate.getMonth() + 1).padStart(2, '0'); //January is 0!
+      yyyy = yesdate.getFullYear();
+
+      this.yes_date = yyyy + '-' + mm + '-' + dd;
     },
 
     getTimeNow: function() {
@@ -203,8 +256,46 @@ var app = new Vue({
         },
 */
 
+        validateFreqency: function() {
+
+          
+              // find record count in attendance_records
+              var check_cnt = 0;
+              this.attendance_records.forEach(element => {
+                if(element.duty_type == this.type && element.username == this.name && (element.duty_date.replaceAll('-','/') == this.today.replaceAll('-','/'))) {
+                  check_cnt++;
+                }
+              });
+
+              if(check_cnt >= 2) 
+              {
+                Swal.fire({
+                  text: 'For one single date and one type, User only can punch up to 2 times for one type and one date',
+                  icon: 'error',
+                  confirmButtonText: 'OK'
+                })
+                  //this.err_msg = 'Choose Punch Type';
+                  //$(window).scrollTop(0);
+                  return false;
+              }
+              else
+                return true;
+
+
+        },
+
 
         validateForm() {
+
+              var file = "";
+
+              if(document.getElementById("base64image") !== null)
+                file =  document.getElementById("base64image").src;
+
+              if(this.type == '' || this.name == '' || this.today == '' || file == '') {
+
+                return false;
+              }
               if (this.type == "") 
               {
                 Swal.fire({
@@ -258,10 +349,7 @@ var app = new Vue({
                   return false;
               }
 
-              var file = "";
-
-              if(document.getElementById("base64image") !== null)
-                file =  document.getElementById("base64image").src;
+              
 
               if(this.showPhoto && file === "")
               {
@@ -297,8 +385,21 @@ var app = new Vue({
           return;
         }
 
-        if(!this.validateForm())
+        if(!this.validateFreqency()) {
           return;
+        }
+
+        if(!this.validateForm())
+        {
+          Swal.fire({
+            text: 'Employee Name, Date, Type and Photo are required',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
+            //this.err_msg = 'Choose Punch Type';
+            //$(window).scrollTop(0);
+            return;
+        }
 
           var file;
           var ptime;
@@ -402,6 +503,9 @@ var app = new Vue({
             this.getToday();
             this.getTimeNow();
             this.getYesterday();
+
+            this.getRecords(this.sel_date);
+            this.getYesRecords();
             
         },
  

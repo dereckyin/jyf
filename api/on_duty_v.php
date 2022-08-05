@@ -76,7 +76,7 @@ try {
     }
 
     $onduty->username = $username;
-    $onduty->duty_date = date("Y/m/d");
+    $onduty->duty_date = str_replace("-", "/", $today);
     $onduty->duty_type = $type;
     $onduty->location = $location;
     $onduty->remark = $remark;

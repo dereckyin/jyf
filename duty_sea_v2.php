@@ -354,6 +354,43 @@
         display: inline;
         padding: 5px;
     }
+
+    .block .tablebox1, .block .tablebox2 {
+        width: 100%;
+    }
+
+    .tablebox1 > ul, .tablebox2 > ul {
+        display: flex;
+        align-self: center;
+        width: 100%;
+    }
+
+    .tablebox1 > ul > li, .tablebox2 > ul > li {
+        width: 33%;
+    }
+
+    .block .tablebox1 ul li, .block .tablebox2 ul li {
+        font-size: 18px;
+        padding: 10px;
+        font-weight: 500;
+        text-align: center;
+        border-bottom: 1px solid #707070;
+        vertical-align: middle;
+    }
+
+    .block .tablebox2 ul li {
+        border-bottom: none;
+    }
+
+    .block .tablebox1 ul.head li, .block .tablebox2 ul.head li {
+        font-weight: 700;
+    }
+
+    .tablebox1 > ul > li {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 </style>
 
 <body class="primary">
@@ -434,6 +471,32 @@
         </div>
 
 
+
+        <div class="block B focus">
+            <h6 style="display: flex; justify-content: space-between; align-items: center;">Attendance
+                <input  v-model="sel_date" type="date" style="width: 170px;" :min="yesterday" :max="calendar_today" >
+            </h6>
+            <div class="box-content">
+                
+                <div class="tablebox1">
+                    <ul class="head">
+                        <li>Name</li>
+                        <li>Time In</li>
+                        <li>Time Out</li>
+                    </ul>
+
+                    <ul v-for='(record, index) in receive_records'>
+                        <li>{{ record.username }}</li>
+                        <li><p v-html="record.duty_date.split('<br>').join('<br />')"></li>
+                        <li><p v-html="record.duty_out.split('<br>').join('<br />')"></li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+
+
     </div>
 </div>
 </body>
@@ -456,6 +519,7 @@
 
     var today = year + "-" + month + "-" + day +"T00:00";       
     $("#myDate").attr("value", today);
+
 });
 </script>
 
