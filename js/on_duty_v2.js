@@ -127,10 +127,10 @@ var app = new Vue({
     },
 
     getUUID: function() {
-      var uuid = new DeviceUUID().get();
-      if(uuid != '28218b4c-5657-4cd0-bb65-528169d7922e')
-       window.location = "index.html";
-      else
+      // var uuid = new DeviceUUID().get();
+      // if(uuid != '28218b4c-5657-4cd0-bb65-528169d7922e')
+      //  window.location = "index.html";
+      // else
         this.verified = true;
     },
 
