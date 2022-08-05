@@ -124,7 +124,7 @@ if($jwt){
                             $spreadsheet->createSheet();
                             $spreadsheet->setActiveSheetIndex($page);
                             $sheet = $spreadsheet->getActiveSheet();
-                            $sheet->setTitle($row['username']);
+                            $sheet->setTitle($old_name);
                             SetFirstPage($sheet, $merged, $conf, $styleArray);
                             $page++;
                         }
