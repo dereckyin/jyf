@@ -81,28 +81,31 @@ $user_id = $decoded->data->id;
         }
 
         // for payment
-        $query = "update payment 
-                    set status = -1, 
-                    mdf_time = now(),
-                    mdf_user = '" . $user . "'
-            WHERE detail_id in (select measure_detail_id from pick_group where group_id in (" . $id . ") and pick_group.status = 0)";
+        if($id != 0)
+        {
+            $query = "update payment 
+                        set status = -1, 
+                        mdf_time = now(),
+                        mdf_user = '" . $user . "'
+                WHERE detail_id in (select measure_detail_id from pick_group where group_id in (" . $id . ") and pick_group.status = 0)";
 
-        $stmt = $conn->prepare($query);
+            $stmt = $conn->prepare($query);
 
-        try {
-            // execute the query, also check if query was successful
-            if (!$stmt->execute()) {
+            try {
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
+                    $conn->rollback();
+                    http_response_code(501);
+                    echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
                 $conn->rollback();
                 http_response_code(501);
-                echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
             }
-        } catch (Exception $e) {
-            error_log($e->getMessage());
-            $conn->rollback();
-            http_response_code(501);
-            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-            die();
         }
 
         // for group
