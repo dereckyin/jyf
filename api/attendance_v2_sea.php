@@ -63,9 +63,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             $dateObject = new DateTime($row1['duty_date'] . " " . $row1['duty_time']);
 
             if($row1['duty_type'] == 'A')
-                $row_date .= "<div style='color:green; display:inline;'>" . $row1['created_at'] . "</div><br>";
+                $row_date .= "<div style='color:green; display:inline;'>" . date('Y/m/d h:i A', strtotime($row1['created_at'])) . "</div><br>";
             if($row1['duty_type'] == 'B')
-                $row_out .= "<div style='color:grey; display:inline;'>" . $row1['created_at'] . "</div><br>";
+                $row_out .= "<div style='color:grey; display:inline;'>" . date('Y/m/d h:i A', strtotime($row1['created_at'])) . "</div><br>";
 
             $row_location .= GetLocation($row1['location']) . "<br>";
 

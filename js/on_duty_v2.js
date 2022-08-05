@@ -270,7 +270,7 @@ var app = new Vue({
               if(check_cnt >= 2) 
               {
                 Swal.fire({
-                  text: 'For one single date and one type, User only can punch up to 2 times for one type and one date',
+                  text: 'For one single date and one type, user only can punch up to 2 times',
                   icon: 'error',
                   confirmButtonText: 'OK'
                 })
