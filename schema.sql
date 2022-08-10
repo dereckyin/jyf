@@ -1060,3 +1060,7 @@ ALTER TABLE staff_list
 ADD COLUMN `punch` int(11) DEFAULT 0 after `address`;
 
 update staff_list set punch = 1;
+
+-- 20220810 
+ALTER TABLE airship_records
+ADD COLUMN `mode` varchar(3) DEFAULT '' AFTER date_receive;

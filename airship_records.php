@@ -620,6 +620,21 @@ header( 'location:index.php' );
                                 </li>
                             </ul>
 
+                            <ul>
+                                <li>
+                                    <label>
+                                        <cht>模式</cht>
+                                        Mode</label>
+                                </li>
+
+                                <li class="two_input">
+                                    <select class="form-control" v-model="mode">
+                                        <option value="">空運</option>
+                                        <option value="exp">快遞</option>
+                                    </select>
+                                </li>
+                            </ul>
+
                             <ul class="tw">
                                 <li>
                                     <label>
@@ -1051,6 +1066,11 @@ header( 'location:index.php' );
                         </th>
 
                         <th class="text-nowrap">
+                            <cht>模式</cht>
+                            Mode
+                        </th>
+
+                        <th class="text-nowrap">
                             <cht>客戶名</cht>
                             Customer
                         </th>
@@ -1139,6 +1159,8 @@ header( 'location:index.php' );
 
                         <td>{{ item.date_receive }}</td>
 
+                        <td>{{ item.mode == 'exp' ? '快遞' : '空運' }}</td>
+
                         <td>{{ item.customer }}</td>
 
                         <td>{{ item.address }}</td>
@@ -1206,7 +1228,7 @@ header( 'location:index.php' );
                     <tfoot class="thead-light" id="flag_total">
 
                     <tr>
-                        <th colspan="8">Total</th>
+                        <th colspan="9">Total</th>
                         <th style="text-align: right;">
                             <!--
                             {{ total !== undefined ?

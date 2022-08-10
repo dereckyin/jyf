@@ -290,7 +290,7 @@
     }
 
     .block .box-content {
-        padding: 20px 40px 30px;
+        padding: 20px 10px 30px;
     }
 
     .block .title {
@@ -365,8 +365,16 @@
         width: 100%;
     }
 
-    .tablebox1 > ul > li, .tablebox2 > ul > li {
-        width: 33%;
+    .tablebox1 > ul > li:nth-of-type(1), .tablebox2 > ul > li:nth-of-type(1) {
+        width: 30%;
+    }
+
+    .tablebox1 > ul > li:nth-of-type(2), .tablebox2 > ul > li:nth-of-type(2) {
+        width: 35%;
+    }
+
+    .tablebox1 > ul > li:nth-of-type(3), .tablebox2 > ul > li:nth-of-type(3) {
+        width: 35%;
     }
 
     .block .tablebox1 ul li, .block .tablebox2 ul li {
