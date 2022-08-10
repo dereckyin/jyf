@@ -51,6 +51,7 @@ else
 
         $query = "SELECT ss.id, 
                         date_receive, 
+                        mode,
                         customer, 
                         address, 
                         description, 
@@ -153,6 +154,7 @@ if($date_type == "p")
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $id = $row['id'];
             $date_receive = $row['date_receive'];
+            $mode = $row['mode'];
             $customer = $row['customer'];
             $address = $row['address'];
             $description = $row['description'];
@@ -181,6 +183,7 @@ if($date_type == "p")
                 "is_edited" => 1,
                 "id" => $id,
                 "date_receive" => $date_receive,
+                "mode" => $mode,
                 "customer" => $customer,
                 "address" => $address,
                 "description" => $description,

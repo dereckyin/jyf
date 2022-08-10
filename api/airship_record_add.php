@@ -57,6 +57,7 @@ $jwt = (isset($_POST['jwt']) ?  $_POST['jwt'] : null);
 $id = (isset($_POST['id']) ?  $_POST['id'] : 0);
 
 $date_receive = (isset($_POST['date_receive']) ?  $_POST['date_receive'] : '');
+$mode = (isset($_POST['mode']) ?  $_POST['mode'] : '');
 $customer = (isset($_POST['customer']) ?  $_POST['customer'] : '');
 $address = (isset($_POST['address']) ?  $_POST['address'] : '');
 $description = (isset($_POST['description']) ?  $_POST['description'] : '');
@@ -97,6 +98,7 @@ try {
         $query = "INSERT INTO airship_records
         SET
         `date_receive` = :date_receive,
+        `mode` = :mode,
         `customer` = :customer,
         `address` = :address,
         `description` = :description,
@@ -144,6 +146,7 @@ if ($total_php != ''  && !is_null($total_php)) {
 
         // bind the values
         $stmt->bindParam(':date_receive', $date_receive);
+        $stmt->bindParam(':mode', $mode);
         $stmt->bindParam(':customer', $customer);
         $stmt->bindParam(':address', $address);
         $stmt->bindParam(':description', $description);
@@ -323,6 +326,7 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
         $query = "update airship_records
         set
             `date_receive` = :date_receive,
+            `mode` = :mode,
             `customer` = :customer,
             `address` = :address,
             `description` = :description,
@@ -375,6 +379,7 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
 
         // bind the values
         $stmt->bindParam(':date_receive', $date_receive);
+        $stmt->bindParam(':mode', $mode);
         $stmt->bindParam(':customer', $customer);
         $stmt->bindParam(':address', $address);
         $stmt->bindParam(':description', $description);

@@ -101,6 +101,7 @@ var app = new Vue({
     total: "",
     pay_date: "",
     pay_status: "",
+    mode : "",
 
     amount_php: "",
     amount: "",
@@ -127,6 +128,7 @@ var app = new Vue({
 
     edit_once_kilo : false,
     edit_once_currency : false,
+    edit_once_mode : false,
 
   },
 
@@ -166,6 +168,108 @@ var app = new Vue({
       }
     },
 
+    mode: function() {
+      if(this.edit_once_mode == true)
+      {
+        this.edit_once_mode = false;
+        return;
+      }
+
+      if(this.mode == '')
+      {
+        this.details = [];
+
+        obj = {
+          "id" : 1,
+          "title" : "空運費",
+          "qty" : "",
+          "price": 89,
+        }, 
+        this.details.push(obj);
+  
+        obj = {
+          "id" : 2,
+          "title" : "過檢費",
+          "qty" : "",
+          "price": 2,
+        }, 
+        this.details.push(obj);
+  
+        obj = {
+          "id" : 3,
+          "title" : "報關費",
+          "qty" : "",
+          "price": 1000,
+        }, 
+        this.details.push(obj);
+  
+        obj = {
+          "id" : 4,
+          "title" : "文件費",
+          "qty" : "",
+          "price": 600,
+        }, 
+        this.details.push(obj);
+  
+        obj = {
+          "id" : 5,
+          "title" : "傳輸費",
+          "qty" : "",
+          "price": 240,
+        }, 
+        this.details.push(obj);
+  
+        obj = {
+          "id" : 6,
+          "title" : "保險費",
+          "qty" : "",
+          "price": 400,
+        }, 
+        this.details.push(obj);
+  
+        obj = {
+          "id" : 7,
+          "title" : "內陸運費",
+          "qty" : "",
+          "price": "",
+        }, 
+        this.details.push(obj);
+
+        this.calculate_total();
+      }
+      else if(this.mode == 'exp')
+      {
+        this.details = [];
+        
+        obj = {
+          "id" : 1,
+          "title" : "空運費",
+          "qty" : "",
+          "price": 141,
+        }, 
+        this.details.push(obj);
+  
+        obj = {
+          "id" : 2,
+          "title" : "卡車費",
+          "qty" : "",
+          "price": 500,
+        }, 
+        this.details.push(obj);
+  
+        obj = {
+          "id" : 3,
+          "title" : "套袋費",
+          "qty" : "",
+          "price": 50,
+        }, 
+        this.details.push(obj);
+
+        this.calculate_total();
+      }
+
+    },
+
   },
   component: {},
 
@@ -187,6 +291,7 @@ var app = new Vue({
       this.flight = "";
       this.flight_date = "";
       this.currency = "";
+      this.mode = "";
       this.total = "";
       this.total_php = "";
       this.pay_date = "";
@@ -503,6 +608,7 @@ var app = new Vue({
       form_Data.append("jwt", token);
       form_Data.append("id", this.id);
       form_Data.append("date_receive", this.date_receive);
+      form_Data.append("mode", this.mode);
       form_Data.append("customer", this.customer);
       form_Data.append("address", this.address);
       form_Data.append("description", this.description);
@@ -799,10 +905,16 @@ var app = new Vue({
         this.edit_once_kilo = true;
       else
         this.edit_once_kilo = false;
+
+      if(this.mode !== row.mode)
+        this.edit_once_mode = true;
+      else
+        this.edit_once_mode = false;
       
       this.id = row.id;
       
       this.date_receive = row.date_receive;
+      this.mode = row.mode;
       this.customer = row.customer;
       this.address = row.address;
       this.description = row.description;

@@ -54,6 +54,7 @@ if($jwt){
 
             $query = "SELECT ss.id, 
                         date_receive, 
+                        mode,
                         customer, 
                         address, 
                         description, 
@@ -147,6 +148,7 @@ if($date_type == "p")
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $id = $row['id'];
             $date_receive = $row['date_receive'];
+            $mode = $row['mode'];
             $customer = $row['customer'];
             $address = $row['address'];
             $description = $row['description'];
@@ -175,6 +177,7 @@ if($date_type == "p")
                 "is_edited" => 1,
                 "id" => $id,
                 "date_receive" => $date_receive,
+                "mode" => $mode,
                 "customer" => $customer,
                 "address" => $address,
                 "description" => $description,
@@ -232,23 +235,24 @@ if($date_type == "p")
 
 
             $sheet->setCellValue('A1', '收件日期Date Received');
-            $sheet->setCellValue('B1', '客戶名Customer');
-            $sheet->setCellValue('C1', '地址Address');
-            $sheet->setCellValue('D1', '貨品名稱Description');
-            $sheet->setCellValue('E1', '件數Quantity');
-            $sheet->setCellValue('F1', '重量Kilo');
-            $sheet->setCellValue('G1', '寄貨人Supplier');
-            $sheet->setCellValue('H1', '班機與日期Flight and Date');
-            $sheet->setCellValue('I1', '收費金額Amount');
-            $sheet->setCellValue('J1', '付款日期Date Paid');
-            $sheet->setCellValue('K1', '付款狀態Payment Status');
-            $sheet->setCellValue('L1', '台幣金額Amount in NTD');
-            $sheet->setCellValue('M1', '明細Details');
-            $sheet->setCellValue('N1', '菲幣金額Amount in PHP');
-            $sheet->setCellValue('O1', '明細Details');
-            $sheet->setCellValue('P1', '抵達客人住址時間Time Delivery Arrived');
-            $sheet->setCellValue('Q1', '簽收人Person Receive Delivery');
-            $sheet->setCellValue('R1', '補充說明Notes');
+            $sheet->setCellValue('B1', '模式Mode');
+            $sheet->setCellValue('C1', '客戶名Customer');
+            $sheet->setCellValue('D1', '地址Address');
+            $sheet->setCellValue('E1', '貨品名稱Description');
+            $sheet->setCellValue('F1', '件數Quantity');
+            $sheet->setCellValue('G1', '重量Kilo');
+            $sheet->setCellValue('H1', '寄貨人Supplier');
+            $sheet->setCellValue('I1', '班機與日期Flight and Date');
+            $sheet->setCellValue('J1', '收費金額Amount');
+            $sheet->setCellValue('K1', '付款日期Date Paid');
+            $sheet->setCellValue('L1', '付款狀態Payment Status');
+            $sheet->setCellValue('M1', '台幣金額Amount in NTD');
+            $sheet->setCellValue('N1', '明細Details');
+            $sheet->setCellValue('O1', '菲幣金額Amount in PHP');
+            $sheet->setCellValue('P1', '明細Details');
+            $sheet->setCellValue('Q1', '抵達客人住址時間Time Delivery Arrived');
+            $sheet->setCellValue('R1', '簽收人Person Receive Delivery');
+            $sheet->setCellValue('S1', '補充說明Notes');
 
             $i = 2;
 
@@ -256,35 +260,36 @@ if($date_type == "p")
             {
                 
                     $sheet->setCellValue('A' . $i, $measure["date_receive"]);
-                    $sheet->setCellValue('B' . $i, $measure["customer"]);
-                    $sheet->setCellValue('C' . $i, $measure["address"]);
-                    $sheet->setCellValue('D' . $i, $measure["description"]);
-                    $sheet->setCellValue('E' . $i, $measure["quantity"]);
-                    $sheet->setCellValue('F' . $i, $measure["kilo"]);
-                    $sheet->setCellValue('G' . $i, $measure["supplier"]);
-                    $sheet->setCellValue('H' . $i, $measure["flight"] . "\n" . $measure["flight_date"]);
-                    $sheet->getStyle('H' . $i)->getAlignment()->setWrapText(true);
-                    $sheet->setCellValue('I' . $i, $measure["total"] . ' ' . $measure["currency"]);
-                    $sheet->setCellValue('J' . $i, $measure["pay_date"]);
-                    $sheet->setCellValue('K' . $i, $measure["pay_status"] == 't' ? 'Taiwan Paid' : ($measure["pay_status"] == 'p' ? 'Philippines Paid' : ""));
-                    $sheet->setCellValue('L' . $i, $measure["amount"]);
-                    $sheet->setCellValue('M' . $i, RecordToString($measure["items"]));
-                    $sheet->getStyle('M' . $i)->getAlignment()->setWrapText(true);
-                    $sheet->setCellValue('N' . $i, $measure["amount_php"]);
-                    $sheet->setCellValue('O' . $i, RecordToString($measure["items_php"]));
-                    $sheet->getStyle('O' . $i)->getAlignment()->setWrapText(true);
-                    $sheet->setCellValue('P' . $i, str_replace("T"," ",$measure["date_arrive"]));
-                    $sheet->setCellValue('Q' . $i, $measure["receiver"]);
-                    $sheet->setCellValue('R' . $i, $measure["remark"]);
+                    $sheet->setCellValue('B' . $i, $measure["mode"]);
+                    $sheet->setCellValue('C' . $i, $measure["customer"]);
+                    $sheet->setCellValue('D' . $i, $measure["address"]);
+                    $sheet->setCellValue('E' . $i, $measure["description"]);
+                    $sheet->setCellValue('F' . $i, $measure["quantity"]);
+                    $sheet->setCellValue('G' . $i, $measure["kilo"]);
+                    $sheet->setCellValue('H' . $i, $measure["supplier"]);
+                    $sheet->setCellValue('I' . $i, $measure["flight"] . "\n" . $measure["flight_date"]);
+                    $sheet->getStyle('I' . $i)->getAlignment()->setWrapText(true);
+                    $sheet->setCellValue('J' . $i, $measure["total"] . ' ' . $measure["currency"]);
+                    $sheet->setCellValue('K' . $i, $measure["pay_date"]);
+                    $sheet->setCellValue('L' . $i, $measure["pay_status"] == 't' ? 'Taiwan Paid' : ($measure["pay_status"] == 'p' ? 'Philippines Paid' : ""));
+                    $sheet->setCellValue('M' . $i, $measure["amount"]);
+                    $sheet->setCellValue('N' . $i, RecordToString($measure["items"]));
+                    $sheet->getStyle('N' . $i)->getAlignment()->setWrapText(true);
+                    $sheet->setCellValue('O' . $i, $measure["amount_php"]);
+                    $sheet->setCellValue('P' . $i, RecordToString($measure["items_php"]));
+                    $sheet->getStyle('P' . $i)->getAlignment()->setWrapText(true);
+                    $sheet->setCellValue('Q' . $i, str_replace("T"," ",$measure["date_arrive"]));
+                    $sheet->setCellValue('R' . $i, $measure["receiver"]);
+                    $sheet->setCellValue('S' . $i, $measure["remark"]);
                   
               
-                    $sheet->getStyle('A'. $i. ':' . 'R' . $i)->applyFromArray($styleArray);
+                    $sheet->getStyle('A'. $i. ':' . 'S' . $i)->applyFromArray($styleArray);
                     $i++;
             }
             
             
-            $sheet->getStyle('A1:' . 'R1')->getFont()->setBold(true);
-            $sheet->getStyle('A1:' . 'R' . --$i)->applyFromArray($styleArray);
+            $sheet->getStyle('A1:' . 'S1')->getFont()->setBold(true);
+            $sheet->getStyle('A1:' . 'S' . --$i)->applyFromArray($styleArray);
             
 
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
