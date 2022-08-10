@@ -1367,6 +1367,7 @@ var app = new Vue({
     
           form_data.append('id', this.detail_id);
           form_data.append('record', JSON.stringify(this.payment));
+          form_data.append('pre_record', JSON.stringify(this.payment_record));
            form_data.append('encode_status', '');
    
           let token = localStorage.getItem("accessToken");
@@ -1403,6 +1404,7 @@ var app = new Vue({
     
           form_data.append('id', this.detail_id);
           form_data.append('record', JSON.stringify(this.payment));
+          form_data.append('pre_record', JSON.stringify(this.payment_record));
            form_data.append('encode_status', 'C');
    
           let token = localStorage.getItem("accessToken");
