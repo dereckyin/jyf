@@ -80,12 +80,52 @@ $user_id = $decoded->data->id;
             die();
         }
         } catch (Exception $e) {
-        error_log($e->getMessage());
-        $conn->rollback();
-        http_response_code(501);
-        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-        die();
+            error_log($e->getMessage());
+            $conn->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            die();
         }
+
+        $detail_id = array();
+        for ($i = 0; $i < count($detail_array); $i++) {
+            if($detail_array[$i]['detail_id'] != '' && $detail_array[$i]['detail_id'] != '0')
+            {
+                // if in array
+                if(!in_array($detail_array[$i]['detail_id'], $detail_id))
+                {
+                    array_push($detail_id, $detail_array[$i]['detail_id']);
+                }
+            }
+           
+        }
+
+        $detail_id = implode(",", $detail_id);
+
+        $query = "update payment 
+                set status = -1,
+                mdf_user = '" . $user . "', 
+                mdf_time = now()
+        WHERE detail_id in (" . $detail_id . ")";
+
+        $stmt = $conn->prepare($query);
+
+        try {
+            // execute the query, also check if query was successful
+            if (!$stmt->execute()) {
+                $conn->rollback();
+                http_response_code(501);
+                echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                die();
+            }
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $conn->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            die();
+        }
+        
 
         for ($i = 0; $i < count($detail_array); $i++) {
             $id = ($detail_array[$i]['id'] == '') ? 0 : $detail_array[$i]['id'];
