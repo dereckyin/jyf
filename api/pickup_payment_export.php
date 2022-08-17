@@ -273,73 +273,73 @@ $table2 = $section->addTable([
 
 $table2->addRow();
 $table2->addCell(1133.858268)->addText(htmlspecialchars("SOLD TO: "), array('name' => 'Calibri', 'size' => 12), array('align' => 'center'));
-$table2->addCell(6236.220474, ['borderBottomColor' => '000000', 'borderBottomSize' => 6])->addText(htmlspecialchars($exp_sold_to), array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
+$table2->addCell(6236.220474, ['borderBottomColor' => '0000ff', 'borderBottomSize' => 6])->addText(htmlspecialchars($exp_sold_to), array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
 $table2->addCell(396.850394)->addText("", array('name' => 'Calibri', 'size' => 12), array('align' => 'center'));
 $table2->addCell(850.393701)->addText(htmlspecialchars("DATE: "), array('name' => 'Calibri', 'size' => 12), array('align' => 'center'));
-$table2->addCell(2653.228347, ['borderBottomColor' => '000000', 'borderBottomSize' => 6])->addText(htmlspecialchars($exp_date), array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
+$table2->addCell(2653.228347, ['borderBottomColor' => '0000ff', 'borderBottomSize' => 6])->addText(htmlspecialchars($exp_date), array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
 
 $section->addTextBreak(1, array('name' => 'Calibri', 'size' => 12));
 
 $styleCellLeft =
 [
     'align' => 'left',
-    'borderTopColor' =>'000000',
+    'borderTopColor' =>'0000ff',
     'borderTopSize' => 6,
-    'borderRightColor' =>'000000',
+    'borderRightColor' =>'0000ff',
     'borderRightSize' => 6,
-    'borderBottomColor' =>'000000',
+    'borderBottomColor' =>'0000ff',
     'borderBottomSize' => 6,
-    'borderLeftColor' =>'000000',
+    'borderLeftColor' =>'0000ff',
     'borderLeftSize' => 6,
 ];
 
 $styleCellRight =
 [
     'align' => 'right',
-    'borderTopColor' =>'000000',
+    'borderTopColor' =>'0000ff',
     'borderTopSize' => 6,
-    'borderRightColor' =>'000000',
+    'borderRightColor' =>'0000ff',
     'borderRightSize' => 6,
-    'borderBottomColor' =>'000000',
+    'borderBottomColor' =>'0000ff',
     'borderBottomSize' => 6,
-    'borderLeftColor' =>'000000',
+    'borderLeftColor' =>'0000ff',
     'borderLeftSize' => 6,
 ];
 
 $styleCellCenter =
 [
     'align' => 'center',
-    'borderTopColor' =>'000000',
+    'borderTopColor' =>'0000ff',
     'borderTopSize' => 6,
-    'borderRightColor' =>'000000',
+    'borderRightColor' =>'0000ff',
     'borderRightSize' => 6,
-    'borderBottomColor' =>'000000',
+    'borderBottomColor' =>'0000ff',
     'borderBottomSize' => 6,
-    'borderLeftColor' =>'000000',
+    'borderLeftColor' =>'0000ff',
     'borderLeftSize' => 6,
 ];
 
 $styleCellHeadCenter =
 [
     'align' => 'center',
-    'borderTopColor' =>'000000',
+    'borderTopColor' =>'0000ff',
     'borderTopSize' => 6,
     'borderRightColor' =>'ffffff',
     'borderRightSize' => 0,
-    'borderBottomColor' =>'000000',
+    'borderBottomColor' =>'0000ff',
     'borderBottomSize' => 6,
-    'borderLeftColor' =>'000000',
+    'borderLeftColor' =>'0000ff',
     'borderLeftSize' => 6,
 ];
 
 $styleCellTailCenter =
 [
     'align' => 'center',
-    'borderTopColor' =>'000000',
+    'borderTopColor' =>'0000ff',
     'borderTopSize' => 6,
-    'borderRightColor' =>'000000',
+    'borderRightColor' =>'0000ff',
     'borderRightSize' => 6,
-    'borderBottomColor' =>'000000',
+    'borderBottomColor' =>'0000ff',
     'borderBottomSize' => 6,
     'borderLeftColor' =>'ffffff',
     'borderLeftSize' => 0,
@@ -354,13 +354,13 @@ $styleCellCenterConent =
 $styleHeadCenterUnderline =
 [
     'align' => 'center',
-    'borderTopColor' =>'000000',
+    'borderTopColor' =>'0000ff',
     'borderTopSize' => 6,
     'borderRightColor' =>'ffffff',
     'borderRightSize' => 0,
-    'borderBottomColor' =>'000000',
+    'borderBottomColor' =>'0000ff',
     'borderBottomSize' => 6,
-    'borderLeftColor' =>'000000',
+    'borderLeftColor' =>'0000ff',
     'borderLeftSize' => 6,
     'name' => 'Calibri', 
     'size' => 12
@@ -369,11 +369,11 @@ $styleHeadCenterUnderline =
 $styleTailCenterUnderline =
 [
     'align' => 'center',
-    'borderTopColor' =>'000000',
+    'borderTopColor' =>'0000ff',
     'borderTopSize' => 6,
-    'borderRightColor' =>'000000',
+    'borderRightColor' =>'0000ff',
     'borderRightSize' => 6,
-    'borderBottomColor' =>'000000',
+    'borderBottomColor' =>'0000ff',
     'borderBottomSize' => 6,
     'borderLeftColor' =>'ffffff',
     'borderLeftSize' => 0,
@@ -384,13 +384,13 @@ $styleTailCenterUnderline =
 $styleHeadCenterUnderlineBold =
 [
     'align' => 'center',
-    'borderTopColor' =>'000000',
+    'borderTopColor' =>'0000ff',
     'borderTopSize' => 6,
-    'borderRightColor' =>'000000',
+    'borderRightColor' =>'0000ff',
     'borderRightSize' => 6,
-    'borderBottomColor' =>'000000',
+    'borderBottomColor' =>'0000ff',
     'borderBottomSize' => 6,
-    'borderLeftColor' =>'000000',
+    'borderLeftColor' =>'0000ff',
     'borderLeftSize' => 6,
     'name' => 'Calibri', 
     'size' => 12,
@@ -404,10 +404,10 @@ $table3 = $section->addTable( [
     'cellMargin' => 56.692913,
 ]);
 
-$styleTable = array('borderSize' => 6, 'borderColor' => '000000');
+$styleTable = array('borderSize' => 6, 'borderColor' => '0000ff');
 $cellRowSpan = array('vMerge' => 'restart', 'valign' => 'center');
 $cellRowContinue = array('vMerge' => 'continue');
-$cellColSpan = array('gridSpan' => 2, 'valign' => 'center', 'borderSize' => 6, 'borderColor' => '000000');
+$cellColSpan = array('gridSpan' => 2, 'valign' => 'center', 'borderSize' => 6, 'borderColor' => '0000ff');
 $cellHCentered = array('align' => 'center');
 $cellVCentered = array('valign' => 'center');
 
@@ -476,7 +476,7 @@ foreach ($payments as $payment) {
 if(count($real_payment) > 0)
 {
     $table4->addRow();
-    $table4->addCell(11270.551184, array('gridSpan' => count($real_payment), 'valign' => 'center', 'borderSize' => 6, 'borderColor' => '000000'))->addText(htmlspecialchars("Details of Received Payment"), $styleHeadCenterUnderlineBold, array('align' => 'center'));
+    $table4->addCell(11270.551184, array('gridSpan' => count($real_payment), 'valign' => 'center', 'borderSize' => 6, 'borderColor' => '0000ff'))->addText(htmlspecialchars("Details of Received Payment"), $styleHeadCenterUnderlineBold, array('align' => 'center'));
     $table4->addRow();
     foreach ($real_payment as $payment) {
         $cell = $table4->addCell(11270.551184/count($real_payment), $styleCellCenter);
@@ -489,7 +489,7 @@ if(count($real_payment) > 0)
 else
 {
     $table4->addRow();
-    $table4->addCell(11270.551184, array('gridSpan' => 1, 'valign' => 'center', 'borderSize' => 6, 'borderColor' => '000000'))->addText(htmlspecialchars("Details of Received Payment"), array('name' => 'Calibri', 'size' => 12, 'bold' => true), array('align' => 'center'));
+    $table4->addCell(11270.551184, array('gridSpan' => 1, 'valign' => 'center', 'borderSize' => 6, 'borderColor' => '0000ff'))->addText(htmlspecialchars("Details of Received Payment"), array('name' => 'Calibri', 'size' => 12, 'bold' => true), array('align' => 'center'));
     $table4->addRow();
    
     $cell = $table4->addCell(11270.551184, $styleCellCenter);
@@ -532,24 +532,24 @@ foreach ($goods as $good) {
 $styleHeadLeftUnderline =
 [
     'align' => 'left',
-    'borderTopColor' =>'000000',
+    'borderTopColor' =>'0000ff',
     'borderTopSize' => 6,
     'borderRightColor' =>'ffffff',
     'borderRightSize' => 0,
-    'borderBottomColor' =>'000000',
+    'borderBottomColor' =>'0000ff',
     'borderBottomSize' => 6,
-    'borderLeftColor' =>'000000',
+    'borderLeftColor' =>'0000ff',
     'borderLeftSize' => 6,
 ];
 
 $styleTailLeftUnderline =
 [
     'align' => 'left',
-    'borderTopColor' =>'000000',
+    'borderTopColor' =>'0000ff',
     'borderTopSize' => 6,
-    'borderRightColor' =>'000000',
+    'borderRightColor' =>'0000ff',
     'borderRightSize' => 6,
-    'borderBottomColor' =>'000000',
+    'borderBottomColor' =>'0000ff',
     'borderBottomSize' => 6,
     'borderLeftColor' =>'ffffff',
     'borderLeftSize' => 0,
@@ -558,18 +558,18 @@ $styleTailLeftUnderline =
 $styleLeftUnderline =
 [
     'align' => 'left',
-    'borderTopColor' =>'000000',
+    'borderTopColor' =>'0000ff',
     'borderTopSize' => 6,
     'borderRightColor' =>'ffffff',
     'borderRightSize' => 0,
-    'borderBottomColor' =>'000000',
+    'borderBottomColor' =>'0000ff',
     'borderBottomSize' => 6,
     'borderLeftColor' =>'ffffff',
     'borderLeftSize' => 0,
 ];
 
 $table5->addRow();
-$table5->addCell(11270.551184, array('gridSpan' => 5, 'valign' => 'center', 'borderSize' => 6, 'borderColor' => '000000'))->addText(htmlspecialchars("Details of Goods"), array('name' => 'Calibri', 'size' => 12, 'bold' => true), array('align' => 'center'));
+$table5->addCell(11270.551184, array('gridSpan' => 5, 'valign' => 'center', 'borderSize' => 6, 'borderColor' => '0000ff'))->addText(htmlspecialchars("Details of Goods"), array('name' => 'Calibri', 'size' => 12, 'bold' => true), array('align' => 'center'));
 
 foreach ($real_goods as $good) {
     $table5->addRow();
@@ -629,7 +629,7 @@ $cell->addText(htmlspecialchars(""), array('name' => 'Calibri', 'size' => 10), a
 $cell->addText(htmlspecialchars(""), array('name' => 'Calibri', 'size' => 10), array('align' => 'left'));
 $cell->addText(htmlspecialchars("BY:"), array('name' => 'Calibri', 'size' => 12), array('align' => 'left'));
 
-$cell = $table6->addCell(3679.370081, ['borderBottomColor' => '000000', 'borderBottomSize' => 6]);
+$cell = $table6->addCell(3679.370081, ['borderBottomColor' => '0000ff', 'borderBottomSize' => 6]);
 $TextRun = $cell->addTextRun();
 $TextRun->addText(htmlspecialchars('     '), array('name' => 'Calibri', 'size' => 12));
 if($assist_by == 'Lailani')
