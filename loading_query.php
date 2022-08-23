@@ -88,6 +88,40 @@ header( 'location:index.php' );
             border: 1px solid #999;
             margin: 0 10px 5px 0;
         }
+
+        #showPhoto tr td img {
+            width: initial;
+            max-width: 250px;
+            max-height: 250px;
+        }
+
+        #showPhoto tr th, #showPhoto tr td {
+            vertical-align: middle;
+        }
+
+        #showPhoto tr th:nth-of-type(1),
+        #showPhoto tr td:nth-of-type(1) {
+            width: 50px;
+            text-align: center;
+        }
+
+        #showPhoto tr th:nth-of-type(2),
+        #showPhoto tr td:nth-of-type(2) {
+            width: 270px;
+            text-align: center;
+        }
+
+        #showPhoto tr th:last-of-type,
+        #showPhoto tr td:last-of-type {
+            width: 40px;
+            text-align: center;
+        }
+
+        #showPhoto tr td:last-of-type > button {
+            width: 36px;
+            height: 36px;
+        }
+
     </style>
 
     <script>
@@ -359,7 +393,7 @@ header( 'location:index.php' );
                     <eng>Current Container Records</eng>
                 </h6>
                 <!-- list -->
-                <div class="mainlist">
+                <div class="mainlist" style="overflow-x: auto;">
 
                     <div class="tablebox d02">
                         <ul class="header">
