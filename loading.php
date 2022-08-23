@@ -464,7 +464,7 @@ header( 'location:index.php' );
                         <eng>Select Goods to Load</eng>
                     </h6>
                     <!-- list -->
-                    <div class="mainlist">
+                    <div class="mainlist" style="overflow-x: auto;">
 
                         <div class="tablebox d02">
                             <ul class="header">
