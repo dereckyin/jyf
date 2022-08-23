@@ -1228,29 +1228,29 @@ header( 'location:index.php' );
                     <tfoot class="thead-light" id="flag_total">
 
                     <tr>
-                        <th colspan="6">Total</th>
-                        <th style="text-align: right;">
+                        <th colspan="6" style="vertical-align: middle;">Total</th>
+                        <th style="text-align: right; vertical-align: middle;">
                             
                             {{ rec_kilo !== undefined ?
                             Number(rec_kilo).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} 
                             
                         </th>
                         <th colspan="2"></th>
-                        <th style="text-align: right;">
+                        <th style="text-align: right; vertical-align: middle;">
                             
                             {{ rec_ntd !== undefined ?
-                            Number(rec_ntd).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} NTD
+                            Number(rec_ntd).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} NTD<br>
                             {{ rec_php !== undefined ?
                             Number(rec_php).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} PHP
                         </th>
                         <th colspan="2"></th>
-                        <th style="text-align: right;">
+                        <th style="text-align: right; vertical-align: middle;">
                             
                             {{ amount !== undefined ?
                             Number(rec_amount).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}
                             
                         </th>
-                        <th style="text-align: right;">
+                        <th style="text-align: right; vertical-align: middle;">
                             
                             {{ amount_php !== undefined ?
                                 Number(rec_amount_php).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}
