@@ -1232,10 +1232,18 @@ header( 'location:index.php' );
                         <th style="text-align: right;">
                             
                             {{ rec_kilo !== undefined ?
-                            Number(rec_kilo).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}
+                            Number(rec_kilo).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} 
                             
                         </th>
-                        <th colspan="5"></th>
+                        <th colspan="2"></th>
+                        <th style="text-align: right;">
+                            
+                            {{ rec_ntd !== undefined ?
+                            Number(rec_ntd).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} NTD
+                            {{ rec_php !== undefined ?
+                            Number(rec_php).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} PHP
+                        </th>
+                        <th colspan="2"></th>
                         <th style="text-align: right;">
                             
                             {{ amount !== undefined ?
