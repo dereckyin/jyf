@@ -985,7 +985,9 @@ var app = new Vue({
       _this.rec_amount = 0.0;
       _this.rec_amount_php = 0.0;
       _this.rec_total_php = 0.0;
-
+      _this.rec_kilo = 0.0;
+      _this.rec_ntd = 0.0;
+      _this.rec_php = 0.0;
 
  
 
