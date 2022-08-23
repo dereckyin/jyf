@@ -75,7 +75,7 @@ if($jwt){
                         receiver,
                         remark,
                         ss.`status` from airship_records ss 
-                        where 1=1  ";
+                        where ss.`status` <> -1  ";
 
 
 if($date_type == "")
