@@ -320,7 +320,8 @@ var app = new Vue({
           },
           
         get_photo_library(receive_records) {
-            app.getPicLibrary();
+            //this.$forceUpdate();
+            //app.getPicLibrary();
             $("#photoModal1").dialog('open');
             this.selectedRecord = receive_records;
         },
@@ -341,7 +342,7 @@ var app = new Vue({
             })
             .then(function(response) {
             //handle success
-      
+            app.getPicLibrary();
 
             })
             .catch(function(error) {
@@ -370,7 +371,7 @@ var app = new Vue({
                                 pic
                             ));
                             await this.savePic(this.selectedRecord.id, pic.pid);
-
+                            
                         }
 
                     }
@@ -474,9 +475,7 @@ var app = new Vue({
 
         getPicLibrary: function(keyword) {
             let _this = this;
-            if(this.pic_lib.length > 0) {
-                return;
-            }
+        
             console.log("getPicLibrary");
               axios.get('api/get_pic_library_loading.php')
                   .then(function(response) {
