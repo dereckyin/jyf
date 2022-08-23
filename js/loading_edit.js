@@ -440,7 +440,7 @@ var app = new Vue({
     methods: {
         get_photo_library(receive_records) {
             //this.$forceUpdate();
-            //app.getPicLibrary();
+            app.getPicLibrary();
             $("#photoModal1").dialog('open');
             this.selectedRecord = receive_records;
         },
