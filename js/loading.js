@@ -362,6 +362,23 @@ var app = new Vue({
     },
 
     methods: {
+        zoom_rec(id) {
+            this.selectedImage = "true";
+            this.pic_preview = this.shallowCopy(this.receive_records.find(element => element.id == id)['pic']);
+  
+            let imgdialog = $("#imgModal").dialog({
+                  autoOpen: false,
+                  height: 720,
+                  width: 640,
+                  modal: true,
+              });
+  
+           imgdialog.dialog("open");
+            console.log("Zoom", this.selectedImage);
+      
+            //this.$forceUpdate();
+          },
+          
         download_pic : function (id) {
             let _this = this;
             this.takeASnap(id);
