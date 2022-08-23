@@ -464,7 +464,7 @@ header( 'location:index.php' );
                         <eng>Select Goods to Load</eng>
                     </h6>
                     <!-- list -->
-                    <div class="mainlist">
+                    <div class="mainlist" style="overflow-x: auto;">
 
                         <div class="tablebox d02">
                             <ul class="header">
@@ -476,6 +476,9 @@ header( 'location:index.php' );
                                 </li>
                                 <li>收件人
                                     <eng>Company/Customer</eng>
+                                </li>
+                                <li>照片
+                                    <eng>Photo</eng>
                                 </li>
                                 <li>貨品名稱
                                     <eng>Description</eng>
@@ -511,6 +514,12 @@ header( 'location:index.php' );
                                 <li>{{ receive_record.date_receive }}</li>
                                 <li>{{ (receive_record.customer !== 'undefined' ) ?
                                     receive_record.customer.replace(/\\/g, '') : "" }}
+                                </li>
+                                <li>
+                                <div>
+                                        <i class="fas fa-image"  v-if="receive_record.pic != ''" @click="zoom_rec(receive_record.id)"></i> 
+                                    </div>
+                                    <i class="fas fa-image"  @click="" v-if="receive_record.pic != '' && receive_record.is_edited == 0" @click="zoom_rec(receive_record.id)"></i> 
                                 </li>
                                 <li>{{ receive_record.description }}</li>
                                 <li>{{ receive_record.quantity }}</li>
@@ -698,6 +707,16 @@ if($taiwan_read == "0")
         </div>
         <!-- Webcam Modal End-->
 
+        <div class="modal" id="imgModal">
+            <div v-if="this.selectedImage" max-width="85vw">
+                <!-- <img :src="this.selectedImage" alt="" width="100%" @click.stop="this.selectedImage = null"> -->
+                <template v-for="(item, index) in pic_preview">
+                    <img v-if="item.type == 'FILE'" name="img_pre" class="img-responsive postimg" :src="'img/' + item.gcp_name" alt="" width="100%">
+                    <img v-if="item.type == 'RECEIVE'" name="img_pre" class="img-responsive postimg" :src="url_ip + item.gcp_name" alt="" width="100%">
+                    <hr>
+                </template>
+            </div>
+        </div>
 
     </div>
 </div>

@@ -123,6 +123,10 @@ var app = new Vue({
     rec_total : 0.0,
     rec_amount : 0.0,
     rec_amount_php : 0.0,
+    rec_kilo : 0.0,
+
+    rec_ntd : 0.0,
+    rec_php : 0.0,
 
     date_type : "r",
 
@@ -980,6 +984,11 @@ var app = new Vue({
       _this.rec_total = 0.0;
       _this.rec_amount = 0.0;
       _this.rec_amount_php = 0.0;
+      _this.rec_total_php = 0.0;
+      _this.rec_kilo = 0.0;
+      _this.rec_ntd = 0.0;
+      _this.rec_php = 0.0;
+
  
 
       const params = {
@@ -1009,6 +1018,12 @@ var app = new Vue({
                 _this.rec_total += parseFloat(element.total == '' ? 0 : element.total);
                 _this.rec_amount += parseFloat(element.amount == '' ? 0 : element.amount);
                 _this.rec_amount_php += parseFloat(element.amount_php == '' ? 0 : element.amount_php);
+                _this.rec_kilo += parseFloat(element.kilo == '' ? 0 : element.kilo);
+
+                if(element.currency == 'NTD')
+                  _this.rec_ntd += parseFloat(element.total == '' ? 0 : element.total);
+                if(element.currency == 'PHP')
+                  _this.rec_php += parseFloat(element.total == '' ? 0 : element.total);
               }
             });
 

@@ -75,7 +75,7 @@ if($jwt){
                         receiver,
                         remark,
                         ss.`status` from airship_records ss 
-                        where 1=1  ";
+                        where ss.`status` <> -1  ";
 
 
 if($date_type == "")
@@ -260,7 +260,7 @@ if($date_type == "p")
             {
                 
                     $sheet->setCellValue('A' . $i, $measure["date_receive"]);
-                    $sheet->setCellValue('B' . $i, $measure["mode"]);
+                    $sheet->setCellValue('B' . $i, $measure["mode"] == 'exp' ? '快遞' : '空運');
                     $sheet->setCellValue('C' . $i, $measure["customer"]);
                     $sheet->setCellValue('D' . $i, $measure["address"]);
                     $sheet->setCellValue('E' . $i, $measure["description"]);
