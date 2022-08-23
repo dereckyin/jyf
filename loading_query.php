@@ -369,6 +369,9 @@ header( 'location:index.php' );
                             <li>收件人
                                 <eng>Company/Customer</eng>
                             </li>
+                            <li>照片
+                                <eng>Photo</eng>
+                            </li>
                             <li>貨品名稱
                                 <eng>Description</eng>
                             </li>
@@ -420,6 +423,12 @@ header( 'location:index.php' );
                                 <input name="customer"
                                        v-show="receive_record.is_edited == 0"
                                        v-model="customer" maxlength="256">
+                            </li>
+                            <li>
+                                <div v-show="receive_record.is_edited == 1">
+                                    <i class="fas fa-image"  v-if="receive_record.pic != ''" @click="zoom_rec(receive_record.id)"></i> 
+                                </div>
+                                <i class="fas fa-image"  @click="" v-if="receive_record.pic != '' && receive_record.is_edited == 0" @click="zoom_rec(receive_record.id)"></i> 
                             </li>
                             <li>
                                 <div v-show="receive_record.is_edited == 1">
@@ -496,6 +505,8 @@ header( 'location:index.php' );
                         ?>
                                 <button v-show="receive_record.is_edited == 1" @click="editRow(receive_record)">修改
                                 </button>
+                                <button v-show="receive_record.is_edited == 1 && receive_record.pic == ''" @click="get_photo_library(receive_record)">圖片庫
+                                </button>
                                 <button v-show="receive_record.is_edited == 0" @click="confirmRow(receive_record)">確認
                                 </button>
                                 <button v-show="receive_record.is_edited == 0" @click="cancelRow(receive_record)">取消
@@ -522,6 +533,110 @@ header( 'location:index.php' );
 
             </div>
         </div>
+
+        
+<div class="modal" id="imgModal">
+            <div v-if="this.selectedImage" max-width="85vw">
+                <!-- <img :src="this.selectedImage" alt="" width="100%" @click.stop="this.selectedImage = null"> -->
+                <template v-for="(item, index) in pic_preview">
+                    <img v-if="item.type == 'FILE'" name="img_pre" class="img-responsive postimg" :src="'img/' + item.gcp_name" alt="" width="100%">
+                    <img v-if="item.type == 'RECEIVE'" name="img_pre" class="img-responsive postimg" :src="url_ip + item.gcp_name" alt="" width="100%">
+                    <hr>
+                </template>
+            </div>
+        </div>
+        
+        <!-- Photo Modal Begin-->
+        <div class="modal" id="photoModal1">
+
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">圖片庫</h4>
+                    </div>
+                    <div>
+                        <input class="form-control" placeholder="Search for...">
+                    </div>
+
+                    <!-- Modal body -->
+                    <table class="table table-hover table-striped table-sm table-bordered" id="showPhoto">
+                        <thead>
+                        <tr>
+                            <th><input class="alone" type="checkbox" @click="bulk_toggle_library()"
+                                       id="bulk_select_all_library"></th>
+                            <th>
+                                <p>Photo</p>
+                                <p>照片</p>
+                            </th>
+                            <th>
+                                <p>Date Receive</p>
+                                <p>收貨日期</p>
+                            </th>
+                            <th>
+                                <p>Quantity</p>
+                                <p>件數</p>
+                            </th>
+                            <th>
+                                <p>Supplier</p>
+                                <p>寄件人</p>
+                            </th>
+                            <th>
+                                <p>Company/Customer</p>
+                                <p>收件人</p>
+                            </th>
+                            <th>
+                                <p>Remark</p>
+                                <p>備註</p>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="">
+                        <tr v-for="(item, index) in pic_lib">
+                            <td>
+                                <input class="alone" type="checkbox" :value="item.is_checked" v-model="item.is_checked">
+                            </td>
+                            <td><a :href="url_ip + item.gcp_name" target="_blank"><img width="50%" v-if="item.gcp_name"
+                                                                                       :src="url_ip + item.gcp_name"></a>
+                            </td>
+                            <td>{{ item.date_receive }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.supplier }}</td>
+                            <td>{{ item.customer }}</td>
+                            <td>{{ item.remark }}</td>
+                            <!--
+                            <td>
+                                <a :href="url_ip + item.gcp_name" download="library"><button type="button" data-dismiss="modal" ><i class="fas fa-file-download"></i></button></a>
+                            </td> -->
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+
+                        <?php
+if($taiwan_read == "0")
+{
+?>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal" @click="delete_library1()">刪除
+                            Delete
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="choose_library1()">
+                            選取 Select
+                        </button>
+                        <?php
+}
+?>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- Photo Modal End-->
+        
     </div>
 </div>
 <!-- The Modal -->
@@ -542,6 +657,9 @@ header( 'location:index.php' );
     </div>
 </div>
 <!-- The Modal -->
+
+
+
 <!-- Bootstrap  -->
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="js/axios.min.js"></script>

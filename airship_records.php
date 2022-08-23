@@ -1228,14 +1228,14 @@ header( 'location:index.php' );
                     <tfoot class="thead-light" id="flag_total">
 
                     <tr>
-                        <th colspan="9">Total</th>
+                        <th colspan="6">Total</th>
                         <th style="text-align: right;">
-                            <!--
-                            {{ total !== undefined ?
-                            Number(total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}
-                            -->
+                            
+                            {{ rec_kilo !== undefined ?
+                            Number(rec_kilo).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}
+                            
                         </th>
-                        <th colspan="2"></th>
+                        <th colspan="5"></th>
                         <th style="text-align: right;">
                             
                             {{ amount !== undefined ?
@@ -1249,7 +1249,7 @@ header( 'location:index.php' );
                             
                         </th>
                         <th></th>
-                        <th colspan="5"></th>
+                        <th colspan="4"></th>
                     </tr>
 
                     </tfoot>

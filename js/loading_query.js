@@ -178,7 +178,24 @@ let mainState = {
     r_cuft : 0.0,
     n_cuft : 0.0,
 
+        
+    // show photo
+    pic_lib : [],
+    pic_receive: [],
+    cam_receive: [],
+    file_receive: [],
+    cam_receive_1: [],
+    file_receive_1: [],
     url_ip: "https://storage.googleapis.com/feliiximg/",
+
+    pic_preview: [],
+
+    // pictures
+    snap_me:false,
+    pic_list: [],
+
+    selectedImage: [],
+    selectedRecord: [],
 
 };
 
@@ -273,9 +290,205 @@ var app = new Vue({
         } );
         */
         //document.querySelector("input[name=showUser1]").DataTable();
+
+        var photoModal1;
+
+        photoModal1 = $("#photoModal1").dialog({
+            autoOpen: false,
+            height: 540,
+            width: 900,
+            modal: true,
+        });
     },
 
     methods: {
+        zoom_rec(id) {
+            this.selectedImage = "true";
+            this.pic_preview = this.shallowCopy(this.receive_records.find(element => element.id == id)['pic']);
+  
+            let imgdialog = $("#imgModal").dialog({
+                  autoOpen: false,
+                  height: 720,
+                  width: 640,
+                  modal: true,
+              });
+  
+           imgdialog.dialog("open");
+            console.log("Zoom", this.selectedImage);
+      
+            //this.$forceUpdate();
+          },
+          
+        get_photo_library(receive_records) {
+            app.getPicLibrary();
+            $("#photoModal1").dialog('open');
+            this.selectedRecord = receive_records;
+        },
+        
+        savePic(id, pid) {
+            let formData = new FormData();
+
+            formData.append('id', id)
+            formData.append('pid', pid)
+
+            axios({
+                method: "post",
+                headers: {
+                "Content-Type": "multipart/form-data",
+                },
+                url: "api/receive_record_pic.php",
+                data: formData,
+            })
+            .then(function(response) {
+            //handle success
+      
+
+            })
+            .catch(function(error) {
+   
+                
+            });
+        },
+
+        choose_library1: async function (){
+            if(this.isEditing == true)
+            {
+                for (var i = 0; i < this.pic_lib.length; i++) {
+                    if(this.pic_lib[i].is_checked == true) {
+                        let pid = this.pic_lib[i].pid;
+                        var found = false;
+                        for(var j = 0; j < this.selectedRecord.pic.length; j++) {
+                            if (this.selectedRecord.pic[j].pid == pid) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if(found == false) {
+                            let pic = this.pic_lib.find((element) => element.pid == pid);
+                            pic.type = "RECEIVE";
+                            this.selectedRecord.pic.push(this.shallowCopy(
+                                pic
+                            ));
+                            await this.savePic(this.selectedRecord.id, pic.pid);
+
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                this.pic_receive = [];
+                for (var i = 0; i < this.pic_lib.length; i++) {
+                    if(this.pic_lib[i].is_checked == true) {
+                        let pid = this.pic_lib[i].pid;
+                        this.pic_receive.push(this.shallowCopy(
+                            this.pic_lib.find((element) => element.pid == pid)
+                        ));
+
+                        //this.customer = this.pic_lib[i].customer;
+                        //this.supplier = this.pic_lib[i].supplier;
+                        //this.date_receive = this.pic_lib[i].date_receive;
+                        //$('#adddate').datepicker('setDate', this.date_receive);
+                        //this.quantity = this.pic_lib[i].quantity;
+                        //this.remark = this.pic_lib[i].remark;
+                    }
+                }
+            }
+            
+
+              //window.jQuery(".mask").toggle();
+              //window.jQuery("#photoModal").toggle();
+              $( "#photoModal1" ).dialog('close');
+
+        },
+
+        delete_library1 : function () {
+            let _this = this;
+            let delete_me = [];
+            for(var i = 0; i < this.pic_lib.length; i++) {
+                if(this.pic_lib[i].is_checked == true) {
+                    delete_me.push(this.pic_lib[i].pid);
+                }
+            }
+
+            if(delete_me.length > 0)
+            {
+                Swal.fire({
+                    title: "Submit",
+                    text: "確定要刪除? Are you sure to delete?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes",
+                  }).then((result) => {
+                    if (result.value) {
+                        var token = localStorage.getItem("token");
+                        var form_Data = new FormData();
+                        form_Data.append("jwt", token);
+                        form_Data.append("ids", delete_me.join());
+                        form_Data.append("crud", "del");
+
+                        axios({
+                            method: "post",
+                            headers: {
+                            "Content-Type": "multipart/form-data",
+                            },
+                            url: "api/receive_library_delete.php",
+                            data: form_Data,
+                        })
+                        .then(function(response) {
+                        //handle success
+                            Swal.fire({
+                                html: response.data.message,
+                                icon: "info",
+                                confirmButtonText: "OK",
+                            });
+
+                            //window.jQuery(".mask").toggle();
+                            //window.jQuery("#photoModal").toggle();
+                            $( "#photoModal" ).dialog('close');
+                            _this.pic_lib = [];
+                            _this.getPicLibrary();
+                        })
+                        .catch(function(error) {
+                            //handle error
+                            Swal.fire({
+                                text: JSON.stringify(error),
+                                icon: "info",
+                                confirmButtonText: "OK",
+                            });
+
+                            //window.jQuery(".mask").toggle();
+                            //window.jQuery("#photoModal").toggle();
+                            $( "#photoModal1" ).dialog('close');
+                            
+                        });
+                    } else {
+                        return;
+                    }
+                });
+            }
+        },
+
+        getPicLibrary: function(keyword) {
+            let _this = this;
+            if(this.pic_lib.length > 0) {
+                return;
+            }
+            console.log("getPicLibrary");
+              axios.get('api/get_pic_library_loading.php')
+                  .then(function(response) {
+                      console.log(response.data);
+                      _this.pic_lib = response.data;
+
+                  })
+                  .catch(function(error) {
+                      console.log(error);
+                  });
+          },
+
         getReceiveRecords: function(id) {
           console.log("getReceiveRecords");
           if(id == "")
