@@ -605,7 +605,7 @@ class ReceiveRecord{
     }
 
 
-    function Query_Receive_Query_Simple($date_start, $date_end, $customer, $supplier){
+    function Query_Receive_Query_Simple($date_start, $date_end, $customer, $supplier, $description, $remark){
 
         $merged_results = array();
 
@@ -643,6 +643,7 @@ class ReceiveRecord{
 
         }
 
+
         $query = "SELECT r.id, 
                         r.date_receive, 
                         r.customer, 
@@ -659,7 +660,9 @@ class ReceiveRecord{
                         r.real_pick_time,
                         r.real_payment_time,
                         COALESCE(ld.eta_date, '') eta_date_his,
-                        COALESCE(ld.date_arrive, '') date_arrive_his 
+                        COALESCE(ld.date_arrive, '') date_arrive_his,
+                        (select coalesce(encode, '') from measure_detail md left join measure_record_detail mrd on md.id = mrd.detail_id where mrd.record_id = r.id) as dr,
+                        '' pic, r.photo, r.picname
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id
                         LEFT JOIN measure_ph m on l.measure_num = m.id
@@ -673,6 +676,14 @@ class ReceiveRecord{
 
         if(!empty($date_end)) {
             $query = $query . " and r.date_receive <= '$date_end' ";
+        }
+
+        if(!empty($description)) {
+            $query = $query . " and r.description like '%$description%' ";
+        }
+
+        if(!empty($remark)) {
+            $query = $query . " and r.remark like '%$remark%' ";
         }
 
         if(!empty($sup_str)) {
@@ -709,7 +720,9 @@ class ReceiveRecord{
                         r.real_pick_time,
                         r.real_payment_time,
                         COALESCE(ld.eta_date, '') eta_date_his,
-                        COALESCE(ld.date_arrive, '') date_arrive_his  
+                        COALESCE(ld.date_arrive, '') date_arrive_his,
+                        (select coalesce(encode, '') from measure_detail md left join measure_record_detail mrd on md.id = mrd.detail_id where mrd.record_id = r.id) as dr,
+                        '' pic, r.photo, r.picname
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id
                         LEFT JOIN measure_ph m on l.measure_num = m.id
@@ -723,6 +736,14 @@ class ReceiveRecord{
 
         if(!empty($date_end)) {
             $query = $query . " and r.date_receive <= '$date_end' ";
+        }
+
+        if(!empty($description)) {
+            $query = $query . " and r.description like '%$description%' ";
+        }
+
+        if(!empty($remark)) {
+            $query = $query . " and r.remark like '%$remark%' ";
         }
 
         if(!empty($sup_str)) {
@@ -740,6 +761,13 @@ class ReceiveRecord{
 
         while($row = $stmt->fetch(PDO::FETCH_ASSOC))
             $merged_results[] = $row;
+
+        // iterate through the array of objects
+        for($i =0; $i < count($merged_results); $i++) {
+            $pic = $this->GetPic($merged_results[$i]['picname'], $merged_results[$i]['photo'], $merged_results[$i]['id'], $this->conn);
+            
+            $merged_results[$i]['pic'] = $pic;
+        }
 
         return $merged_results;
     }
@@ -821,4 +849,55 @@ class ReceiveRecord{
 
         return $merged_results;
     }
+
+    
+function GetPic($picname, $photo, $id){
+    $merged_results = array();
+
+    if($picname != "")
+    {
+        array_push($merged_results, array(
+            "pid" => $id,
+            "batch_id" => $id,
+            "is_checked" => true,
+            "customer" => "",
+            "date_receive" => "",
+            "type" => "FILE",
+            "quantity" => "",
+            "remark" => "",
+            "supplier" => "",
+            "gcp_name" => $picname,
+        ));
+        
+    }
+
+    if($photo == 'RECEIVE')
+    {
+        $sql = "SELECT id, gcp_name FROM gcp_storage_file WHERE batch_id = $id AND batch_type = 'RECEIVE' AND STATUS <> -1";
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+        {
+            $filename = $row['gcp_name'];
+            $pid = $row['id'];
+            array_push($merged_results, array(
+                "pid" => $pid,
+                "batch_id" => $id,
+                "is_checked" => true,
+                "customer" => "",
+                "date_receive" => "",
+                "type" => "RECEIVE",
+                "quantity" => "",
+                "remark" => "",
+                "supplier" => "",
+                "gcp_name" => $filename,
+            ));
+        }
+    }
+
+        return $merged_results;
+    }
+
 }

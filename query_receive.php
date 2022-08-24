@@ -87,6 +87,20 @@ $(function(){
               <button type="button" class="btn btn-primary" id="create-supplier"><i class="fas fa-address-card"></i></button>
             </li>
           </ul>
+          <ul>
+			  <li class="header"></li>
+            <li>貨品名稱 <eng>Description</eng></li>
+            <li>
+              <input type="text" class="goods_num" id="description" maxlength="256" name="description"  style="width: calc(80% - 40px);">
+            </li>
+          </ul>
+          <ul>
+			  <li class="header"></li>
+            <li>備註 <eng>Remark</eng></li>
+            <li>
+              <input type="text" class="goods_num" id="remark" maxlength="256" name="remark"  style="width: calc(80% - 40px);">
+            </li>
+          </ul>
         </div>
 
         <div class="btnbox"><a class="btn" @click="query()" style="color:white;">查詢 <eng>Query</eng></a><a class="btn orange" @click="print()" style="color:white;">匯出 <eng>Print</eng></a></div>
@@ -127,6 +141,7 @@ $(function(){
             <ul class="header">
               <li><eng>Date Receive</eng> 收件日期</li>
               <li><eng>Company/Customer</eng>收件人</li>
+              <li><eng>Picture</eng>照片</li>
               <li><eng>Description</eng> 貨品名稱</li>
               <li><eng>Quantity</eng> 件數</li>
               <li><eng>Supplier</eng> 寄貨人</li>
@@ -136,13 +151,14 @@ $(function(){
               <li><eng>Date Sent</eng>結關日期</li>
               <li><eng>ETA</eng></li>
               <li><eng>Date C/R</eng> 貨櫃到倉日期</li>
-              <!-- <li><eng>Date Encoded</eng> 丈量日期</li> -->
+              <li><eng>DR</eng> 單號</li>
               <li><eng>Date Pickup</eng> 提貨日期</li>
               <li><eng>Date Paid</eng> 付款日期</li>
             </ul>
             <ul v-for='(receive_record, index) in displayedPosts'>
               <li>{{ receive_record.date_receive }}</li>
               <li>{{ receive_record.customer }}</li>
+              <li><div><i aria-hidden="true" class="fas fa-image" v-if="receive_record.pic != ''" @click="zoom_rec(receive_record.id)"></i></div></li>
               <li>{{ receive_record.description }}</li>
               <li>{{ receive_record.quantity }}</li>
               <li>{{ receive_record.supplier }}</li>
@@ -152,7 +168,7 @@ $(function(){
               <li>{{ receive_record.date_sent }}</li>
               <li :style="[receive_record.eta_date_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ receive_record.eta_date }}</li>
               <li :style="[receive_record.date_arrive_his.length > 10 ? {'color': 'red'} : {'color': 'black'}]">{{ receive_record.date_arrive }}</li>
-              <!-- <li>{{ receive_record.date_encode }}</li> -->
+              <li>{{ receive_record.dr }}</li>
               <li>{{ receive_record.real_pick_time }}</li>
               <li>{{ receive_record.real_payment_time }}</li>
             </ul>
@@ -205,7 +221,16 @@ $(function(){
           </div>
 
                         <!-- Modal footer -->
-      
+                        <div class="modal" id="imgModal">
+            <div v-if="this.selectedImage" max-width="85vw">
+                <!-- <img :src="this.selectedImage" alt="" width="100%" @click.stop="this.selectedImage = null"> -->
+                <template v-for="(item, index) in pic_preview">
+                    <img v-if="item.type == 'FILE'" name="img_pre" class="img-responsive postimg" :src="'img/' + item.gcp_name" alt="" width="100%">
+                    <img v-if="item.type == 'RECEIVE'" name="img_pre" class="img-responsive postimg" :src="url_ip + item.gcp_name" alt="" width="100%">
+                    <hr>
+                </template>
+            </div>
+        </div>
 
       <div class="modal" id="cusModal">
 

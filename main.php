@@ -775,7 +775,7 @@ if($taiwan_read == "0")
                                     台灣付
                                 </li>
                                 <li>
-                                    <eng>Courier/Payment</eng>
+                                    <eng>Courier / Payment</eng>
                                     代墊
                                 </li>
                                 <li>

@@ -60,6 +60,11 @@ var app = new Vue({
 
         c_filter    : [],
         s_filter    : [],
+
+        url_ip: "https://storage.googleapis.com/feliiximg/",
+
+        pic_preview: [],
+        selectedImage: null,
     },
 
     created () {
@@ -231,11 +236,41 @@ var app = new Vue({
                 });
         },
 
+        
+        zoom_rec(id) {
+            this.selectedImage = "true";
+            this.pic_preview = this.shallowCopy(this.receive_records.find(element => element.id == id)['pic']);
+  
+            let imgdialog = $("#imgModal").dialog({
+                  autoOpen: false,
+                  height: 720,
+                  width: 640,
+                  modal: true,
+              });
+  
+           imgdialog.dialog("open");
+            console.log("Zoom", this.selectedImage);
+      
+            //this.$forceUpdate();
+          },
+
+          shallowCopy(obj) {
+            console.log("shallowCopy");
+              var result = {};
+              for (var i in obj) {
+                  result[i] = obj[i];
+              }
+              return result;
+          },
+
         query: function() {
             var date_start = window.document.getElementById('date_start').value;
             var date_end = window.document.getElementById('date_end').value;
             var customer = window.document.getElementById('customer').value;
             var supplier = window.document.getElementById('supplier').value;
+
+            var description = window.document.getElementById('description').value;
+            var remark = window.document.getElementById('remark').value;
             
             var form_Data = new FormData();
 
@@ -243,6 +278,9 @@ var app = new Vue({
             form_Data.append('date_end', this.formatDate(date_end))
             form_Data.append('customer', customer)
             form_Data.append('supplier', supplier)
+
+            form_Data.append('description', description)
+            form_Data.append('remark', remark)
 
             const token = sessionStorage.getItem('token');
 
@@ -278,6 +316,9 @@ var app = new Vue({
             var date_end = window.document.getElementById('date_end').value;
             var customer = window.document.getElementById('customer').value;
             var supplier = window.document.getElementById('supplier').value;
+
+            var description = window.document.getElementById('description').value;
+            var remark = window.document.getElementById('remark').value;
             
             var form_Data = new FormData();
 
@@ -285,6 +326,9 @@ var app = new Vue({
             form_Data.append('date_end', this.formatDate(date_end))
             form_Data.append('customer', customer)
             form_Data.append('supplier', supplier)
+
+            form_Data.append('description', description)
+            form_Data.append('remark', remark)
 
             const token = sessionStorage.getItem('token');
 
