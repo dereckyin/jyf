@@ -605,7 +605,7 @@ header( 'location:index.php' );
                                 <eng>Taiwan Pay</eng>
                             </li>
                             <li>代墊
-                                <eng>Courier/Payment</eng>
+                                <eng>Courier / Payment</eng>
                             </li>
                             <li>備註
                                 <eng>Remark</eng>
