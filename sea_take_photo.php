@@ -339,7 +339,7 @@ try {
 
 </div>
 
-<script defer src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script defer src="js/a076d05399.js"></script>
 
 
 <!-- jQuery和js載入 -->
