@@ -549,6 +549,6 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script type="text/javascript" src="js/send_email.js" defer></script>
-<script defer src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script defer src="js/a076d05399.js"></script>
 </body>
 </html>

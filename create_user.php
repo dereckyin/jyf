@@ -35,7 +35,7 @@ $(function(){
   <header> 
     <!-- 主選單 -->
 
-    <script defer src="https://kit.fontawesome.com/a076d05399.js"></script> 
+    <script defer src="js/a076d05399.js"></script> 
   </header>
   <!-- header end -->
     <div class="mainContent" id="mainContent">

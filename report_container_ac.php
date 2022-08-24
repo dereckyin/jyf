@@ -338,7 +338,7 @@ header( 'location:index.php' );
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script type="text/javascript" src="js/report_container_ac.js?random=<?php echo uniqid(); ?>" defer></script>
 
-<script defer src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script defer src="js/a076d05399.js"></script>
 
 <!-- jQuery和js載入 -->
 <script>

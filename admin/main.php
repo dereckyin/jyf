@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/easy-sidebar.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
 
-    <script defer src="https://kit.fontawesome.com/a076d05399.js"></script> 
+    <script defer src="../js/a076d05399.js"></script> 
     <script src="../js/rm/jquery-2.2.4.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>

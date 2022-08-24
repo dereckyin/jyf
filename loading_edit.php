@@ -605,7 +605,7 @@ header( 'location:index.php' );
                                 <eng>Taiwan Pay</eng>
                             </li>
                             <li>代墊
-                                <eng>Courier/Payment</eng>
+                                <eng>Courier / Payment</eng>
                             </li>
                             <li>備註
                                 <eng>Remark</eng>
@@ -1005,6 +1005,6 @@ if($taiwan_read == "0")
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script type="text/javascript" src="js/loading_edit.js" defer></script>
-<script defer src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script defer src="js/a076d05399.js"></script>
 </body>
 </html>
