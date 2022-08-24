@@ -1,3 +1,17 @@
 conf.inc  
 **/config  
 **/libs
+uuid.php
+api/objects/on_duty.php
+api/objects/on_duty_v.php
+api/objects/on_duty_v2.php
+api/on_duty.php
+api/on_duty_v.php
+api/on_duty_v2.php
+duty.php
+duty_sea_v2.php
+duty_v2.php
+js/device-uuid.min.js
+js/on_duty.js
+js/on_duty_v.js
+js/on_duty_v2.js
