@@ -318,6 +318,7 @@ try {
                                     <option>Gas - Alphard</option>
                                     <option>Gas - Innova Grey</option>
                                     <option>Gas - Innova Black</option>
+                                    <option>Gas - Travis</option>
                                 </select>
                             </td>
 
@@ -586,6 +587,7 @@ try {
             <option>Gas - Alphard</option>
             <option>Gas - Innova Grey</option>
             <option>Gas - Innova Black</option>
+            <option>Gas - Travis</option>
         </select>
 
 

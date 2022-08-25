@@ -1067,3 +1067,7 @@ ADD COLUMN `mode` varchar(3) DEFAULT '' AFTER date_receive;
 
 CREATE INDEX pick_group_group_id_idx ON pick_group (group_id);
 CREATE INDEX measure_record_detail_detail_id_idx ON measure_record_detail (detail_id);
+
+-- receive record group 20220810
+ALTER TABLE receive_record
+ADD COLUMN `flag` varchar(10) DEFAULT '' AFTER mail_cnt;

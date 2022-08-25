@@ -274,7 +274,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                         array_push($key, strtolower($row['customer']));
                     }
 
-                        $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email_customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, photo, crt_time, crt_user, (SELECT date_arrive FROM loading WHERE loading.id = receive_record.batch_num) date_arrive FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
+                        $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email_customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, photo, flag, crt_time, crt_user, (SELECT date_arrive FROM loading WHERE loading.id = receive_record.batch_num) date_arrive FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
 
                         if ($stmt = mysqli_prepare($conn, $subquery)) {
 
@@ -306,6 +306,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                                 $crt_time = $row['crt_time'];
                                 $crt_user = $row['crt_user'];
                                 $date_arrive = $row['date_arrive'];
+                                $flag = $row['flag'];
                                 
                                 $pic = GetPic($picname, $photo, $id, $conn);
 
@@ -332,6 +333,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                                     "date_arrive" => $date_arrive,
 
                                     "pic" => $pic,
+                                    "flag" => $flag,
                                 
                                 );
                                 
@@ -350,7 +352,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                 }
             }
 
-            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email_customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, photo, crt_time, crt_user, (SELECT date_arrive FROM loading WHERE loading.id = receive_record.batch_num) date_arrive  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY id";
+            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email_customer, email, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, picname, photo, flag, crt_time, crt_user, (SELECT date_arrive FROM loading WHERE loading.id = receive_record.batch_num) date_arrive  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY id";
 
             $result1 = mysqli_query($conn,$subquery);
             if($result1 != null)
@@ -377,6 +379,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                     $crt_time = $row['crt_time'];
                     $crt_user = $row['crt_user'];
                     $date_arrive = $row['date_arrive'];
+                    $flag = $row['flag'];
                     
                     $pic = GetPic($picname, $photo, $id, $conn);
 
@@ -403,6 +406,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
                         "date_arrive" => $date_arrive,
 
                         "pic" => $pic,
+                        "flag" => $flag,
                     
                     );
                 }

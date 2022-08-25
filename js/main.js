@@ -183,6 +183,17 @@ let mainState = {
     // don't repeat submit
     submit : false,
 
+    edit_group : false,
+    group_name : "",
+
+    group1_cuft:0.0,
+    group2_cuft:0.0,
+    group1_kilo:0.0,
+    group2_kilo:0.0,
+
+    group1_ids:[],
+    group2_ids:[],
+
 };
 
 var app = new Vue({
@@ -268,6 +279,11 @@ var app = new Vue({
         this.r_kilo = 0.0;
         this.r_cuft = 0.0;
 
+        this.group1_kilo = 0.0;
+        this.group2_kilo = 0.0;
+        this.group1_cuft = 0.0;
+        this.group2_cuft = 0.0;
+
         for(let i=0; i<this.receive_records.length; i++)
         {   
 
@@ -280,6 +296,20 @@ var app = new Vue({
             {
                 this.r_kilo += parseFloat(this.receive_records[i].kilo);
                 this.r_cuft += parseFloat(this.receive_records[i].cuft);
+            }
+
+            if(this.receive_records[i].flag == '1')
+            {
+                this.group1_kilo += parseFloat(this.receive_records[i].kilo);
+                this.group1_cuft += parseFloat(this.receive_records[i].cuft);
+                this.group1_ids.push(this.receive_records[i].id);
+            }
+
+            if(this.receive_records[i].flag == '2')
+            {
+                this.group2_kilo += parseFloat(this.receive_records[i].kilo);
+                this.group2_cuft += parseFloat(this.receive_records[i].cuft);
+                this.group2_ids.push(this.receive_records[i].id);
             }
         }
 
@@ -1939,5 +1969,131 @@ var app = new Vue({
             return true;
           
         },
+
+        group(gp) {
+            this.edit_group = true;
+            this.group_name = gp;
+
+            for (i = 0; i < this.receive_records.length; i++) 
+            {
+                this.receive_records[i].is_checked = 0
+                if(this.receive_records[i].flag == gp)
+                    this.receive_records[i].is_checked = 1
+            }
+
+        },
+
+        cancel_group() {
+            this.edit_group = false;
+            this.group_name = "";
+
+            for (i = 0; i < this.receive_records.length; i++) 
+            {
+              if(this.receive_records[i].is_checked == 1)
+              {
+                this.receive_records[i].is_checked = 0
+              }
+            }
+        },
+
+        async save_group() {
+            var group_ids = [];
+
+            this.group1_kilo = 0.0;
+            this.group2_kilo = 0.0;
+            this.group1_cuft = 0.0;
+            this.group2_cuft = 0.0;
+
+            for (i = 0; i < this.receive_records.length; i++) 
+            {
+              if(this.receive_records[i].is_checked == 1)
+              {
+                group_ids.push(this.receive_records[i].id);
+                this.receive_records[i].is_checked = 0
+                this.receive_records[i].flag = this.group_name;
+              }
+              else
+              {
+                if(this.receive_records[i].flag == this.group_name)
+                {
+                  this.receive_records[i].flag = "";
+                }
+              }
+
+            }
+
+            await this.save_group_data(group_ids, this.group1_ids, this.group2_ids, this.group_name);
+
+            this.group_name = "";
+            this.edit_group = false;
+
+            this.group1_ids = [];
+            this.group2_ids = [];
+
+            for (i = 0; i < this.receive_records.length; i++) 
+            {
+                if(this.receive_records[i].flag == '1')
+                {
+                    this.group1_kilo += parseFloat(this.receive_records[i].kilo);
+                    this.group1_cuft += parseFloat(this.receive_records[i].cuft);
+                    this.group1_ids.push(this.receive_records[i].id);
+                }
+
+                if(this.receive_records[i].flag == '2')
+                {
+                    this.group2_kilo += parseFloat(this.receive_records[i].kilo);
+                    this.group2_cuft += parseFloat(this.receive_records[i].cuft);
+                    this.group2_ids.push(this.receive_records[i].id);
+                }
+            }
+        },
+
+
+        save_group_data(group_ids, group1_ids, group2_ids, group_name) {
+            let _this = this;
+
+                if(this.submit == true)
+                        return;
+
+                this.submit = true;
+
+            var form_Data = new FormData();
+            form_Data.append('group_ids', group_ids)
+            form_Data.append('group1_ids', group1_ids)
+            form_Data.append('group2_ids', group2_ids)
+            form_Data.append('group_name', group_name)
+      
+            const token = sessionStorage.getItem('token');
+
+            axios({
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${token}`
+                    },
+                    url: 'api/receive_group_data_save.php',
+                    data: form_Data
+                    
+                })
+                .then(function(response) {
+                    //handle success
+                    console.log(response)
+                    if (response.data !== "")
+                    {
+                        //const index = app.receive_records.findIndex((e) => e.id === this.record.id);
+                        //if (index !== -1) 
+                        //    app.receive_records[index] = this.record;
+                        _this.submit = false;
+                   
+                      
+                  }
+                })
+                .catch(function(response) {
+                    //handle error
+                    _this.submit = false;
+                    console.log(response)
+                });
+        }
+        
     },
 })

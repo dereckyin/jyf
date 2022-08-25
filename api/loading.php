@@ -895,6 +895,7 @@ switch ($method) {
 
 
                 $sql = "update receive_record set batch_num = $last_id,
+                                                        flag = '',
                                                       mdf_time = now(),
                                                       mdf_user = '$user'
                                             where id in($record)";
