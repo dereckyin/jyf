@@ -791,7 +791,7 @@ if($taiwan_read == "0")
                                     備註
                                 </li>
                             </ul>
-                            <ul v-for='(receive_record, index) in displayedPosts' :class="[receive_record.flag=='1' && edit_group == false ? 'group1': (receive_record.flag=='2' && edit_group == false ? 'group2': '')]">
+                            <ul v-for='(receive_record, index) in displayedPosts' :class="[receive_record.flag=='1' ? 'group1': (receive_record.flag=='2' ? 'group2': '')]">
                                 <li>
                                     <input type="checkbox" name="record_id" class="alone" :value="receive_record.index" :true-value="1" v-model:checked="receive_record.is_checked">
                                 </li>

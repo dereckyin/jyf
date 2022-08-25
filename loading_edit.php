@@ -263,6 +263,14 @@ header( 'location:index.php' );
             width: 100%;
             opacity: 0;
         }
+
+        div.tablebox.d02 > ul.group1{
+            background-color: var(--yellow);
+        }
+
+        div.tablebox.d02 > ul.group2{
+            background-color: var(--teal);
+        }
     </style>
 
     <script>
@@ -612,7 +620,7 @@ header( 'location:index.php' );
                             </li>
                             <li>功能</li>
                         </ul>
-                        <ul v-for='(receive_record, index) in displayedPosts' :key="index">
+                        <ul v-for='(receive_record, index) in displayedPosts' :key="index" :class="[receive_record.flag=='1' ? 'group1': (receive_record.flag=='2' ? 'group2': '')]">
                             <li>
                                 <input type="checkbox" name="record_id" class="alone" @change="updateWeightAndCult"
                                        :value="receive_record.index" :true-value="1"

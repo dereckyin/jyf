@@ -238,7 +238,7 @@ switch ($method) {
                         array_push($key, strtolower($row['customer']));
                     }
 
-                    $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, email_customer, mail_note, cuft, taiwan_pay, courier_pay, courier_money, remark, '' pic, photo, picname, crt_time, crt_user, 1 as is_edited FROM receive_record where batch_num = $record and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
+                    $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, email_customer, mail_note, cuft, taiwan_pay, courier_pay, courier_money, remark, '' pic, photo, picname, crt_time, crt_user, 1 as is_edited, flag FROM receive_record where batch_num = $record and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
 
                     if ($stmt = mysqli_prepare($conn, $subquery)) {
 
@@ -256,7 +256,7 @@ switch ($method) {
                 }
             }
 
-            $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, email_customer, mail_note, cuft, taiwan_pay, courier_pay, courier_money, remark, '' pic, photo, picname, crt_time, crt_user, 1 as is_edited  FROM receive_record where batch_num = $record and date_receive = '' and status = ''  ORDER BY id";
+            $subquery = "SELECT 1 as is_checked, id, date_receive, customer, email, description, quantity, supplier, kilo, email_customer, mail_note, cuft, taiwan_pay, courier_pay, courier_money, remark, '' pic, photo, picname, crt_time, crt_user, 1 as is_edited, flag  FROM receive_record where batch_num = $record and date_receive = '' and status = ''  ORDER BY id";
 
             $result1 = mysqli_query($conn, $subquery);
             if ($result1 != null) {
@@ -286,7 +286,7 @@ switch ($method) {
                         array_push($key, strtolower($row['customer']));
                     }
 
-                    $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, email_customer, mail_note, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, '' pic, photo, picname, crt_time, crt_user, 1 as is_edited FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
+                    $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, email_customer, mail_note, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, '' pic, photo, picname, crt_time, crt_user, 1 as is_edited, flag FROM receive_record where batch_num = 0 and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
 
                     if ($stmt = mysqli_prepare($conn, $subquery)) {
 
@@ -304,7 +304,7 @@ switch ($method) {
                 }
             }
 
-            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, email_customer, mail_note, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, '' pic, photo, picname, crt_time, crt_user, 1 as is_edited  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY id";
+            $subquery = "SELECT 0 as is_checked, id, date_receive, customer, email, description, quantity, supplier, email_customer, mail_note, kilo, cuft, taiwan_pay, courier_pay, courier_money, remark, '' pic, photo, picname, crt_time, crt_user, 1 as is_edited, flag  FROM receive_record where batch_num = 0 and date_receive = '' and status = ''  ORDER BY id";
 
             $result1 = mysqli_query($conn, $subquery);
             if ($result1 != null) {
@@ -350,7 +350,7 @@ switch ($method) {
                         array_push($key, strtolower($row['customer']));
                     }
 
-                    $subquery = "SELECT CASE WHEN mail_cnt > 0 THEN 0 ELSE 1 END as is_checked, id, date_receive, customer, email, email_customer, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, mail_cnt, mail_note, remark, picname, crt_time, crt_user, 1 as is_edited, photo FROM receive_record where batch_num = $record and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
+                    $subquery = "SELECT CASE WHEN mail_cnt > 0 THEN 0 ELSE 1 END as is_checked, id, date_receive, customer, email, email_customer, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, mail_cnt, mail_note, remark, picname, crt_time, crt_user, 1 as is_edited, photo, flag FROM receive_record where batch_num = $record and date_receive <> '' and status = ''  and customer = ? ORDER BY date_receive  ";
 
                     if ($stmt = mysqli_prepare($conn, $subquery)) {
 
@@ -387,6 +387,7 @@ switch ($method) {
                                 $crt_user = $row['crt_user'];
                                 $mail_cnt = $row['mail_cnt'];
                                 $mail_note = $row['mail_note'];
+                                $flag = $row['flag'];
                                 
                                 $pic = GetPic($picname, $photo, $id, $conn);
 
@@ -415,6 +416,7 @@ switch ($method) {
                                     "mail_cnt" => $mail_cnt,
 
                                     "pic" => $pic,
+                                    "flag" => $flag
                                 
                                 );
                             }
@@ -424,7 +426,7 @@ switch ($method) {
                 }
             }
 
-            $subquery = "SELECT CASE WHEN mail_cnt > 0 THEN 0 ELSE 1 END as is_checked, id, date_receive, customer, email, email_customer, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, mail_cnt, mail_note, remark, picname, crt_time, crt_user, 1 as is_edited, photo  FROM receive_record where batch_num = $record and date_receive = '' and status = ''  ORDER BY id";
+            $subquery = "SELECT CASE WHEN mail_cnt > 0 THEN 0 ELSE 1 END as is_checked, id, date_receive, customer, email, email_customer, description, quantity, supplier, kilo, cuft, taiwan_pay, courier_pay, courier_money, mail_cnt, mail_note, remark, picname, crt_time, crt_user, 1 as is_edited, photo, flag  FROM receive_record where batch_num = $record and date_receive = '' and status = ''  ORDER BY id";
 
             // $result1 = mysqli_query($conn, $subquery);
 
@@ -457,6 +459,7 @@ switch ($method) {
                     $mail_note = $row['mail_note'];
                     
                     $pic = GetPic($picname, $photo, $id, $conn);
+                    $flag = $row['flag'];
 
                     $merged_results[] = array(
                         "is_edited" => $is_edited,
@@ -483,6 +486,7 @@ switch ($method) {
                         "mail_cnt" => $mail_cnt,
 
                         "pic" => $pic,
+                        "flag" => $flag
                     
                     );
                 }
