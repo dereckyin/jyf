@@ -1311,7 +1311,8 @@ switch ($method) {
 
                 $sql = "update receive_record set batch_num = $id,
                                                       mdf_time = now(),
-                                                      mdf_user = '$user'
+                                                      mdf_user = '$user',
+                                                      flag = ''
                                             where id in($record)";
                 $query = $conn->query($sql);
 
