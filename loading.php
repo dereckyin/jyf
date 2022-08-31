@@ -513,7 +513,7 @@ header( 'location:index.php' );
                                     <eng>Remark</eng>
                                 </li>
                             </ul>
-                            <ul v-for='(receive_record, index) in displayedPosts' :class="[receive_record.flag=='1' ? 'group1': (receive_record.flag=='2' ? 'group2': '')]">
+                            <ul v-for='(receive_record, index) in displayedPosts' :class="[receive_record.flag=='1' ? 'group1': '']">
                                 <li>
                                     <input type="checkbox" name="record_id" class="alone" @change="updateWeightAndCult"
                                            :value="receive_record.index" :true-value="1"
@@ -559,6 +559,7 @@ header( 'location:index.php' );
                         <a class="btn small" @click="toggleCheckbox();">全選 / 全取消
                             <eng>All/Undo</eng>
                         </a>
+                        <a class="btn small" @click="ChooseRecord(1)">選第一群<eng>Select Group 1</eng></a>
                         <a class="btn small" @click="createLoadingRecord()">儲存
                             <eng>Save</eng>
                         </a>

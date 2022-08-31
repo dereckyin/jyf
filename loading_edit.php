@@ -620,7 +620,7 @@ header( 'location:index.php' );
                             </li>
                             <li>功能</li>
                         </ul>
-                        <ul v-for='(receive_record, index) in displayedPosts' :key="index" :class="[receive_record.flag=='1' ? 'group1': (receive_record.flag=='2' ? 'group2': '')]">
+                        <ul v-for='(receive_record, index) in displayedPosts' :key="index" :class="[receive_record.flag=='1' ? 'group1': '']">
                             <li>
                                 <input type="checkbox" name="record_id" class="alone" @change="updateWeightAndCult"
                                        :value="receive_record.index" :true-value="1"
