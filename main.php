@@ -332,11 +332,11 @@ try {
         }
 
         div.tablebox.s02 > ul.group1{
-            background-color: var(--yellow);
+            background-color: #CCECFF;
         }
 
         div.tablebox.s02 > ul.group2{
-            background-color: var(--teal);
+            background-color: #CCFFCC;
         }
 
 
