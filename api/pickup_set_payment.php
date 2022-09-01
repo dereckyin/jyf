@@ -132,8 +132,8 @@ $user_id = $decoded->data->id;
         }
 
         // delete pre data
-        if(count($detail_array) == 0)
-        {
+        //if(count($detail_array) == 0)
+        //{
             $detail_id = array();
             for ($i = 0; $i < count($detail_pre_array); $i++) {
                 if($detail_pre_array[$i]['detail_id'] != '' && $detail_pre_array[$i]['detail_id'] != '0')
@@ -175,7 +175,7 @@ $user_id = $decoded->data->id;
                     die();
                 }
             }
-        }
+        //}
         
 
         for ($i = 0; $i < count($detail_array); $i++) {

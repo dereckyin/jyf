@@ -626,6 +626,14 @@ var app = new Vue({
           return  this.receive_records.slice(from, to);
         },
 
+        ChooseRecord: function(index) {
+            for (i = 0; i < this.receive_records.length; i++) 
+            {
+                if(this.receive_records[i].flag == index)
+                    this.receive_records[i].is_checked = 1;
+            }
+        },
+
         createLoadingRecord: function() {
             console.log("createLoadingRecord");
 

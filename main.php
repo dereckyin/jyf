@@ -331,6 +331,14 @@ try {
             z-index: 999;
         }
 
+        div.tablebox.s02 > ul.group1{
+            background-color: #CCECFF;
+        }
+
+        div.tablebox.s02 > ul.group2{
+            background-color: #CCFFCC;
+        }
+
 
     </style>
 
@@ -520,7 +528,7 @@ try {
 if($taiwan_read == "0")
 {
         ?>                        
-                        <a class="btn" @click="createReceiveRecord()" style="color:white;">儲存
+                        <a class="btn" @click="createReceiveRecord()" style="color:white;" v-if="edit_group == false">儲存
                             <eng>Save</eng>
                         </a>
                         <?php
@@ -693,7 +701,7 @@ if($taiwan_read == "0")
 
                     <div class="btnbox"><a class="btn" @click="cancelReceiveRecord($event)" style="color:white;">取消
                             <eng>Cancel</eng>
-                        </a><a class="btn" @click="editReceiveRecord($event)" style="color:white;">儲存
+                        </a><a class="btn" @click="editReceiveRecord($event)" style="color:white;" v-if="edit_group == false">儲存
                             <eng>Save</eng>
                         </a>
                         <!-- <a class="btn orange" @click="editReceiveRecordMail($event)" style="color:white;">儲存 <eng>Save + </eng><i class="before-micons mail"></i></a> -->
@@ -783,7 +791,7 @@ if($taiwan_read == "0")
                                     備註
                                 </li>
                             </ul>
-                            <ul v-for='(receive_record, index) in displayedPosts'>
+                            <ul v-for='(receive_record, index) in displayedPosts' :class="[receive_record.flag=='1' ? 'group1': (receive_record.flag=='2' ? 'group2': '')]">
                                 <li>
                                     <input type="checkbox" name="record_id" class="alone" :value="receive_record.index" :true-value="1" v-model:checked="receive_record.is_checked">
                                 </li>
@@ -838,7 +846,29 @@ if($taiwan_read == "0")
                                 </li>
                             </ul>
                         </div>
-                        <div class="btnbox" id="flag_bottom"><a class="btn small selbtn" style="color:white;" @click="toggleCheckbox();">全選 /
+
+                        <div class="tablebox s03">
+                            <ul>
+                                <li>第一群 總和</li>
+                                <li style="width: 38%;">重量 <span>{{ Math.round((group1_kilo + Number.EPSILON) * 100) / 100 }}</span>, 材積 <span>{{ Math.round((group1_cuft + Number.EPSILON) * 100) / 100 }}</span>
+                                </li>
+                                <li>第二群 總和</li>
+                                <li>重量 <span>{{ Math.round((group2_kilo + Number.EPSILON) * 100) / 100 }}</span>, 材積 <span>{{ Math.round((group2_cuft + Number.EPSILON) * 100) / 100 }}</span>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>Group 1 Total</li>
+                                <li>Kilo <span>{{ Math.round((group1_kilo + Number.EPSILON) * 100) / 100 }}</span>, Cuft <span>{{ Math.round((group1_cuft + Number.EPSILON) * 100) / 100 }}
+                                </li>
+                                <li>Group 2 Total</li>
+                                <li>Kilo <span>{{ Math.round((group2_kilo + Number.EPSILON) * 100) / 100 }}</span>, Cuft <span>{{ Math.round((group2_cuft + Number.EPSILON) * 100) / 100 }}</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="btnbox" id="flag_bottom"  v-if="edit_group == false">
+
+                            <a class="btn small selbtn" style="color:white;" @click="toggleCheckbox();">全選 /
                                 全取消
                                 <p>All/Undo</p>
                             </a> 
@@ -848,7 +878,9 @@ if($taiwan_read == "0")
 ?>
                             <a class="btn small" style="color:white;" @click="editRecord()">修改
                                 <p>Edit</p>
-                            </a> <a class="btn small" style="color:white;" @click="deleteRecord()">刪除
+                            </a>
+
+                            <a class="btn small" style="color:white;" @click="deleteRecord()">刪除
                                 <p>Delete</p>
                             </a> 
 <?php
@@ -857,7 +889,31 @@ if($taiwan_read == "0")
                             
                             <a class="btn small" style="color:white;" v-bind:href="pageUrl">匯出
                                 <p>Export</p>
-                            </a></div>
+                            </a>
+
+<?php
+if($taiwan_read == "0")
+{
+?>
+                            <a class="btn small" style="color:white;" @click="group('1')">第一群
+                                <p>Group 1</p>
+                            </a>
+                            <a class="btn small" style="color:white;" @click="group('2')">第二群
+                                <p>Group 2</p>
+                            </a>
+<?php
+}
+?>
+                        </div>
+
+
+                        <div class="btnbox" v-if="edit_group == true">
+
+                            <button type="button" class="btn btn-warning" style="margin-right: 30px;" @click="cancel_group()">取消 Cancel</button>
+                            <button type="button" class="btn btn-secondary" @click="save_group()">儲存 Save</button>
+
+                        </div>
+
                     </div>
                 </div>
             </div>

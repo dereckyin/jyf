@@ -40,6 +40,10 @@ $customer = (isset($_POST['customer']) ?  $_POST['customer'] : '');
 $supplier = (isset($_POST['supplier']) ?  $_POST['supplier'] : '');
 //$supplier = urldecode($supplier);
 
+$description = (isset($_POST['description']) ?  $_POST['description'] : '');
+$remark = (isset($_POST['remark']) ?  $_POST['remark'] : '');
+
+
 // if jwt is not empty
 if($jwt){
  
@@ -52,7 +56,7 @@ if($jwt){
         // response in json format
             http_response_code(200);
 
-                $recode = $receive_record->Query_Receive_Query_Simple($date_start, $date_end, $customer, $supplier);
+                $recode = $receive_record->Query_Receive_Query_Simple($date_start, $date_end, $customer, $supplier, $description, $remark);
             // response in json format
             echo json_encode(
                 $recode);
