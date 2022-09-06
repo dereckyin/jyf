@@ -187,7 +187,7 @@ var app = new Vue({
           "id" : 1,
           "title" : "空運費",
           "qty" : "",
-          "price": 89,
+          "price": 0,
         }, 
         this.details.push(obj);
   
@@ -201,9 +201,9 @@ var app = new Vue({
   
         obj = {
           "id" : 3,
-          "title" : "報關費",
+          "title" : "倉租費",
           "qty" : "",
-          "price": 1000,
+          "price": 6,
         }, 
         this.details.push(obj);
   
@@ -214,31 +214,23 @@ var app = new Vue({
           "price": 600,
         }, 
         this.details.push(obj);
-  
+
         obj = {
           "id" : 5,
-          "title" : "傳輸費",
+          "title" : "連線費",
           "qty" : "",
-          "price": 240,
+          "price": 200,
         }, 
         this.details.push(obj);
   
         obj = {
           "id" : 6,
-          "title" : "保險費",
+          "title" : "空運傳輸費",
           "qty" : "",
-          "price": 400,
+          "price": 150,
         }, 
         this.details.push(obj);
   
-        obj = {
-          "id" : 7,
-          "title" : "內陸運費",
-          "qty" : "",
-          "price": "",
-        }, 
-        this.details.push(obj);
-
         this.calculate_total();
       }
       else if(this.mode == 'exp')
@@ -311,7 +303,7 @@ var app = new Vue({
         "id" : 1,
         "title" : "空運費",
         "qty" : "",
-        "price": 89,
+        "price": 0,
       }, 
       this.details.push(obj);
 
@@ -325,9 +317,9 @@ var app = new Vue({
 
       obj = {
         "id" : 3,
-        "title" : "報關費",
+        "title" : "倉租費",
         "qty" : "",
-        "price": 1000,
+        "price": 6,
       }, 
       this.details.push(obj);
 
@@ -341,27 +333,20 @@ var app = new Vue({
 
       obj = {
         "id" : 5,
-        "title" : "傳輸費",
+        "title" : "連線費",
         "qty" : "",
-        "price": 240,
+        "price": 200,
       }, 
       this.details.push(obj);
 
       obj = {
         "id" : 6,
-        "title" : "保險費",
+        "title" : "空運傳輸費",
         "qty" : "",
-        "price": 400,
+        "price": 150,
       }, 
       this.details.push(obj);
 
-      obj = {
-        "id" : 7,
-        "title" : "內陸運費",
-        "qty" : "",
-        "price": "",
-      }, 
-      this.details.push(obj);
 
       this.calculate_total();
 
