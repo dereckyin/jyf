@@ -233,6 +233,7 @@ function GetLoadingDetail($conn, $id){
     $sql = "select 
     mp.id, 
     l.container_number,
+    CONCAT_WS(',', l.date_sent, IFNULL(ldh.date_sent, '')) date_sent,
     CONCAT_WS(',', l.eta_date, IFNULL(ldh.eta_date, '')) eta_date,
     CONCAT_WS(',', l.date_arrive, IFNULL(ldh.date_arrive, '')) date_arrive
 from measure_ph mp 
@@ -250,12 +251,14 @@ where mp.id =  ($id)";
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $loading_id = $row['id'];
         $container_number = $row['container_number'];
+        $date_sent_ary = explode(",", rtrim($row['date_sent'], ','));
         $eta_date_ary = explode(",", rtrim($row['eta_date'], ','));
         $date_arrive_ary = explode(",", rtrim($row['date_arrive'], ','));
 
         $merged_results[] = array( 
             "loading_id" => $loading_id,
             "container_number" => $container_number,
+            "date_sent" => end($date_sent_ary),
             "eta_date" => end($eta_date_ary),
             "date_arrive" => end($date_arrive_ary),
         );
