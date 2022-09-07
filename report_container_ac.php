@@ -296,7 +296,7 @@ header( 'location:index.php' );
                             </li>
                         </ul>
                         <ul v-for='(item, index) in displayedPosts'>
-                            <li><p v-for='(it, index) in item.loading'>{{it.eta_date}}</template></li>
+                            <li><p v-for='(it, index) in item.loading'>{{it.date_sent}}</template></li>
                             <li><p v-for='(it, index) in item.loading'>{{it.date_arrive}}</template></li>
                             <li><p v-for='(it, index) in item.loading'>{{it.container_number}}</template></li>
                             <li>₱ {{ item.charge_kilo !== undefined ? Number(item.charge_kilo).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
