@@ -377,9 +377,9 @@ try {
                 <cht>貨物內容</cht>
             </h6>
 
-            <div class="mainlist" style="overflow-x: auto;">
+            <div class="mainlist" style="overflow: auto; max-height: calc(100vh - 100px);">
                 <table class="tb_measure">
-                    <thead>
+                    <thead style="position: sticky; top: 0; left: 0;">
                     <tr>
                         <th>
                             <cht>勾選</cht>
