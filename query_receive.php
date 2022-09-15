@@ -109,9 +109,9 @@ $(function(){
 
       <div class="block record show">
         <h6>收貨紀錄 <eng>Receiving Records</eng></h6>
-        <div class="mainlist">
+        <div class="mainlist" style="overflow: auto; max-height: calc(100vh - 150px);">
 
-          <div class="listheader">
+          <div class="listheader" style="position: sticky; top: 0; left: 0; background-color: white;">
             <div class="pageblock" style="float:right;"> Page Size: 
               <select v-model="perPage">
                 <option v-for="item in inventory" :value="item" :key="item.id">
@@ -138,7 +138,7 @@ $(function(){
 
           <div class="tablebox s02">
             <!-- <table class="table table-hover table-striped table-sm table-bordered" id="showUser1" ref="showUser1"> -->
-            <ul class="header">
+            <ul class="header" style="position: sticky; top: 40px; left: 0px;">
               <li><eng>Date Receive</eng> 收件日期</li>
               <li><eng>Company/Customer</eng>收件人</li>
               <li><eng>Picture</eng>照片</li>
