@@ -1983,6 +1983,51 @@ var app = new Vue({
 
         },
 
+        async change_group() {
+            let _this = this;
+
+            this.group1_kilo = 0.0;
+            this.group2_kilo = 0.0;
+            this.group1_cuft = 0.0;
+            this.group2_cuft = 0.0;
+
+            var group_ids = [];
+         
+            for (i = 0; i < this.receive_records.length; i++) 
+            {
+                if(this.receive_records[i].flag == '1' || this.receive_records[i].flag == '2')
+                {
+                    this.receive_records[i].flag = '1'
+                    group_ids.push(this.receive_records[i].id);
+                }
+            }
+
+            await this.save_group_data(group_ids, this.group1_ids, this.group2_ids, '1');
+
+            this.group_name = "";
+            this.edit_group = false;
+
+            this.group1_ids = [];
+            this.group2_ids = [];
+
+            for (i = 0; i < this.receive_records.length; i++) 
+            {
+                if(this.receive_records[i].flag == '1')
+                {
+                    this.group1_kilo += parseFloat(this.receive_records[i].kilo);
+                    this.group1_cuft += parseFloat(this.receive_records[i].cuft);
+                    this.group1_ids.push(this.receive_records[i].id);
+                }
+
+                if(this.receive_records[i].flag == '2')
+                {
+                    this.group2_kilo += parseFloat(this.receive_records[i].kilo);
+                    this.group2_cuft += parseFloat(this.receive_records[i].cuft);
+                    this.group2_ids.push(this.receive_records[i].id);
+                }
+            }
+        },
+
         cancel_group() {
             this.edit_group = false;
             this.group_name = "";

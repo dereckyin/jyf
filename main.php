@@ -901,6 +901,9 @@ if($taiwan_read == "0")
                             <a class="btn small" style="color:white;" @click="group('2')">第二群
                                 <p>Group 2</p>
                             </a>
+                            <a class="btn small" style="color: white;" @click="change_group('2')">第二群變第一群
+                                <p>Group 2 into 1</p>
+                            </a>
 <?php
 }
 ?>
