@@ -270,6 +270,11 @@ header( 'location:index.php' );
             margin: 0 5px;
         }
 
+        .tb_measure tbody div.export_file i {
+            display: inline-block;
+            margin: 10px;
+        }
+
         div.block > .listheader{
             width: 100%;
             padding: 5px;
@@ -279,6 +284,22 @@ header( 'location:index.php' );
             align-items: center;
         }
 
+        #export_modal .tablebox.s02 textarea{
+            height: auto;
+        }
+
+        button.btn_switch{
+            position: fixed;
+            left: 5px;
+            top: 50vh;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            font-size: 25px;
+            font-weight: 700;
+            background-color: rgba(7, 220, 237, 0.8);
+            z-index: 999;
+        }
     </style>
 
 
@@ -300,6 +321,12 @@ header( 'location:index.php' );
     <header></header>
     <!-- header end -->
     <div class="mainContent">
+
+        <button onclick="location.href='pickup_payment.php';" class="btn_switch">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-toggles" viewBox="0 0 16 16">
+                <path d="M4.5 9a3.5 3.5 0 1 0 0 7h7a3.5 3.5 0 1 0 0-7h-7zm7 6a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm-7-14a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm2.45 0A3.49 3.49 0 0 1 8 3.5 3.49 3.49 0 0 1 6.95 6h4.55a2.5 2.5 0 0 0 0-5H6.95zM4.5 0h7a3.5 3.5 0 1 1 0 7h-7a3.5 3.5 0 1 1 0-7z"></path>
+            </svg>
+        </button>
 
         <h6>
             Pickup and Payment
@@ -387,6 +414,11 @@ header( 'location:index.php' );
                     <option value="D">List "Already Pickup And Paid" (僅列出已提貨且已付款)</option>
                     <option value="">List "All" (全部列出)</option>
                 </select>
+
+                <div v-show="filter == '' || filter == 'D'">
+                    <input type="text" v-model="search" placeholder="Only Search for DR" style="width: 200px; margin-right: 10px;">
+                    <button @click="getMeasures('search')">Search</button>
+                </div>
 
                 <div class="pageblock" v-show="filter == '' || filter == 'D'"> <!--Page Size:
                     <select v-model="perPage">
@@ -498,8 +530,8 @@ header( 'location:index.php' );
                                 {{ item.container_number }}
                             </td>
                             <td>{{ item.record.length }}</td>
-                            <td>{{ item.kilo }}{{ item.kilo == '' ? '' : '@' + (item.kilo_price) }}</td>
-                            <td>{{ item.cuft }}{{ item.cuft == '' ? '' : '@' + (item.cuft_price) }}</td>
+                            <td>{{ item.kilo }}</td>
+                            <td>{{ item.cuft }}</td>
                             <td>{{ item.charge }}</td>
                             <td>
                                 <div>{{ item.encode }}</div>
@@ -508,8 +540,19 @@ header( 'location:index.php' );
 {
     ?>
                                 <button data-toggle="modal" data-target="#encode_modal" v-if="item.encode_status == ''"
-                                        @click="item_encode(item)">Encode
+                                        @click="item_encode(item)" style="margin: 3px 0;">Encode
                                 </button>
+                               
+                                <button data-toggle="modal" data-target="#export_modal"
+                                        @click="item_export(item, row.payments, row.ar, item.id, row.measure)" style="margin: 3px 0;">Export
+                                </button>
+
+                                <div class="export_file" v-if="item.export.length > 0 && item.export[0].file_export != ''">
+                                    <a :href="'https://storage.googleapis.com/feliiximg/' + item.export[0].file_export"><i class="fas fa-file fa-lg" aria-hidden="true"></i></a>
+                                    <br>
+                                    {{ item.export[0].upd_time }}
+                                </div>
+
                                 <?php
 }
 ?>
@@ -525,14 +568,14 @@ header( 'location:index.php' );
     ?>
                                 <button data-toggle="modal" data-target="#payment_modal"
                                         v-if="item.payment_status == ''"
-                                        @click="item_payment(row.payments, row.ar, row.measure_detail_id)">Encode
+                                        @click="item_payment(row.payments, row.ar, row.measure_detail_id, row.measure)">Encode
                                 </button>
                                 <?php
 }
 ?>
                                 <button data-toggle="modal" data-target="#payment_modal_detail"
                                         v-if="item.payment_status != ''"
-                                        @click="item_payment(row.payments, row.ar, row.measure_detail_id)">Detail
+                                        @click="item_payment(row.payments, row.ar, row.measure_detail_id, row.measure)">Detail
                                 </button>
                             </td>
                         </tr>
@@ -546,6 +589,8 @@ header( 'location:index.php' );
                 if($phili_read == "0")
 {
     ?>
+                    <a class="btn small" @click="toggleCheckbox()" v-if="filter == 'D'">Select All / Undo
+                        <cht>全選/全取消</cht></a>
                     <a class="btn small" @click="merge_item()">
                         Merge Items
                         <cht>合併項目</cht>
@@ -563,6 +608,12 @@ header( 'location:index.php' );
                         Decompose Measurement Data
                         <cht>拆分丈量資料</cht>
                     </a>
+
+                    <a class="btn small" @click="archive_record()" v-if="filter == 'D'">
+                        Archive
+                        <cht>歸檔</cht>
+                    </a>
+
                     <?php
 }
 ?>
@@ -571,234 +622,210 @@ header( 'location:index.php' );
 
         </div>
 
+    </div>
 
-        <div class="block record show" style="display: none;">
-            <h6>Pickup / Payment Records
-                <cht>提貨與付款記錄</cht>
-            </h6>
+    <!-- The Modal -->
+    <div class="modal" id="export_modal">
+    <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 1400px; margin: 80px auto;">
+            <div class="modal-content">
 
-            <div class="listheader">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title">Export Payment Receipt
+                        <cht>匯出付款收據</cht>
+                    </h5>
+                </div>
 
-                <select style="text-align: left; width: 610px;">
-                    <option selected>List "All" (全部列出)</option>
-                    <option>List "Not Yet Pickup" (僅列出未提貨)</option>
-                    <option>List "Already Pickup Not Yet Paid" (僅列出已提貨但未付款)</option>
-                </select>
+                <div class="modal-body">
+                    <div class="tablebox s02">
+                        <ul>
+                            <li>
+                                DR
+                            </li>
+                            <li>
+                                <input type="text" v-model="exp_dr">
+                            </li>
+                            <li>
+                            </li>
+                            <li>
+                                Date
+                            </li>
+                            <li>
+                                <input type="date" v-model="exp_date">
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                Sold TO
+                            </li>
+                            <li>
+                                <input type="text" v-model="exp_sold_to">
+                            </li>
+                            <li>
+                            </li>
+                            <li>
+                                Assist By
+                            </li>
+                            <li>
+                                <select v-model="assist_by">
+                                    <option></option>
+                                    <option value="Lailani">Lailani</option>
+                                    <option value="Ana">Ana</option>
+                                    <option value="Merryl">Merryl</option>
+                                </select>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                Quantity
+                            </li>
+                            <li>
+                                <textarea  v-model="exp_quantity" rows="5"></textarea>
+                            </li>
+                            <li>
+                            </li>
+                            <li>
+                                Unit
+                            </li>
+                            <li>
+                                <textarea v-model="exp_unit" rows="5"></textarea>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                Description
+                            </li>
+                            <li>
+                                <textarea v-model="exp_discription" rows="5"></textarea>
+                            </li>
+                            <li>
+                            </li>
+                            <li>
+                                Amount
+                            </li>
+                            <li>
+                                <textarea v-model="exp_amount" rows="5"></textarea>
+                            </li>
+                        </ul>
 
-                <div class="pageblock"> <!--Page Size:
-                    <select v-model="perPage">
-                        <option v-for="item in inventory" :value="item" :key="item.id">
-                            {{ item.name }}
-                        </option>
-                    </select> --> Page:
-                    <div class="pageblock">
-                        <a class="first micons" @click="page=1">first_page</a>
-                        <a class="prev micons" :disabled="page == 1"
-                           @click="page < 1 ? page = 1 : page--">chevron_left</a>
-                        <select v-model="page">
-                            <option v-for="pg in pages" :value="pg">
-                                {{ pg }}
-                            </option>
-                        </select>
 
-                        <a class="next micons" :disabled="page == pages.length"
-                           @click="page++">chevron_right</a>
-                        <a class="last micons" @click="page=pages.length">last_page</a>
                     </div>
                 </div>
-                <!-- <div class="searchblock" style="float:left;">搜尋<input type="text"></div> -->
-            </div>
+                
+                <div class="modal-body">
+                    <div class="tablebox s02 payment">
+                        <ul class="header">
+                            <li style="width: 105px; min-width: 105px;">
+                                <cht>勾選</cht>
+                                Check
+                            </li>
+                            <li style="width: 230px; min-width: 230px;">
+                                <cht>支付方式</cht>
+                                Payment Method
+                            </li>
+                            <li style="width: 230px; min-width: 230px;">
+                                <cht>開立日期</cht>
+                                Issue Date
+                            </li>
+                            <li style="width: 230px; min-width: 230px;">
+                                <cht>收到日期</cht>
+                                Receive Date
+                            </li>
+                            <li style="width: 230px; min-width: 230px;">
+                                <cht>金額</cht>
+                                Amount
+                            </li>
+                          
+                            <li style="width: calc(100% - 1025px);">
+                                <cht>備註</cht>
+                                Remark
+                            </li>
+                        </ul>
 
-            <div class="mainlist">
-                <table class="tb_measure">
-                    <thead>
-                    <tr>
-                        <th>
-                            <cht>勾選</cht>
-                            Check
-                        </th>
-                        <th>
-                            <cht>單號</cht>
-                            OR
-                        </th>
-                        <th>
-                            <cht>收件人(菲)</cht>
-                            Company/Customer(PH)
-                        </th>
-                        <th>
-                            <cht>丈量日期</cht>
-                            Date Encoded
-                        </th>
-                        <th>
-                            <cht>收貨記錄筆數</cht>
-                            Number of Goods Records
-                        </th>
-                        <th>
-                            <cht>重量</cht>
-                            Kilo
-                        </th>
-                        <th>
-                            <cht>才積</cht>
-                            Cuft
-                        </th>
-                        <th>
-                            <cht>收費金額</cht>
-                            Amount
-                        </th>
-                        <th>
-                            <cht>提貨狀態</cht>
-                            Pickup Status
-                        </th>
-                        <th>
-                            <cht>付款狀態</cht>
-                            Payment Status
-                        </th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="alone">
-                        </td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            JUNG YA FEI
-                        </td>
-                        <td>
-                            2021/06/10
-                        </td>
-                        <td>2</td>
-                        <td>700</td>
-                        <td>500</td>
-                        <td>20500</td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            <div class="ar">A/R: 20500</div>
-                            <button>Encode</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="alone">
-                        </td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            &lt;WME&gt; WALCO MOTOR SALES3530705
-                        </td>
-                        <td>
-                            2021/06/10
-                        </td>
-                        <td>1</td>
-                        <td>1300</td>
-                        <td>600</td>
-                        <td>37200</td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            <div class="ar">A/R: 37200</div>
-                            <button>Encode</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td rowspan="2">
-                            <input type="checkbox" class="alone">
-                        </td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            RR
-                        </td>
-                        <td>
-                            2021/06/10
-                        </td>
-                        <td>3</td>
-                        <td>2200</td>
-                        <td>500</td>
-                        <td>25000</td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td rowspan="2">
-                            <div class="ar">A/R: 34700</div>
-                            <button>Encode</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            RR 0917-5642162
-                        </td>
-                        <td>
-                            2021/06/13
-                        </td>
-                        <td>1</td>
-                        <td>300</td>
-                        <td>600</td>
-                        <td>9700</td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                    </tr>
+                        <ul v-for="(item, j) in payment">
+                            <li><input class="alone" type="checkbox" true-value="1"  false-value="0" v-model="item.is_selected" /></li>
+                            <li>
+                                
+                                {{ item.type == "1" ? 'Cash 現金' : item.type == "2" ? 'Deposit 存款' : item.type == "3" ? 'Check 支票' : item.type == "4" ? 'Taiwan Pay 台灣付款' : item.type == "5" ? 'Advance Payment 預付款' : '' }}
+                            </li>
+                            <li>
+                                {{ item.issue_date }}
+                            </li>
+                            <li>
+                                {{ item.payment_date }}
+                            </li>
+                            <li>
+                                {{ item.amount }}
+                            </li>
+                          
+                            <li>
+                                {{ item.remark }}
+                            </li>
+                        </ul>
 
 
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="alone">
-                        </td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            LYM-18; MDR CABINEL
-                        </td>
-                        <td>
-                            2021/06/13
-                        </td>
-                        <td>1</td>
-                        <td>7000</td>
-                        <td>3600</td>
-                        <td>88000</td>
-                        <td>
-                            <button>Encode</button>
-                        </td>
-                        <td>
-                            <div class="ar">A/R: 88000</div>
-                            <button>Encode</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <div class="btnbox" style="border: none; margin-top: 10px;">
-
-                    <a class="btn small">
-                        Merge Items
-                        <cht>合併項目</cht>
-                    </a>
-                    <a class="btn small">
-                        Decompose Item
-                        <cht>拆分項目</cht>
-                    </a>
-
+                    </div>
                 </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="tablebox s02">
+                        <ul class="header">
+                            <li style="width: 105px; min-width: 105px;">
+                                <cht>勾選</cht>
+                                Check
+                            </li>
+                            <li style="width: 200px; min-width: 200px;">
+                                <cht>收貨日期</cht>
+                                Date Receive
+                            </li>
+                            <li>
+                                <cht>收件人</cht>
+                                Company/Customer
+                            </li>
+                            <li style="min-width: 350px;">
+                                <cht>貨品名稱</cht>
+                                Description
+                            </li>
+                            <li>
+                                <cht>件數</cht>
+                                Quantity
+                            </li>
+                            <li>
+                                <cht>寄貨人</cht>
+                                Supplier
+                            </li>
+                          
+                        </ul>
+
+                        <ul v-for="(item, j) in record">
+                            <li><input class="alone" type="checkbox" true-value="1"  false-value="0"  v-model="item.is_selected" /></li>
+                            <li>{{ item.date_receive }}</li>
+                            <li>{{ item.customer }}</li>
+                            <li>{{ item.description }}</li>
+                            <li>{{ item.quantity }}</li>
+                            <li>{{ item.supplier }}</li>
+                         
+                        </ul>
+
+                    </div>
+                </div>
+
+                
+
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-warning">Cancel
+                        <cht>取消</cht>
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="export_save()">Export Word
+                        <cht>匯出 Word</cht>
+                    </button>
+                   
+                </div>
+
             </div>
         </div>
     </div>
-
 
     <!-- The Modal -->
     <div class="modal" id="encode_modal">
