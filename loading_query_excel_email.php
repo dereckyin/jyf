@@ -321,7 +321,7 @@ foreach ($batch_nums as $num)
     $sheet->getStyle('A' . ($i + 3) . ':' . 'A' . ($i + 19))->getFont()->setBold(true);
     $sheet->getStyle('A' . ($i + 3) . ':' . 'B' . ($i + 19))->applyFromArray($styleArray);
 
-    $sheet->setTitle($container . " ");
+    // $sheet->setTitle($container . " ");
 
     $page++;
 }
