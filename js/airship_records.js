@@ -354,7 +354,7 @@ var app = new Vue({
         "id" : 1,
         "title" : "Broker Charge",
         "qty" : "",
-        "price": 180,
+        "price": "",
       }, 
       this.details_php.push(obj);
 
@@ -375,8 +375,9 @@ var app = new Vue({
       //element.qty = this.kilo;
       //var element = this.details.find(({ title }) => title === '過檢費');
       //element.qty = this.kilo;
-      var element = this.details_php.find(({ title }) => title === 'Broker Charge');
-      element.qty = this.kilo;
+
+      //var element = this.details_php.find(({ title }) => title === 'Broker Charge');
+      //element.qty = this.kilo;
 
       if(this.currency == 'NTD')
         this.total = this.kilo * 395;
@@ -1012,7 +1013,10 @@ var app = new Vue({
               }
             });
 
-            _this.cnt = _this.items[0].cnt;
+            if(_this.items.length > 0) 
+              _this.cnt = _this.items[0].cnt;
+            else
+              _this.cnt = 0;
      
             _this.displayedPosts();
           },
