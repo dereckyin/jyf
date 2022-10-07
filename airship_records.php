@@ -1146,6 +1146,11 @@ header( 'location:index.php' );
                         </th>
 
                         <th class="text-nowrap">
+                            <cht>資料庫編號</cht>
+                            DB Number
+                        </th>
+
+                        <th class="text-nowrap">
                             <cht>功能</cht>
                             Actions
                         </th>
@@ -1207,6 +1212,10 @@ header( 'location:index.php' );
 
                         <td>
                             {{ item.remark }}
+                        </td>
+
+                        <td>
+                            {{ item.id }}
                         </td>
 
                         <td>
