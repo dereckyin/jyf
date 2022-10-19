@@ -220,7 +220,7 @@ var app = new Vue({
       if(this.courier_money == 0)
         this.courier_money = '';
 
-        this.getCustomers();
+        //this.getCustomers();
     },
 
     watch: {
@@ -235,38 +235,42 @@ var app = new Vue({
       },
 
 
-      s_keyword: function (value) {
-            //console.log(s_keyword);
+    //   s_keyword: function (value) {
+    //         //console.log(s_keyword);
 
-            this.s_filter = [];
+    //         this.s_filter = [];
 
-            if (value != '') {
-                this.s_filter = this.s_options.filter(option => {
-                    return option.company_title.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
-                           option.s_phone.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
-                            option.s_fax.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
-                            option.supplier.toLowerCase().indexOf(value.toLowerCase()) > -1;
-                });
-            }
+
+    //         if (value != '') {
+    //             this.getCustomersS(value);
+    //             // this.s_filter = this.s_options.filter(option => {
+    //             //     return option.company_title.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+    //             //            option.s_phone.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+    //             //             option.s_fax.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+    //             //             option.supplier.toLowerCase().indexOf(value.toLowerCase()) > -1;
+    //             // });
+    //         }
           
-        },
+    //     },
 
-        c_keyword: function (value) {
-            //console.log(c_keyword);
+        // c_keyword: function (value) {
+        //     //console.log(c_keyword);
 
-            this.c_filter = [];
+        //     this.c_filter = [];
 
-            if (value != '') {
-                this.c_filter = this.c_options.filter(option => {
-                    return option.shipping_mark.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
-                           option.customer.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
-                            option.c_fax.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
-                            option.c_email.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
-                            option.c_phone.toLowerCase().indexOf(value.toLowerCase()) > -1;
-                });
-            }
+        //     if (value != '') {
+        //         this.getCustomersC(value);
+
+        //         // this.c_filter = this.c_options.filter(option => {
+        //         //     return option.shipping_mark.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+        //         //            option.customer.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+        //         //             option.c_fax.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+        //         //             option.c_email.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+        //         //             option.c_phone.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        //         // });
+        //     }
           
-        }
+        // }
 
     },
 
@@ -616,6 +620,58 @@ var app = new Vue({
     },
 
     methods: {
+
+        searchs: function() {
+            this.s_filter = [];
+
+
+            if (this.s_keyword != '') {
+                this.getCustomersS(this.s_keyword);
+                // this.s_filter = this.s_options.filter(option => {
+                //     return option.company_title.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+                //            option.s_phone.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+                //             option.s_fax.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+                //             option.supplier.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                // });
+            }
+        },
+
+        searchc: function() {
+            this.c_filter = [];
+
+
+            if (this.c_keyword != '') {
+                this.getCustomersC(this.c_keyword);
+                // this.s_filter = this.s_options.filter(option => {
+                //     return option.company_title.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+                //            option.s_phone.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+                //             option.s_fax.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+                //             option.supplier.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                // });
+            }
+        },
+
+        getCustomersC: function(ckeyword) {
+            axios.get('api/contactor.php?c_keyword='+ckeyword)
+            .then(function(response) {
+                console.log(response.data);
+                app.c_filter = response.data;
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        },
+
+        getCustomersS: function(skeyword) {
+            axios.get('api/contactor.php?s_keyword='+skeyword)
+            .then(function(response) {
+                console.log(response.data);
+                app.s_filter = response.data;
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        },
 
         getCustomers: function() {
             axios.get('api/contactor.php')
