@@ -932,8 +932,8 @@ if($taiwan_read == "0")
                         <div class="modal-header">
                             <h4 class="modal-title">通訊錄</h4>
                         </div>
-                        <div>
-                            <input class="form-control" v-model="c_keyword" placeholder="Search for...">
+                        <div style="display: inherit;">
+                            <input class="form-control" v-model="c_keyword" placeholder="Search for..."><button type="button" class="form-control"  @click="searchc()" style="width: 180px;">查詢 Query</button>
                         </div>
 
                         <div class="form-check" style="padding: 10px;">
@@ -999,8 +999,8 @@ if($taiwan_read == "0")
                         <div class="modal-header">
                             <h4 class="modal-title">通訊錄</h4>
                         </div>
-                        <div>
-                            <input class="form-control" v-model="s_keyword" placeholder="Search for...">
+                        <div style="display: inherit;">
+                            <input class="form-control" v-model="s_keyword" placeholder="Search for..."><button type="button" class="form-control"  @click="searchs()" style="width: 180px;">查詢 Query</button>
                         </div>
                         <div class="form-check" style="padding: 10px;">
 
@@ -1269,6 +1269,9 @@ if($taiwan_read == "0")
             mainState.s_keyword = '';
             mainState.c_keyword = '';
 
+            mainState.c_filter = [];
+            mainState.s_filter = [];
+
             $("#myModal").dialog('close');
         };
 
@@ -1292,6 +1295,9 @@ if($taiwan_read == "0")
 
             mainState.s_keyword = '';
             mainState.c_keyword = '';
+
+            mainState.c_filter = [];
+            mainState.s_filter = [];
 
             $("#supModal").dialog('close');
         };
