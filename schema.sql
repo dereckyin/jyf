@@ -1073,4 +1073,7 @@ ALTER TABLE receive_record
 ADD COLUMN `flag` varchar(10) DEFAULT '' AFTER mail_cnt;
 
 -- 20221019 receive record add index
-CREATE INDEX receive_record_customer_idx ON receive_record (customer);
+-- CREATE INDEX receive_record_customer_idx ON receive_record (customer);
+-- ALTER TABLE receive_record DROP INDEX receive_record_customer_idx;
+
+CREATE INDEX receive_record_batch_date_status_customer_idx ON receive_record (batch_num, date_receive, `status`, customer);
