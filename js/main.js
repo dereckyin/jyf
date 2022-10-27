@@ -652,7 +652,7 @@ var app = new Vue({
         },
 
         getCustomersC: function(ckeyword) {
-            axios.get('api/contactor.php?c_keyword='+ckeyword)
+            axios.get('api/contactor_main.php?c_keyword='+ckeyword)
             .then(function(response) {
                 console.log(response.data);
                 app.c_filter = response.data;
@@ -663,7 +663,7 @@ var app = new Vue({
         },
 
         getCustomersS: function(skeyword) {
-            axios.get('api/contactor.php?s_keyword='+skeyword)
+            axios.get('api/contactor_main.php?s_keyword='+skeyword)
             .then(function(response) {
                 console.log(response.data);
                 app.s_filter = response.data;
