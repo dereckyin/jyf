@@ -311,6 +311,7 @@ try {
                                     <option>Bonus</option>
                                     <option>Separation pay</option>
                                     <option>Perfect Attendance</option>
+                                    <option>Perfect Job</option>
                                     <option>Petty</option>
                                     <option>Other</option>
 <!--
@@ -619,6 +620,7 @@ try {
                                         <option>Bonus</option>
                                         <option>Separation pay</option>
                                         <option>Perfect Attendance</option>
+                                        <option>Perfect Job</option>
                                         <option>Petty</option>
                                         <option>Other</option>
                          <!--               
