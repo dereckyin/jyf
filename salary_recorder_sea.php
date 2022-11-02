@@ -305,14 +305,16 @@ try {
                                     <option>Salary</option>
                                     <option>Overtime</option>
                                     <option>Allowance</option>
+                                    <option>Food Allowance</option>
                                     <option>Incentive</option>
                                     <option>Staff Borrow Money</option>
                                     <option>Staff Return Money</option>
                                     <option>Bonus</option>
                                     <option>Separation pay</option>
                                     <option>Perfect Attendance</option>
+                                    <option>Perfect Job</option>
+                                    <option>SOP</option>
                                     <option>Petty</option>
-                                    <option>Other</option>
 <!--
                                         <option>Absent</option>
                                         <option>Bonus</option>
@@ -613,13 +615,17 @@ try {
             <option>Salary</option>
                                         <option>Overtime</option>
                                         <option>Allowance</option>
+                                        <option>Food Allowance</option>
                                         <option>Incentive</option>
                                         <option>Staff Borrow Money</option>
                                         <option>Staff Return Money</option>
                                         <option>Bonus</option>
                                         <option>Separation pay</option>
                                         <option>Perfect Attendance</option>
+                                        <option>Perfect Job</option>
+                                        <option>SOP</option>
                                         <option>Petty</option>
+                                        <option disabled="disabled">___________________</option>
                                         <option>Other</option>
                          <!--               
                 <option>All</option>

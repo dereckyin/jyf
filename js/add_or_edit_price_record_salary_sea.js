@@ -220,7 +220,7 @@ var app = new Vue({
       if (category == "Staff Return Money" || category == "Petty") 
         this.operation_type = "1";  // Cash In
 
-      if (category == "Salary" || category == "Overtime" || category == "Allowance" || category == "Incentive" || category == "Staff Borrow Money" || category == "Bonus" || category == "Separation pay" || category == "Perfect Attendance") 
+      if (category == "Salary" || category == "Overtime" || category == "Allowance" || category == "Incentive" || category == "Staff Borrow Money" || category == "Bonus" || category == "Separation pay" || category == "Perfect Attendance" || category == "Food Allowance" || category == "Perfect Job" || category == "SOP") 
         this.operation_type = "2";  // Cash Out
 
   },
