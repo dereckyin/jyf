@@ -669,14 +669,14 @@ if($adv == 'Y')
     $table7 = $section->addTable([
         'afterSpacing' => 0,
         'Spacing'=> 0,
-        'cellMarginLeft' => 56.692913,
+        'cellMarginLeft' => 0,
         'cellMarginRight' => 56.692913,
         'cellMarginBottom' => 56.692913, 'color' => 'black'
     ]);
 
     $table7->addRow();
     $cell = $table7->addCell(11270.551184);
-    $cell->addImage('https://storage.googleapis.com/feliiximg/1669340274_air_freight.png', array('width' => 320, 'height' => 160));
+    $cell->addImage('https://storage.googleapis.com/feliiximg/1669340274_air_freight.png', array('width' => 286, 'height' => 153));
 }
 
 
