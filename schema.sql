@@ -1077,3 +1077,7 @@ ADD COLUMN `flag` varchar(10) DEFAULT '' AFTER mail_cnt;
 -- ALTER TABLE receive_record DROP INDEX receive_record_customer_idx;
 
 CREATE INDEX receive_record_batch_date_status_customer_idx ON receive_record (batch_num, date_receive, `status`, customer);
+
+-- 20221125
+ALTER TABLE pickup_payment_export
+ADD COLUMN `adv` varchar(3) DEFAULT 'Y' AFTER record;

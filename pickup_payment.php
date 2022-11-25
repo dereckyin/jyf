@@ -707,7 +707,24 @@ header( 'location:index.php' );
                                 <textarea v-model="exp_amount" rows="5"></textarea>
                             </li>
                         </ul>
+                        <ul>
 
+                            <li>Include Air<br>Freight Ad Pic</li>
+
+                            <li>
+                                <select v-model='adv'>
+                                    <option value="Y">Yes</option>
+                                    <option value="N">No</option>
+                                </select>
+                            </li>
+
+                            <li></li>
+
+                            <li></li>
+
+                            <li></li>
+
+                        </ul>
 
                     </div>
                 </div>

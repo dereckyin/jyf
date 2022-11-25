@@ -70,6 +70,7 @@ $exp_amount = (isset($_POST['exp_amount']) ?  $_POST['exp_amount'] : "");
 $payment = (isset($_POST['payment']) ?  $_POST['payment'] : []);
 $record = (isset($_POST['record']) ?  $_POST['record'] : []);
 $assist_by = (isset($_POST['assist_by']) ?  $_POST['assist_by'] : "");
+$adv = (isset($_POST['adv']) ?  $_POST['adv'] : "Y");
 
 $payments = json_decode($payment);
 $goods = json_decode($record);
@@ -93,13 +94,14 @@ if(IsExist($id, $conn))
         crt_time = now(),
         upd_time = now(),
         upd_user = ?,
-        file_export = ?
+        file_export = ?,
+        adv = ?
         where measure_detail_id = ?";
         // prepare the query
         $stmt = $conn->prepare($query);
 
         $stmt->bind_param(
-        "sssssssssssssi",
+        "ssssssssssssssi",
         $exp_dr,
         $assist_by,
         $exp_date,
@@ -113,6 +115,7 @@ if(IsExist($id, $conn))
         $user,
         $user,
         $file_name,
+        $adv,
         $id
         );
 
@@ -152,13 +155,14 @@ else
     crt_time = now(),
     upd_time = now(),
     upd_user = ?,
-    file_export = ?
+    file_export = ?,
+    adv = ?
   ";
     // prepare the query
     $stmt = $conn->prepare($query);
 
     $stmt->bind_param(
-    "isssssssssssss",
+    "issssssssssssss",
     $id,
     $exp_dr,
     $assist_by,
@@ -172,7 +176,8 @@ else
     $record,
     $user,
     $user,
-    $file_name
+    $file_name,
+    $adv
     );
 
 
@@ -654,6 +659,25 @@ if($assist_by == 'Ana')
     $TextRun->addImage('https://storage.googleapis.com/feliiximg/1656033523_s_ana.png', array('width' => 50, 'height' => 50));
 if($assist_by == 'Merryl')
     $TextRun->addImage('https://storage.googleapis.com/feliiximg/1656033523_s_merryl.png', array('width' => 50, 'height' => 50));
+
+
+
+if($adv == 'Y')
+{
+    $section->addTextBreak(1, array('name' => 'Calibri', 'size' => 12, 'color' => 'black'));
+
+    $table7 = $section->addTable([
+        'afterSpacing' => 0,
+        'Spacing'=> 0,
+        'cellMarginLeft' => 0,
+        'cellMarginRight' => 56.692913,
+        'cellMarginBottom' => 56.692913, 'color' => 'black'
+    ]);
+
+    $table7->addRow();
+    $cell = $table7->addCell(11270.551184);
+    $cell->addImage('https://storage.googleapis.com/feliiximg/1669340274_air_freight.png', array('width' => 286, 'height' => 153));
+}
 
 
 $section->addTextBreak(1, array('name' => 'Calibri', 'size' => 12, 'color' => 'black'));

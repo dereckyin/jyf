@@ -88,6 +88,8 @@ let mainState = {
     exp_discription:"",
     exp_amount:"",
 
+    adv:"",
+
     assist_by:"",
 
     export_record: {},
@@ -1163,6 +1165,7 @@ var app = new Vue({
           this.exp_date = '';
           this.exp_quantity = '';
           this.exp_unit = '';
+          this.adv = '';
 
           await this.get_export(detail_id);
 
@@ -1216,6 +1219,8 @@ var app = new Vue({
             //this.exp_amount = this.export_record[0].exp_amount;
 
             this.assist_by = this.export_record[0].assist_by;
+
+            this.adv = this.export_record[0].adv;
 
             // for(const element of JSON.parse(this.export_record[0].payment)) {
             //   var result  = this.payment.filter(function(o){return o.id == element.id;} );
@@ -1295,6 +1300,8 @@ var app = new Vue({
           form_Data.append('exp_amount', this.exp_amount)
           form_Data.append('payment', JSON.stringify(this.payment))
           form_Data.append('record', JSON.stringify(this.record))
+
+          form_Data.append('adv', this.adv)
         
           const filename = "Format_of_Payment_Receipt";
 
