@@ -660,13 +660,22 @@ if($assist_by == 'Ana')
 if($assist_by == 'Merryl')
     $TextRun->addImage('https://storage.googleapis.com/feliiximg/1656033523_s_merryl.png', array('width' => 50, 'height' => 50));
 
+
+
 if($adv == 'Y')
 {
-    $table6->addRow();
-    $cell = $table6->addCell(11270.551184);
-    
-    $table6->addRow();
-    $cell = $table6->addCell(11270.551184);
+    $section->addTextBreak(1, array('name' => 'Calibri', 'size' => 12, 'color' => 'black'));
+
+    $table7 = $section->addTable([
+        'afterSpacing' => 0,
+        'Spacing'=> 0,
+        'cellMarginLeft' => 56.692913,
+        'cellMarginRight' => 56.692913,
+        'cellMarginBottom' => 56.692913, 'color' => 'black'
+    ]);
+
+    $table7->addRow();
+    $cell = $table7->addCell(11270.551184);
     $cell->addImage('https://storage.googleapis.com/feliiximg/1669340274_air_freight.png', array('width' => 320, 'height' => 160));
 }
 
