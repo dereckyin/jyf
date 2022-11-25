@@ -389,7 +389,7 @@ function GetMeasurePersonRecord($id, $db){
 
 
 function GetExportRecord($id, $db){
-    $query = "SELECT DATE_FORMAT(upd_time, '%Y/%m/%d') upd_time, file_export from
+    $query = "SELECT DATE_FORMAT(upd_time, '%Y/%m/%d') upd_time, file_export, adv from
                pickup_payment_export
                     WHERE measure_detail_id = " . $id . "
            
@@ -404,11 +404,12 @@ function GetExportRecord($id, $db){
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $upd_time = $row['upd_time'];
         $file_export = $row['file_export'];
+        $adv = $row['adv'];
        
         $merged_results[] = array(
             "upd_time" => $upd_time,
             "file_export" => $file_export,
-          
+            "adv" => $adv,
         );
     }
 
