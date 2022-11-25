@@ -663,7 +663,10 @@ if($assist_by == 'Merryl')
 if($adv == 'Y')
 {
     $table6->addRow();
-    $cell = $table6->addCell(1440);
+    $cell = $table6->addCell(11270.551184);
+    
+    $table6->addRow();
+    $cell = $table6->addCell(11270.551184);
     $cell->addImage('https://storage.googleapis.com/feliiximg/1669340274_air_freight.png', array('width' => 320, 'height' => 160));
 }
 
