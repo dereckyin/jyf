@@ -18,8 +18,8 @@ var app = new Vue({
 				return false;
 			if(app.logDetails.password === '')
 				return false;
-	//		if (grecaptcha.getResponse() === '')                             
-	//          return false
+			if (grecaptcha.getResponse() === '')                             
+	          return false
 	      	else
 	      		app.logDetails.g_recaptcha_response = grecaptcha.getResponse();
 
