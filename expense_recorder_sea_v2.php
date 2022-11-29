@@ -312,13 +312,12 @@ try {
                                     <option>Office Expenses</option>
                                     <option>Parking Fee</option>
                                     <option>Toll Fee</option>
-                                    <option>Gas - L300 1</option>
                                     <option>Gas - L300 2</option>
                                     <option>Gas - Avanza Grey</option>
                                     <option>Gas - Alphard</option>
                                     <option>Gas - Innova Grey</option>
-                                    <option>Gas - Innova Black</option>
-                                    <option>Gas - Travis</option>
+                                    <option>Gas - Travis 1</option>
+                                    <option>Gas - Travis 2</option>
                                 </select>
                             </td>
 
@@ -333,18 +332,18 @@ try {
                                 <select class="form-control" style="width:25vw;"v-model="sub_category">
                                     <option>Food</option>
                                     <option>Rice</option>
-                                    <option>Gas - L300 1</option>
                                     <option>Gas - L300 2</option>
                                     <option>Gas - Avanza Grey</option>
                                     <option>Gas - Alphard</option>
                                     <option>Gas - Innova Grey</option>
-                                    <option>Gas - Innova Black</option>
-                                    <option>Car Maintenance - L300 1</option>
+                                    <option>Gas - Travis 1</option>
+                                    <option>Gas - Travis 2</option>
                                     <option>Car Maintenance - L300 2</option>
                                     <option>Car Maintenance - Avanza Grey</option>
                                     <option>Car Maintenance - Alphard</option>
                                     <option>Car Maintenance - Innova Grey</option>
-                                    <option>Car Maintenance - Innova Black</option>
+                                    <option>Car Maintenance - Travis 1</option>
+                                    <option>Car Maintenance - Travis 2</option>
                                     <option>Parking Fee</option>
                                     <option>Toll Fee</option>
                                     <option>Water Purified</option>
@@ -581,11 +580,14 @@ try {
             <option>Office Expenses</option>
             <option>Parking Fee</option>
             <option>Toll Fee</option>
-            <option>Gas - L300 1</option>
             <option>Gas - L300 2</option>
             <option>Gas - Avanza Grey</option>
             <option>Gas - Alphard</option>
             <option>Gas - Innova Grey</option>
+            <option>Gas - Travis 1</option>
+            <option>Gas - Travis 2</option>
+            <option disabled>________________________</option>
+            <option>Gas - L300 1</option>
             <option>Gas - Innova Black</option>
             <option>Gas - Travis</option>
         </select>
@@ -595,22 +597,30 @@ try {
                 v-model="select_sub_category">
                     <option>Food</option>
                     <option>Rice</option>
-                    <option>Gas - L300 1</option>
+
                     <option>Gas - L300 2</option>
                     <option>Gas - Avanza Grey</option>
                     <option>Gas - Alphard</option>
                     <option>Gas - Innova Grey</option>
-                    <option>Gas - Innova Black</option>
-                    <option>Car Maintenance - L300 1</option>
+                    <option>Gas - Travis 1</option>
+                    <option>Gas - Travis 2</option>
                     <option>Car Maintenance - L300 2</option>
                     <option>Car Maintenance - Avanza Grey</option>
                     <option>Car Maintenance - Alphard</option>
                     <option>Car Maintenance - Innova Grey</option>
-                    <option>Car Maintenance - Innova Black</option>
+                    <option>Car Maintenance - Travis 1</option>
+                    <option>Car Maintenance - Travis 2</option>
                     <option>Parking Fee</option>
                     <option>Toll Fee</option>
                     <option>Water Purified</option>
                     <option>Office Expenses</option>
+                    <option disabled>_______________________________</option>
+                    <option>Gas - L300 1</option>
+                    <option>Gas - Innova Black</option>
+                    <option>Gas - Travis</option>
+                    <option>Car Maintenance - L300 1</option>
+                    <option>Car Maintenance - Innova Black</option>
+                    <option>Car Maintenanc - Travis</option>
         </select>
         
         <input type="text" v-model="keyword" style="width:15vw; margin-left:1vw;" placeholder="Searching Keyword Here">
