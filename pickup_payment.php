@@ -763,7 +763,7 @@ header( 'location:index.php' );
                             <li><input class="alone" type="checkbox" true-value="1"  false-value="0" v-model="item.is_selected" /></li>
                             <li>
                                 
-                                {{ item.type == "1" ? 'Cash 現金' : item.type == "2" ? 'Deposit 存款' : item.type == "3" ? 'Check 支票' : item.type == "4" ? 'Taiwan Pay 台灣付款' : item.type == "5" ? 'Advance Payment 預付款' : '' }}
+                                {{ item.type == "1" ? 'Cash 現金' : item.type == "2" ? 'Deposit 存款' : item.type == "3" ? 'Check 支票' : item.type == "4" ? 'Taiwan Pay 台灣付款' : item.type == "5" ? 'Advance Payment 預付款' : item.type == "6" ? 'Gcash' : '' }}
                             </li>
                             <li>
                                 {{ item.issue_date }}
@@ -1101,6 +1101,7 @@ header( 'location:index.php' );
                                     <option value="3">Check 支票</option>
                                     <option value="4">Taiwan Pay 台灣付款</option>
                                     <option value="5">Advance Payment 預付款</option>
+                                    <option value="6">Gcash</option>
                                 </select>
 
                             </li>
@@ -1211,6 +1212,7 @@ header( 'location:index.php' );
                                 {{ item.type == 3 ? "Check 支票" : "" }}
                                 {{ item.type == 4 ? "Taiwan Pay 台灣付款" : "" }}
                                 {{ item.type == 5 ? "Advance Payment 預付款" : "" }}
+                                {{ item.type == 6 ? "Gcash" : "" }}
                             </li>
                             <li>
                                 {{ item.issue_date }}
