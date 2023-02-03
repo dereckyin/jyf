@@ -661,7 +661,7 @@ class ReceiveRecord{
                         r.real_payment_time,
                         COALESCE(ld.eta_date, '') eta_date_his,
                         COALESCE(ld.date_arrive, '') date_arrive_his,
-                        (select coalesce(encode, '') from measure_detail md left join measure_record_detail mrd on md.id = mrd.detail_id where mrd.record_id = r.id) as dr,
+                        (select GROUP_CONCAT(encode, '') from measure_detail md left join measure_record_detail mrd on md.id = mrd.detail_id where mrd.record_id = r.id) as dr,
                         '' pic, r.photo, r.picname
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id
@@ -721,7 +721,7 @@ class ReceiveRecord{
                         r.real_payment_time,
                         COALESCE(ld.eta_date, '') eta_date_his,
                         COALESCE(ld.date_arrive, '') date_arrive_his,
-                        (select coalesce(encode, '') from measure_detail md left join measure_record_detail mrd on md.id = mrd.detail_id where mrd.record_id = r.id) as dr,
+                        (select GROUP_CONCAT(encode, '') from measure_detail md left join measure_record_detail mrd on md.id = mrd.detail_id where mrd.record_id = r.id) as dr,
                         '' pic, r.photo, r.picname
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id
