@@ -70,6 +70,9 @@ try {
         //die();
     }
 
+    if($photo_time == "")
+        $photo_time = date("Ymd hisa");
+
     $onduty->username = $username;
     $onduty->duty_date = str_replace("-", "/", $today);
     $onduty->duty_type = $type;
