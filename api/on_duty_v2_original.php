@@ -70,7 +70,7 @@ try {
         //die();
     }
 
-    if($photo_time == "")
+    if($photo_time == "undefined" || empty($photo_time))
         $photo_time = date("Ymd hisa");
 
     $onduty->username = $username;
