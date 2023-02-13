@@ -440,8 +440,8 @@
                         <dd><textarea placeholder="" v-model="remark"></textarea></dd>
 
                         <dt>Photo</dt>
-                        <!-- <dd v-if="showPhoto"><input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()" accept="image/*" capture="camera"></dd> -->
-                        <dd>
+                        <dd v-if="showPhoto"><input type="file" id="file" ref="file" onclick="take_snapshot()" accept="image/*" capture="camera"></dd> 
+                        <!-- <dd>
                             <div id="Cam" class="container"
                                  style="display:flex; flex-direction: column; align-items: center;"><b style="margin-top: 15px;">Camera
                                 Preview</b>
@@ -456,7 +456,7 @@
                             <div class="container" id="Saved">
                                 <span id="loading"></span><img id="uploaded" src=""/>
                             </div>
-                        </dd>
+                        </dd> -->
 
                         <!--   <hr>
                            <dt>Time In</dt>
