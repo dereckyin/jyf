@@ -71,7 +71,7 @@ try {
     }
 
     if($photo_time == "undefined" || empty($photo_time))
-        $photo_time = date("Ymd hisa");
+        $photo_time = date("Ymd His");
 
     $onduty->username = $username;
     $onduty->duty_date = str_replace("-", "/", $today);
