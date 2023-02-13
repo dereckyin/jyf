@@ -145,7 +145,7 @@
             //setInterval(self.getTimeNow, 1000)
         }
 
-        window.onload = ShowCam;
+       // window.onload = ShowCam;
     </script>
 
     <!-- jQuery和js載入 -->
@@ -440,7 +440,7 @@
                         <dd><textarea placeholder="" v-model="remark"></textarea></dd>
 
                         <dt>Photo</dt>
-                        <dd v-if="showPhoto"><input type="file" id="file" ref="file" onclick="take_snapshot()" accept="image/*" capture="camera"></dd> 
+                        <dd v-if="showPhoto"><input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()" accept="image/*" capture="camera"></dd> 
                         <!-- <dd>
                             <div id="Cam" class="container"
                                  style="display:flex; flex-direction: column; align-items: center;"><b style="margin-top: 15px;">Camera
@@ -512,7 +512,7 @@
 <script defer src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script defer src="js/device-uuid.min.js"></script>
-<script defer src="js/on_duty_v2.js"></script>
+<script defer src="js/on_duty_v2_original.js"></script>
 <script>
     $(document).ready(function() {
     var date = new Date();
