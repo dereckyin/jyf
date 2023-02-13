@@ -44,24 +44,24 @@ try {
 
     try {
 
+        if (isset($_FILES['file']['name'])) {
+                $conf = new Conf();
+                $key = "myKey";
+                $time = time();
+                $hash = hash_hmac('sha256', $time . rand(1, 65536), $key);
+                $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+                $filename = $time . $hash . "." . $ext;
+                if (move_uploaded_file($_FILES["file"]["tmp_name"], $conf::$upload_path . $filename)) {
+                        $result = triphoto_getGPS($conf::$upload_path . $filename);
 
-        if (array_key_exists('file', $_FILES)) {
-            $conf = new Conf();
-            $key = "myKey";
-            $time = time();
-            $hash = hash_hmac('sha256', $time . rand(1, 65536), $key);
-            $ext = "jpg";
-            $filename = $time . $hash . "." . $ext;
+                    $s_lat = (is_float($result['latitude']) ? $result['latitude'] : 0.0);
+                    $s_lng = (is_float($result['longitude']) ? $result['longitude'] : 0.0);
+                    $s_time = $result['time'];
+                }
 
-            file_put_contents($conf::$upload_path . $filename, $_FILES['file']['tmp_name']);
-
-                $s_lat =  0.0;
-                $s_lng =  0.0;
-                $s_time = "";
-            
-
-            compress_image($conf::$upload_path . $filename, $conf::$upload_path . $filename, 60);
-        }
+                // compress_image($conf::$upload_path . $filename, $conf::$upload_path . $filename, 60);
+            }
+        
     }catch (Exception $e){
 
         //http_response_code(401);
@@ -112,75 +112,74 @@ catch (Exception $e){
 
     }
 
-
-function triphoto_getGPS($fileName)
-{
-    //get the EXIF
-    try{
-        $exif = exif_read_data($fileName);
-    }catch (Exception $e)
+    function triphoto_getGPS($fileName)
     {
-        $result['latitude'] = 0.0;
-        $result['longitude'] = 0.0;
-        $result['time'] = "";
-        return $result;
-    }
-
-    $GPSLatitudeRef = (isset($exif["GPSLatitudeRef"]) ? $exif["GPSLatitudeRef"] : "");
-    $GPSLongitudeRef = (isset($exif["GPSLongitudeRef"]) ? $exif["GPSLongitudeRef"] : "");
-    $LatM = 1; $LongM = 1;
-
-
-    //get the Hemisphere multiplier
-
-    if($GPSLatitudeRef == 'S')
-    {
-        $LatM = -1;
-    }
-    if($GPSLongitudeRef == 'W')
-    {
-        $LongM = -1;
-    }
-
-    //get the GPS data
-    $gps['LatDegree']=(isset($exif["GPSLatitude"][0]) ? $exif["GPSLatitude"][0] : 0.0);
-    $gps['LatMinute']=(isset($exif["GPSLatitude"][1]) ? $exif["GPSLatitude"][1] : 0.0);
-    $gps['LatgSeconds']=(isset($exif["GPSLatitude"][2]) ? $exif["GPSLatitude"][2] : 0.0);
-    $gps['LongDegree']=(isset($exif["GPSLongitude"][0]) ? $exif["GPSLongitude"][0] : 0.0);
-    $gps['LongMinute']=(isset($exif["GPSLongitude"][1]) ? $exif["GPSLongitude"][1] : 0.0);
-    $gps['LongSeconds']=(isset($exif["GPSLongitude"][2]) ? $exif["GPSLongitude"][2] : 0.0);
-
-    $DateTimeOriginal = (isset($exif["DateTimeOriginal"]) ? $exif["DateTimeOriginal"] : "");
-
-    //convert strings to numbers
-    foreach($gps as $key => $value)
-    {
-        $pos = strpos($value, '/');
-        if($pos !== false)
+        //get the EXIF
+        try{
+            $exif = exif_read_data($fileName);
+        }catch (Exception $e)
         {
-            $temp = explode('/',$value);
-            if(!is_null($temp[1]) && $temp[1] != 0)
-                $gps[$key] = $temp[0] / $temp[1];
-            else
-                $gps[$key] = 0.0;
+            $result['latitude'] = 0.0;
+            $result['longitude'] = 0.0;
+            $result['time'] = "";
+            return $result;
         }
+    
+        $GPSLatitudeRef = (isset($exif["GPSLatitudeRef"]) ? $exif["GPSLatitudeRef"] : "");
+        $GPSLongitudeRef = (isset($exif["GPSLongitudeRef"]) ? $exif["GPSLongitudeRef"] : "");
+        $LatM = 1; $LongM = 1;
+    
+    
+        //get the Hemisphere multiplier
+    
+        if($GPSLatitudeRef == 'S')
+        {
+            $LatM = -1;
+        }
+        if($GPSLongitudeRef == 'W')
+        {
+            $LongM = -1;
+        }
+    
+        //get the GPS data
+        $gps['LatDegree']=(isset($exif["GPSLatitude"][0]) ? $exif["GPSLatitude"][0] : 0.0);
+        $gps['LatMinute']=(isset($exif["GPSLatitude"][1]) ? $exif["GPSLatitude"][1] : 0.0);
+        $gps['LatgSeconds']=(isset($exif["GPSLatitude"][2]) ? $exif["GPSLatitude"][2] : 0.0);
+        $gps['LongDegree']=(isset($exif["GPSLongitude"][0]) ? $exif["GPSLongitude"][0] : 0.0);
+        $gps['LongMinute']=(isset($exif["GPSLongitude"][1]) ? $exif["GPSLongitude"][1] : 0.0);
+        $gps['LongSeconds']=(isset($exif["GPSLongitude"][2]) ? $exif["GPSLongitude"][2] : 0.0);
+    
+        $DateTimeOriginal = (isset($exif["DateTimeOriginal"]) ? $exif["DateTimeOriginal"] : "");
+    
+        //convert strings to numbers
+        foreach($gps as $key => $value)
+        {
+            $pos = strpos($value, '/');
+            if($pos !== false)
+            {
+                $temp = explode('/',$value);
+                if(!is_null($temp[1]) && $temp[1] != 0)
+                    $gps[$key] = $temp[0] / $temp[1];
+                else
+                    $gps[$key] = 0.0;
+            }
+        }
+    
+        //calculate the decimal degree
+        $result['latitude'] = $LatM * ($gps['LatDegree'] + ($gps['LatMinute'] / 60) + ($gps['LatgSeconds'] / 3600));
+        $result['longitude'] = $LongM * ($gps['LongDegree'] + ($gps['LongMinute'] / 60) + ($gps['LongSeconds'] / 3600));
+        $result['time'] = $DateTimeOriginal;
+    
+        return $result;
+    
     }
-
-    //calculate the decimal degree
-    $result['latitude'] = $LatM * ($gps['LatDegree'] + ($gps['LatMinute'] / 60) + ($gps['LatgSeconds'] / 3600));
-    $result['longitude'] = $LongM * ($gps['LongDegree'] + ($gps['LongMinute'] / 60) + ($gps['LongSeconds'] / 3600));
-    $result['time'] = $DateTimeOriginal;
-
-    return $result;
-
-}
 
 function compress_image($source_url, $destination_url, $quality)
 {
     $info = getimagesize($source_url);
-    $image = imagecreatefromjpeg($source_url);
-   
-    if($image != false)
-        imagejpeg($image, $destination_url, $quality);
+    if ($info['mime'] == 'image/jpeg') $image = imagecreatefromjpeg($source_url);
+    elseif ($info['mime'] == 'image/gif') $image = imagecreatefromgif($source_url);
+    elseif ($info['mime'] == 'image/png') $image = imagecreatefrompng($source_url);
+    imagejpeg($image, $destination_url, $quality);
     //echo "Image uploaded successfully.";
 }

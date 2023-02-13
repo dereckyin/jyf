@@ -500,7 +500,7 @@ var app = new Vue({
 
             document.getElementById('photo_gps').value = '';
             document.getElementById('photo_time').value = '';
-            document.getElementById('results').innerHTML = '';
+            //document.getElementById('results').innerHTML = '';
 
             this.getLocation();
             this.getToday();
