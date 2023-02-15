@@ -1081,3 +1081,28 @@ CREATE INDEX receive_record_batch_date_status_customer_idx ON receive_record (ba
 -- 20221125
 ALTER TABLE pickup_payment_export
 ADD COLUMN `adv` varchar(3) DEFAULT 'Y' AFTER record;
+
+-- 20230214 warehouse fee
+alter table measure_detail
+ADD COLUMN `days` varchar(64) DEFAULT '';
+
+alter table measure_detail
+ADD COLUMN `way` varchar(64) DEFAULT '';
+
+alter table measure_detail
+ADD COLUMN `kilo_unit` varchar(64) DEFAULT '';
+
+alter table measure_detail
+ADD COLUMN `kilo_amount` varchar(64) DEFAULT '';
+
+alter table measure_detail
+ADD COLUMN `kilo_remark` varchar(64) DEFAULT '';
+
+alter table measure_detail
+ADD COLUMN `cuft_unit` varchar(64) DEFAULT '';
+
+alter table measure_detail
+ADD COLUMN `cuft_amount` varchar(64) DEFAULT '';
+
+alter table measure_detail
+ADD COLUMN `cuft_remark` varchar(64) DEFAULT '';

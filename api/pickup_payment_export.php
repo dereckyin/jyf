@@ -876,8 +876,8 @@ function GetPaymentType($kind)
             $type = "Taiwan Pay";
             break;
         case "5":
-                $type = "Advance Payment";
-                break;
+            $type = "Advance Payment";
+            break;
         case "6":
             $type = "Gcash";
             break;
