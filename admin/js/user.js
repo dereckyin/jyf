@@ -24,6 +24,7 @@ let mainState = {
     report2:0,
     sea_expense: 0,
     sea_expense_v2: 0,
+    gcash_expense_sea: 0,
     is_admin: '',
     airship:0,
     airship_read:0,
@@ -242,6 +243,7 @@ var app = new Vue({
             formData.append('airship_read', this.record.airship_read)
             formData.append('sea_expense', this.record.sea_expense)
             formData.append('sea_expense_v2', this.record.sea_expense_v2)
+            formData.append('gcash_expense_sea', this.record.gcash_expense_sea)
             formData.append('is_admin', this.record.is_admin)
             formData.append('crud', "del");
             formData.append('id', id);
@@ -501,6 +503,17 @@ var app = new Vue({
             }
         },
 
+        updateGCashExpenseSea: function(event) {
+          console.log("gcash_expense_sea");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.gcash_expense_sea = 1;
+            } else {
+                this.gcash_expense_sea = 0;
+            }
+        },
+
         updateIsAdmin: function(event) {
           console.log("updateIsAdmin");
             let checked = event.target.checked;
@@ -578,6 +591,17 @@ var app = new Vue({
             }
         },
 
+        updateEditGCashExpenseSea: function(event) {
+          console.log("updateEditSeaExpense");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.record.gcash_expense_sea = 1;
+            } else {
+                this.record.gcash_expense_sea = 0;
+            }
+        },
+
         cancelReceiveRecord: function(event) {
             console.log("cancel edit receive_record!")
 
@@ -619,6 +643,7 @@ var app = new Vue({
             formData.append('airship_read', this.record.airship_read)
             formData.append('sea_expense', this.record.sea_expense)
             formData.append('sea_expense_v2', this.record.sea_expense_v2)
+            formData.append('gcash_expense_sea', this.record.gcash_expense_sea)
             formData.append('is_admin', this.record.is_admin)
            
             formData.append('crud', "update");
@@ -713,6 +738,7 @@ var app = new Vue({
             formData.append('airship_read', this.airship_read)
             formData.append('sea_expense', this.sea_expense)
             formData.append('sea_expense_v2', this.sea_expense_v2)
+            formData.append('gcash_expense_sea', this.gcash_expense_sea)
             formData.append('is_admin', this.is_admin)
             formData.append('crud', "insert");
             formData.append('id', '');
@@ -765,6 +791,7 @@ var app = new Vue({
             this.airship_read = 0;
             this.sea_expense = 0;
             this.sea_expense_v2 = 0;
+            this.gcash_expense_sea = 0;
             this.is_admin = '';
             this.isEditing = false;
             this.record = {};
