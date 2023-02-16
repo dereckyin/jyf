@@ -316,6 +316,7 @@ try {
 
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;" v-model="category">
+                                    <option>Cash on Hand</option>
                                     <option>Food</option>
                                     <option>Rice</option>
                                     <option>Water Purified</option>
@@ -584,6 +585,7 @@ try {
 
         <select style="width:10vw; margin-left:1vw;" v-model="select_category">
             <option>All</option>
+            <option>Cash on Hand</option>
             <option>Food</option>
             <option>Rice</option>
             <option>Water Purified</option>
