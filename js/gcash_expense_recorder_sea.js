@@ -1140,7 +1140,7 @@ var app = new Vue({
               // console.log(element.pic_url);
             });
             // console.log(_this.items);
-            /*
+            
             res.data.forEach((element, index) => {
               if (index < this.perPage) {
                 if (element.is_enabled == 1) {
@@ -1165,30 +1165,31 @@ var app = new Vue({
                 }
               }
             });
-            */
+            
 
-            if(res.data.length > 0)
-            {
-              _this.allCashIn = parseFloat(res.data[0]['ai']);
-              _this.allCashOut = parseFloat(res.data[0]['ao']);
+            // if(res.data.length > 0)
+            // {
 
-              _this.accountOneCashIn = parseFloat(res.data[0]['cash_in']);
-              _this.accountOneCashOut = parseFloat(res.data[0]['cash_out']);
+            //   _this.allCashIn = parseFloat(res.data[0]['ai']);
+            //   _this.allCashOut = parseFloat(res.data[0]['ao']);
 
-              _this.accountTwoCashIn = parseFloat(res.data[0]['i2']);
-              _this.accountTwoCashOut = parseFloat(res.data[0]['o2']);
+            //   _this.accountOneCashIn = parseFloat(res.data[0]['cash_in']);
+            //   _this.accountOneCashOut = parseFloat(res.data[0]['cash_out']);
 
-              _this.accountThreeCashIn = parseFloat(res.data[0]['i3']);
-              _this.accountThreeCashOut = parseFloat(res.data[0]['o3']);
+            //   _this.accountTwoCashIn = parseFloat(res.data[0]['i2']);
+            //   _this.accountTwoCashOut = parseFloat(res.data[0]['o2']);
 
-              _this.allBalance = _this.allCashIn - _this.allCashOut;
-              _this.accountOneBalance =
-                _this.accountOneCashIn - _this.accountOneCashOut;
-              _this.accountTwoBalance =
-                _this.accountTwoCashIn - _this.accountTwoCashOut;
-              _this.accountThreeBalance =
-                _this.accountThreeCashIn - _this.accountThreeCashOut;
-            }
+            //   _this.accountThreeCashIn = parseFloat(res.data[0]['i3']);
+            //   _this.accountThreeCashOut = parseFloat(res.data[0]['o3']);
+
+            //   _this.allBalance = _this.allCashIn - _this.allCashOut;
+            //   _this.accountOneBalance =
+            //     _this.accountOneCashIn - _this.accountOneCashOut;
+            //   _this.accountTwoBalance =
+            //     _this.accountTwoCashIn - _this.accountTwoCashOut;
+            //   _this.accountThreeBalance =
+            //     _this.accountThreeCashIn - _this.accountThreeCashOut;
+            // }
             
             this.displayedPosts();
           },
@@ -1441,11 +1442,11 @@ var app = new Vue({
       // this.$refs.file5.value = "";
 
       this.$refs.detail.value = "";
-      this.$refs.detail1.value = "";
-      this.$refs.detail2.value = "";
-      this.$refs.detail3.value = "";
-      this.$refs.detail4.value = "";
-      this.$refs.detail5.value = "";
+      // this.$refs.detail1.value = "";
+      // this.$refs.detail2.value = "";
+      // this.$refs.detail3.value = "";
+      // this.$refs.detail4.value = "";
+      // this.$refs.detail5.value = "";
 
       //this.get_today();
     },

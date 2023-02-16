@@ -178,6 +178,24 @@ else
         }
     }else if($action == 4) {
         //select by date
+
+        if(isset($_GET['start_date']) && $start_date == '')
+         $start_date = $_GET['start_date'];
+
+        if(isset($_GET['end_date']) && $end_date == '')
+            $end_date = $_GET['end_date'];
+
+        if(isset($_GET['category']) && $category == '')
+            $category = $_GET['category'];
+
+            if($start_date != "") {
+                $start_date = date("Y-m-d", strtotime($start_date));
+            }
+            
+            if($end_date != "") {
+                $end_date = date("Y-m-d", strtotime($end_date));
+            }
+
         try{
             $query = "SELECT * from gcash_expense_recorder_sea where 1 = 1 ";
             if($start_date!='') {
@@ -188,8 +206,8 @@ else
                 $query = $query . " and paid_date <= '$end_date' ";
             }
             
-            if($category!='') {
-                $query = $query . " and category <= '$category' ";
+            if($category!='' && $category!='All') {
+                $query = $query . " and category = '$category' ";
             }
             
             if($sub_category!='') {

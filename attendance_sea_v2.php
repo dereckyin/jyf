@@ -349,6 +349,16 @@ header( 'location:index.php' );
             <?php
                         }
                     ?>
+                    <?php
+                        if($decoded->data->gcash_expense_sea)
+            {
+            ?>
+            <a class="nav_link" href="gcash_expense_recorder_sea.php">
+                <eng>GCash Expense Recorder</eng>
+            </a>
+            <?php
+                        }
+                    ?>
         </div>
     </header>
     <!-- header end -->

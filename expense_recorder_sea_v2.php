@@ -216,6 +216,16 @@ try {
                     <?php
                         }
                     ?>
+                    <?php
+                        if($decoded->data->gcash_expense_sea)
+            {
+            ?>
+            <a class="nav_link" href="gcash_expense_recorder_sea.php">
+                <eng>GCash Expense Recorder</eng>
+            </a>
+            <?php
+                        }
+                    ?>
 
             <button :class="[is_viewer == '1'? 'hide' : '']"
                     style="border: none; margin-right: 25px; font-weight:700; font-size:x-large; background-color:#1E6BA8; color: #FFFFFF;"
