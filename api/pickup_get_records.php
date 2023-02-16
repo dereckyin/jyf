@@ -221,7 +221,7 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
     $query = "
             SELECT distinct 0 as is_checked, measure_detail.id, kilo, cuft, kilo_price, cuft_price, charge, encode, encode_status, pickup_status, payment_status, DATE_FORMAT(measure_detail.crt_time, '%Y/%m/%d') crt_time, 
             (SELECT date_arrive FROM measure_ph WHERE measure_detail.measure_id = measure_ph.id) date_arrive,
-(SELECT GROUP_CONCAT(container_number separator ', ') FROM loading WHERE loading.measure_num = measure_detail.measure_id) container_number
+(SELECT GROUP_CONCAT(container_number separator ', ') FROM loading WHERE loading.measure_num = measure_detail.measure_id) container_number, days, way, kilo_unit, kilo_amount, kilo_remark, cuft_unit, cuft_amount, cuft_remark
                 FROM measure_detail
          
             WHERE  measure_detail.id = " . $measure_detail_id . "
@@ -260,6 +260,22 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
         $payment = GetPaymentRecord($row['id'], $group_id, $db);
 
         $export = GetExportRecord($row['id'], $db);
+
+        $days = $row['days'] == "" ? "" : $row['days'];
+        $way = $row['way'] == "" ? "" : $row['way'];
+        $kilo_unit = $row['kilo_unit'] == "" ? "" : $row['kilo_unit'];
+        $kilo_amount = $row['kilo_amount'] == "" ? "" : $row['kilo_amount'];
+        $kilo_remark = $row['kilo_remark'] == "" ? "" : $row['kilo_remark'];
+        $cuft_unit = $row['cuft_unit'] == "" ? "" : $row['cuft_unit'];
+        $cuft_amount = $row['cuft_amount'] == "" ? "" : $row['cuft_amount'];
+        $cuft_remark = $row['cuft_remark'] == "" ? "" : $row['cuft_remark'];
+
+        $warehouse_fee = "";
+
+        if($way == "kilo")
+            $warehouse_fee = $kilo_amount;
+        if($way == "cuft")
+            $warehouse_fee = $cuft_amount;
         
         for($i = 0; $i < count($payment); $i++)
           $payment[$i]['ar'] = $charge;
@@ -285,6 +301,17 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
            "container_number" => $container_number,
            "date_arrive" => $date_arrive,
            "export" => $export,
+
+           "days" => $days,
+                "way" => $way,
+                "kilo_unit" => $kilo_unit,
+                "kilo_amount" => $kilo_amount,
+                "kilo_remark" => $kilo_remark,
+                "cuft_unit" => $cuft_unit,
+                "cuft_amount" => $cuft_amount,
+                "cuft_remark" => $cuft_remark,
+
+                "warehouse_fee" => $warehouse_fee,
         );
     }
 
@@ -336,6 +363,9 @@ function GetArAmount($array)
 
     foreach($array as $item) {
         $amount += ($item['charge'] == "" ? 0 : $item['charge']);
+
+        $amount += $item['way'] == "kilo" ? ($item['kilo_amount'] == "" ? 0 : $item['kilo_amount']) : 0;
+        $amount += $item['way'] == "cuft" ? ($item['cuft_amount'] == "" ? 0 : $item['cuft_amount']) : 0;
 
         $payment = $item['payment'];
         foreach($payment as $pay) {

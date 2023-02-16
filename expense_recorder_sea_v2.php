@@ -216,6 +216,16 @@ try {
                     <?php
                         }
                     ?>
+                    <?php
+                        if($decoded->data->gcash_expense_sea)
+            {
+            ?>
+            <a class="nav_link" href="gcash_expense_recorder_sea.php">
+                <eng>GCash Expense Recorder</eng>
+            </a>
+            <?php
+                        }
+                    ?>
 
             <button :class="[is_viewer == '1'? 'hide' : '']"
                     style="border: none; margin-right: 25px; font-weight:700; font-size:x-large; background-color:#1E6BA8; color: #FFFFFF;"
@@ -306,6 +316,7 @@ try {
 
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;" v-model="category">
+                                    <option>Cash on Hand</option>
                                     <option>Food</option>
                                     <option>Rice</option>
                                     <option>Water Purified</option>
@@ -574,6 +585,7 @@ try {
 
         <select style="width:10vw; margin-left:1vw;" v-model="select_category">
             <option>All</option>
+            <option>Cash on Hand</option>
             <option>Food</option>
             <option>Rice</option>
             <option>Water Purified</option>

@@ -486,6 +486,10 @@ header( 'location:index.php' );
                             Amount
                         </th>
                         <th>
+                            <cht>倉儲費</cht>
+                            Warehouse Fee
+                        </th>
+                        <th>
                             <cht>單號</cht>
                             DR
                         </th>
@@ -533,6 +537,12 @@ header( 'location:index.php' );
                             <td>{{ item.kilo }}{{ item.kilo == '' ? '' : '@' + (item.kilo_price) }}</td>
                             <td>{{ item.cuft }}{{ item.cuft == '' ? '' : '@' + (item.cuft_price) }}</td>
                             <td>{{ item.charge }}</td>
+                            <td>
+                                <div>{{ item.warehouse_fee }}</div>
+                                <button data-toggle="modal" data-target="#warehousefee_modal"
+                                        @click="item_warehousefee(item)" style="margin: 3px 0;">Encode
+                                </button>
+                            </td>
                             <td>
                                 <div>{{ item.encode }}</div>
                                 <?php
@@ -623,6 +633,107 @@ header( 'location:index.php' );
         </div>
 
     </div>
+
+
+
+    <!-- The Modal -->
+    <div class="modal" id="warehousefee_modal">
+    <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 1400px; margin: 80px auto;">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title">Warehouse Fee
+                        <cht>倉儲費用</cht>
+                    </h5>
+                </div>
+
+                <div class="modal-body">
+                    <div class="tablebox s02">
+                        <ul>
+                            <li>
+                                Days Charged
+                            </li>
+                            <li>
+                                <input type="text" v-model="item.days" @change="change_days(item)">
+                            </li>
+                            <li>
+                            </li>
+                            <li>
+                                Charge Way
+                            </li>
+                            <li>
+                                <select v-model="item.way">
+                                    <option value=""></option>
+                                    <option value="kilo">By Kilo</option>
+                                    <option value="cuft">By Cuft</option>
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <div class="tablebox s02 payment">
+                        <ul class="header">
+                            <li style="width: 180px; min-width: 180px;">
+                                <cht>收費方式</cht>
+                                Charge Way
+                            </li>
+                            <li style="width: 180px; min-width: 180px;">
+                                <cht>重量/體積</cht>
+                                Measurement
+                            </li>
+                            <li style="width: 180px; min-width: 180px;">
+                                <cht>單價</cht>
+                                Unit Price
+                            </li>
+                            <li style="width: 180px; min-width: 180px;">
+                                <cht>金額</cht>
+                                Amount
+                            </li>
+                            <li style="width: 360px; min-width: 360px;">
+                                <cht>備註</cht>
+                                Remark
+                            </li>
+                        </ul>
+
+                        <ul>
+                            <li>By Kilo</li>
+                            <li>{{ item.kilo }}</li>
+                            <li><input type="text" v-model="item.kilo_unit" @change="change_unit(item)"></li>
+                            <li><input type="text" v-model="item.kilo_amount" @change="change_amount(item)"></li>
+                            <li><input type="text" v-model="item.kilo_remark"></li>
+                        </ul>
+
+                        <ul>
+                            <li>By Cuft</li>
+                            <li>{{ item.cuft }}</li>
+                            <li><input type="text" v-model="item.cuft_unit" @change="change_unit(item)"></li>
+                            <li><input type="text" v-model="item.cuft_amount" @change="change_amount(item)"></li>
+                            <li><input type="text" v-model="item.cuft_remark"></li>
+                        </ul>
+
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-warning">Cancel
+                        <cht>取消</cht>
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="warehouse_save()">Save
+                        <cht>儲存</cht>
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
 
     <!-- The Modal -->
     <div class="modal" id="export_modal">

@@ -210,6 +210,15 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
+                                    <input class="form-check-input" type="checkbox" name="status" required id="A1"
+                                           :true-value="1" v-model:checked="gcash_expense_sea" @change="updateGCashExpenseSea"> 啟用海運GCash支出記錄
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
 								<input class="form-check-input" type="checkbox" name="status_1" required id="A1"
                                            :true-value="1" v-model:checked="status_1" @change="updateStatus_1"> 啟用零件支出記錄
                                 </li>
@@ -359,6 +368,14 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
+                                    <input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.gcash_expense_sea" @change="updateEditGCashExpenseSea" required> 啟用海運GCash支出記錄
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
 								<input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.status_1" @change="updateEditStatus_1" required> 啟用零件支出記錄
                                 </li>
                             </ul>
@@ -449,6 +466,7 @@ include 'menu.php';
                             <th>啟用海運菲律賓端業務</th>
                             <th>啟用海運支出記錄</th>
                             <th>啟用海運支出記錄2</th>
+                            <th>啟用海運GCash支出記錄</th>
                             <th>啟用零件支出記錄</th>
                             <th>啟用零件支出記錄2</th>
                             <th>啟用空運業務</th>
@@ -471,6 +489,7 @@ include 'menu.php';
                             <td>{{ (rec.phili == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.sea_expense == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.sea_expense_v2 == '1') ? "是 (yes)" : "否 (no)" }}</td>
+                            <td>{{ (rec.gcash_expense_sea == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.status_1 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.status_2 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.airship == '1') ? "是 (yes)" : "否 (no)" }}</td>

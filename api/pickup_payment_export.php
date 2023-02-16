@@ -67,6 +67,8 @@ $exp_quantity = (isset($_POST['exp_quantity']) ?  $_POST['exp_quantity'] : "");
 $exp_unit = (isset($_POST['exp_unit']) ?  $_POST['exp_unit'] : "");
 $exp_discription = (isset($_POST['exp_discription']) ?  $_POST['exp_discription'] : "");
 $exp_amount = (isset($_POST['exp_amount']) ?  $_POST['exp_amount'] : "");
+$exp_discription_ext = (isset($_POST['exp_discription_ext']) ?  $_POST['exp_discription_ext'] : "");
+$exp_amount_ext = (isset($_POST['exp_amount_ext']) ?  $_POST['exp_amount_ext'] : "");
 $payment = (isset($_POST['payment']) ?  $_POST['payment'] : []);
 $record = (isset($_POST['record']) ?  $_POST['record'] : []);
 $assist_by = (isset($_POST['assist_by']) ?  $_POST['assist_by'] : "");
@@ -451,14 +453,14 @@ foreach ($strArr as $v) {
 
 $cell = $table3->addCell(4501.417324, $styleCellHeadCenter);
 // Description
-$strArr = explode("\n", $exp_discription);
+$strArr = explode("\n", $exp_discription_ext);
 foreach ($strArr as $v) {
     $cell->addText(htmlspecialchars($v), array('name' => 'Calibri', 'size' => 12, 'color' => 'black'), array('align' => 'center'));
 }
 
 $cell = $table3->addCell(4501.417324, $styleCellTailCenter);
 // Amount
-$strArr = explode("\n", $exp_amount);
+$strArr = explode("\n", $exp_amount_ext);
 foreach ($strArr as $v) {
     $cell->addText(htmlspecialchars($v), array('name' => 'Calibri', 'size' => 12, 'color' => 'black'), array('align' => 'center'));
 }
@@ -876,8 +878,8 @@ function GetPaymentType($kind)
             $type = "Taiwan Pay";
             break;
         case "5":
-                $type = "Advance Payment";
-                break;
+            $type = "Advance Payment";
+            break;
         case "6":
             $type = "Gcash";
             break;
