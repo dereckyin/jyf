@@ -50,7 +50,8 @@ if($jwt){
                     sum(IF(abs(charge - (md.kilo * md.kilo_price)) > abs(charge - (md.cuft * md.cuft_price)), 0, charge)) charge_kilo,
                     sum(IF(abs(charge - (md.kilo * md.kilo_price)) <= abs(charge - (md.cuft * md.cuft_price)), 0, charge)) charge_cuft,
                     sum(if(md.payment_status = 'C', md.charge, 0)) charge,
-                    sum(md.charge) - sum(if(md.payment_status = 'C', md.charge, 0)) ar
+                    sum(md.charge) - sum(if(md.payment_status = 'C', md.charge, 0)) ar,
+                    mp.remark
                   from measure_ph mp 
                     left join measure_detail md on mp.id = md.measure_id 
                     left join loading l on mp.id = l.measure_num 
@@ -73,6 +74,7 @@ if($jwt){
             $charge_cuft = $row["charge_cuft"];
             $charge = $row["charge"];
             $ar = $row["ar"];
+            $remark = $row["remark"];
 
             $merged_results[] = array( 
                 "is_checked" => 0,
@@ -81,7 +83,8 @@ if($jwt){
                 "charge_cuft" => $charge_cuft,
                 "loading" => $items,
                 "charge" => $charge,
-                "ar" => $ar
+                "ar" => $ar,
+                "remark" => $remark
             );
             
         }

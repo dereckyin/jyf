@@ -63,7 +63,8 @@ if($jwt){
                             sum(IF(abs(charge - (md.kilo * md.kilo_price)) > abs(charge - (md.cuft * md.cuft_price)), 0, charge)) charge_kilo,
                             sum(IF(abs(charge - (md.kilo * md.kilo_price)) <= abs(charge - (md.cuft * md.cuft_price)), 0, charge)) charge_cuft,
                             sum(if(md.payment_status = 'C', md.charge, 0)) charge,
-                            sum(md.charge) - sum(if(md.payment_status = 'C', md.charge, 0)) ar
+                            sum(md.charge) - sum(if(md.payment_status = 'C', md.charge, 0)) ar,
+                            mp.remark
                         from measure_ph mp 
                             left join measure_detail md on mp.id = md.measure_id 
                             left join loading l on mp.id = l.measure_num 
@@ -86,6 +87,7 @@ if($jwt){
                     $charge_cuft = $row["charge_cuft"];
                     $charge = $row["charge"];
                     $ar = $row["ar"];
+                    $remark = $row["remark"];
 
                     $merged_results[] = array( 
                         "is_checked" => 0,
@@ -94,7 +96,8 @@ if($jwt){
                         "charge_cuft" => $charge_cuft,
                         "loading" => $items,
                         "charge" => $charge,
-                        "ar" => $ar
+                        "ar" => $ar,
+                        "remark" => $remark
                     );
                     
                 }
@@ -185,8 +188,10 @@ if($jwt){
                 $sheet->setCellValue('C1', 'Container Number 櫃號');
                 $sheet->setCellValue('D1', 'A/R (By Kilo) 應收帳款(根據重量)');
                 $sheet->setCellValue('E1', 'A/R (By Cuft) 應收帳款(根據材積)');
-                $sheet->setCellValue('F1', 'Amount Received 已收金額');
-                $sheet->setCellValue('G1', 'Remaining A/R 未收金額');
+                $sheet->setCellValue('F1', 'A/R 應收帳款');
+                $sheet->setCellValue('G1', 'Amount Received 已收金額');
+                $sheet->setCellValue('H1', 'Remaining A/R 未收金額');
+                $sheet->setCellValue('I1', 'Remarks 備註');
 
                 $i = 2;
 
@@ -207,9 +212,9 @@ if($jwt){
                         $sheet->setCellValue('F' . $i, '₱ ' . number_format((float)$measure["charge_kilo"] + (float)$measure["charge_cuft"], 2, '.', ''));
                         $sheet->setCellValue('G' . $i, '₱ ' . number_format((float)$measure["charge"], 2, '.', ''));
                         $sheet->setCellValue('H' . $i, '₱ ' . number_format((float)$measure["ar"], 2, '.', ''));
-                      
+                        $sheet->setCellValue('I' . $i, $measure["remark"]);
 
-                        $sheet->getStyle('A'. $i. ':' . 'H' . $i)->applyFromArray($styleArray);
+                        $sheet->getStyle('A'. $i. ':' . 'I' . $i)->applyFromArray($styleArray);
                         $i++;
                     }
 
