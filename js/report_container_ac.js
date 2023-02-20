@@ -32,6 +32,7 @@ let mainState = {
 
     courier_query:false,
 
+
     // paging
     page: 1,
     //perPage: 10,
@@ -295,6 +296,45 @@ var app = new Vue({
                     document.body.appendChild(link);
                     link.click();
     
+              })
+              .catch(function(response) {
+                  //handle error
+                  console.log(response)
+              });
+        },
+
+        update_remark: function(item) {
+          let remark = item.remark;
+          Swal.fire({
+            title: "Remarks",
+            text: "Input new remarks or edit existing remarks:",
+            input: 'text',
+            inputValue: remark,
+            showCancelButton: true        
+        }).then((result) => {
+            if (result.isConfirmed) {
+              
+              this.update_remark_value(item, result.value);
+            }
+        });
+        },
+
+        update_remark_value: function(item, remark) {
+          let id = item.id;
+          let _this = this;
+          let form_Data = new FormData();
+          form_Data.append("id", item.id);
+          form_Data.append("remark", remark);
+          axios({
+            method: "post",
+            url: "api/update_measure_ph_remark.php",
+            data: form_Data,
+            responseType: "blob",
+          })
+              .then(function(response) {
+                console.log(response)
+                item.remark = remark;
+                _this.$forceUpdate();
               })
               .catch(function(response) {
                   //handle error

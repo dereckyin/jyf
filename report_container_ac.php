@@ -158,7 +158,7 @@ header( 'location:index.php' );
             border-left: 2px solid #94BABB;
         }
 
-        div.tablebox > ul > li:nth-of-type(7) {
+        div.tablebox > ul > li:nth-of-type(9) {
             border-right: 2px solid #94BABB;
         }
 
@@ -177,7 +177,7 @@ header( 'location:index.php' );
             border-top-left-radius: 9px;
         }
 
-        div.tablebox > ul.header > li:nth-of-type(8) {
+        div.tablebox > ul.header > li:nth-of-type(9) {
             border-right: 2px solid #94BABB;
             border-top-right-radius: 9px;
         }
@@ -191,9 +191,20 @@ header( 'location:index.php' );
             border-bottom-left-radius: 9px;
         }
 
-        div.tablebox > ul.total > li:nth-of-type(8) {
+        div.tablebox > ul.total > li:nth-of-type(9) {
             border-right: 2px solid #94BABB;
             border-bottom-right-radius: 9px;
+        }
+
+        div.tablebox > ul > li:nth-of-type(9) > div.remarks {
+            max-width: 150px;
+            text-align: left;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        div.tablebox > ul > li:nth-of-type(9) > i.fa-edit {
+            cursor: pointer;
         }
 
     </style>
@@ -294,6 +305,10 @@ header( 'location:index.php' );
                                 <eng>Remaining A/R</eng>
                                 未收金額
                             </li>
+                            <li>
+                                <eng>Remarks</eng>
+                                備註
+                            </li>
                         </ul>
                         <ul v-for='(item, index) in displayedPosts'>
                             <li><p v-for='(it, index) in item.loading'>{{it.date_sent}}</template></li>
@@ -304,6 +319,10 @@ header( 'location:index.php' );
                             <li>₱ {{ Number(item.charge_kilo) + Number(item.charge_cuft) !== undefined ? Number(Number(item.charge_kilo) + Number(item.charge_cuft)).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
                             <li>₱ {{ item.charge !== undefined ? Number(item.charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
                             <li>₱ {{ item.ar !== undefined ? Number(item.ar).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>
+                                <div class="remarks">{{item.remark}}</div>
+                                <i class="fas fa-edit" aria-hidden="true" @click="update_remark(item)"></i>
+                            </li>
                         </ul>
                      
                         <ul class="total">
@@ -315,6 +334,7 @@ header( 'location:index.php' );
                             <li>₱ {{ total_total !== undefined ? Number(total_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
                             <li>₱ {{ charge_total !== undefined ? Number(charge_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
                             <li>₱ {{ ar_total !== undefined ? Number(ar_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li></li>
                         </ul>
                     </div>
                 </div>
