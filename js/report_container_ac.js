@@ -306,8 +306,8 @@ var app = new Vue({
         update_remark: function(item) {
           let remark = item.remark;
           Swal.fire({
-            title: "An input!",
-            text: "Write something interesting:",
+            title: "Remarks",
+            text: "Input new remarks or edit existing remarks:",
             input: 'text',
             inputValue: remark,
             showCancelButton: true        
