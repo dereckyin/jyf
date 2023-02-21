@@ -154,7 +154,7 @@ try {
             {
             ?>
             <a class="nav_link" href="gcash_expense_recorder_sea.php">
-                <eng>GCash Expense Recorder</eng>
+                <eng>GCash Recorder</eng>
             </a>
             <?php
                         }
@@ -164,7 +164,7 @@ try {
             {
             ?>
             <a class="nav_link" href="gcash_expense_recorder_sea_2.php">
-                <eng>GCash Expense Recorder 2</eng>
+                <eng>GCash Recorder 2</eng>
             </a>
             <?php
                         }
