@@ -1214,7 +1214,7 @@ var app = new Vue({
         var data = myArr[index];
         var myForm = new FormData();
         myForm.append("file", data);
-        myForm.append("batch_type", "proof");
+        myForm.append("batch_type", "gcash");
         myForm.append("batch_id", 0);
         myForm.append("today", vm.file_day);
 

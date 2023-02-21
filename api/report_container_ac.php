@@ -51,7 +51,7 @@ if($jwt){
                     sum(IF(abs(charge - (md.kilo * md.kilo_price)) <= abs(charge - (md.cuft * md.cuft_price)), 0, charge)) charge_cuft,
                     sum(if(md.payment_status = 'C', md.charge, 0)) charge,
                     sum(md.charge) - sum(if(md.payment_status = 'C', md.charge, 0)) ar,
-                    mp.remark
+                    mp.remark, mp.notes
                   from measure_ph mp 
                     left join measure_detail md on mp.id = md.measure_id 
                     left join loading l on mp.id = l.measure_num 
@@ -84,7 +84,8 @@ if($jwt){
                 "loading" => $items,
                 "charge" => $charge,
                 "ar" => $ar,
-                "remark" => $remark
+                "remark" => $remark,
+                "notes" => $row["notes"]
             );
             
         }

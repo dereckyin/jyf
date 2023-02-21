@@ -304,7 +304,7 @@ var app = new Vue({
         },
 
         update_remark: function(item) {
-          let remark = item.remark;
+          let remark = item.notes;
           Swal.fire({
             title: "Remarks",
             text: "Input new remarks or edit existing remarks:",
@@ -333,7 +333,7 @@ var app = new Vue({
           })
               .then(function(response) {
                 console.log(response)
-                item.remark = remark;
+                item.notes = remark;
                 _this.$forceUpdate();
               })
               .catch(function(response) {

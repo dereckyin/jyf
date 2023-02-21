@@ -154,12 +154,21 @@ try {
             {
             ?>
             <a class="nav_link" href="gcash_expense_recorder_sea.php">
-                <eng>GCash Expense Recorder</eng>
+                <eng>GCash Recorder</eng>
             </a>
             <?php
                         }
                     ?>
-
+<?php
+                        if($decoded->data->gcash_expense_sea_2)
+            {
+            ?>
+            <a class="nav_link" href="gcash_expense_recorder_sea_2.php">
+                <eng>GCash Recorder 2</eng>
+            </a>
+            <?php
+                        }
+                    ?>
             </div>
         </header>
         <!-- header end -->

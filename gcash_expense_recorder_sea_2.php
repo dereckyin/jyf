@@ -25,7 +25,7 @@ try {
             $decoded = JWT::decode($jwt, $key, array('HS256'));
             $user_id = $decoded->data->id;
 
-            if(!$decoded->data->gcash_expense_sea)
+            if(!$decoded->data->gcash_expense_sea_2)
                 header( 'location:index.php' );
 
             // 可以存取Expense Recorder的人員名單如下：Dennis Lin(2), Glendon Wendell Co(4), Kristel Tan(6), Kuan(3), Mary Jude Jeng Articulo(9), Thalassa Wren Benzon(41), Stefanie Mika C. Santos(99)
@@ -638,6 +638,6 @@ try {
 
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script defer src="js/gcash_expense_recorder_sea.js"></script>
+<script defer src="js/gcash_expense_recorder_sea_2.js"></script>
 
 </html>

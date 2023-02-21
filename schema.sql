@@ -1139,3 +1139,40 @@ CREATE TABLE IF NOT EXISTS `gcash_expense_recorder_sea` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
 
 ALTER TABLE user ADD COLUMN gcash_expense_sea INT DEFAULT 0;
+
+-- 20230221 
+ALTER TABLE measure_ph
+ADD COLUMN `notes` varchar(512) COLLATE utf8mb4_unicode_ci  default '';
+
+-- 20230215 gcash 2
+CREATE TABLE IF NOT EXISTS `gcash_expense_recorder_sea_2` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `account` int default 0,
+  `category` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `sub_category` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `project_name` varchar(1024)  COLLATE utf8mb4_unicode_ci  default '',
+  `related_account` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `details` varchar(4096) COLLATE utf8mb4_unicode_ci  default '',
+  `pic_url` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `gcp_url` varchar(1024)  COLLATE utf8mb4_unicode_ci  default '',
+  `payee` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `paid_date` Date NULL DEFAULT NULL,
+  `cash_in` decimal(10, 2) default 0.0,
+  `cash_out` decimal(10, 2) default 0.0,
+  `staff_name` varchar(256) COLLATE utf8mb4_unicode_ci  default '',
+  `company_name` varchar(256) COLLATE utf8mb4_unicode_ci  default '',
+  `remarks` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `is_locked` bool default false,
+  `is_enabled` bool default false,
+  `is_marked` bool default false,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `updated_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `deleted_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+ALTER TABLE user ADD COLUMN gcash_expense_sea_2 INT DEFAULT 0;
