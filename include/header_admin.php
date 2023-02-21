@@ -252,6 +252,14 @@ if ( isset( $jwt ) ) {
         <cht>GCash 支出記錄表</cht>
     </a>";
         ?>
+        
+        <?php
+ 	if($decoded->data->gcash_expense_sea_2)
+        echo "<a href='gcash_expense_recorder_sea_2.php'>GCash Expense Recorder 2
+        <cht>GCash 支出記錄表 2</cht>
+    </a>";
+        ?>
+        
     </nav>
 </div>
 <!-- 主選單end -->

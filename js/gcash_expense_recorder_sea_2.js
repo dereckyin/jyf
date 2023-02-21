@@ -2,9 +2,6 @@ Vue.component("v-select", VueSelect.VueSelect);
 Vue.filter("dateString", function(value, format = "YYYY-MM-DD HH:mm:ss") {
   return moment(value).format(format);
 });
-
-Vue.config.ignoredElements = ['eng']
-
 var app = new Vue({
   el: "#app",
   data: {
@@ -28,9 +25,11 @@ var app = new Vue({
     cash_in: 0.0,
     cash_out: 0.0,
     remarks: "",
+    staff_name: "",
+    company_name: "",
     keyword: "",
     select_date_type: 0,
-    select_category: '',
+    select_category: 'All',
     select_sub_category: "",
 
     is_locked: false,
@@ -96,6 +95,8 @@ var app = new Vue({
       cash_in: 0.0,
       cash_out: 0.0,
       remarks: "",
+      staff_name: "",
+      company_name: "",
       filename: [],
 
       is_locked: false,
@@ -116,6 +117,8 @@ var app = new Vue({
       cash_in: 0.0,
       cash_out: 0.0,
       remarks: "",
+      staff_name: "",
+      company_name: "",
       filename: [],
 
       is_locked: false,
@@ -136,6 +139,8 @@ var app = new Vue({
       cash_in: 0.0,
       cash_out: 0.0,
       remarks: "",
+      staff_name: "",
+      company_name: "",
       filename: [],
 
       is_locked: false,
@@ -156,6 +161,8 @@ var app = new Vue({
       cash_in: 0.0,
       cash_out: 0.0,
       remarks: "",
+      staff_name: "",
+      company_name: "",
       filename: [],
 
       is_locked: false,
@@ -176,6 +183,8 @@ var app = new Vue({
       cash_in: 0.0,
       cash_out: 0.0,
       remarks: "",
+      staff_name: "",
+      company_name: "",
       filename: [],
 
       is_locked: false,
@@ -226,7 +235,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/add_or_edit_price_record_salary.php",
+        url: "api/add_or_edit_gcash_expense_recorder_sea_2.php",
         data: form_Data,
       })
         .then(function(response) {
@@ -249,6 +258,7 @@ var app = new Vue({
       var token = localStorage.getItem("token");
       var form_Data = new FormData();
       let _this = this;
+      this.paid_date = document.getElementById("todays-date").value;
       var paidat = this.sliceDate(this.paid_date).replace(/-/g, "/");
       var payee = this.payee.toString();
       if (edd == 1) {
@@ -262,11 +272,7 @@ var app = new Vue({
           }
 
           if (
-            this.category != "Marketing" &&
-            this.category != "Office Needs" &&
-            this.category != "Others" &&
-            this.category != "Projects" &&
-            this.category != "Store"
+            this.category != "Cash Expenses" 
           ) {
             this.sub_category = "";
           }
@@ -316,6 +322,8 @@ var app = new Vue({
           form_Data.append("cash_in", this.cash_in);
           form_Data.append("cash_out", this.cash_out);
           form_Data.append("remarks", this.remarks);
+          form_Data.append("staff_name", this.staff_name);
+          form_Data.append("company_name", this.company_name);
           form_Data.append("is_locked", this.is_locked);
           form_Data.append("is_enabled", this.is_enabled);
 
@@ -329,7 +337,7 @@ var app = new Vue({
             headers: {
               "Content-Type": "multipart/form-data",
             },
-            url: "api/add_or_edit_price_record_salary.php",
+            url: "api/add_or_edit_gcash_expense_recorder_sea_2.php",
             data: form_Data,
           })
             .then(function(response) {
@@ -341,6 +349,8 @@ var app = new Vue({
                 icon: "success",
                 confirmButtonText: "OK",
               });
+
+              _this.reload();
             })
             .catch(function(response) {
               //handle error
@@ -351,7 +361,7 @@ var app = new Vue({
               });
             });
           this.upload();
-          this.reload();
+          
         } else {
           _this.spa.push(_this.split1);
           _this.spa.push(_this.split2);
@@ -531,6 +541,8 @@ var app = new Vue({
                 form_Data.append("cash_in", this.spa[i].cash_in);
                 form_Data.append("cash_out", this.spa[i].cash_out);
                 form_Data.append("remarks", this.spa[i].remarks);
+                form_Data.append("staff_name", this.spa[i].staff_name);
+                form_Data.append("company_name", this.spa[i].company_name);
                 form_Data.append("is_locked", this.is_locked);
                 form_Data.append("is_enabled", this.is_enabled);
                 if (this.spa[i].is_marked == "x")
@@ -543,7 +555,7 @@ var app = new Vue({
                   headers: {
                     "Content-Type": "multipart/form-data",
                   },
-                  url: "api/add_or_edit_price_record_salary.php",
+                  url: "api/add_or_edit_gcash_expense_recorder_sea_2.php",
                   data: form_Data,
                 })
                   .then(function(response) {
@@ -555,6 +567,7 @@ var app = new Vue({
                     //    icon: 'success',
                     //    confirmButtonText: 'OK'
                     //});
+                    _this.reload();
                   })
                   .catch(function(response) {
                     //handle error
@@ -569,7 +582,7 @@ var app = new Vue({
             }
             _this.upload();
             _this.deleteRecord(_this.id);
-            _this.reload();
+            
           }
         }
       }
@@ -579,6 +592,7 @@ var app = new Vue({
       var token = localStorage.getItem("token");
       var form_Data = new FormData();
       let _this = this;
+      this.paid_date = document.getElementById("todays-date").value;
       var paidat = this.sliceDate(this.paid_date).replace(/-/g, "/");
       var payee = this.payee.toString();
 
@@ -591,11 +605,7 @@ var app = new Vue({
       }
 
       if (
-        this.category != "Marketing" &&
-        this.category != "Office Needs" &&
-        this.category != "Others" &&
-        this.category != "Projects" &&
-        this.category != "Store"
+        this.category != "Cash Expenses"
       ) {
         this.sub_category = "";
       }
@@ -673,6 +683,8 @@ var app = new Vue({
       form_Data.append("cash_in", this.cash_in);
       form_Data.append("cash_out", this.cash_out);
       form_Data.append("remarks", this.remarks);
+      form_Data.append("staff_name", this.staff_name);
+      form_Data.append("company_name", this.company_name);
       if (this.is_marked == "x") form_Data.append("is_marked", "0");
       else form_Data.append("is_marked", this.is_marked);
       form_Data.append("action", this.action);
@@ -682,7 +694,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/add_or_edit_price_record_salary.php",
+        url: "api/add_or_edit_gcash_expense_recorder_sea_2.php",
         data: form_Data,
       })
         .then(function(response) {
@@ -723,7 +735,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/add_or_edit_price_record_salary.php",
+        url: "api/add_or_edit_gcash_expense_recorder_sea_2.php",
         data: form_Data,
       })
         .then(function(response) {
@@ -752,7 +764,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/add_or_edit_price_record_salary.php",
+        url: "api/add_or_edit_gcash_expense_recorder_sea_2.php",
         data: form_Data,
       })
         .then(function(response) {
@@ -784,7 +796,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/add_or_edit_price_record_salary.php",
+        url: "api/add_or_edit_gcash_expense_recorder_sea_2.php",
         data: form_Data,
       })
         .then(function(response) {
@@ -813,6 +825,8 @@ var app = new Vue({
           _this.payee = response.data[0].payee.split(",");
           _this.paid_date = response.data[0].paid_date;
 
+          document.getElementById("todays-date").value = response.data[0].paid_date;
+
           if (response.data[0].cash_in != 0) {
             _this.amount = response.data[0].cash_in;
             _this.operation_type = 1;
@@ -822,6 +836,8 @@ var app = new Vue({
           }
 
           _this.remarks = response.data[0].remarks;
+          _this.staff_name = response.data[0].staff_name;
+          _this.company_name = response.data[0].company_name;
           _this.is_locked = response.data[0].is_locked;
           _this.is_enabled = response.data[0].is_enabled;
 
@@ -872,7 +888,7 @@ var app = new Vue({
             headers: {
               "Content-Type": "multipart/form-data",
             },
-            url: "api/add_or_edit_price_record_salary.php",
+            url: "api/add_or_edit_gcash_expense_recorder_sea_2.php",
             data: form_Data,
           })
             .then(function(response) {
@@ -917,7 +933,7 @@ var app = new Vue({
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          url: "api/add_or_edit_price_record_salary.php",
+          url: "api/add_or_edit_gcash_expense_recorder_sea_2.php",
           data: form_Data,
         })
           .then(function(response) {
@@ -954,7 +970,7 @@ var app = new Vue({
 
       axios({
         method: "post",
-        url: "api/price_record_print_salary.php",
+        url: "api/gcash_expense_record_print_sea_2.php",
         data: form_Data,
         responseType: "blob",
       })
@@ -963,7 +979,7 @@ var app = new Vue({
           const link = document.createElement("a");
           link.href = url;
 
-          link.setAttribute("download", "price_record.xlsx");
+          link.setAttribute("download", "gcash expense.xlsx");
 
           document.body.appendChild(link);
           link.click();
@@ -1082,11 +1098,7 @@ var app = new Vue({
       _this.accountThreeCashOut = 0.0;
       _this.accountThreeBalance = 0.0;
       if (
-        _this.select_category != "Marketing" &&
-        _this.select_category != "Office Needs" &&
-        _this.select_category != "Others" &&
-        _this.select_category != "Projects" &&
-        _this.select_category != "Store"
+        _this.select_category != "Cash Expenses" 
       ) {
         _this.select_sub_category = "";
       }
@@ -1109,7 +1121,7 @@ var app = new Vue({
       let token = localStorage.getItem("accessToken");
 
       axios
-        .get("api/price_record_page_salary.php", {
+        .get("api/add_or_edit_gcash_expense_recorder_sea_2.php", {
           params,
           headers: { Authorization: `Bearer ${token}` },
         })
@@ -1128,7 +1140,7 @@ var app = new Vue({
               // console.log(element.pic_url);
             });
             // console.log(_this.items);
-            /*
+            
             res.data.forEach((element, index) => {
               if (index < this.perPage) {
                 if (element.is_enabled == 1) {
@@ -1153,30 +1165,31 @@ var app = new Vue({
                 }
               }
             });
-            */
+            
 
-            if(res.data.length > 0)
-            {
-              _this.allCashIn = parseFloat(res.data[0]['ai']);
-              _this.allCashOut = parseFloat(res.data[0]['ao']);
+            // if(res.data.length > 0)
+            // {
 
-              _this.accountOneCashIn = parseFloat(res.data[0]['i1']);
-              _this.accountOneCashOut = parseFloat(res.data[0]['o1']);
+            //   _this.allCashIn = parseFloat(res.data[0]['ai']);
+            //   _this.allCashOut = parseFloat(res.data[0]['ao']);
 
-              _this.accountTwoCashIn = parseFloat(res.data[0]['i2']);
-              _this.accountTwoCashOut = parseFloat(res.data[0]['o2']);
+            //   _this.accountOneCashIn = parseFloat(res.data[0]['cash_in']);
+            //   _this.accountOneCashOut = parseFloat(res.data[0]['cash_out']);
 
-              _this.accountThreeCashIn = parseFloat(res.data[0]['i3']);
-              _this.accountThreeCashOut = parseFloat(res.data[0]['o3']);
+            //   _this.accountTwoCashIn = parseFloat(res.data[0]['i2']);
+            //   _this.accountTwoCashOut = parseFloat(res.data[0]['o2']);
 
-              _this.allBalance = _this.allCashIn - _this.allCashOut;
-              _this.accountOneBalance =
-                _this.accountOneCashIn - _this.accountOneCashOut;
-              _this.accountTwoBalance =
-                _this.accountTwoCashIn - _this.accountTwoCashOut;
-              _this.accountThreeBalance =
-                _this.accountThreeCashIn - _this.accountThreeCashOut;
-            }
+            //   _this.accountThreeCashIn = parseFloat(res.data[0]['i3']);
+            //   _this.accountThreeCashOut = parseFloat(res.data[0]['o3']);
+
+            //   _this.allBalance = _this.allCashIn - _this.allCashOut;
+            //   _this.accountOneBalance =
+            //     _this.accountOneCashIn - _this.accountOneCashOut;
+            //   _this.accountTwoBalance =
+            //     _this.accountTwoCashIn - _this.accountTwoCashOut;
+            //   _this.accountThreeBalance =
+            //     _this.accountThreeCashIn - _this.accountThreeCashOut;
+            // }
             
             this.displayedPosts();
           },
@@ -1201,7 +1214,7 @@ var app = new Vue({
         var data = myArr[index];
         var myForm = new FormData();
         myForm.append("file", data);
-        myForm.append("batch_type", "salary");
+        myForm.append("batch_type", "gcash2");
         myForm.append("batch_id", 0);
         myForm.append("today", vm.file_day);
 
@@ -1249,22 +1262,22 @@ var app = new Vue({
     },
 
     logout: function() {
-      Swal.fire({
-        title: "Logout",
-        text: "Are you sure to logout?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes",
-      }).then((result) => {
-        if (result.value) {
+      // Swal.fire({
+      //   title: "Logout",
+      //   text: "Are you sure to logout?",
+      //   icon: "warning",
+      //   showCancelButton: true,
+      //   confirmButtonColor: "#3085d6",
+      //   cancelButtonColor: "#d33",
+      //   confirmButtonText: "Yes",
+      // }).then((result) => {
+      //   if (result.value) {
 
           setTimeout(function(){
-            window.location.href="parts_index.php";
+            window.location.href="main.php";
           },500);
-        }
-      });
+      //   }
+      // });
     },
 
     get_today: function() {
@@ -1274,6 +1287,7 @@ var app = new Vue({
       var yyyy = today.getFullYear();
       
       this.paid_date = yyyy + '-' + mm + '-' + dd;
+      document.getElementById("todays-date").value = this.paid_date;
     },
 
     reset: function() {
@@ -1292,9 +1306,11 @@ var app = new Vue({
       this.cash_in = 0.0;
       this.cash_out = 0.0;
       this.remarks = "";
+      this.staff_name = "";
+      this.company_name = "";
       this.filename = [];
 
-      this.select_category = "";
+      this.select_category = "All";
       this.select_sub_category = "";
 
       this.is_locked = 0;
@@ -1327,6 +1343,8 @@ var app = new Vue({
       this.split1.cash_in = 0.0;
       this.split1.cash_out = 0.0;
       this.split1.remarks = "";
+      this.split1.staff_name = "";
+      this.split1.company_name = "";
       this.split1.filename = [];
 
       this.split1.is_locked = false;
@@ -1346,6 +1364,8 @@ var app = new Vue({
       this.split2.cash_in = 0.0;
       this.split2.cash_out = 0.0;
       this.split2.remarks = "";
+      this.split2.staff_name = "";
+      this.split2.company_name = "";
       this.split2.filename = [];
 
       this.split2.is_locked = false;
@@ -1365,6 +1385,8 @@ var app = new Vue({
       this.split3.cash_in = 0.0;
       this.split3.cash_out = 0.0;
       this.split3.remarks = "";
+      this.split3.staff_name = "";
+      this.split3.company_name = "";
       this.split3.filename = [];
 
       this.split3.is_locked = false;
@@ -1384,6 +1406,8 @@ var app = new Vue({
       this.split4.cash_in = 0.0;
       this.split4.cash_out = 0.0;
       this.split4.remarks = "";
+      this.split4.staff_name = "";
+      this.split4.company_name = "";
       this.split4.filename = [];
 
       this.split4.is_locked = false;
@@ -1403,26 +1427,28 @@ var app = new Vue({
       this.split5.cash_in = 0.0;
       this.split5.cash_out = 0.0;
       this.split5.remarks = "";
+      this.split5.staff_name = "";
+      this.split5.company_name = "";
       this.split5.filename = [];
 
       this.split5.is_locked = false;
       this.split5.is_enabled = true;
       this.split5.is_marked = "x";
       this.$refs.file0.value = "";
-      this.$refs.file1.value = "";
-      this.$refs.file2.value = "";
-      this.$refs.file3.value = "";
-      this.$refs.file4.value = "";
-      this.$refs.file5.value = "";
+      // this.$refs.file1.value = "";
+      // this.$refs.file2.value = "";
+      // this.$refs.file3.value = "";
+      // this.$refs.file4.value = "";
+      // this.$refs.file5.value = "";
 
       this.$refs.detail.value = "";
-      this.$refs.detail1.value = "";
-      this.$refs.detail2.value = "";
-      this.$refs.detail3.value = "";
-      this.$refs.detail4.value = "";
-      this.$refs.detail5.value = "";
+      // this.$refs.detail1.value = "";
+      // this.$refs.detail2.value = "";
+      // this.$refs.detail3.value = "";
+      // this.$refs.detail4.value = "";
+      // this.$refs.detail5.value = "";
 
-      this.get_today();
+      //this.get_today();
     },
     reload: function() {
       let _this = this;
