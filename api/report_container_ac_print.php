@@ -64,7 +64,7 @@ if($jwt){
                             sum(IF(abs(charge - (md.kilo * md.kilo_price)) <= abs(charge - (md.cuft * md.cuft_price)), 0, charge)) charge_cuft,
                             sum(if(md.payment_status = 'C', md.charge, 0)) charge,
                             sum(md.charge) - sum(if(md.payment_status = 'C', md.charge, 0)) ar,
-                            mp.remark
+                            mp.remark, mp.notes
                         from measure_ph mp 
                             left join measure_detail md on mp.id = md.measure_id 
                             left join loading l on mp.id = l.measure_num 
@@ -97,7 +97,8 @@ if($jwt){
                         "loading" => $items,
                         "charge" => $charge,
                         "ar" => $ar,
-                        "remark" => $remark
+                        "remark" => $remark,
+                        "notes" => $row["notes"]
                     );
                     
                 }
@@ -212,7 +213,7 @@ if($jwt){
                         $sheet->setCellValue('F' . $i, '₱ ' . number_format((float)$measure["charge_kilo"] + (float)$measure["charge_cuft"], 2, '.', ''));
                         $sheet->setCellValue('G' . $i, '₱ ' . number_format((float)$measure["charge"], 2, '.', ''));
                         $sheet->setCellValue('H' . $i, '₱ ' . number_format((float)$measure["ar"], 2, '.', ''));
-                        $sheet->setCellValue('I' . $i, $measure["remark"]);
+                        $sheet->setCellValue('I' . $i, $measure["notes"]);
 
                         $sheet->getStyle('A'. $i. ':' . 'I' . $i)->applyFromArray($styleArray);
                         $i++;

@@ -1139,3 +1139,7 @@ CREATE TABLE IF NOT EXISTS `gcash_expense_recorder_sea` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
 
 ALTER TABLE user ADD COLUMN gcash_expense_sea INT DEFAULT 0;
+
+-- 20230221 
+ALTER TABLE measure_ph
+ADD COLUMN `notes` varchar(512) COLLATE utf8mb4_unicode_ci  default '',

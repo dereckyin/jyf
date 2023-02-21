@@ -57,7 +57,7 @@ switch ($method) {
      
 
         $query = "update measure_ph set 
-                    remark = ?, 
+                    notes = ?, 
                     mdf_user = ?, 
                     mdf_time = now()
                     where id = ?";

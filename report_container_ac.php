@@ -320,7 +320,7 @@ header( 'location:index.php' );
                             <li>₱ {{ item.charge !== undefined ? Number(item.charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
                             <li>₱ {{ item.ar !== undefined ? Number(item.ar).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
                             <li>
-                                <div class="remarks">{{item.remark}}</div>
+                                <div class="remarks">{{item.notes}}</div>
                                 <i class="fas fa-edit" aria-hidden="true" @click="update_remark(item)"></i>
                             </li>
                         </ul>
