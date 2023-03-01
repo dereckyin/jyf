@@ -217,6 +217,17 @@ var app = new Vue({
     handler(val, oldval) {
       console.log("value changed~");
     },
+
+    category: function(val, oldval) {
+      if(val != 'Others'){
+        this.operation_type = '2';
+      }
+
+      if(val == 'Others'){
+        this.operation_type = '';
+      }
+    },
+
     deep: true,
   },
   component: {},
