@@ -311,6 +311,7 @@ try {
                                     <select class="form-control" style="width:25vw;" v-model="category">
                                         <option>Autosweep</option>
                                         <option>Easytrip</option>
+                                        <option>Food</option>
                                         <option>Others</option>
                                     </select>
                                 </td>
@@ -456,6 +457,7 @@ try {
                 <option>All</option>
                 <option>Autosweep</option>
                 <option>Easytrip</option>
+                <option>Food</option>
                 <option>Others</option>
             </select>
 
