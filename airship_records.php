@@ -356,12 +356,13 @@ header( 'location:index.php' );
         }
 
         .function_list div.month_btns button.btn-success {
-            width: 48.5px;
+            width: 44px;
             height: 30px;
             padding: 0 7px;
             vertical-align: 0;
             text-align: center;
             margin: 0 2px;
+            font-size: 14px;
         }
 
         .function_list div.function_page ul {
@@ -1021,6 +1022,7 @@ header( 'location:index.php' );
                 </div>
 
                 <div class="month_btns">
+                    <button class="btn btn-success" @click="getSpace('s')">空白</button>
                     <button class="btn btn-success" @click="getPeriod('01')">Jan</button>
                     <button class="btn btn-success" @click="getPeriod('02')">Feb</button>
                     <button class="btn btn-success" @click="getPeriod('03')">Mar</button>

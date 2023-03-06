@@ -15,6 +15,8 @@ $date_type = (isset($_GET['date_type']) ? $_GET['date_type'] : "");
 $page = (isset($_GET['page']) ? $_GET['page'] : 1);
 $size  = (isset($_GET['size']) ? $_GET['size'] : 25);
 
+$space = (isset($_GET['space']) ? $_GET['space'] : "");
+
 $merged_results = array();
 
 include_once 'config/core.php';
@@ -79,6 +81,13 @@ else
 
 if($date_type == "")
 {
+    if($space == "s")
+    {
+        $query = $query . " and ss.date_arrive = '' ";
+        $query_cnt = $query_cnt . " and ss.date_arrive >= '' ";
+    }
+    else
+    {
         if($start_date!='') {
             $query = $query . " and ss.date_arrive >= '$start_date' ";
             $query_cnt = $query_cnt . " and ss.date_arrive >= '$start_date' ";
@@ -88,10 +97,18 @@ if($date_type == "")
             $query = $query . " and ss.date_arrive <= '$end_date" . "T23:59:59' ";
             $query_cnt = $query_cnt . " and ss.date_arrive <= '$end_date" . "T23:59:59' ";
         }
+    }
 }
 
 if($date_type == "r")
 {
+    if($space == "s")
+    {
+        $query = $query . " and ss.date_receive = '' ";
+        $query_cnt = $query_cnt . " and ss.date_receive >= '' ";
+    }
+    else
+    {
         if($start_date!='') {
             $query = $query . " and ss.date_receive >= '$start_date' ";
             $query_cnt = $query_cnt . " and ss.date_receive >= '$start_date' ";
@@ -101,10 +118,18 @@ if($date_type == "r")
             $query = $query . " and ss.date_receive <= '$end_date" . "' ";
             $query_cnt = $query_cnt . " and ss.date_receive <= '$end_date" . "' ";
         }
+    }
 }
 
 if($date_type == "p")
 {
+    if($space == "s")
+    {
+        $query = $query . " and ss.pay_date = '' ";
+        $query_cnt = $query_cnt . " and ss.pay_date >= '' ";
+    }
+    else
+    {
         if($start_date!='') {
             $query = $query . " and ss.pay_date >= '$start_date' ";
             $query_cnt = $query_cnt . " and ss.pay_date >= '$start_date' ";
@@ -114,6 +139,7 @@ if($date_type == "p")
             $query = $query . " and ss.pay_date <= '$end_date" . "' ";
             $query_cnt = $query_cnt . " and ss.pay_date <= '$end_date" . "' ";
         }
+    }
 }
         if (!empty($_GET['page'])) {
             $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
