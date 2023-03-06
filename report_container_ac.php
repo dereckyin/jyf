@@ -263,7 +263,7 @@ header( 'location:index.php' );
 
                             <input style="margin-left: 10px;" type="date" id="start" v-model="date_start"> ~ <input type="date" id="end" v-model="date_end">
 
-                            <button style="margin-left: 20px;" @click="query()"><i aria-hidden="true" class="fas fa-filter"></i></button>
+                            <button style="margin-left: 20px;" @click="query('')"><i aria-hidden="true" class="fas fa-filter"></i></button>
                             <button @click="print()"><i aria-hidden="true" class="fas fa-file-export"></i></button>
 
                            

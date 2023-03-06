@@ -121,7 +121,7 @@ var app = new Vue({
       });
     }
 */
-      this.query();
+      this.query("s");
       this.perPage = this.inventory.find(i => i.id === this.perPage);
     },
 
@@ -280,7 +280,7 @@ var app = new Vue({
           form_Data.append('date_start', this.date_start);
           form_Data.append('date_end', this.date_end);
           form_Data.append('type', this.fil_category);
-        
+          form_Data.append('space', this.space);
     
           axios({
             method: "post",
@@ -361,21 +361,23 @@ var app = new Vue({
           _this.date_end = end;
           this.space = "";
 
-          _this.query();
+          _this.query("");
         },
 
         getSpace: function(space) {
           this.space = space
 
-          this.query();
+          this.query("s");
         },
 
 
-        query: function() {
+        query: function(space) {
          
             var form_Data = new FormData();
             const token = sessionStorage.getItem('token');
             let _this = this;
+
+            this.space = space;
 
             form_Data.append('date_start', this.date_start);
             form_Data.append('date_end', this.date_end);
