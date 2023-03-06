@@ -265,7 +265,25 @@ header( 'location:index.php' );
 
                             <button style="margin-left: 20px;" @click="query()"><i aria-hidden="true" class="fas fa-filter"></i></button>
                             <button @click="print()"><i aria-hidden="true" class="fas fa-file-export"></i></button>
+
+                           
                         </div>
+
+                        <div class="month_btns">
+                                <button class="btn btn-success" @click="getSpace('s')">空白</button>
+                                <button class="btn btn-success" @click="getPeriod('01')">Jan</button>
+                                <button class="btn btn-success" @click="getPeriod('02')">Feb</button>
+                                <button class="btn btn-success" @click="getPeriod('03')">Mar</button>
+                                <button class="btn btn-success" @click="getPeriod('04')">Apr</button>
+                                <button class="btn btn-success" @click="getPeriod('05')">May</button>
+                                <button class="btn btn-success" @click="getPeriod('06')">Jun</button>
+                                <button class="btn btn-success" @click="getPeriod('07')">Jul</button>
+                                <button class="btn btn-success" @click="getPeriod('08')">Aug</button>
+                                <button class="btn btn-success" @click="getPeriod('09')">Sep</button>
+                                <button class="btn btn-success" @click="getPeriod('10')">Oct</button>
+                                <button class="btn btn-success" @click="getPeriod('11')">Nov</button>
+                                <button class="btn btn-success" @click="getPeriod('12')">Dec</button>
+                            </div>
 
                         <!-- <div class="searchblock" style="float:left;">搜尋<input type="text"></div> -->
                     </div>
