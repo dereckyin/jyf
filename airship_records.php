@@ -356,12 +356,13 @@ header( 'location:index.php' );
         }
 
         .function_list div.month_btns button.btn-success {
-            width: 48.5px;
+            width: 44px;
             height: 30px;
             padding: 0 7px;
             vertical-align: 0;
             text-align: center;
             margin: 0 2px;
+            font-size: 14px;
         }
 
         .function_list div.function_page ul {
