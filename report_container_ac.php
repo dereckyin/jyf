@@ -131,6 +131,16 @@ header( 'location:index.php' );
             margin: 0 5px;
         }
 
+        .listheader > .month_btns button.btn-success {
+            width: 44px;
+            height: 30px;
+            padding: 0 7px;
+            vertical-align: 0;
+            text-align: center;
+            margin: 0 2px;
+            font-size: 14px;
+        }
+
         .mainlist {
             border-bottom: none;
         }
