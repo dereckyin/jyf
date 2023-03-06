@@ -1021,6 +1021,7 @@ header( 'location:index.php' );
                 </div>
 
                 <div class="month_btns">
+                    <button class="btn btn-success" @click="getSpace('s')">空白</button>
                     <button class="btn btn-success" @click="getPeriod('01')">Jan</button>
                     <button class="btn btn-success" @click="getPeriod('02')">Feb</button>
                     <button class="btn btn-success" @click="getPeriod('03')">Mar</button>

@@ -134,6 +134,8 @@ var app = new Vue({
     edit_once_currency : false,
     edit_once_mode : false,
 
+    space : '',
+
   },
 
   created() {
@@ -211,7 +213,7 @@ var app = new Vue({
           "id" : 4,
           "title" : "文件費",
           "qty" : "",
-          "price": 600,
+          "price": 500,
         }, 
         this.details.push(obj);
 
@@ -327,7 +329,7 @@ var app = new Vue({
         "id" : 4,
         "title" : "文件費",
         "qty" : "",
-        "price": 600,
+        "price": 500,
       }, 
       this.details.push(obj);
 
@@ -678,6 +680,7 @@ var app = new Vue({
       form_Data.append("category", this.category);
       form_Data.append("sub_category", this.sub_category);
       form_Data.append("project_name", this.project_name);
+      form_Data.append("space", this.space);
       axios({
         method: "post",
         headers: {
@@ -983,6 +986,7 @@ var app = new Vue({
         date_type: _this.date_type,
         keyword: _this.keyword,
         page: _this.page,
+        space: _this.space,
       };
 
       let token = localStorage.getItem("accessToken");
@@ -1132,6 +1136,7 @@ var app = new Vue({
       _this.file_day = yyyy + mm + dd;
       _this.start_date = first;
       _this.end_date = end;
+      this.space = "";
     },
     
     getPeriod: function(month) {
@@ -1148,8 +1153,15 @@ var app = new Vue({
       _this.file_day = yyyy + mm + dd;
       _this.start_date = first;
       _this.end_date = end;
+      this.space = "";
 
       _this.reset_no_toggle();
+    },
+
+    getSpace: function(space) {
+      this.space = space
+
+      this.reset_no_toggle();
     },
 
 
