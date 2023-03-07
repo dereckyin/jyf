@@ -35,6 +35,9 @@ $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 $date_start = (isset($_POST['date_start']) ?  $_POST['date_start'] : '');
 $date_end = (isset($_POST['date_end']) ?  $_POST['date_end'] : '');
 $type = (isset($_POST['type']) ?  $_POST['type'] : '');
+
+$space = (isset($_POST['space']) ?  $_POST['space'] : '');
+
 // if jwt is not empty
 if($jwt){
  
@@ -103,41 +106,83 @@ if($jwt){
                     
                 }
 
-                if($date_end != '' && $date_start != '' && $type == "1")
+                if($space == "s")
                 {
-                    $merged_results = array_filter($merged_results, function($a) use ($date_end, $date_start) {
-                        $in_value = false;
-
-                        foreach($a['loading'] as $item)
-                        {
-                            if($item['eta_date'] <= $date_end && $item['eta_date'] >= $date_start)
+                    if($type == "1")
+                    {
+                        $merged_results = array_filter($merged_results, function($a) use ($date_end, $date_start) {
+                            $in_value = false;
+            
+                            foreach($a['loading'] as $item)
                             {
-                                $in_value = true;
+                                if($item['eta_date'] == "")
+                                {
+                                    $in_value = true;
+                                }
+                            
                             }
-                        
-                        }
-
-                        return $in_value;
-                    });
+            
+                            return $in_value;
+                        });
+                    }
+                    
+                    if($type == "2")
+                    {
+                        $merged_results = array_filter($merged_results, function($a) use ($date_end, $date_start) {
+                            $in_value = false;
+            
+                            foreach($a['loading'] as $item)
+                            {
+                                if($item['date_arrive'] == "")
+                                {
+                                    $in_value = true;
+                                }
+                            
+                            }
+            
+                            return $in_value;
+                        });
+                    }
                 }
-
-                if($date_end != '' && $date_start != '' && $type == "2")
+                else
                 {
-                    $merged_results = array_filter($merged_results, function($a) use ($date_end, $date_start) {
-                        $in_value = false;
-
-                        foreach($a['loading'] as $item)
-                        {
-                            if($item['date_arrive'] <= $date_end && $item['date_arrive'] >= $date_start)
+                    if($date_end != '' && $date_start != '' && $type == "1")
+                    {
+                        $merged_results = array_filter($merged_results, function($a) use ($date_end, $date_start) {
+                            $in_value = false;
+            
+                            foreach($a['loading'] as $item)
                             {
-                                $in_value = true;
+                                if($item['eta_date'] <= $date_end && $item['eta_date'] >= $date_start)
+                                {
+                                    $in_value = true;
+                                }
+                            
                             }
-                        
-                        }
-
-                        return $in_value;
-                    });
+            
+                            return $in_value;
+                        });
+                    }
+            
+                    if($date_end != '' && $date_start != '' && $type == "2")
+                    {
+                        $merged_results = array_filter($merged_results, function($a) use ($date_end, $date_start) {
+                            $in_value = false;
+            
+                            foreach($a['loading'] as $item)
+                            {
+                                if($item['date_arrive'] <= $date_end && $item['date_arrive'] >= $date_start)
+                                {
+                                    $in_value = true;
+                                }
+                            
+                            }
+            
+                            return $in_value;
+                        });
+                    }
                 }
+                
 
                 if($type == '1')
                     usort($merged_results, "compare_eta");

@@ -62,6 +62,8 @@ let mainState = {
     fil_creator: "",
     fil_category: "2",
 
+    space: "s",
+
 };
 
 var app = new Vue({
@@ -119,7 +121,7 @@ var app = new Vue({
       });
     }
 */
-      this.query();
+      this.query("s");
       this.perPage = this.inventory.find(i => i.id === this.perPage);
     },
 
@@ -278,7 +280,7 @@ var app = new Vue({
           form_Data.append('date_start', this.date_start);
           form_Data.append('date_end', this.date_end);
           form_Data.append('type', this.fil_category);
-        
+          form_Data.append('space', this.space);
     
           axios({
             method: "post",
@@ -342,14 +344,44 @@ var app = new Vue({
               });
         },
 
-        query: function() {
+        
+        getPeriod: function(month) {
+          let _this = this;
+          var today = new Date();
+          var first = new Date();
+          var dd = ("01").slice(-2);
+          var mm = (month).slice(-2);
+          var d = new Date(today.getFullYear(), parseInt(month), 0);
+          var yyyy = today.getFullYear();
+          today = yyyy + "-" + mm + "-" + dd;
+          first = yyyy + "-" + mm + "-01";
+          end = yyyy + "-" + mm + "-" + d.getDate();
+
+          _this.date_start = first;
+          _this.date_end = end;
+          this.space = "";
+
+          _this.query("");
+        },
+
+        getSpace: function(space) {
+          this.space = space
+
+          this.query("s");
+        },
+
+
+        query: function(space) {
          
             var form_Data = new FormData();
             const token = sessionStorage.getItem('token');
             let _this = this;
 
+            this.space = space;
+
             form_Data.append('date_start', this.date_start);
             form_Data.append('date_end', this.date_end);
+            form_Data.append('space', this.space);
             form_Data.append('type', this.fil_category);
 
             axios({
