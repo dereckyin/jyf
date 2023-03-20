@@ -121,7 +121,7 @@ var app = new Vue({
       });
     }
 */
-      this.query("s");
+      this.getFirst();
       this.perPage = this.inventory.find(i => i.id === this.perPage);
     },
 
@@ -345,6 +345,21 @@ var app = new Vue({
         },
 
         
+        getFirst: function() {
+          let _this = this;
+          var today = new Date();
+          var first = new Date();
+          var yyyy = today.getFullYear();
+  
+          first = yyyy + "-" + "01-01";
+          end = yyyy + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + today.getDate();
+
+          _this.date_start = first;
+          _this.date_end = end;
+
+          _this.ini_query();
+        },
+        
         getPeriod: function(month) {
           let _this = this;
           var today = new Date();
@@ -370,6 +385,54 @@ var app = new Vue({
           this.query("s");
         },
 
+        ini_query: function() {
+         
+          var form_Data = new FormData();
+          const token = sessionStorage.getItem('token');
+          let _this = this;
+
+          this.space = "i";
+
+          form_Data.append('date_start', this.date_start);
+          form_Data.append('date_end', this.date_end);
+          form_Data.append('space', "i");
+          form_Data.append('type', this.fil_category);
+
+          axios({
+                  method: 'post',
+                  headers: {
+                      'Content-Type': 'multipart/form-data',
+                      Authorization: `Bearer ${token}`
+                  },
+                  url: 'api/report_container_ac.php',
+                  data: form_Data
+              })
+              .then(function(response) {
+                  //handle success
+                  app.receive_records = response.data;
+
+                  _this.container_total = 0.0;
+                  _this.ar_total = 0.0;
+                  _this.charge_total = 0.0;
+                  _this.total_total = 0.0;
+
+                  for (var i = 0; i < app.receive_records.length; i++) {
+                      _this.container_total += (app.receive_records[i].loading.length);
+                      _this.ar_total += parseFloat(app.receive_records[i].ar);
+                      _this.charge_total += parseFloat(app.receive_records[i].charge);
+
+                      _this.total_total += parseFloat(app.receive_records[i].charge_kilo) + parseFloat(app.receive_records[i].charge_cuft);
+                  }
+
+                  console.log(_this.ar_total)
+
+              })
+              .catch(function(response) {
+                  //handle error
+                  console.log(response)
+              });
+
+      },
 
         query: function(space) {
          
