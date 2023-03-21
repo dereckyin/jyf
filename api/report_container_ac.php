@@ -130,6 +130,48 @@ if($jwt){
                     return $in_value;
                 });
             }
+
+            
+        }
+        else if ($space == "i")
+        {
+            if($type == "1")
+            {
+
+                $merged_results = array_filter($merged_results, function($a) use ($date_end, $date_start) {
+                    $in_value = false;
+    
+                    foreach($a['loading'] as $item)
+                    {
+                        if(($item['date_arrive'] <= $date_end && $item['date_arrive'] >= $date_start) || $item['eta_date'] == "")
+                        {
+                            $in_value = true;
+                        }
+                    
+                    }
+    
+                    return $in_value;
+                });
+            }
+
+            if($type == "2" )
+            {
+
+                $merged_results = array_filter($merged_results, function($a) use ($date_end, $date_start) {
+                    $in_value = false;
+    
+                    foreach($a['loading'] as $item)
+                    {
+                        if(($item['date_arrive'] <= $date_end && $item['date_arrive'] >= $date_start) || $item['date_arrive'] == "")
+                        {
+                            $in_value = true;
+                        }
+                    
+                    }
+    
+                    return $in_value;
+                });
+            }
         }
         else
         {
@@ -168,6 +210,8 @@ if($jwt){
                     return $in_value;
                 });
             }
+
+            
         }
         
 
