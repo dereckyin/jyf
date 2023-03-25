@@ -436,31 +436,31 @@ function GetGroupId($detail_id, $db)
 
 function sendMail($date_receive, $customer, $quantity, $supplier, $description, $remark) {
     $conf = new Conf();
-    // $mail = new PHPMailer();
-    // $mail->IsSMTP();
-    // $mail->Mailer = "smtp";
-    // $mail->CharSet = 'UTF-8';
-    // $mail->Encoding = 'base64';
-
-    // $mail->SMTPDebug  = 2;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_Host;
-    // $mail->Username   = $conf::$mail_Username;
-    // $mail->Password   = $conf::$mail_Password;
-
-    $mail = new PHPMailer(true);
-    $mail->isSMTP();
-    $mail->Host = 'smtp.ethereal.email';
-    $mail->SMTPAuth = true;
-    $mail->Username = 'fernando.witting79@ethereal.email';
-    $mail->Password = 'e2eDHfEwJtrRstkQYn';
-    $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->Mailer = "smtp";
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
+
+    $mail->SMTPDebug  = 2;
+    $mail->SMTPAuth   = true;
+    $mail->SMTPSecure = "ssl";
+    $mail->Port       = 465;
+    $mail->SMTPKeepAlive = true;
+    $mail->Host       = $conf::$mail_Host;
+    $mail->Username   = $conf::$mail_Username;
+    $mail->Password   = $conf::$mail_Password;
+
+    // $mail = new PHPMailer(true);
+    // $mail->isSMTP();
+    // $mail->Host = 'smtp.ethereal.email';
+    // $mail->SMTPAuth = true;
+    // $mail->Username = 'fernando.witting79@ethereal.email';
+    // $mail->Password = 'e2eDHfEwJtrRstkQYn';
+    // $mail->SMTPSecure = 'tls';
+    // $mail->Port = 587;
+    // $mail->CharSet = 'UTF-8';
+    // $mail->Encoding = 'base64';
 
     $mail->IsHTML(true);
     $mail->AddAddress("jyf_lu@hotmail.com", "jyf_lu");
