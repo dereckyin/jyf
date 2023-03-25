@@ -404,15 +404,15 @@ header( 'location:index.php' );
             min-width: 170px;
         }
 
-        #panelchecked thead tr > th:nth-of-type(3), #panelchecked thead tr > th:nth-of-type(4), #panelchecked thead tr > th:nth-of-type(16) {
+        #panelchecked thead tr > th:nth-of-type(4), #panelchecked thead tr > th:nth-of-type(5), #panelchecked thead tr > th:nth-of-type(17) {
             min-width: 260px;
         }
 
-        #panelchecked thead tr th:nth-of-type(2), #panelchecked thead tr th:nth-of-type(7) {
+        #panelchecked thead tr th:nth-of-type(3), #panelchecked thead tr th:nth-of-type(8) {
             min-width: 200px;
         }
 
-        #panelchecked thead tr th:nth-last-of-type(1) {
+        #panelchecked thead tr th:nth-of-type(1), #panelchecked thead tr th:nth-last-of-type(1) {
             min-width: 100px;
         }
 
@@ -1063,6 +1063,11 @@ header( 'location:index.php' );
                     <tr>
 
                         <th class="text-nowrap">
+                            <cht>功能</cht>
+                            Actions
+                        </th>
+
+                        <th class="text-nowrap">
                             <cht>收件日期</cht>
                             Date Received
                         </th>
@@ -1164,6 +1169,17 @@ header( 'location:index.php' );
 
                     <tr v-for="(item, index) in items" :class="[(item.status == '-1' ? 'deleted' : '')]">
 
+                        <td>
+                        <?php
+                                                    if($airship == 1)
+                                                    {
+                                            ?>
+                            <i class="fas fa-edit fa-lg" @click="edit(item)" aria-hidden="true" v-if="item.status != -1"></i>
+                            <?php
+                                                    }
+                                            ?>
+                        </td>
+
                         <td>{{ item.date_receive }}</td>
 
                         <td>{{ item.mode == 'exp' ? '快遞' : '空運' }}</td>
@@ -1225,7 +1241,6 @@ header( 'location:index.php' );
                                                     if($airship == 1)
                                                     {
                                             ?>
-                            <i class="fas fa-edit fa-lg" @click="edit(item)" aria-hidden="true" v-if="item.status != -1"></i>
                             <i class="fas fa-trash-alt fa-lg" @click="deleteRecord(item)" aria-hidden="true" v-if="item.status != -1"></i>
                             <?php
                                                     }
@@ -1239,7 +1254,7 @@ header( 'location:index.php' );
                     <tfoot class="thead-light" id="flag_total">
 
                     <tr>
-                        <th colspan="6" style="vertical-align: middle;">Total</th>
+                        <th colspan="7" style="vertical-align: middle;">Total</th>
                         <th style="text-align: right; vertical-align: middle;">
                             
                             {{ rec_kilo !== undefined ?

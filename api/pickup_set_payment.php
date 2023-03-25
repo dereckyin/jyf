@@ -39,8 +39,9 @@ require '../PHPMailer-master/src/Exception.php';
 require '../PHPMailer-master/src/PHPMailer.php';
 require '../PHPMailer-master/src/SMTP.php';
 
-require_once "db.php";
+require_once '../vendor/autoload.php';
 
+require_once "db.php";
 
 header('Access-Control-Allow-Origin: *');  
 
@@ -61,6 +62,8 @@ $user_id = $decoded->data->id;
         $detail_pre_array = json_decode($pre_record, true);
 
         $measure_id = 0;
+
+        $has_taiwan_pay = false;
 
         $conn->begin_transaction();
 
@@ -190,6 +193,9 @@ $user_id = $decoded->data->id;
             $courier = ($detail_array[$i]['courier'] == '') ? 0 : $detail_array[$i]['courier'];
             $remark = ($detail_array[$i]['remark'] == '') ? "" : $detail_array[$i]['remark'];
 
+            if($type == "4")
+                $has_taiwan_pay = true;
+
 /*
             if($id != 0)
             {
@@ -245,6 +251,29 @@ $user_id = $decoded->data->id;
 
          // if group id <> 0 then update detail in group ids 
         $group_id = GetGroupId($detail_id, $conn);
+
+        // get all received record's ids
+        $pre_receive_record= array();
+
+        if($group_id != 0)
+        {
+            $query = "select id, date_receive, customer, quantity, supplier, taiwan_pay, description, remark from receive_record where id in (SELECT record_id from measure_record_detail WHERE detail_id in (select measure_detail_id from pick_group where group_id = " . $group_id . "))";
+
+            $result = $conn->query($query);
+
+            while ($row = $result->fetch_assoc()) 
+                array_push($pre_receive_record, $row);
+        }
+        else
+        {
+            $query = "select id, date_receive, customer, quantity, supplier, taiwan_pay, description, remark from receive_record where id in (SELECT record_id from measure_record_detail WHERE detail_id = " . $detail_id . ")";
+            $result = $conn->query($query);
+
+            while ($row = $result->fetch_assoc()) {
+                array_push($pre_receive_record, $row);
+            }
+        }
+
 
         if($group_id != 0)
         {
@@ -356,6 +385,36 @@ $user_id = $decoded->data->id;
         $conn->commit();
     }
 
+    // if has_taiwan_pay = true iterate pre_receive_record to see if taiwan_pay is 0, then update to 1 and send mail
+    if($has_taiwan_pay)
+    {
+        foreach($pre_receive_record as $record)
+        {
+            if($record['taiwan_pay'] == 0)
+            {
+                $query = "UPDATE receive_record
+                    SET
+                    taiwan_pay = 1
+                    WHERE id = " . $record['id'];
+
+                $stmt = $conn->prepare($query);
+
+                try {
+                    // execute the query, also check if query was successful
+                    if (!$stmt->execute()) {
+                        // 1. rollback
+                    }
+                } catch (Exception $e) {
+                    // 2. rollback
+                }
+
+                // send mail
+                sendMail($record['date_receive'], $record['customer'], $record['quantity'], $record['supplier'], $record['description'], $record['remark']);
+            }
+        }
+    }
+
+
     // Close connection
     mysqli_close($conn);
 
@@ -373,4 +432,60 @@ function GetGroupId($detail_id, $db)
     }
     return $group_id;
 }
+
+
+function sendMail($date_receive, $customer, $quantity, $supplier, $description, $remark) {
+    $conf = new Conf();
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->Mailer = "smtp";
+    $mail->CharSet = 'UTF-8';
+    $mail->Encoding = 'base64';
+
+    $mail->SMTPDebug  = 2;
+    $mail->SMTPAuth   = true;
+    $mail->SMTPSecure = "ssl";
+    $mail->Port       = 465;
+    $mail->SMTPKeepAlive = true;
+    $mail->Host       = $conf::$mail_Host;
+    $mail->Username   = $conf::$mail_Username;
+    $mail->Password   = $conf::$mail_Password;
+
+    // $mail = new PHPMailer(true);
+    // $mail->isSMTP();
+    // $mail->Host = 'smtp.ethereal.email';
+    // $mail->SMTPAuth = true;
+    // $mail->Username = 'fernando.witting79@ethereal.email';
+    // $mail->Password = 'e2eDHfEwJtrRstkQYn';
+    // $mail->SMTPSecure = 'tls';
+    // $mail->Port = 587;
+    // $mail->CharSet = 'UTF-8';
+    // $mail->Encoding = 'base64';
+
+    $mail->IsHTML(true);
+    $mail->AddAddress("jyf_lu@hotmail.com", "jyf_lu");
+ 
+    $mail->SetFrom("servictoryshipment@gmail.com", "servictoryshipment");
+    $mail->AddReplyTo("servictoryshipment@gmail.com", "servictoryshipment");
+   
+    $mail->Subject = "[通知] Lailani 標註了某筆收貨記錄為台灣付";
+    $content = "<p>Dear All,</p>";
+    $content = $content . "<p>Lailani 標註了某筆收貨記錄為台灣付，該筆收貨記錄資料如下。</p>";
+    $content = $content . "<p>收貨日期: " . $date_receive . "</p>";
+    $content = $content . "<p>收件人: " . $customer . "</p>";
+    $content = $content . "<p>件數: " . $quantity . "</p>";
+    $content = $content . "<p>寄貨人: " . $supplier . "</p>";
+    $content = $content . "<p>描述: " . $description . "</p>";
+    $content = $content . "<p>備註: " . $remark . "</p>";
+
+
+    $mail->MsgHTML($content);
+    if(!$mail->Send()) {
+        echo "Error while sending Email.";
+        var_dump($mail);
+    } else {
+        echo "Email sent successfully";
+    }
+}
+
 ?>
