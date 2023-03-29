@@ -314,7 +314,7 @@ try {
                                         <option>Water</option>
                                         <option>Rice</option>
                                         <option>Parking Fee</option>
-                                        <option>Gas - L300 2</option>
+                                        <option>Gas - Rush</option>
                                         <option>Gas - Avanza Grey</option>
                                         <option>Gas - Alphard</option>
                                         <option>Gas - Innova Grey</option>
@@ -468,13 +468,14 @@ try {
                 <option>Water</option>
                 <option>Rice</option>
                 <option>Parking Fee</option>
-                <option>Gas - L300 2</option>
+                <option>Gas - Rush</option>
                 <option>Gas - Avanza Grey</option>
                 <option>Gas - Alphard</option>
                 <option>Gas - Innova Grey</option>
                 <option>Gas - Traviz 1</option>
                 <option>Gas - Traviz 2</option>
                 <option>Others</option>
+                <option>Gas - L300 2</option>
             </select>
 
             <input type="text" v-model="keyword" style="width:15vw; margin-left:1vw;"
