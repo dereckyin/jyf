@@ -475,6 +475,7 @@ try {
                 <option>Gas - Traviz 1</option>
                 <option>Gas - Traviz 2</option>
                 <option>Others</option>
+                <option disabled="disabled">-------------------</option>
                 <option>Gas - L300 2</option>
             </select>
 
