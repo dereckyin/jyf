@@ -410,11 +410,11 @@ var app = new Vue({
           return;
         }
 
-        if(item.ar_php == '')
-        {
-          alert('請輸入請款金額(菲幣)');
-          return;
-        }
+        // if(item.ar_php == '')
+        // {
+        //   alert('請輸入請款金額(菲幣)');
+        //   return;
+        // }
 
         // alert to confirm execute
         if(!confirm('確定要完成此筆資料?'))
