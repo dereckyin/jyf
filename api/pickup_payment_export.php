@@ -682,7 +682,7 @@ if($adv == 'Y')
 
     $table7->addRow();
     $cell = $table7->addCell(11270.551184);
-    $cell->addImage('https://storage.googleapis.com/feliiximg/1669340274_air_freight.png', array('width' => 286, 'height' => 153));
+    $cell->addImage('https://storage.googleapis.com/feliiximg/1684119001_FeliixPromoCoupon.png', array('width' => 286, 'height' => 153));
 }
 
 
