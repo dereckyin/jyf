@@ -69,6 +69,9 @@ header( 'location:index.php' );
     <title>Air-Shipment 空運記錄</title>
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/hierarchy-select.min.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="css/default.css"/>
+    <link rel="stylesheet" type="text/css" href="css/ui.css"/>
+    <link rel="stylesheet" type="text/css" href="css/case.css"/>
     <link rel="stylesheet" href="css/vue-select.css" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
@@ -420,6 +423,7 @@ header( 'location:index.php' );
             font-size: 20px;
             margin: 8px;
             cursor: pointer;
+            display: block;
         }
 
         #panelchecked tfoot tr th {
@@ -441,6 +445,35 @@ header( 'location:index.php' );
             margin-left: 8px;
             letter-spacing: 5px;
             opacity: 0.5;
+        }
+
+        .btnbox a.btn {
+            letter-spacing: 0;
+        }
+
+        .btnbox a.btn cht {
+            font-size: 12px;
+            letter-spacing: 3px;
+            margin-left: 4px;
+        }
+
+        .modal-footer button.btn {
+            letter-spacing: 0;
+        }
+
+        .modal-footer button.btn cht {
+            font-size: 12px;
+            letter-spacing: 3px;
+            margin-left: 4px;
+        }
+
+        div.tablebox > .header cht {
+            display: block;
+            font-weight: 400;
+        }
+
+        div.tablebox > ul > li > cht {
+            font-size: 12px;
         }
 
         div.tablebox {
