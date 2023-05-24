@@ -781,7 +781,7 @@ header( 'location:index.php' );
                                 <select v-model="assist_by">
                                     <option></option>
                                     <option value="Lailani">Lailani</option>
-                                    <option value="Ana">Ana</option>
+                                    <!-- <option value="Ana">Ana</option> -->
                                     <option value="Merryl">Merryl</option>
                                 </select>
                             </li>
