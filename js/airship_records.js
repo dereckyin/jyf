@@ -550,6 +550,7 @@ var app = new Vue({
         "change": '',
         "courier" : '',
         "remark": '',
+        "is_selected": 1,
       }, 
 
       this.payment.push(obj);
@@ -1381,8 +1382,6 @@ var app = new Vue({
       if(this.export_record.length > 0) {
         if(this.export_record[0].record !== undefined)
           this.payment_record = JSON.parse(this.export_record[0].record);
-        else
-          this.payment_record.push(rec);
 
         //this.payment = [].concat(record);
         if(this.export_record[0].payment !== undefined)
@@ -1391,6 +1390,8 @@ var app = new Vue({
           element.is_selected = 1;
         }
       }
+      else
+        this.payment_record.push(rec);
 
       this.detail_id = detail_id;
 

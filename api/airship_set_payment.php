@@ -461,7 +461,7 @@ foreach ($strArr as $v) {
 
 $cell = $table3->addCell(4501.417324, $styleCellHeadCenter);
 // Description
-$strArr = explode("\n", $exp_discription_ext);
+$strArr = explode("\n", $exp_discription);
 foreach ($strArr as $v) {
     $cell->addText(htmlspecialchars($v), array('name' => 'Calibri', 'size' => 12, 'color' => 'black'), array('align' => 'center'));
 }
