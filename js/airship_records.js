@@ -136,6 +136,30 @@ var app = new Vue({
 
     space : '',
 
+    payment: [],
+    // export
+    detail_id:0,
+
+    exp_dr:"",
+    exp_date:"",
+    exp_sold_to:"",
+    exp_quantity:"",
+    exp_unit:"",
+    exp_discription:"",
+    exp_amount:"",
+
+    adv:"",
+
+    assist_by:"",
+
+    export_record: {},
+
+    export_discription_org: "",
+    exp_amount_org: "",
+    payment_record: [],
+
+    org_item : {},
+
   },
 
   created() {
@@ -491,6 +515,64 @@ var app = new Vue({
 
       this.editing_php = true;
       this.e_id_php = item.id;
+    },
+
+    del_plus_payment_detail : function(id) {
+      var index = this.payment.findIndex(x => x.id ===id);
+      if (index > -1) {
+        this.payment.splice(index, 1);
+      }
+    },
+
+    add_plus_payment_detail: function() {
+      let order = 1;
+      if(this.payment.length != 0)
+      {
+        let max = 0;
+        for(let i = 0; i < this.payment.length; i++)
+        {
+          if(this.payment[i].id > max)
+            max = this.payment[i].id;
+
+        }
+        order = max + 1;
+      }
+        
+      
+      obj = {
+        "id" : 0,
+        "detail_id" : this.detail_id,
+        "type" : 1,
+        "issue_date" : '',
+        "payment_date" : '',
+        "person": '',
+        "amount": '',
+        "change": '',
+        "courier" : '',
+        "remark": '',
+      }, 
+
+      this.payment.push(obj);
+    },
+  
+    chang_remark: function(row) {
+      if(row.amount == '')
+        return;
+      // let charge = this.payment_record.charge;
+      let charge = this.ar;
+      let pay = 0;
+      for(let i = 0; i < this.payment.length; i++)
+        pay += (this.payment[i].amount == "" ? 0 : Number(this.payment[i].amount)) - (this.payment[i].courier == "" ? 0 : Number(this.payment[i].courier));
+      if(charge - pay < 0 && row.type == 1)
+      {
+        row.remark = "Cash " + row.amount + " - " + (Number(charge) - Number(pay) + Number(row.amount)) + " = P" + Math.abs(charge - pay);
+        row.change = Math.abs(charge - pay);
+      }
+      else
+      {
+        row.remark = '';
+        row.change = '';
+      }
     },
 
     add_plus_detail: function() {
@@ -1168,6 +1250,277 @@ var app = new Vue({
     scrollMeTo(refName) {
         var element = this.$refs[refName];
         element.scrollIntoView({ behavior: 'smooth' });
+    },
+
+    async get_export(detail_id) {
+      let _this = this;
+
+      const params = {
+        measure_id: detail_id,
+      
+      };
+
+      let token = localStorage.getItem("accessToken");
+
+      try {
+        let res = await axios.get("api/airship_get_export.php", {
+          params,
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        
+        this.export_record = res.data;
+      } catch (err) {
+        console.log(err)
+        alert('error')
+      }
+    },
+
+    export_save: async function(print) {
+      let _this = this;
+
+      var form_Data = new FormData();
+
+      form_Data.append('id', this.detail_id);
+      form_Data.append('exp_dr', this.exp_dr)
+      form_Data.append('assist_by', this.assist_by)
+      form_Data.append('exp_date', this.exp_date)
+      form_Data.append('exp_sold_to', this.exp_sold_to)
+      form_Data.append('exp_quantity', this.exp_quantity)
+      form_Data.append('exp_unit', this.exp_unit)
+      form_Data.append('exp_discription', this.exp_discription)
+      form_Data.append('exp_amount', this.exp_amount_org)
+      form_Data.append('payment', JSON.stringify(this.payment))
+      form_Data.append('record', JSON.stringify(this.payment_record))
+
+      form_Data.append('adv', this.adv)
+      form_Data.append('print', print)
+    
+      if(this.submit == true)
+            return;
+
+          this.submit = true;
+    
+          try {
+            if(print == '')
+            {
+              let res = await axios({
+                method: 'post',
+                url: 'api/airship_set_payment.php',
+                data: form_Data,
+                
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+            });
+            }
+
+            if(print == 'Y')
+            {
+              let response = await axios({
+                method: 'post',
+                url: 'api/airship_set_payment.php',
+                data: form_Data,
+                responseType: 'blob', // important
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+            });
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+          
+              link.setAttribute('download', 'Airship_Payment_Receipt' + (_this.exp_dr !== '' ? '_' + _this.exp_dr : '') + '.docx');
+          
+            document.body.appendChild(link);
+            link.click();
+
+            _this.reset_no_toggle();
+            }
+            
+            
+          } catch (err) {
+            console.log(err)
+            alert('error')
+          }
+
+          this.submit = false;
+  },
+
+
+
+    item_export: async function(item) {
+
+      let _this = this;
+
+      this.org_item = JSON.parse(JSON.stringify(item));
+
+      let detail_id = item.id;
+
+      this.export_record = {};
+      this.exp_date = '';
+      this.exp_quantity = '';
+      this.exp_unit = '';
+      this.adv = '';
+
+      await this.get_export(detail_id);
+
+      this.payment = [];
+      this.payment_record = [];
+
+      let rec = {
+        id: 0,
+        is_selected: 1,
+        date_receive: item.date_receive,
+        customer: item.customer,
+        description: item.description,
+        quantity: item.quantity,
+        supplier: item.supplier,
+      }
+
+      if(this.export_record.length > 0) {
+        if(this.export_record[0].record !== undefined)
+          this.payment_record = JSON.parse(this.export_record[0].record);
+        else
+          this.payment_record.push(rec);
+
+        //this.payment = [].concat(record);
+        if(this.export_record[0].payment !== undefined)
+          this.payment = JSON.parse(this.export_record[0].payment);
+        for(const element of this.payment) {
+          element.is_selected = 1;
+        }
+      }
+
+      this.detail_id = detail_id;
+
+      this.exp_dr = "";
+      this.exp_date = "";
+      this.exp_sold_to = item.customer;
+      this.assist_by = "";
+
+      this.exp_quantity = "";
+      this.exp_unit = "";
+      this.exp_discription = item.kilo + "@ ₱ 750.00";
+
+      kilo_price = 0;
+      item.kilo !== "" ? kilo_price = item.kilo * 750 : kilo_price = 0;
+
+      this.exp_amount = '₱ ' + Number(kilo_price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+      this.exp_amount_org = this.exp_amount;
+
+      this.ar = kilo_price;
+
+      // // warehouse fee
+      // if(item.warehouse_fee !== '')
+      // {
+      //   this.exp_amount = this.exp_amount + '\n' + '₱ ' + Number(item.warehouse_fee).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      // }
+      
+      // kilo_price = 0;
+      // cuft_price = 0;
+
+      // item.kilo_price !== "" ? kilo_price = item.kilo_price : kilo_price = (item.kilo < 3000 ? 36.5 : 34.5);
+      // item.cuft_price !== "" ? cuft_price = item.cuft_price : cuft_price = (item.cuft < 300 ? 385 : 365);
+
+      // nkilo = kilo_price * (item.kilo == "" ? 0 : item.kilo);
+      // ncuft = cuft_price * (item.cuft == "" ? 0 : item.cuft);
+      // charge = (ncuft > nkilo) ? Number(item.cuft).toFixed(2) + ' cuft @ ₱ ' + Number(item.cuft_price).toFixed(2) : Number(item.kilo).toFixed(2) + ' kilo @ ₱ ' + Number(item.kilo_price).toFixed(2);
+      // this.exp_discription = charge;
+
+      // this.exp_discription_org = charge;
+
+      // // warehouse charge
+      // warehouse_charge = "";
+      // if(item.warehouse_fee !== '')
+      // {
+      //     if(item.way == "kilo")
+      //     {
+      //       warehouse_charge = Number(item.kilo).toFixed(2) + ' kilo @ ₱ ' + Number(item.kilo_unit).toFixed(2);
+      //     }
+
+      //     if(item.way == "cuft")
+      //     {
+      //       warehouse_charge = Number(item.cuft).toFixed(2) + ' cuft @ ₱ ' + Number(item.cuft_unit).toFixed(2);
+      //     }
+      // }
+
+      // if(warehouse_charge !== "")
+      // {
+      //   this.exp_discription = this.exp_discription + '\n' + warehouse_charge + ' Warehouse Fee';
+      // }
+
+      if(this.export_record.length > 0)
+      {
+        this.exp_dr = this.export_record[0].exp_dr;
+        this.exp_date = this.export_record[0].exp_date;
+        this.exp_sold_to = this.export_record[0].exp_sold_to;
+        this.exp_quantity = this.export_record[0].exp_quantity;
+        this.exp_unit = this.export_record[0].exp_unit;
+        this.exp_discription = this.export_record[0].exp_discription;
+        this.exp_amount = this.export_record[0].exp_amount;
+
+        this.assist_by = this.export_record[0].assist_by;
+
+        this.adv = this.export_record[0].adv;
+
+        // this.payment = this.export_record[0].payment;
+        // this.payment_record = this.export_record[0].record;
+
+        // for(const element of JSON.parse(this.export_record[0].payment)) {
+        //   var result  = this.payment.filter(function(o){return o.id == element.id;} );
+        //   if(result.length > 0)
+        //     result[0].is_selected = element.is_selected;
+        // }
+
+        // for(const element of JSON.parse(this.export_record[0].record)) {
+        //   var result  = this.payment_record.filter(function(o){return o.id == element.id;} );
+        //   if(result.length > 0)
+        //     result[0].is_selected = element.is_selected;
+        // }
+      }
+
+      if(this.org_item.customer != this.exp_sold_to) {
+
+       let result = await Swal.fire({
+          title: "Check",
+          text: "Value in Column “Customer” is different from the value in Column “SOLD TO”. Would you want to replace “SOLD TO” by the value in Column “Customer”?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes",
+        });
+
+          if (result.value) {
+            this.exp_sold_to = this.org_item.customer;
+          } else {
+            // swal("Cancelled", "Your imaginary file is safe :)", "error");
+          }
+    
+
+      }
+
+      if(this.org_item.kilo.trim() != this.exp_discription.split('@')[0].trim()) {
+         result = await Swal.fire({
+          title: "Check",
+          text: "Value in Column “Kilo” is different from the weight in Column “Description”. Would you want to update “Description” and “Amount” by the value in Column “Kilo”?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes",
+        });
+
+          if (result.value) {
+            this.exp_discription = item.kilo + "@ ₱ 750.00";
+          } else {
+            // swal("Cancelled", "Your imaginary file is safe :)", "error");
+          }
+      
+
+      }
     },
   },
 });

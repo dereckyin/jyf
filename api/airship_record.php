@@ -204,6 +204,8 @@ if($date_type == "p")
 
             $items = GetSalesDetail($id, $db, 'n');
             $items_php = GetSalesDetail($id, $db, 'p');
+
+            $export = GetExportRecord($row['id'], $db);
            
             $merged_results[] = array( 
                 "is_edited" => 1,
@@ -233,6 +235,8 @@ if($date_type == "p")
                 "items" => $items,
                 "items_php" => $items_php,
                 "cnt" => $cnt,
+
+                "export" => $export,
             );
         }
 
@@ -284,6 +288,37 @@ function GetSalesDetail($sales_id, $db, $type){
             "qty" => $qty,
             "price" => $price,
            
+        );
+    }
+
+    return $merged_results;
+}
+
+
+function GetExportRecord($id, $db){
+    $query = "SELECT DATE_FORMAT(upd_time, '%Y/%m/%d') upd_time, file_export, adv, exp_dr from
+               airship_records_export
+                    WHERE measure_detail_id = " . $id . "
+           
+    ";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $merged_results = [];
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $upd_time = $row['upd_time'];
+        $file_export = $row['file_export'];
+        $adv = $row['adv'];
+        $exp_dr = $row['exp_dr'];
+       
+        $merged_results[] = array(
+            "upd_time" => $upd_time,
+            "file_export" => $file_export,
+            "adv" => $adv,
+            "exp_dr" => $exp_dr,
         );
     }
 

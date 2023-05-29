@@ -426,6 +426,20 @@ header( 'location:index.php' );
             display: block;
         }
 
+        #panelchecked tbody tr td button {
+            box-sizing: border-box;
+            border: 1px solid #999;
+            border-radius: 5px;
+            background-color: #fff;
+            padding: 5px;
+            vertical-align: middle;
+            margin: 3px 0px;
+            font-size: 18px;
+            font-weight: 300;
+            color: #000;
+            font-family: Roboto, Arial, Helvetica, "Noto Sans TC", "LiHei Pro", 微軟正黑體, 新細明體, "Microsoft JhengHei", sans-serif;
+        }
+
         #panelchecked tfoot tr th {
             background-color: #e9ecef;
         }
@@ -1350,11 +1364,11 @@ header( 'location:index.php' );
                                             ?>
                             <i class="fas fa-trash-alt fa-lg" @click="deleteRecord(item)" aria-hidden="true" v-if="item.status != -1"></i>
 
-                            <button data-toggle="modal" data-target="#export_modal" @click="item_export(item, row.payments, row.ar, item.id, row.measure)" style="margin: 3px 0;">Receipt</button>
+                            <button data-toggle="modal" data-target="#export_modal" @click="item_export(item)">Receipt</button>
 
                             <div class="export_file" v-if="item.export.length > 0 && item.export[0].file_export != ''">
+                                {{ item.export[0].exp_dr }}<br v-if="item.export[0].exp_dr != ''" />
                                 <a :href="'https://storage.googleapis.com/feliiximg/' + item.export[0].file_export"><i class="fas fa-file fa-lg" aria-hidden="true"></i></a>
-                                <br>
                                 {{ item.export[0].upd_time }}
                             </div>
 
@@ -1572,7 +1586,6 @@ header( 'location:index.php' );
                                 <select v-model="assist_by">
                                     <option></option>
                                     <option value="Lailani">Lailani</option>
-                                    <option value="Ana">Ana</option>
                                     <option value="Merryl">Merryl</option>
                                 </select>
                             </li>
@@ -1696,7 +1709,7 @@ header( 'location:index.php' );
                             <li>
                                 <input type="text" v-model="item.remark">
                             </li>
-                            <li><span @click="del_plus_detail(item.id)">x</span></li>
+                            <li><span @click="del_plus_payment_detail(item.id)">x</span></li>
                         </ul>
 
                         <ul class="add_row">
@@ -1706,7 +1719,7 @@ header( 'location:index.php' );
                             <li></li>
                             <li></li>
                             <li></li>
-                            <li><i class="fas fa-plus-circle" aria-hidden="true" @click=add_plus_detail()></i></li>
+                            <li><i class="fas fa-plus-circle" aria-hidden="true" @click=add_plus_payment_detail()></i></li>
                             <li></li>
                         </ul>
 
@@ -1745,7 +1758,7 @@ header( 'location:index.php' );
 
                         </ul>
 
-                        <ul v-for="(item, j) in record">
+                        <ul v-for="(item, j) in payment_record">
                             <li><input class="alone" type="checkbox" true-value="1"  false-value="0"  v-model="item.is_selected" /></li>
                             <li>{{ item.date_receive }}</li>
                             <li>{{ item.customer }}</li>
@@ -1764,11 +1777,11 @@ header( 'location:index.php' );
                         <cht>取消</cht>
                     </button>
 
-                    <button type="button" data-dismiss="modal" class="btn btn-secondary" @click=payment_save()>Save
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="export_save('')">Save
                         <cht>儲存</cht>
                     </button>
 
-                    <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="export_save()">Save and Export Word
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="export_save('Y')">Save and Export Word
                         <cht>儲存並匯出 Word</cht>
                     </button>
 
