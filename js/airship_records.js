@@ -566,8 +566,8 @@ var app = new Vue({
         pay += (this.payment[i].amount == "" ? 0 : Number(this.payment[i].amount)) - (this.payment[i].courier == "" ? 0 : Number(this.payment[i].courier));
       if(charge - pay < 0 && row.type == 1)
       {
-        row.remark = "Cash " + row.amount + " - " + (Number(charge) - Number(pay) + Number(row.amount)) + " = P" + Math.abs(charge - pay);
-        row.change = Math.abs(charge - pay);
+        row.remark = "Cash " + row.amount + " - " + (Number(charge) - Number(pay) + Number(row.amount)).toFixed(2) + " = P" + Math.abs(charge - pay).toFixed(2) + " (Change)";
+        row.change = Math.abs(charge - pay).toFixed(2);
       }
       else
       {
@@ -1402,7 +1402,7 @@ var app = new Vue({
 
       this.exp_quantity = "";
       this.exp_unit = "";
-      this.exp_discription = item.kilo + "@ ₱ 750.00";
+      this.exp_discription = item.kilo + " kilo @ ₱ 750.00";
 
       kilo_price = 0;
       item.kilo !== "" ? kilo_price = item.kilo * 750 : kilo_price = 0;
@@ -1503,7 +1503,7 @@ var app = new Vue({
 
       }
 
-      if(this.org_item.kilo.trim() != this.exp_discription.split('@')[0].trim()) {
+      if(this.org_item.kilo.trim() != this.exp_discription.split(' kilo @')[0].trim()) {
          result = await Swal.fire({
           title: "Check",
           text: "Value in Column “Kilo” is different from the weight in Column “Description”. Would you want to update “Description” and “Amount” by the value in Column “Kilo”?",
@@ -1515,7 +1515,10 @@ var app = new Vue({
         });
 
           if (result.value) {
-            this.exp_discription = item.kilo + "@ ₱ 750.00";
+            this.exp_discription = item.kilo + " kilo @ ₱ 750.00";
+            kilo_price = 0;
+            item.kilo !== "" ? kilo_price = item.kilo * 750 : kilo_price = 0;
+            this.exp_amount = '₱ ' + Number(kilo_price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           } else {
             // swal("Cancelled", "Your imaginary file is safe :)", "error");
           }

@@ -468,7 +468,7 @@ foreach ($strArr as $v) {
 
 $cell = $table3->addCell(4501.417324, $styleCellTailCenter);
 // Amount
-$strArr = explode("\n", $exp_amount_ext);
+$strArr = explode("\n", $exp_amount);
 foreach ($strArr as $v) {
     $cell->addText(htmlspecialchars($v), array('name' => 'Calibri', 'size' => 12, 'color' => 'black'), array('align' => 'center'));
 }
