@@ -1289,7 +1289,7 @@ var app = new Vue({
       form_Data.append('exp_quantity', this.exp_quantity)
       form_Data.append('exp_unit', this.exp_unit)
       form_Data.append('exp_discription', this.exp_discription)
-      form_Data.append('exp_amount', this.exp_amount_org)
+      form_Data.append('exp_amount', this.exp_amount)
       form_Data.append('payment', JSON.stringify(this.payment))
       form_Data.append('record', JSON.stringify(this.payment_record))
 
