@@ -69,9 +69,6 @@ header( 'location:index.php' );
     <title>Air-Shipment 空運記錄</title>
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/hierarchy-select.min.css" type="text/css">
-    <link rel="stylesheet" type="text/css" href="css/default.css"/>
-    <link rel="stylesheet" type="text/css" href="css/ui.css"/>
-    <link rel="stylesheet" type="text/css" href="css/case.css"/>
     <link rel="stylesheet" href="css/vue-select.css" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
