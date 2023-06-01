@@ -441,6 +441,20 @@ header( 'location:index.php' );
             background-color: #e9ecef;
         }
 
+        #panelchecked tbody div.export_file {
+            font-size: 14px;
+        }
+
+        #panelchecked tbody div.export_file a {
+            color: #4D576C;
+            transition: .5s;
+        }
+
+        #panelchecked tbody div.export_file a:hover {
+            color: #EA631A;
+        }
+
+
         #panelchecked tbody div.export_file i {
             display: inline-block;
             margin: 10px;
@@ -644,7 +658,6 @@ header( 'location:index.php' );
             cursor: pointer;
         }
 
-
         button.quick_move {
             position: fixed;
             width: 50px;
@@ -657,7 +670,34 @@ header( 'location:index.php' );
             z-index: 999;
         }
 
+        #export_modal {
+            font-family: Lato, Roboto, Arial, Helvetica, "Noto Sans TC", "LiHei Pro", 微軟正黑體, "Microsoft JhengHei", 新細明體, sans-serif;
+        }
 
+        #export_modal div.modal-header h5 {
+            font-weight: normal;
+        }
+
+        #export_modal input[type=text], #export_modal input[type=date], #export_modal textarea, #export_modal select {
+            border: 1px solid #999;
+            border-radius: 5px;
+            background-color: #fff;
+            padding: 5px;
+            vertical-align: middle;
+        }
+
+        #export_modal input.alone[type=checkbox] {
+            display: inline-block;
+            width: auto !important;
+        }
+
+        #export_modal input.alone[type=checkbox]::before {
+            content: "check_box_outline_blank";
+        }
+
+        #export_modal input.alone[type=checkbox]:checked::before {
+            content: "check_box";
+        }
 
     </style>
 
