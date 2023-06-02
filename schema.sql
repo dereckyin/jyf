@@ -1176,3 +1176,32 @@ CREATE TABLE IF NOT EXISTS `gcash_expense_recorder_sea_2` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
 
 ALTER TABLE user ADD COLUMN gcash_expense_sea_2 INT DEFAULT 0;
+
+-- 20230526
+create table airship_records_export
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `measure_detail_id` bigint(20) unsigned NOT NULL,
+  `exp_dr` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `assist_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `file_export` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `adv` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `exp_date` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `exp_sold_to` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `exp_quantity` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `exp_unit` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `exp_discription` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `exp_amount` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+	`payment` JSON,
+	`record` JSON,
+	`status` varchar(2) DEFAULT '',
+	`crt_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`crt_user` varchar(128) DEFAULT '',
+	`upd_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`upd_user` varchar(128) DEFAULT '',
+	`mdf_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`mdf_user` varchar(128) DEFAULT '',
+	`del_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	`del_user` varchar(128) DEFAULT '',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

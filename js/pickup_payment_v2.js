@@ -1106,8 +1106,8 @@ var app = new Vue({
             pay += (this.payment[i].amount == "" ? 0 : Number(this.payment[i].amount)) - (this.payment[i].courier == "" ? 0 : Number(this.payment[i].courier));
           if(charge - pay < 0 && row.type == 1)
           {
-            row.remark = "Cash " + row.amount + " - " + (Number(charge) - Number(pay) + Number(row.amount)) + " = P" + Math.abs(charge - pay);
-            row.change = Math.abs(charge - pay);
+            row.remark = "Cash " + row.amount + " - " + (Number(charge) - Number(pay) + Number(row.amount)).toFixed(2) + " = P" + Math.abs(charge - pay).toFixed(2) + " (Change)";
+            row.change = Math.abs(charge - pay).toFixed(2);
           }
           else
           {
