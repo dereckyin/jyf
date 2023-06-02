@@ -678,7 +678,7 @@ header( 'location:index.php' );
             font-weight: normal;
         }
 
-        #export_modal input[type=text], #export_modal input[type=date], #export_modal textarea, #export_modal select {
+        #export_modal input[type=text], #export_modal input[type=date], #export_modal input[type=number], #export_modal textarea, #export_modal select {
             border: 1px solid #999;
             border-radius: 5px;
             background-color: #fff;
@@ -687,16 +687,7 @@ header( 'location:index.php' );
         }
 
         #export_modal input.alone[type=checkbox] {
-            display: inline-block;
-            width: auto !important;
-        }
-
-        #export_modal input.alone[type=checkbox]::before {
-            content: "check_box_outline_blank";
-        }
-
-        #export_modal input.alone[type=checkbox]:checked::before {
-            content: "check_box";
+            height: 20px;
         }
 
     </style>
