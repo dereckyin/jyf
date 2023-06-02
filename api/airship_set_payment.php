@@ -253,12 +253,12 @@ $table = $section->addTable([
 // 1cm = 566.929134
 
 $table->addRow(606.614173);
-$table->addCell(8503.937010, ['valign' => \PhpOffice\PhpWord\SimpleType\VerticalJc::CENTER])->addText(htmlspecialchars("FELIIX INC."), array('name' => 'Bodoni MT Black', 'bold' => true, 'size' => 20, 'color' => 'black'), array('align' => 'left'));
-$table->addCell(2768, ['valign' => \PhpOffice\PhpWord\SimpleType\VerticalJc::CENTER])->addText(htmlspecialchars("PAYMENT RECEIPT"), array('name' => 'Bodoni MT', 'bold' => true, 'size' => 12, 'color' => 'black'), array('align' => 'center', 'valign' => 'center'));
+$table->addCell(7793.937010, ['valign' => \PhpOffice\PhpWord\SimpleType\VerticalJc::CENTER])->addText(htmlspecialchars("FELIIX INC."), array('name' => 'Bodoni MT Black', 'bold' => true, 'size' => 20, 'color' => 'black'), array('align' => 'left'));
+$table->addCell(3478, ['valign' => \PhpOffice\PhpWord\SimpleType\VerticalJc::CENTER])->addText(htmlspecialchars("AIRSHIP PAYMENT RECEIPT"), array('name' => 'Bodoni MT', 'bold' => true, 'size' => 12, 'color' => 'black'), array('align' => 'center', 'valign' => 'center'));
 
 
 $table->addRow(1326.614173);
-$cell = $table->addCell(8503.937010, array('space' => array('line' => 1000)));
+$cell = $table->addCell(7793.937010, array('space' => array('line' => 1000)));
 $TextRun = $cell->addTextRun();
 $TextRun->addText(htmlspecialchars('664 7'), array('name' => 'Calibri', 'size' => 10, 'color' => 'black'));
 $TextRun->addText(htmlspecialchars('th'), array('name' => 'Calibri', 'size' => 10, 'superScript' => true, 'color' => 'black'));
@@ -274,7 +274,7 @@ $TextRun->addText(htmlspecialchars("Office Hours: "), array('name' => 'Calibri',
 $TextRun->addText(htmlspecialchars("Mon-Fri 8:30am to 5:00pm Lunch Break: 12nn to 1pm"), array('name' => 'Calibri', 'size' => 10, 'color' => 'blue'));
 
 
-$cell = $table->addCell(2768, ['valign' => \PhpOffice\PhpWord\SimpleType\VerticalJc::CENTER]);
+$cell = $table->addCell(3478, ['valign' => \PhpOffice\PhpWord\SimpleType\VerticalJc::CENTER]);
 $cell->addText(htmlspecialchars("No.  " . $exp_dr), array('name' => 'Bodoni MT', 'size' => 20, 'color' => 'black'), array('align' => 'center', 'valign' => 'center'));
 
 $section->addTextBreak(1, array('name' => 'Calibri', 'size' => 12, 'color' => 'black'));
