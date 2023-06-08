@@ -605,7 +605,7 @@ class ReceiveRecord{
     }
 
 
-    function Query_Receive_Query_Simple($date_start, $date_end, $customer, $supplier, $description, $remark){
+    function Query_Receive_Query_Simple($date_start, $date_end, $customer, $supplier, $description, $remark, $sort){
 
         $merged_results = array();
 
@@ -694,8 +694,10 @@ class ReceiveRecord{
             $query = $query . " and ($cus_str) ";
         }
 
-
-        $query = $query . " order by r.date_receive ";
+        if($sort == 'd') 
+            $query = $query . " order by r.date_receive desc ";
+        else
+            $query = $query . " order by r.date_receive ";
 
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();

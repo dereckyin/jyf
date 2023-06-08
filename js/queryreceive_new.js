@@ -271,6 +271,7 @@ var app = new Vue({
 
             var description = window.document.getElementById('description').value;
             var remark = window.document.getElementById('remark').value;
+            var sort = window.document.getElementById('sort').value;
             
             var form_Data = new FormData();
 
@@ -281,6 +282,7 @@ var app = new Vue({
 
             form_Data.append('description', description)
             form_Data.append('remark', remark)
+            form_Data.append('sort', sort)
 
             const token = sessionStorage.getItem('token');
 
@@ -319,6 +321,7 @@ var app = new Vue({
 
             var description = window.document.getElementById('description').value;
             var remark = window.document.getElementById('remark').value;
+            var sort = window.document.getElementById('sort').value;
             
             var form_Data = new FormData();
 
@@ -329,6 +332,7 @@ var app = new Vue({
 
             form_Data.append('description', description)
             form_Data.append('remark', remark)
+            form_Data.append('sort', sort)
 
             const token = sessionStorage.getItem('token');
 
@@ -441,6 +445,7 @@ var app = new Vue({
             this.courier_pay = '';
             this.courier_money = '';
             this.remark = '';
+            this.sort = '';
             this.file = '';
             this.isEditing = false;
             this.record = {};

@@ -101,6 +101,16 @@ $(function(){
               <input type="text" class="goods_num" id="remark" maxlength="256" name="remark"  style="width: calc(80% - 40px);">
             </li>
           </ul>
+          <ul>
+			  <li class="header"></li>
+            <li>排序方式 <eng>Sort by</eng></li>
+            <li>
+              <select id="sort" style="width: calc(30% - 40px);">
+                <option value="" selected>Oldest On Top 舊的放上面</option>
+                <option value="d">Latest On Top 新的放上面</option>
+              </select>
+            </li>
+          </ul>
         </div>
 
         <div class="btnbox"><a class="btn" @click="query()" style="color:white;">查詢 <eng>Query</eng></a><a class="btn orange" @click="print()" style="color:white;">匯出 <eng>Print</eng></a></div>
