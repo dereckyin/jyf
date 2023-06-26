@@ -219,8 +219,12 @@ var app = new Vue({
     },
 
     category: function(val, oldval) {
-      if(val != 'Others'){
+      if(val != 'Others' && val != 'Cash Return' && val != 'GCash Return'){
         this.operation_type = '2';
+      }
+
+      if(val == 'Cash Return' || val == 'GCash Return'){
+        this.operation_type = '1';
       }
 
       if(val == 'Others'){

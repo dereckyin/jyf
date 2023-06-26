@@ -312,6 +312,7 @@ try {
                                         <option>Autosweep</option>
                                         <option>Easytrip</option>
                                         <option>Food</option>
+                                        <option>Receipt</option>
                                         <option>Others</option>
                                     </select>
                                 </td>
@@ -458,6 +459,7 @@ try {
                 <option>Autosweep</option>
                 <option>Easytrip</option>
                 <option>Food</option>
+                <option>Receipt</option>
                 <option>Others</option>
             </select>
 
