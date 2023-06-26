@@ -256,22 +256,28 @@ $table->addCell(2768, ['valign' => \PhpOffice\PhpWord\SimpleType\VerticalJc::CEN
 $table->addRow(1326.614173);
 $cell = $table->addCell(8503.937010, array('space' => array('line' => 1000)));
 $TextRun = $cell->addTextRun();
-$TextRun->addText(htmlspecialchars('664 7'), array('name' => 'Calibri', 'size' => 10, 'color' => 'black'));
-$TextRun->addText(htmlspecialchars('th'), array('name' => 'Calibri', 'size' => 10, 'superScript' => true, 'color' => 'black'));
-$TextRun->addText(htmlspecialchars(' street between 7'), array('name' => 'Calibri', 'size' => 10, 'color' => 'black'));
-$TextRun->addText(htmlspecialchars('th'), array('name' => 'Calibri', 'size' => 10, 'superScript' => true, 'color' => 'black'));
-$TextRun->addText(htmlspecialchars(' & 8'), array('name' => 'Calibri', 'size' => 10, 'color' => 'black'));
-$TextRun->addText(htmlspecialchars('th'), array('name' => 'Calibri', 'size' => 10, 'superScript' => true, 'color' => 'black'));
-$TextRun->addText(htmlspecialchars(' avenue'), array('name' => 'Calibri', 'size' => 10, 'color' => 'black'));
-$cell->addText(htmlspecialchars("Brgy. 103 Zone 9, Dist. II, Caloocan City"), array('name' => 'Calibri', 'size' => 10, 'color' => 'black'), array('align' => 'left', 'spaceBefore' => '56.692913'));
-$cell->addText(htmlspecialchars("Tel. Nos. 8334-1716 * 8363-5116"), array('name' => 'Calibri', 'size' => 10, 'color' => 'black'), array('align' => 'left', 'spaceBefore' => '56.692913'));
+$TextRun->addText(htmlspecialchars('664 7'), array('name' => 'Calibri', 'size' => 14, 'color' => 'black'));
+$TextRun->addText(htmlspecialchars('th'), array('name' => 'Calibri', 'size' => 14, 'superScript' => true, 'color' => 'black'));
+$TextRun->addText(htmlspecialchars(' street between 7'), array('name' => 'Calibri', 'size' => 14, 'color' => 'black'));
+$TextRun->addText(htmlspecialchars('th'), array('name' => 'Calibri', 'size' => 14, 'superScript' => true, 'color' => 'black'));
+$TextRun->addText(htmlspecialchars(' & 8'), array('name' => 'Calibri', 'size' => 14, 'color' => 'black'));
+$TextRun->addText(htmlspecialchars('th'), array('name' => 'Calibri', 'size' => 14, 'superScript' => true, 'color' => 'black'));
+$TextRun->addText(htmlspecialchars(' avenue'), array('name' => 'Calibri', 'size' => 14, 'color' => 'black'));
+$cell->addText(htmlspecialchars("Brgy. 103 Zone 9, Dist. II, Caloocan City"), array('name' => 'Calibri', 'size' => 14, 'color' => 'black'), array('align' => 'left', 'spaceBefore' => '56.692913'));
+$cell->addText(htmlspecialchars("Tel. Nos. 8334-1716 * 8363-5116"), array('name' => 'Calibri', 'size' => 14, 'color' => 'black'), array('align' => 'left', 'spaceBefore' => '56.692913'));
 $TextRun = $cell->addTextRun();
-$TextRun->addText(htmlspecialchars("Office Hours: "), array('name' => 'Calibri', 'size' => 10, 'color' => 'black'), array('align' => 'left', 'spaceBefore' => '56.692913'));
-$TextRun->addText(htmlspecialchars("Mon-Fri 8:30am to 5:00pm Lunch Break: 12nn to 1pm"), array('name' => 'Calibri', 'size' => 10, 'color' => 'blue'));
+$TextRun->addText(htmlspecialchars("Office Hours: "), array('name' => 'Calibri', 'size' => 14, 'color' => 'black'), array('align' => 'left', 'spaceBefore' => '56.692913'));
+$TextRun->addText(htmlspecialchars("Mon-Fri 8:30am to 5:00pm"), array('name' => 'Calibri', 'size' => 14, 'color' => 'blue'));
+$TextRun = $cell->addTextRun();
+$TextRun->addText(htmlspecialchars("Lunch Break: "), array('name' => 'Calibri', 'size' => 14, 'color' => 'black'), array('align' => 'left', 'spaceBefore' => '56.692913'));
+$TextRun->addText(htmlspecialchars("12nn to 1pm"), array('name' => 'Calibri', 'size' => 14, 'color' => 'blue'));
 
 
 $cell = $table->addCell(2768, ['valign' => \PhpOffice\PhpWord\SimpleType\VerticalJc::CENTER]);
-$cell->addText(htmlspecialchars("No.  " . $exp_dr), array('name' => 'Bodoni MT', 'size' => 20, 'color' => 'black'), array('align' => 'center', 'valign' => 'center'));
+$TextRun = $cell->addTextRun();
+$TextRun->addText(htmlspecialchars("No.  "), array('name' => 'Bodoni MT', 'size' => 20, 'color' => 'black'), array('align' => 'center', 'valign' => 'center'));
+$TextRun->addText(htmlspecialchars($exp_dr), array('name' => 'Bodoni MT', 'size' => 20, 'color' => 'red'), array('align' => 'center', 'valign' => 'center'));
+
 
 $section->addTextBreak(1, array('name' => 'Calibri', 'size' => 12, 'color' => 'black'));
 
