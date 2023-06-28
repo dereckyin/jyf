@@ -29,6 +29,7 @@ $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 $keyword = (isset($_GET['keyword']) ? $_GET['keyword'] : "");
 $search = (isset($_GET['search']) ? $_GET['search'] : "");
+$container = (isset($_GET['container']) ? $_GET['container'] : "");
 
 // if jwt is not empty
 if($jwt){
@@ -43,7 +44,7 @@ if($jwt){
                 FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
             WHERE  group_id <> 0 and pick_group.status = 0 and group_id IN (
             
-                select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
+                select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id left join loading  on loading.measure_num = measure_detail.measure_id
                 WHERE group_id <> 0 and pick_group.status = 0 ";
 
         if($keyword == 'N')
@@ -60,6 +61,9 @@ if($jwt){
 
         if($search != '')
             $query .= " AND (measure_detail.encode = '$search' ) ";
+        
+        if($container != '')
+            $query .= " AND (trim(loading.container_number) = '$container' ) ";
 
         $query .= ") order by group_id desc";
 
@@ -127,7 +131,7 @@ if($jwt){
         // get data without group_id 
         $query = "
             SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
-                FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
+                FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id left join loading  on loading.measure_num = measure_detail.measure_id
             WHERE  group_id = 0 and pick_group.status = 0 ";
 
         if($keyword == 'N')
@@ -144,6 +148,9 @@ if($jwt){
 
         if($search != '')
             $query .= " AND (measure_detail.encode = '$search' ) ";
+
+        if($container != '')
+            $query .= " AND (trim(loading.container_number) = '$container' ) ";
 
         $query .= " order by group_id desc";
 
