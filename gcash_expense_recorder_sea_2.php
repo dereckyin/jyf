@@ -309,17 +309,22 @@ try {
 
                                 <td style="text-align: left;">
                                     <select class="form-control" style="width:25vw;" v-model="category">
-                                        <option>Office Expenses</option>
-                                        <option>Prepaid Load</option>
-                                        <option>Water</option>
-                                        <option>Rice</option>
-                                        <option>Parking Fee</option>
+                                        <option>Cash Voucher</option>
+                                        <option>Cash Return</option>
                                         <option>Gas - Rush</option>
                                         <option>Gas - Avanza Grey</option>
                                         <option>Gas - Alphard</option>
                                         <option>Gas - Innova Grey</option>
                                         <option>Gas - Traviz 1</option>
                                         <option>Gas - Traviz 2</option>
+                                        <option>GCash Voucher</option>
+                                        <option>GCash Return</option>
+                                        <option>Office Expenses</option>
+                                        <option>Parking Fee</option>
+                                        <option>Prepaid Load</option>
+                                        <option>Receipt</option>
+                                        <option>Rice</option>
+                                        <option>Water</option>
                                         <option>Others</option>
                                     </select>
                                 </td>
@@ -463,17 +468,22 @@ try {
 
             <select style="width:10vw; margin-left:1vw;" v-model="select_category">
                 <option>All</option>
-                <option>Office Expenses</option>
-                <option>Prepaid Load</option>
-                <option>Water</option>
-                <option>Rice</option>
-                <option>Parking Fee</option>
+                <option>Cash Voucher</option>
+                <option>Cash Return</option>
                 <option>Gas - Rush</option>
                 <option>Gas - Avanza Grey</option>
                 <option>Gas - Alphard</option>
                 <option>Gas - Innova Grey</option>
                 <option>Gas - Traviz 1</option>
                 <option>Gas - Traviz 2</option>
+                <option>GCash Voucher</option>
+                <option>GCash Return</option>
+                <option>Office Expenses</option>
+                <option>Parking Fee</option>
+                <option>Prepaid Load</option>
+                <option>Receipt</option>
+                <option>Rice</option>
+                <option>Water</option>
                 <option>Others</option>
                 <option disabled="disabled">-------------------</option>
                 <option>Gas - L300 2</option>
