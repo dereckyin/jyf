@@ -267,7 +267,7 @@ var app = new Vue({
           "id" : 1,
           "title" : "空運費",
           "qty" : "",
-          "price": 141,
+          "price": 131,
         }, 
         this.details.push(obj);
   
