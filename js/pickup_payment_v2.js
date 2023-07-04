@@ -97,6 +97,9 @@ let mainState = {
     export_discription_org: "",
     exp_amount_org: "",
 
+    container_numbers: [],
+    container: "",
+
 };
 
 var app = new Vue({
@@ -1720,6 +1723,17 @@ var app = new Vue({
                 });
         },
 
+        getContanerNumbers: function() {
+          let _this = this;
+          axios.get('api/pickup_get_records_container_number.php?keyword=' + this.filter)
+                .then(function(response) {
+                    _this.container_numbers = response.data;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+
         getMeasures: function(search) {
             let _this = this;
 
@@ -1729,7 +1743,7 @@ var app = new Vue({
             if(this.filter == "D"  || this.filter == '')
             {
               
-              axios.get('api/pickup_get_records_page.php?keyword=' + this.filter + '&page=' + this.page + '&size=' + this.perPage.id + '&search=' + this.search)
+              axios.get('api/pickup_get_records_page.php?keyword=' + this.filter + '&page=' + this.page + '&size=' + this.perPage.id + '&search=' + this.search + '&container=' + this.container)
                 .then(function(response) {
                     console.log(response.data);
                     _this.receive_records = response.data;
@@ -1746,7 +1760,7 @@ var app = new Vue({
             }
             else
             {
-            axios.get('api/pickup_get_records.php?keyword=' + this.filter + '&page=' + this.page + '&size=12')
+            axios.get('api/pickup_get_records.php?keyword=' + this.filter + '&page=' + this.page + '&size=12' + '&container=' + this.container)
                 .then(function(response) {
                     console.log(response.data);
                     _this.receive_records = response.data;
@@ -1758,6 +1772,8 @@ var app = new Vue({
                     console.log(error);
                 });
               }
+
+            this.getContanerNumbers();
         },
 
         getMeasureRecords: function(keyword) {

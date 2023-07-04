@@ -414,9 +414,25 @@ header( 'location:index.php' );
                     <option value="D">List "Already Pickup And Paid" (僅列出已提貨且已付款)</option>
                     <option value="">List "All" (全部列出)</option>
                 </select>
+                
+                <div v-show="filter == 'F'">
+                    <!-- 在這個 select 裡面，需要放入在目前的 filter 的選項之下， filter 結果裡面有出現過的 Containers Number 都要放入 select 當作 option -->
+                    <select style="max-width: 230px; margin-right: 5px;" v-model="container">
+                        <option value=''>All Containers</option>
+                        <option :value='item.container_number' v-for='(item, i) in container_numbers'>{{ item.container_number }}</option>
+                    </select>
+
+                    <button @click="getMeasures('search')">Search</button>
+                </div>
 
                 <div v-show="filter == '' || filter == 'D'">
-                    <input type="text" v-model="search" placeholder="Only Search for DR" style="width: 200px; margin-right: 10px;">
+                    <!-- 在這個 select 裡面，需要放入在目前的 filter 的選項之下， filter 結果裡面有出現過的 Containers Number 都要放入 select 當作 option -->
+                    <select style="max-width: 230px; margin-right: 5px;"  v-model="container">
+                        <option value=''>All Containers</option>
+                        <option :value='item.container_number' v-for='(item, i) in container_numbers'>{{ item.container_number }}</option>
+                    </select>
+
+                    <input type="text" v-model="search" placeholder="Search for DR" style="width: 160px; margin-right: 10px;">
                     <button @click="getMeasures('search')">Search</button>
                 </div>
 
