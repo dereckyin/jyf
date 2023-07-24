@@ -24,6 +24,8 @@ var app = new Vue({
     price: "",
     free: "",
 
+    ratio : 0.0,
+
     items: [],
     payments:[],
 
@@ -183,6 +185,23 @@ var app = new Vue({
       this.refresh_kilo();
     },
 
+    ratio: function() {
+ 
+      if(this.kilo != ""){
+        if(this.currency == 'NTD')
+        {
+          this.total = this.kilo * this.ratio;
+        }
+          
+
+        if(this.currency == 'PHP')
+        {
+          this.total = this.kilo * this.ratio;
+        }
+          
+      }
+    },
+
     currency: function() {
       if(this.edit_once_currency == true)
       {
@@ -191,10 +210,20 @@ var app = new Vue({
       }
       if(this.kilo != ""){
         if(this.currency == 'NTD')
-          this.total = this.kilo * 395;
+        {
+          if(this.ratio == 0.0)
+            this.ratio = 395;
+          this.total = this.kilo * this.ratio;
+        }
+          
 
         if(this.currency == 'PHP')
-          this.total = this.kilo * 750;
+        {
+          if(this.ratio == 0.0)
+            this.ratio = 750;
+          this.total = this.kilo * this.ratio;
+        }
+          
       }
     },
 
@@ -406,11 +435,19 @@ var app = new Vue({
       //element.qty = this.kilo;
 
       if(this.currency == 'NTD')
-        this.total = this.kilo * 395;
+      {
+        if(this.ratio == 0.0)
+          this.ratio = 395;
+        this.total = this.kilo * this.ratio;
+      }
 
       if(this.currency == 'PHP')
-        this.total = this.kilo * 750;
-
+      {
+        if(this.ratio == 0.0)
+          this.ratio = 750;
+        this.total = this.kilo * this.ratio;
+      }
+        
       this.calculate_total();
       this.calculate_total_php();
     },
@@ -694,6 +731,7 @@ var app = new Vue({
       form_Data.append("flight_date", this.flight_date);
       form_Data.append("currency", this.currency);
       form_Data.append("total", this.total);
+      form_Data.append("ratio", this.ratio);
    
       form_Data.append("pay_date", this.pay_date);
       form_Data.append("pay_status", this.pay_status);
@@ -1001,6 +1039,7 @@ var app = new Vue({
       this.flight_date = row.flight_date;
       this.currency = row.currency;
       this.total = row.total;
+      this.ratio = row.ratio;
       this.total_php = row.total_php;
       this.pay_date = row.pay_date;
       this.pay_status = row.pay_status;
@@ -1402,10 +1441,13 @@ var app = new Vue({
 
       this.exp_quantity = "";
       this.exp_unit = "";
-      this.exp_discription = item.kilo + " kilo @ ₱ 750.00";
+      if(this.currency == 'NTD')
+        this.exp_discription = item.kilo + " kilo @ NT " + item.ratio;
+      if(this.currency == 'PHP')
+        this.exp_discription = item.kilo + " kilo @ P " + item.ratio;
 
       kilo_price = 0;
-      item.kilo !== "" ? kilo_price = item.kilo * 750 : kilo_price = 0;
+      item.kilo !== "" ? kilo_price = item.kilo * item.ratio : kilo_price = 0;
 
       this.exp_amount = '₱ ' + Number(kilo_price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -1515,9 +1557,12 @@ var app = new Vue({
         });
 
           if (result.value) {
-            this.exp_discription = item.kilo + " kilo @ ₱ 750.00";
+            if(this.currency == 'NTD')
+              this.exp_discription = item.kilo + " kilo @ NT " + item.ratio;
+            if(this.currency == 'PHP')
+              this.exp_discription = item.kilo + " kilo @ P " + item.ratio;
             kilo_price = 0;
-            item.kilo !== "" ? kilo_price = item.kilo * 750 : kilo_price = 0;
+            item.kilo !== "" ? kilo_price = item.kilo * item.ratio : kilo_price = 0;
             this.exp_amount = '₱ ' + Number(kilo_price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           } else {
             // swal("Cancelled", "Your imaginary file is safe :)", "error");

@@ -1205,3 +1205,7 @@ create table airship_records_export
 	`del_user` varchar(128) DEFAULT '',
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 20230724 
+ALTER TABLE airship_records
+ADD COLUMN `ratio` decimal(10, 2) default 0.0;

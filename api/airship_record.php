@@ -66,6 +66,7 @@ else
                         amount,
                         amount_php,
                         total,
+                        ratio,
                         total_php,
                         pay_date,
                         pay_status,
@@ -190,6 +191,7 @@ if($date_type == "p")
             $flight = $row['flight'];
             $flight_date = $row['flight_date'];
             $currency = $row['currency'];
+            $ratio = $row['ratio'];
             $total = $row['total'];
             $total_php = $row['total_php'];
             $amount_php = $row['amount_php'];
@@ -221,6 +223,7 @@ if($date_type == "p")
                 "flight" => $flight,
                 "flight_date" => $flight_date,
                 "currency" => $currency,
+                "ratio" => $ratio,
                 "total" => $total,
                 "total_php" => $total_php,
                 "pay_date" => $pay_date,

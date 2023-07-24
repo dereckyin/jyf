@@ -68,6 +68,7 @@ $flight = (isset($_POST['flight']) ?  $_POST['flight'] : '');
 $flight_date = (isset($_POST['flight_date']) ?  $_POST['flight_date'] : '');
 $currency = (isset($_POST['currency']) ?  $_POST['currency'] : '');
 $total = (isset($_POST['total']) ?  $_POST['total'] : '');
+$ratio = (isset($_POST['ratio']) ? $_POST['ratio'] : 0.0);
 $total_php = (isset($_POST['total_php']) ?  $_POST['total_php'] : 0);
 $pay_date = (isset($_POST['pay_date']) ?  $_POST['pay_date'] : '');
 $pay_status = (isset($_POST['pay_status']) ?  $_POST['pay_status'] : '');
@@ -86,10 +87,13 @@ $details_php = (isset($_POST['details_php']) ?  $_POST['details_php'] : '[]');
 $details_php_array = json_decode($details_php, true);
 
 
+
 $id = $id == '' ? 0 : $id;
 
 $total = $total == 'null' ? '' : $total;
 $kilo = $kilo == 'null' ? '' : $kilo;
+$ratio = $ratio == '' ? 0.0 : $ratio;
+$ratio = $ratio == 'null' ? 0.0 : $ratio;
 
 try {
 
@@ -133,6 +137,7 @@ if ($total_php != ''  && !is_null($total_php)) {
         `receiver` = :receiver, 
         `remark` = :remark,
         `amount` = :amount,
+        `ratio` = :ratio,
         `amount_php` = :amount_php, ";
       
 
@@ -177,6 +182,7 @@ if ($total_php != ''  && !is_null($total_php)) {
         $stmt->bindParam(':date_arrive', $date_arrive);
         $stmt->bindParam(':receiver', $receiver);
         $stmt->bindParam(':remark', $remark);
+        $stmt->bindParam(':ratio', $ratio);
         $stmt->bindParam(':amount', $amount);
         $stmt->bindParam(':amount_php', $amount_php);
         
@@ -364,6 +370,7 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
             `receiver` = :receiver, 
             `remark` = :remark,
             `amount` = :amount,
+            `ratio` = :ratio,
             `amount_php` = :amount_php, ";
 
         $query .= "
@@ -411,6 +418,7 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
         $stmt->bindParam(':receiver', $receiver);
         $stmt->bindParam(':remark', $remark);
         $stmt->bindParam(':amount', $amount);
+        $stmt->bindParam(':ratio', $ratio);
         $stmt->bindParam(':amount_php', $amount_php);
 
         $stmt->bindParam(':mdf_user', $user_name);
