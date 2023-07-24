@@ -211,7 +211,7 @@ var app = new Vue({
       if(this.kilo != ""){
         if(this.currency == 'NTD')
         {
-          if(this.ratio == 0.0)
+          //if(this.ratio == 0.0)
             this.ratio = 395;
           this.total = this.kilo * this.ratio;
         }
@@ -219,7 +219,7 @@ var app = new Vue({
 
         if(this.currency == 'PHP')
         {
-          if(this.ratio == 0.0)
+          //if(this.ratio == 0.0)
             this.ratio = 750;
           this.total = this.kilo * this.ratio;
         }
