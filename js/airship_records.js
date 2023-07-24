@@ -1449,7 +1449,12 @@ var app = new Vue({
       kilo_price = 0;
       item.kilo !== "" ? kilo_price = item.kilo * item.ratio : kilo_price = 0;
 
-      this.exp_amount = '₱ ' + Number(kilo_price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      
+
+      if(item.currency == 'NTD')
+        this.exp_amount = 'NT ' + Number(kilo_price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      if(item.currency == 'PHP')
+        this.exp_amount = '₱ ' + Number(kilo_price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
       this.exp_amount_org = this.exp_amount;
 
@@ -1563,7 +1568,13 @@ var app = new Vue({
               this.exp_discription = item.kilo + " kilo @ P " + item.ratio;
             kilo_price = 0;
             item.kilo !== "" ? kilo_price = item.kilo * item.ratio : kilo_price = 0;
-            this.exp_amount = '₱ ' + Number(kilo_price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            //this.exp_amount = '₱ ' + Number(kilo_price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            if(item.currency == 'NTD')
+              this.exp_amount = 'NT ' + Number(kilo_price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            if(item.currency == 'PHP')
+              this.exp_amount = '₱ ' + Number(kilo_price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
           } else {
             // swal("Cancelled", "Your imaginary file is safe :)", "error");
           }
