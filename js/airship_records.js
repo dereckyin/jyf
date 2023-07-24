@@ -1441,9 +1441,9 @@ var app = new Vue({
 
       this.exp_quantity = "";
       this.exp_unit = "";
-      if(this.currency == 'NTD')
+      if(item.currency == 'NTD')
         this.exp_discription = item.kilo + " kilo @ NT " + item.ratio;
-      if(this.currency == 'PHP')
+      if(item.currency == 'PHP')
         this.exp_discription = item.kilo + " kilo @ P " + item.ratio;
 
       kilo_price = 0;
@@ -1557,9 +1557,9 @@ var app = new Vue({
         });
 
           if (result.value) {
-            if(this.currency == 'NTD')
+            if(item.currency == 'NTD')
               this.exp_discription = item.kilo + " kilo @ NT " + item.ratio;
-            if(this.currency == 'PHP')
+            if(item.currency == 'PHP')
               this.exp_discription = item.kilo + " kilo @ P " + item.ratio;
             kilo_price = 0;
             item.kilo !== "" ? kilo_price = item.kilo * item.ratio : kilo_price = 0;
