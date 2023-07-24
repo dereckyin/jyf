@@ -1506,8 +1506,8 @@ var app = new Vue({
         this.exp_sold_to = this.export_record[0].exp_sold_to;
         this.exp_quantity = this.export_record[0].exp_quantity;
         this.exp_unit = this.export_record[0].exp_unit;
-        this.exp_discription = this.export_record[0].exp_discription;
-        this.exp_amount = this.export_record[0].exp_amount;
+        //this.exp_discription = this.export_record[0].exp_discription;
+        //this.exp_amount = this.export_record[0].exp_amount;
 
         this.assist_by = this.export_record[0].assist_by;
 
