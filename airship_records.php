@@ -884,7 +884,7 @@ header( 'location:index.php' );
                                         <option value="PHP">菲幣(PHP)</option>
                                     </select>
 
-                                    <input type="number" class="form-control" v-model="ratio">
+                                    <input type="number" class="form-control" v-model="ratio" style="width: 190px; margin-right: 20px;">
                                     <input type="number" class="form-control" v-model="total">
                                 </li>
                             </ul>
