@@ -217,6 +217,19 @@ var app = new Vue({
     handler(val, oldval) {
       console.log("value changed~");
     },
+
+    category: function(val, oldVal) {
+      if(val == "Cash on Hand" || val == "Cash Return")
+      {
+        this.operation_type = "1";
+      }
+
+      if(val == "Cash Voucher" || val == "Receipt")
+      {
+        this.operation_type = "2";
+      }
+    },
+
     deep: true,
   },
   component: {},
@@ -272,7 +285,7 @@ var app = new Vue({
           }
 
           if (
-            this.category != "Cash Expenses" 
+            this.category == "Cash on Hand" || this.category == "All"
           ) {
             this.sub_category = "";
           }
@@ -605,7 +618,7 @@ var app = new Vue({
       }
 
       if (
-        this.category != "Cash Expenses"
+        this.category == "Cash on Hand" || this.category == "All"
       ) {
         this.sub_category = "";
       }
@@ -1098,7 +1111,7 @@ var app = new Vue({
       _this.accountThreeCashOut = 0.0;
       _this.accountThreeBalance = 0.0;
       if (
-        _this.select_category != "Cash Expenses" 
+        _this.select_category == "Cash on Hand" || _this.select_category == "All"
       ) {
         _this.select_sub_category = "";
       }

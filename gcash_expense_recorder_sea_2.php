@@ -309,27 +309,37 @@ try {
 
                                 <td style="text-align: left;">
                                     <select class="form-control" style="width:25vw;" v-model="category">
-                                        <option>Cash Voucher</option>
-                                        <option>Cash Return</option>
-                                        <option>Gas - Rush</option>
-                                        <option>Gas - Avanza Grey</option>
-                                        <option>Gas - Alphard</option>
-                                        <option>Gas - Innova Grey</option>
-                                        <option>Gas - Traviz 1</option>
-                                        <option>Gas - Traviz 2</option>
                                         <option>GCash Voucher</option>
                                         <option>GCash Return</option>
-                                        <option>Office Expenses</option>
-                                        <option>Parking Fee</option>
-                                        <option>Prepaid Load</option>
                                         <option>Receipt</option>
-                                        <option>Rice</option>
-                                        <option>Water</option>
-                                        <option>Others</option>
                                     </select>
                                 </td>
 
                             </tr>
+
+                            <tr v-if="category != ''">
+                            <td>
+                                <label>Sub Category</label>
+                            </td>
+
+                            <td style="text-align: left;">
+                                <select class="form-control" style="width:25vw;"v-model="sub_category">
+                                    <option>Gas Rush</option>
+                                    <option>Gas - Avanza Grey</option>
+                                    <option>Gas - Alphard</option>
+                                    <option>Gas - Travis 1</option>
+                                    <option>Gas - Travis 2</option>
+                                    <option>Office Expenses</option>
+                                    <option>Parking Fee</option>
+                                    <option>Prepaid Load</option>
+                                    <option>Rice</option>
+                                    <option>Food</option>
+                                    <option>Water</option>
+                                    <option>Others</option>
+                                </select>
+                            </td>
+
+                        </tr>
 
                             <tr>
                                 <td>
@@ -468,25 +478,26 @@ try {
 
             <select style="width:10vw; margin-left:1vw;" v-model="select_category">
                 <option>All</option>
-                <option>Cash Voucher</option>
-                <option>Cash Return</option>
-                <option>Gas - Rush</option>
-                <option>Gas - Avanza Grey</option>
-                <option>Gas - Alphard</option>
-                <option>Gas - Innova Grey</option>
-                <option>Gas - Traviz 1</option>
-                <option>Gas - Traviz 2</option>
                 <option>GCash Voucher</option>
                 <option>GCash Return</option>
-                <option>Office Expenses</option>
-                <option>Parking Fee</option>
-                <option>Prepaid Load</option>
                 <option>Receipt</option>
-                <option>Rice</option>
-                <option>Water</option>
-                <option>Others</option>
-                <option disabled="disabled">-------------------</option>
-                <option>Gas - L300 2</option>
+            </select>
+
+            <select style="width:10vw; margin-left:1vw;" v-if="select_category != 'All'"
+                v-model="select_sub_category">
+                <option value=''>All</option>
+                    <option>Gas Rush</option>
+                    <option>Gas - Avanza Grey</option>
+                    <option>Gas - Alphard</option>
+                    <option>Gas - Travis 1</option>
+                    <option>Gas - Travis 2</option>
+                    <option>Office Expenses</option>
+                    <option>Parking Fee</option>
+                    <option>Prepaid Load</option>
+                    <option>Rice</option>
+                    <option>Food</option>
+                    <option>Water</option>
+                    <option>Others</option>
             </select>
 
             <input type="text" v-model="keyword" style="width:15vw; margin-left:1vw;"

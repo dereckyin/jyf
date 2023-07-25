@@ -188,6 +188,9 @@ else
         if(isset($_GET['category']) && $category == '')
             $category = $_GET['category'];
 
+            if(isset($_GET['sub_category']) && $sub_category == '')
+            $sub_category = $_GET['sub_category'];
+
             if($start_date != "") {
                 $start_date = date("Y-m-d", strtotime($start_date));
             }
@@ -211,7 +214,7 @@ else
             }
             
             if($sub_category!='') {
-                $query = $query . " and sub_category <= '$sub_category' ";
+                $query = $query . " and sub_category = '$sub_category' ";
             }
             $query = $query . " order by paid_date ";
             $stmt = $db->prepare( $query );
