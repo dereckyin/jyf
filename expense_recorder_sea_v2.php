@@ -588,6 +588,7 @@ try {
 
         <select style="width:10vw; margin-left:1vw;" v-if="select_category != 'Cash on Hand' && select_category != 'All'"
                 v-model="select_sub_category">
+                <option value=''>All</option>
                     <option>Gas Rush</option>
                     <option>Gas - Avanza Grey</option>
                     <option>Gas - Alphard</option>
