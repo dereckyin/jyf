@@ -219,17 +219,14 @@ var app = new Vue({
     },
 
     category: function(val, oldval) {
-      if(val != 'Others' && val != 'Cash Return' && val != 'GCash Return'){
-        this.operation_type = '2';
-      }
-
-      if(val == 'Cash Return' || val == 'GCash Return'){
+      if(val == 'GCash Return'){
         this.operation_type = '1';
       }
 
-      if(val == 'Others'){
-        this.operation_type = '';
+      if(val == 'GCash Voucher' || val == 'Receipt'){
+        this.operation_type = '2';
       }
+
     },
     
     deep: true,
@@ -286,11 +283,11 @@ var app = new Vue({
             this.cash_out = this.amount;
           }
 
-          if (
-            this.category != "Cash Expenses" 
-          ) {
-            this.sub_category = "";
-          }
+          // if (
+          //   this.category != "Cash Expenses" 
+          // ) {
+          //   this.sub_category = "";
+          // }
 
           form_Data.append("jwt", token);
           form_Data.append("account", this.account);
@@ -619,11 +616,11 @@ var app = new Vue({
         this.cash_in = 0;
       }
 
-      if (
-        this.category != "Cash Expenses"
-      ) {
-        this.sub_category = "";
-      }
+      // if (
+      //   this.category != "Cash Expenses"
+      // ) {
+      //   this.sub_category = "";
+      // }
 
       form_Data.append("jwt", token);
       form_Data.append("id", id);
@@ -1112,11 +1109,11 @@ var app = new Vue({
       _this.accountThreeCashIn = 0.0;
       _this.accountThreeCashOut = 0.0;
       _this.accountThreeBalance = 0.0;
-      if (
-        _this.select_category != "Cash Expenses" 
-      ) {
-        _this.select_sub_category = "";
-      }
+      // if (
+      //   _this.select_category != "Cash Expenses" 
+      // ) {
+      //   _this.select_sub_category = "";
+      // }
 
       if (_this.category != "Projects") {
         _this.project_name = "";
