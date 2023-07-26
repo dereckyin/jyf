@@ -518,7 +518,7 @@ header( 'location:index.php' );
                                 <input type="checkbox" name="record_id" true-value="1" class="alone" value=""
                                        v-model="row.is_checked">
                             </td>
-                            <td>
+                            <td :style="[item.taiwan_pay == '1' ? {'background-color': 'pink'} : '']">
                                 <div v-for='(rs, k) in item.record'>{{rs.pick_date}}</div>
                                 <?php
                 if($phili_read == "0")
