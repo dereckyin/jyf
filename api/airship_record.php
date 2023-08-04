@@ -81,7 +81,7 @@ else
         $query_cnt = "SELECT count(*) as cnt from airship_records ss 
                         where 1=1  ";
 
-if($date_type == "" || $date_type == "s")
+if($date_type == "")
 {
     if($space == "s")
     {
@@ -102,7 +102,7 @@ if($date_type == "" || $date_type == "s")
     }
 }
 
-if($date_type == "r")
+if($date_type == "r"  || $date_type == "s" )
 {
     if($space == "s")
     {
