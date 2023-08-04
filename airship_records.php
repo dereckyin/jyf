@@ -404,15 +404,15 @@ header( 'location:index.php' );
             min-width: 170px;
         }
 
-        #panelchecked thead tr > th:nth-of-type(4), #panelchecked thead tr > th:nth-of-type(5), #panelchecked thead tr > th:nth-of-type(17) {
+        #panelchecked thead tr > th:nth-of-type(5), #panelchecked thead tr > th:nth-of-type(6), #panelchecked thead tr > th:nth-of-type(18) {
             min-width: 260px;
         }
 
-        #panelchecked thead tr th:nth-of-type(3), #panelchecked thead tr th:nth-of-type(8) {
+        #panelchecked thead tr th:nth-of-type(4), #panelchecked thead tr th:nth-of-type(9) {
             min-width: 200px;
         }
 
-        #panelchecked thead tr th:nth-of-type(1), #panelchecked thead tr th:nth-last-of-type(1) {
+        #panelchecked thead tr th:nth-of-type(1), #panelchecked thead tr th:nth-last-of-type(1), #panelchecked thead tr th:nth-of-type(2) {
             min-width: 100px;
         }
 
@@ -1157,6 +1157,7 @@ header( 'location:index.php' );
                     <option value="">抵達客人住址時間 Time Delivery Arrived</option>
                     <option value="r">收件日期 Date Received</option>
                     <option value="p">付款日期 Date Paid</option>
+                    <option value="s">編號 #</option>
                 </select>
                     <input type="date" v-model="start_date">&nbsp; to &nbsp;<input type="date" v-model="end_date">
 
@@ -1215,6 +1216,11 @@ header( 'location:index.php' );
                         <th class="text-nowrap">
                             <cht>功能</cht>
                             Actions
+                        </th>
+
+                        <th class="text-nowrap">
+                            <cht>編號</cht>
+                            #
                         </th>
 
                         <th class="text-nowrap">
@@ -1330,6 +1336,8 @@ header( 'location:index.php' );
                                             ?>
                         </td>
 
+                        <td>{{item.sn}}</td>
+
                         <td>{{ item.date_receive }}</td>
 
                         <td>{{ item.mode == 'exp' ? '快遞' : '空運' }}</td>
@@ -1413,7 +1421,7 @@ header( 'location:index.php' );
                     <tfoot class="thead-light" id="flag_total">
 
                     <tr>
-                        <th colspan="7" style="vertical-align: middle;">Total</th>
+                        <th colspan="8" style="vertical-align: middle;">Total</th>
                         <th style="text-align: right; vertical-align: middle;">
                             
                             {{ rec_kilo !== undefined ?

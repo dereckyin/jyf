@@ -1209,3 +1209,7 @@ create table airship_records_export
 -- 20230724 
 ALTER TABLE airship_records
 ADD COLUMN `ratio` decimal(10, 2) default 0.0;
+
+-- 20230804
+ALTER TABLE airship_records
+ADD COLUMN `sn` int default 0;

@@ -139,7 +139,9 @@ if ($total_php != ''  && !is_null($total_php)) {
         `amount` = :amount,
         `ratio` = :ratio,
         `amount_php` = :amount_php, ";
-      
+        
+        // sn
+        $query .= " `sn` = 0, ";
 
         $query .= "
         `status` = 1,
@@ -209,6 +211,44 @@ if ($total_php != ''  && !is_null($total_php)) {
             echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
             die();
         }
+
+        if($date_receive != "")
+        {
+            // update sn by last id
+            $query = "UPDATE airship_records
+            SET
+            `sn` = (SELECT IFNULL(count(*), 0)  FROM airship_records WHERE substring(date_receive, 1, 7) = :date_receive) 
+            WHERE
+            `id` = :id";
+
+            // date
+            $date_re = substr($date_receive, 0, 7);
+            // prepare the query
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':id', $last_id);
+            $stmt->bindParam(':date_receive', $date_re);
+            try {
+                // execute the query, also check if query was successful
+                if ($stmt->execute()) {
+
+                } else {
+                    $arr = $stmt->errorInfo();
+                    error_log($arr[2]);
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+            }
+            
+        }
+       
 
         for ($i = 0; $i < count($details_array); $i++) {
             $query = "INSERT INTO airship_records_detail
