@@ -74,6 +74,7 @@ else
                         date_arrive,
                         receiver,
                         remark,
+                        sn,
                         ss.`status` from airship_records ss 
                         where 1=1  ";
 
@@ -101,7 +102,7 @@ if($date_type == "")
     }
 }
 
-if($date_type == "r")
+if($date_type == "r"  || $date_type == "s" )
 {
     if($space == "s")
     {
@@ -142,6 +143,9 @@ if($date_type == "p")
         }
     }
 }
+
+
+
         if (!empty($_GET['page'])) {
             $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
             if (false === $page) {
@@ -149,8 +153,18 @@ if($date_type == "p")
             }
         }
 
-        // order 
-        $query = $query . " order by ss.date_receive  ";
+
+        if($date_type == "s")
+        {
+            // order by
+            $query = $query . " order by ss.sn, ss.date_receive  ";
+        }
+        else
+        {
+            // order by
+            $query = $query . " order by  ss.date_receive  ";
+        }
+        
 
         if (!empty($_GET['size'])) {
             $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);
@@ -203,6 +217,7 @@ if($date_type == "p")
             $receiver = $row['receiver'];
             $remark = $row['remark'];
             $status = $row['status'];
+            $sn = $row['sn'];
 
             $items = GetSalesDetail($id, $db, 'n');
             $items_php = GetSalesDetail($id, $db, 'p');
@@ -237,6 +252,7 @@ if($date_type == "p")
                 "status" => $status,
                 "items" => $items,
                 "items_php" => $items_php,
+                "sn" => $sn,
                 "cnt" => $cnt,
 
                 "export" => $export,
