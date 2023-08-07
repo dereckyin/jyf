@@ -50,7 +50,7 @@ include_once 'config/database.php';
 
 $database = new Database();
 $db = $database->getConnection();
-$db->beginTransaction();
+//$db->beginTransaction();
 $conf = new Conf();
 
 $jwt = (isset($_POST['jwt']) ?  $_POST['jwt'] : null);
@@ -199,34 +199,60 @@ if ($total_php != ''  && !is_null($total_php)) {
             } else {
                 $arr = $stmt->errorInfo();
                 error_log($arr[2]);
-                $db->rollback();
+ //               $db->rollback();
                 http_response_code(501);
                 echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
                 die();
             }
         } catch (Exception $e) {
             error_log($e->getMessage());
-            $db->rollback();
+ //           $db->rollback();
             http_response_code(501);
             echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
             die();
         }
 
+ //       $db->commit();
+
         if($date_receive != "")
         {
+            $sn = 0;
+            // get count by date
+            $query = "SELECT IFNULL(count(*), 0) as sn FROM airship_records WHERE substring(date_receive, 1, 7) = :date_receive";
+            // prepare the query
+            $date_rec = substr($date_receive, 0, 7);
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':date_receive', $date_rec);
+            try {
+                // execute the query, also check if query was successful
+                if ($stmt->execute()) {
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $sn = $row['sn'];
+                } else {
+                    $arr = $stmt->errorInfo();
+                    error_log($arr[2]);
+    //                   $db->rollback();
+                    http_response_code(501);
+                    echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+            }
             // update sn by last id
             $query = "UPDATE airship_records
             SET
-            `sn` = (SELECT IFNULL(count(*), 0)  FROM airship_records WHERE substring(date_receive, 1, 7) = :date_receive) 
+            `sn` = :sn
             WHERE
             `id` = :id";
 
-            // date
-            $date_re = substr($date_receive, 0, 7);
             // prepare the query
             $stmt = $db->prepare($query);
             $stmt->bindParam(':id', $last_id);
-            $stmt->bindParam(':date_receive', $date_re);
+            $stmt->bindParam(':sn', $sn);
             try {
                 // execute the query, also check if query was successful
                 if ($stmt->execute()) {
@@ -234,14 +260,14 @@ if ($total_php != ''  && !is_null($total_php)) {
                 } else {
                     $arr = $stmt->errorInfo();
                     error_log($arr[2]);
-                    $db->rollback();
+ //                   $db->rollback();
                     http_response_code(501);
                     echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
                     die();
                 }
             } catch (Exception $e) {
                 error_log($e->getMessage());
-                $db->rollback();
+  //              $db->rollback();
                 http_response_code(501);
                 echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
@@ -297,14 +323,14 @@ if ($details_array[$i]['price'] != ''  && !is_null($details_array[$i]['price']))
                 if (!$stmt->execute()) {
                     $arr = $stmt->errorInfo();
                     error_log($arr[2]);
-                    $db->rollback();
+ //                   $db->rollback();
                     http_response_code(501);
                     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
                     die();
                 }
             } catch (Exception $e) {
                 error_log($e->getMessage());
-                $db->rollback();
+//                $db->rollback();
                 http_response_code(501);
                 echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
@@ -352,19 +378,21 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
                 if (!$stmt->execute()) {
                     $arr = $stmt->errorInfo();
                     error_log($arr[2]);
-                    $db->rollback();
+  //                  $db->rollback();
                     http_response_code(501);
                     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
                     die();
                 }
             } catch (Exception $e) {
                 error_log($e->getMessage());
-                $db->rollback();
+//                $db->rollback();
                 http_response_code(501);
                 echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
             }
         }
+
+  //      $db->commit();
 
     }
     else {
@@ -472,14 +500,14 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
             } else {
                 $arr = $stmt->errorInfo();
                 error_log($arr[2]);
-                $db->rollback();
+ //               $db->rollback();
                 http_response_code(501);
                 echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
                 die();
             }
         } catch (Exception $e) {
             error_log($e->getMessage());
-            $db->rollback();
+//            $db->rollback();
             http_response_code(501);
             echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
             die();
@@ -501,14 +529,14 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
         if (!$stmt->execute()) {
             $arr = $stmt->errorInfo();
             error_log($arr[2]);
-            $db->rollback();
+ //           $db->rollback();
             http_response_code(501);
             echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
             die();
         }
         } catch (Exception $e) {
             error_log($e->getMessage());
-            $db->rollback();
+ //           $db->rollback();
             http_response_code(501);
             echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
             die();
@@ -557,14 +585,14 @@ if ($details_array[$i]['price'] != ''  && !is_null($details_array[$i]['price']))
                 if (!$stmt->execute()) {
                     $arr = $stmt->errorInfo();
                     error_log($arr[2]);
-                    $db->rollback();
+ //                   $db->rollback();
                     http_response_code(501);
                     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
                     die();
                 }
             } catch (Exception $e) {
                 error_log($e->getMessage());
-                $db->rollback();
+ //               $db->rollback();
                 http_response_code(501);
                 echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
@@ -612,29 +640,31 @@ if ($details_php_array[$i]['price'] != ''  && !is_null($details_php_array[$i]['p
                 if (!$stmt->execute()) {
                     $arr = $stmt->errorInfo();
                     error_log($arr[2]);
-                    $db->rollback();
+//                    $db->rollback();
                     http_response_code(501);
                     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
                     die();
                 }
             } catch (Exception $e) {
                 error_log($e->getMessage());
-                $db->rollback();
+ //               $db->rollback();
                 http_response_code(501);
                 echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
             }
         }
+
+ //       $db->commit();
     }
 
-    $db->commit();
+    
 
     http_response_code(200);
     echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa")));
 } catch (Exception $e) {
 
     error_log($e->getMessage());
-    $db->rollback();
+ //   $db->rollback();
     http_response_code(501);
     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
     die();
