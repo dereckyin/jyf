@@ -327,9 +327,10 @@ try {
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;" @change="onChange($event)" v-model="category">
                                     <option>Cash Expenses</option>
-                                    <option>Cash Expenses Petty</option>
                                     <option>Cash on Hand </option>
                                     <option>Change for Customer</option>
+                                    <option>GCash Cash In</option>
+                                    <option>GCash Cash Out</option>
                                     <option>Helper Fees</option>
                                     <option>Other</option>
                                     <option>Petty</option>
@@ -589,15 +590,17 @@ try {
         <select style="width:10vw; margin-left:1vw;" v-model="select_category">
             <option>All</option>
             <option>Cash Expenses</option>
-            <option>Cash Expenses Petty</option>
             <option>Cash on Hand </option>
             <option>Change for Customer</option>
+            <option>GCash Cash In</option>
+            <option>GCash Cash Out</option>
             <option>Helper Fees</option>
             <option>Other</option>
             <option>Petty</option>
             <option>Prepaid Load</option>
             <option>Salary Petty</option>
             <option disabled>___________________</option>
+            <option>Cash Expenses Petty</option>
             <option>Receipt</option>
         </select>
 
