@@ -226,10 +226,10 @@ var app = new Vue({
       console.log(event.target.value)
       let category = event.target.value;
 
-      if (category == "Cash on Hand" || category == "Petty") 
+      if (category == "Cash on Hand" || category == "Petty" || category == "GCash Cash In") 
         this.operation_type = "1";  // Cash In
 
-      if (category == "Cash Expenses" || category == "Cash Expenses Petty" || category == "Prepaid Load" || category == "Change for Customer" || category == "Helper Fees" || category == "Other" || category == "Prepaid Load" || category == "Salary Petty") 
+      if (category == "Cash Expenses" || category == "Cash Expenses Petty" || category == "Prepaid Load" || category == "Change for Customer" || category == "Helper Fees" || category == "Other" || category == "Prepaid Load" || category == "Salary Petty" || category == "GCash Cash Out") 
         this.operation_type = "2";  // Cash Out
 
   },
