@@ -970,7 +970,7 @@ try {
             <div class="modal-body">
 
                 <!-- 指派車輛管理者填寫的表單 -->
-                <div id="approval_section" style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 3px solid #dee2e6;">
+                <div id="approval_section" v-if="is_admin" style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 3px solid #dee2e6;">
 
                     <div class="row">
                         <div class="col-12" style="text-align: center;">
@@ -1097,7 +1097,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="text" class="form-control" style="width:90%;" id="???">
+                        <input type="text" class="form-control" style="width:90%;" id="schedule_Name" v-model="schedule_Name">
 
                     </div>
                 </div>
@@ -1113,7 +1113,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="date" class="form-control" style="width:40%;" id="sc_date">
+                        <input type="date" class="form-control" style="width:40%;" id="date_use" v-model="date_use">
 
                     </div>
                 </div>
@@ -1129,8 +1129,8 @@ try {
 
                     <div class="col-10">
 
-                        <Select class="form-control" style="width:40%;" id="???">
-                            <option value="0">Choose One</option>
+                        <Select class="form-control" style="width:40%;" id="car_use" v-model="car_use">
+                            <option value="">Choose One</option>
                             <option value="Alphard">Alphard</option>
                             <option value="Avanza">Avanza</option>
                             <option value="Travis 1">Travis 1</option>
@@ -1152,8 +1152,8 @@ try {
 
                     <div class="col-10">
 
-                        <input type="text" class="form-control" style="width:90%;" id="???">
-                        <input type="text" class="form-control" style="display: none;" id="???">
+                        <input type="text" class="form-control" style="width:90%;" id="driver" v-model="driver">
+ 
 
                     </div>
                 </div>
@@ -1169,8 +1169,8 @@ try {
 
                     <div class="col-10">
 
-                        <input type="text" class="form-control" style="width:90%;" id="???">
-                        <input type="text" class="form-control" style="display: none;" id="???">
+                        <input type="text" class="form-control" style="width:90%;" id="helper" v-model="helper">
+ 
 
                     </div>
                 </div>
@@ -1186,7 +1186,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="time" class="form-control" style="width:40%; padding-right: 0; text-align: center;" id="???">
+                        <input type="time" class="form-control" style="width:40%; padding-right: 0; text-align: center;" id="time_out" v-model="time_out">
 
                     </div>
 
@@ -1203,7 +1203,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="time" class="form-control" style="width:40%; padding-right: 0; text-align: center;" id="???">
+                        <input type="time" class="form-control" style="width:40%; padding-right: 0; text-align: center;" id="time_in" v-model="time_in">
 
                     </div>
 
@@ -1220,7 +1220,7 @@ try {
                     <div class="col-10">
 
                         <textarea class="form-control" style="width:90%; resize:none; overflow:auto;" rows="5"
-                                      onkeyup="autogrow(this);" id="???"></textarea>
+                                      onkeyup="autogrow(this);" id="notes" v-model="notes"></textarea>
 
                     </div>
 
@@ -1235,11 +1235,11 @@ try {
                         <table style="width:100%;" id="agenda_table">
 
                             <tr>
-                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="sc_tb_location"></td>
-                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="sc_tb_agenda"></td>
-                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="sc_tb_appointtime"></td>
-                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="sc_tb_endtime"></td>
-                                <td style="padding-bottom: 10pt;"><i class="fas fa-plus-circle" id="add_agenda"></i></td>
+                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_schedule" v-model="item_schedule"></td>
+                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_company" v-model="item_company"></td>
+                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_address" v-model="item_address"></td>
+                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_purpose" v-model="item_purpose"></td>
+                                <td style="padding-bottom: 10pt;"><i class="fas fa-plus-circle" id="add_agenda" @click="add_item"></i></td>
 
                             </tr>
 
@@ -1250,6 +1250,26 @@ try {
                                 <th class="table__item" style="width:40%;">Address</th>
                                 <th class="table__item" style="width:20%;">Purpose</th>
                                 <th class="table__item" style="width:15%;">Actions</th>
+                            </tr>
+
+                            <tr v-for='(it, index) in items'>
+                                <td>
+                                    {{ it.schedule }}
+                                </td>
+                                <td>
+                                    {{ it.company }}
+                                </td>
+                                <td>
+                                    {{ it.address }}
+                                </td>
+                                <td>
+                                    {{ it.purpose }}
+                                </td>
+                                <td>
+                                    <i class="fas fa-arrow-alt-circle-up" @click="set_up(index, it.id)"></i>
+                                    <i class="fas fa-arrow-alt-circle-down" @click="set_down(index, it.id)"></i>
+                                    <i class="fas fa-trash-alt" @click="del(it.id)"></i>
+                                </td>
                             </tr>
 
                         </table>
@@ -1277,7 +1297,7 @@ try {
 
                     <button class="btn btn-danger" id="btn_delete">Delete</button>
 
-                    <button class="btn btn-primary" id="btn_save">Save</button>
+                    <button class="btn btn-primary" id="btn_save" @click="service_save()">Save</button>
 
                     <button class="btn btn-primary" style="width: 200px" id="btn_???">Save and Send Request</button>
 

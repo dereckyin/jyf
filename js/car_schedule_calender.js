@@ -1,37 +1,181 @@
 Vue.component('v-select', VueSelect.VueSelect)
 
-var install = new Vue({
-    el: '#install', 
+
+var service = new Vue({
+    el: '#serviceModalScrollable',
     data: {
-        installer:[],
-    },created() {
-    
-        //this.getLeadMan();
+        is_admin:false,
+
+        schedule_Name: "",
+        date_use: "",
+        car_use: "",
+        driver: "",
+        helper: "",
+        time_out: "",
+        time_in: "",
+        notes: "",
+
+        item_schedule: "",
+        item_company: "",
+        item_address: "",
+        item_purpose: "",
+        items: [],
+        editing : false,
+        sn: 0,
     },
+
+    created() {
+    },
+
     methods: {
-        getLeadMan() {
-  
+        set_up: function(fromIndex, eid) {
+            var toIndex = fromIndex - 1;
+
+            if (toIndex < 0) toIndex = 0;
+
+            var element = this.items.find(({ id }) => id === eid);
+            this.items.splice(fromIndex, 1);
+            this.items.splice(toIndex, 0, element);
+        },
+
+        set_down: function(fromIndex, eid) {
+            var toIndex = fromIndex + 1;
+
+            if (toIndex > this.items.length - 1) toIndex = this.items.length - 1;
+
+            var element = this.items.find(({ id }) => id === eid);
+            this.items.splice(fromIndex, 1);
+            this.items.splice(toIndex, 0, element);
+        },
+
+        edit: function(eid) {
+
+            var element = this.items.find(({ id }) => id === eid);
+
+            this.item_schedule = element.schedule;
+            this.item_company = element.company;
+            this.item_address = element.address;
+            this.item_purpose = element.purpose;
+            this.editing = true;
+        },
+
+        del: function(eid) {
+            var index = this.items.findIndex(({ id }) => id === eid);
+            if (index > -1) {
+                this.items.splice(index, 1);
+            }
+        },
+
+        add_item: function() {
+            var ad = {
+                id: ++this.sn,
+                schedule: this.item_schedule,
+                company: this.item_company,
+                address: this.item_address,
+                purpose: this.item_purpose,
+            };
+            this.items.push(ad);
+
+            this.item_schedule = "";
+            this.item_company = "";
+            this.item_address = "";
+            this.item_purpose = "";
+        },
+
+        service_save: function() {
+            if(this.schedule_Name == "" || this.date_use == "")
+            {
+                Swal.fire({
+                    text: "Columns of Schedule Name and Date User cannot be blank.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                });
+                return;
+            }
+
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
             let _this = this;
-      
-            let token = localStorage.getItem('accessToken');
-      
-            axios
-              .get('api/project02_user_leadman', { headers: { "Authorization": `Bearer ${token}` } })
-              .then(
-                (res) => {
-                    var _users = res.data;
-                    _this.installer = Object.keys(_users).map(function(k){return _users[k].username})
-                    
-                  
-                },
-                (err) => {
-                  alert(err.response);
-                },
-              )
-              .finally(() => {
-      
-              });
-          }, }});
+            form_Data.append("jwt", token);
+            form_Data.append("schedule_Name", this.schedule_Name);
+            form_Data.append("date_use", this.date_use);
+            form_Data.append("car_use", this.car_use);
+            form_Data.append("driver", this.driver);
+            form_Data.append("helper", this.helper);
+            form_Data.append("time_out", this.time_out);
+            form_Data.append("time_in", this.time_in);
+            form_Data.append("notes", this.notes);
+            form_Data.append("items", JSON.stringify(this.items));
+
+            axios({
+                    method: "post",
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    url: "api/car_calender_main_save.php",
+                    data: form_Data,
+                })
+                .then(function (response) {
+                    if (response.data !== "") 
+                    {
+                        Swal.fire({
+                            // text: JSON.stringify("Files size over 200MB, Please don't upload file too many at one time."),
+                            text: JSON.stringify(response.data),
+                            icon: "warning",
+                            confirmButtonText: "OK",
+                        });
+                        return;
+                    }
+
+
+                    if (
+                        this.time_out != "" &&
+                        this.time_in != "" &&
+                        this.time_in >= this.time_out
+                    ) {
+                        calendar.addEvent({
+                            title: this.schedule_Name,
+                            start: this.date_use + "T" + this.time_out,
+                            end: this.date_use + "T" + this.time_in,
+                            allDay: 0,
+                        });
+                    }
+
+                    $("#serviceModalScrollable").modal("toggle");
+
+                    this.clear_service();
+
+                    reload();
+                })
+                .catch(function (error) {
+                    //handle error
+                    Swal.fire({
+                        text: error.data,
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                    });
+                });
+        },
+
+        clear_service: function() {
+            this.schedule_Name = "";
+            this.date_use = "";
+            this.car_use = "";
+            this.driver = "";
+            this.helper = "";
+            this.time_out = "";
+            this.time_in = "";
+            this.notes = "";
+
+            this.item_schedule = "";
+            this.item_company = "";
+            this.item_address = "";
+            this.item_purpose = "";
+            this.items = [];
+            this.id = 0;
+        },
+    },
+});
 
 var app = new Vue({
     el: '#sc_relevant', 
@@ -56,6 +200,8 @@ var app = new Vue({
         users_org: [],
 
         schedule_confirm: false,
+
+        
     },
     created() {
 
@@ -2706,207 +2852,207 @@ $(document).on("click", "#btn_unconfirm", async function () {
 
 });
 
-$(document).on("click", "#btn_save", function () {
-    var selected = [];
-    $("[name=sc_Installer_needed]:checkbox:checked").each(function () {
-        selected.push($(this).val());
-    });
+// $(document).on("click", "#btn_save", function () {
+//     var selected = [];
+//     $("[name=sc_Installer_needed]:checkbox:checked").each(function () {
+//         selected.push($(this).val());
+//     });
 
-    var files = "";
-    if (app.filename != "") {
-        app.filename.forEach((element) => {
-            var file_str =
-                "<input type='checkbox' class='custom-control-input' id='" + element + "' checked name='file_elements' value='" + element + "'>" + 
-                "<label class='custom-control-label' style='justify-content: flex-start;' for='" + element + "'>" +
-                "<a href='https://storage.cloud.google.com/calendarfile/" +
-                element +
-                "' target='_blank'>" +
-                element +
-                "</a></label>";
-            // files += file_str;
-            if(element.trim() !== '')
-            {
-                files += "<div class='custom-control custom-checkbox' style='padding-top: 1%;'>" + file_str + "</div>";
-            }
-        });
+//     var files = "";
+//     if (app.filename != "") {
+//         app.filename.forEach((element) => {
+//             var file_str =
+//                 "<input type='checkbox' class='custom-control-input' id='" + element + "' checked name='file_elements' value='" + element + "'>" + 
+//                 "<label class='custom-control-label' style='justify-content: flex-start;' for='" + element + "'>" +
+//                 "<a href='https://storage.cloud.google.com/calendarfile/" +
+//                 element +
+//                 "' target='_blank'>" +
+//                 element +
+//                 "</a></label>";
+//             // files += file_str;
+//             if(element.trim() !== '')
+//             {
+//                 files += "<div class='custom-control custom-checkbox' style='padding-top: 1%;'>" + file_str + "</div>";
+//             }
+//         });
 
-        var file_elements = document.getElementsByName("file_elements")
-        for(let i = 0;i < file_elements.length; i++)
-        {
-            if(file_elements[i].checked)
-            {
-                var file_str =
-                "<input type='checkbox' class='custom-control-input' id='" + file_elements[i].value + "' checked name='file_elements' value='" + file_elements[i].value + "'>" + 
-                "<label class='custom-control-label' style='justify-content: flex-start;' for='" + file_elements[i].value + "'>" +
-                "<a href='https://storage.cloud.google.com/calendarfile/" +
-                file_elements[i].value +
-                "' target='_blank'>" +
-                file_elements[i].value +
-                "</a></label>";
-                // files += file_str;
-                if(file_elements[i].value.trim() !== '')
-                {
-                    files += "<div class='custom-control custom-checkbox' style='padding-top: 1%;'>" + file_str + "</div>";
-                }
-            }
+//         var file_elements = document.getElementsByName("file_elements")
+//         for(let i = 0;i < file_elements.length; i++)
+//         {
+//             if(file_elements[i].checked)
+//             {
+//                 var file_str =
+//                 "<input type='checkbox' class='custom-control-input' id='" + file_elements[i].value + "' checked name='file_elements' value='" + file_elements[i].value + "'>" + 
+//                 "<label class='custom-control-label' style='justify-content: flex-start;' for='" + file_elements[i].value + "'>" +
+//                 "<a href='https://storage.cloud.google.com/calendarfile/" +
+//                 file_elements[i].value +
+//                 "' target='_blank'>" +
+//                 file_elements[i].value +
+//                 "</a></label>";
+//                 // files += file_str;
+//                 if(file_elements[i].value.trim() !== '')
+//                 {
+//                     files += "<div class='custom-control custom-checkbox' style='padding-top: 1%;'>" + file_str + "</div>";
+//                 }
+//             }
                 
-        }
+//         }
 
-    } else if (document.getElementById("sc_product_files_hide").value != "") {
-        var file_elements = document.getElementsByName("file_elements")
-        for(let i = 0;i < file_elements.length; i++)
-        {
-            if(file_elements[i].checked)
-            {
-                var file_str =
-                "<input type='checkbox' class='custom-control-input' id='" + file_elements[i].value + "' checked name='file_elements' value='" + file_elements[i].value + "'>" + 
-                "<label class='custom-control-label' style='justify-content: flex-start;' for='" + file_elements[i].value + "'>" +
-                "<a href='https://storage.cloud.google.com/calendarfile/" +
-                file_elements[i].value +
-                "' target='_blank'>" +
-                file_elements[i].value +
-                "</a></label>";
-                // files += file_str;
-                if(file_elements[i].value.trim() !== '')
-                {
-                    files += "<div class='custom-control custom-checkbox' style='padding-top: 1%;'>" + file_str + "</div>";
-                }
-            }
+//     } else if (document.getElementById("sc_product_files_hide").value != "") {
+//         var file_elements = document.getElementsByName("file_elements")
+//         for(let i = 0;i < file_elements.length; i++)
+//         {
+//             if(file_elements[i].checked)
+//             {
+//                 var file_str =
+//                 "<input type='checkbox' class='custom-control-input' id='" + file_elements[i].value + "' checked name='file_elements' value='" + file_elements[i].value + "'>" + 
+//                 "<label class='custom-control-label' style='justify-content: flex-start;' for='" + file_elements[i].value + "'>" +
+//                 "<a href='https://storage.cloud.google.com/calendarfile/" +
+//                 file_elements[i].value +
+//                 "' target='_blank'>" +
+//                 file_elements[i].value +
+//                 "</a></label>";
+//                 // files += file_str;
+//                 if(file_elements[i].value.trim() !== '')
+//                 {
+//                     files += "<div class='custom-control custom-checkbox' style='padding-top: 1%;'>" + file_str + "</div>";
+//                 }
+//             }
                 
-        }
-    }
+//         }
+//     }
 
-    files = "<div class='custom-control custom-checkbox' style='padding-top: 1%;'>" + files + "</div>";
+//     files = "<div class='custom-control custom-checkbox' style='padding-top: 1%;'>" + files + "</div>";
 
-    var time = new Date();
-    time =
-        time.getFullYear() +
-        "-" +
-        time.getMonth() +
-        "-" +
-        time.getDate() +
-        " " +
-        time.getHours() +
-        ":" +
-        time.getMinutes() +
-        ":" +
-        time.getSeconds();
+//     var time = new Date();
+//     time =
+//         time.getFullYear() +
+//         "-" +
+//         time.getMonth() +
+//         "-" +
+//         time.getDate() +
+//         " " +
+//         time.getHours() +
+//         ":" +
+//         time.getMinutes() +
+//         ":" +
+//         time.getSeconds();
 
     
 
-    var agenda_object = document
-        .getElementById("agenda_table")
-        .getElementsByTagName("tr");
-    var agenda_content = [];
-    var appointtime = "";
-    var endtime = "";
-    for (i = 2; i < agenda_object.length; i++) {
-        appointtime = "";
-        endtime = "";
-        if (
-            agenda_object[i].getElementsByTagName("input")[2].value != "" &&
-            agenda_object[i].getElementsByTagName("input")[2].value != null
-        ) {
-            appointtime =
-                document.getElementById("sc_date").value +
-                " " +
-                agenda_object[i].getElementsByTagName("input")[2].value;
-        }
-        if (
-            agenda_object[i].getElementsByTagName("input")[3].value != "" &&
-            agenda_object[i].getElementsByTagName("input")[3].value != null
-        ) {
-            endtime =
-                document.getElementById("sc_date").value +
-                " " +
-                agenda_object[i].getElementsByTagName("input")[3].value;
-        }
-        agenda_content.push({
-            location: agenda_object[i].getElementsByTagName("input")[0].value,
-            agenda: agenda_object[i].getElementsByTagName("input")[1].value,
-            appointtime: appointtime,
-            endtime: endtime,
-            sort: i,
-        });
-    }
+//     var agenda_object = document
+//         .getElementById("agenda_table")
+//         .getElementsByTagName("tr");
+//     var agenda_content = [];
+//     var appointtime = "";
+//     var endtime = "";
+//     for (i = 2; i < agenda_object.length; i++) {
+//         appointtime = "";
+//         endtime = "";
+//         if (
+//             agenda_object[i].getElementsByTagName("input")[2].value != "" &&
+//             agenda_object[i].getElementsByTagName("input")[2].value != null
+//         ) {
+//             appointtime =
+//                 document.getElementById("sc_date").value +
+//                 " " +
+//                 agenda_object[i].getElementsByTagName("input")[2].value;
+//         }
+//         if (
+//             agenda_object[i].getElementsByTagName("input")[3].value != "" &&
+//             agenda_object[i].getElementsByTagName("input")[3].value != null
+//         ) {
+//             endtime =
+//                 document.getElementById("sc_date").value +
+//                 " " +
+//                 agenda_object[i].getElementsByTagName("input")[3].value;
+//         }
+//         agenda_content.push({
+//             location: agenda_object[i].getElementsByTagName("input")[0].value,
+//             agenda: agenda_object[i].getElementsByTagName("input")[1].value,
+//             appointtime: appointtime,
+//             endtime: endtime,
+//             sort: i,
+//         });
+//     }
 
-    var Color_Other = "";
-    var Color = "";
-    if(document.getElementById("sc_color_other").checked)
-        Color_Other = document.getElementById("sc_color").value;
-    else
-        Color_Other = "";
+//     var Color_Other = "";
+//     var Color = "";
+//     if(document.getElementById("sc_color_other").checked)
+//         Color_Other = document.getElementById("sc_color").value;
+//     else
+//         Color_Other = "";
 
-    var colors = document.getElementsByName("sc_color");
-    for(var i=0; i<colors.length; i++)
-    {
-        if(colors[i].checked)
-            Color = colors[i].value;
-    }
+//     var colors = document.getElementsByName("sc_color");
+//     for(var i=0; i<colors.length; i++)
+//     {
+//         if(colors[i].checked)
+//             Color = colors[i].value;
+//     }
 
-    var sc_content = {
-        Date: document.getElementById("sc_date").value,
-        Title: document.getElementById("sc_project").value,
-        Color: Color,
-        Color_Other: Color_Other,
-        Allday: document.getElementById("sc_time").checked,
-        Starttime: document.getElementById("sc_date").value +
-            " " +
-            document.getElementById("sc_stime").value,
-        Endtime: document.getElementById("sc_date").value +
-            " " +
-            document.getElementById("sc_etime").value,
-        Project: document.getElementById("sc_project").value,
-        Sales_Executive: document.getElementById("sc_sales").value,
-        Project_in_charge: document.getElementById("sc_incharge").value,
-        Project_relevant: Object.keys(app.attendee).map(function(k){return app.attendee[k]}).join(","),
-        Agenda: agenda_content,
-        Installer_needed: selected.join(),
-        Installer_needed_other: document.getElementById("sc_Installer_needed_other").value,
-        Location_Things_to_Bring: document.getElementById("sc_location1").value,
-        Things_to_Bring: document.getElementById("sc_things").value,
-        Location_Products_to_Bring: document.getElementById("sc_location2").value,
-        Products_to_Bring: document.getElementById("sc_products").value,
-        File_name: document.getElementById("sc_product_files_hide").value,
-        Service: document.getElementById("sc_service").value,
-        Driver: document.getElementById("sc_driver1").value,
-        Driver_Other: document.getElementById("sc_driver_other").value,
-        Back_up_Driver: document.getElementById("sc_driver2").value,
-        Back_up_Driver_Other: document.getElementById("sc_backup_driver_other").value,
-        Photoshoot_Request: $("input[name=sc_Photoshoot_request]:checked").val(),
-        Notes: document.getElementById("sc_notes").value,
-        Lock: document.getElementById("lock").value,
-        Confirm: document.getElementById("confirm").value,
+//     var sc_content = {
+//         Date: document.getElementById("sc_date").value,
+//         Title: document.getElementById("sc_project").value,
+//         Color: Color,
+//         Color_Other: Color_Other,
+//         Allday: document.getElementById("sc_time").checked,
+//         Starttime: document.getElementById("sc_date").value +
+//             " " +
+//             document.getElementById("sc_stime").value,
+//         Endtime: document.getElementById("sc_date").value +
+//             " " +
+//             document.getElementById("sc_etime").value,
+//         Project: document.getElementById("sc_project").value,
+//         Sales_Executive: document.getElementById("sc_sales").value,
+//         Project_in_charge: document.getElementById("sc_incharge").value,
+//         Project_relevant: Object.keys(app.attendee).map(function(k){return app.attendee[k]}).join(","),
+//         Agenda: agenda_content,
+//         Installer_needed: selected.join(),
+//         Installer_needed_other: document.getElementById("sc_Installer_needed_other").value,
+//         Location_Things_to_Bring: document.getElementById("sc_location1").value,
+//         Things_to_Bring: document.getElementById("sc_things").value,
+//         Location_Products_to_Bring: document.getElementById("sc_location2").value,
+//         Products_to_Bring: document.getElementById("sc_products").value,
+//         File_name: document.getElementById("sc_product_files_hide").value,
+//         Service: document.getElementById("sc_service").value,
+//         Driver: document.getElementById("sc_driver1").value,
+//         Driver_Other: document.getElementById("sc_driver_other").value,
+//         Back_up_Driver: document.getElementById("sc_driver2").value,
+//         Back_up_Driver_Other: document.getElementById("sc_backup_driver_other").value,
+//         Photoshoot_Request: $("input[name=sc_Photoshoot_request]:checked").val(),
+//         Notes: document.getElementById("sc_notes").value,
+//         Lock: document.getElementById("lock").value,
+//         Confirm: document.getElementById("confirm").value,
 
-        Related_project_id: $("#sc_related_project_id").val(),
-        Related_stage_id: $("#sc_related_stage_id").val(),
-    };
+//         Related_project_id: $("#sc_related_project_id").val(),
+//         Related_stage_id: $("#sc_related_stage_id").val(),
+//     };
 
-    if (sc_content.Allday) {
-         sc_content.Starttime =
-            document.getElementById("sc_date").value + " 00:00:00";
-        sc_content.Endtime = document.getElementById("sc_date").value + " 23:59:59";
-    } else {
-        if (
-            sc_content.Starttime != "" &&
-            sc_content.Endtime != "" &&
-            sc_content.Endtime >= sc_content.Starttime
-        ) {
-            console.log('valid1');
-        } else {
-            sc_content.Allday = eventObj.extendedProps.description.Allday;
-            sc_content.Starttime = eventObj.extendedProps.description.Starttime;
-            sc_content.Endtime = eventObj.extendedProps.description.Endtime;
+//     if (sc_content.Allday) {
+//          sc_content.Starttime =
+//             document.getElementById("sc_date").value + " 00:00:00";
+//         sc_content.Endtime = document.getElementById("sc_date").value + " 23:59:59";
+//     } else {
+//         if (
+//             sc_content.Starttime != "" &&
+//             sc_content.Endtime != "" &&
+//             sc_content.Endtime >= sc_content.Starttime
+//         ) {
+//             console.log('valid1');
+//         } else {
+//             sc_content.Allday = eventObj.extendedProps.description.Allday;
+//             sc_content.Starttime = eventObj.extendedProps.description.Starttime;
+//             sc_content.Endtime = eventObj.extendedProps.description.Endtime;
 
-            if (eventObj.extendedProps.description.Allday) {
-                } else {
-                    console.log('valid2');
-            }
-        }
-    }
+//             if (eventObj.extendedProps.description.Allday) {
+//                 } else {
+//                     console.log('valid2');
+//             }
+//         }
+//     }
 
-    app.updateMain2(agenda_content, sc_content, files, time);
-});
+//     app.updateMain2(agenda_content, sc_content, files, time);
+// });
 
 $("input[id='sc_time']").change(function () {
     if (this.checked) {
