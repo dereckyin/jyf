@@ -57,7 +57,31 @@ var service = new Vue({
 
     methods: {
         getAccess: function() {
-            this.access1 = false;
+            let _this = this;
+    
+    
+            axios({
+                method: 'get',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                url: 'api/car_calender_access_control.php',
+                data: {}
+            })
+            .then(function(response) {
+                //handle success
+                _this.access1 = response.data.car_access1;
+                _this.access2 = response.data.car_access2;
+
+            })
+            .catch(function(response) {
+                //handle error
+                Swal.fire({
+                text: JSON.stringify(response),
+                icon: 'error',
+                confirmButtonText: 'OK'
+                })
+            });
         },
 
         getUserName: function() {
