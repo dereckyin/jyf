@@ -1097,7 +1097,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="text" class="form-control" style="width:90%;" id="schedule_Name" v-model="schedule_Name" :disabled="creator != username">
+                        <input type="text" class="form-control" style="width:90%;" id="schedule_Name" v-model="schedule_Name" :disabled="!showing">
 
                     </div>
                 </div>
@@ -1113,7 +1113,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="date" class="form-control" style="width:40%;" id="date_use" v-model="date_use" :disabled="creator != username">
+                        <input type="date" class="form-control" style="width:40%;" id="date_use" v-model="date_use" :disabled="!showing">
 
                     </div>
                 </div>
@@ -1129,7 +1129,7 @@ try {
 
                     <div class="col-10">
 
-                        <Select class="form-control" style="width:40%;" id="car_use" v-model="car_use" :disabled="creator != username">
+                        <Select class="form-control" style="width:40%;" id="car_use" v-model="car_use" :disabled="!showing">
                             <option value="">Choose One</option>
                             <option value="Alphard">Alphard</option>
                             <option value="Avanza">Avanza</option>
@@ -1152,7 +1152,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="text" class="form-control" style="width:90%;" id="driver" v-model="driver" :disabled="creator != username">
+                        <input type="text" class="form-control" style="width:90%;" id="driver" v-model="driver" :disabled="!showing">
  
 
                     </div>
@@ -1169,7 +1169,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="text" class="form-control" style="width:90%;" id="helper" v-model="helper" :disabled="creator != username">
+                        <input type="text" class="form-control" style="width:90%;" id="helper" v-model="helper" :disabled="!showing">
  
 
                     </div>
@@ -1186,7 +1186,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="time" class="form-control" style="width:40%; padding-right: 0; text-align: center;" id="time_out" v-model="time_out" :disabled="creator != username">
+                        <input type="time" class="form-control" style="width:40%; padding-right: 0; text-align: center;" id="time_out" v-model="time_out" :disabled="!showing">
 
                     </div>
 
@@ -1203,7 +1203,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="time" class="form-control" style="width:40%; padding-right: 0; text-align: center;" id="time_in" v-model="time_in" :disabled="creator != username">
+                        <input type="time" class="form-control" style="width:40%; padding-right: 0; text-align: center;" id="time_in" v-model="time_in" :disabled="!showing">
 
                     </div>
 
@@ -1220,7 +1220,7 @@ try {
                     <div class="col-10">
 
                         <textarea class="form-control" style="width:90%; resize:none; overflow:auto;" rows="5"
-                                      onkeyup="autogrow(this);" id="notes" v-model="notes"  :disabled="creator != username"></textarea>
+                                      onkeyup="autogrow(this);" id="notes" v-model="notes"  :disabled="!showing"></textarea>
 
                     </div>
 
@@ -1235,11 +1235,11 @@ try {
                         <table style="width:100%;" id="agenda_table">
 
                             <tr>
-                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_schedule" v-model="item_schedule" :disabled="creator != username"></td>
-                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_company" v-model="item_company" :disabled="creator != username"></td>
-                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_address" v-model="item_address" :disabled="creator != username"></td>
-                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_purpose" v-model="item_purpose" :disabled="creator != username"></td>
-                                <td style="padding-bottom: 10pt;"><i class="fas fa-plus-circle" id="add_agenda" @click="!!(creator == username) && add_item"></i></td>
+                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_schedule" v-model="item_schedule" :disabled="!showing"></td>
+                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_company" v-model="item_company" :disabled="!showing"></td>
+                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_address" v-model="item_address" :disabled="!showing"></td>
+                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_purpose" v-model="item_purpose" :disabled="!showing"></td>
+                                <td style="padding-bottom: 10pt;"><i class="fas fa-check-circle" v-if="editing" @click="save_item()"></i><i class="fas fa-plus-circle" v-if="!editing" id="add_agenda" @click="add_item"></i></td>
 
                             </tr>
 
@@ -1266,9 +1266,10 @@ try {
                                     {{ it.purpose }}
                                 </td>
                                 <td>
-                                    <i class="fas fa-arrow-alt-circle-up" @click="!!(creator == username) && set_up(index, it.id)"></i>
-                                    <i class="fas fa-arrow-alt-circle-down" @click="!!(creator == username) && set_down(index, it.id)"></i>
-                                    <i class="fas fa-trash-alt" @click="!!(creator == username) && del(it.id)"></i>
+                                    <i class="fas fa-arrow-alt-circle-up" @click="set_up(index, it.id)"></i>
+                                    <i class="fas fa-arrow-alt-circle-down" @click="set_down(index, it.id)"></i>
+                                    <i class="fas fa-edit" @click="edit(it.id)"></i>
+                                    <i class="fas fa-trash-alt" @click="del(it.id)"></i>
                                 </td>
                             </tr>
 

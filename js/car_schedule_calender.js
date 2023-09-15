@@ -25,20 +25,71 @@ var service = new Vue({
         items: [],
         editing : false,
         sn: 0,
-
-        
+        e_id: 0,
 
         access1 : false,
         access2 : false,
 
-        username: "dennis",
+        showing : true,
+
+        username: "",
+
     },
 
     created() {
+        this.getAccess();
+        this.getUserName();
+    },
+
+    watch: {
+        id: function (val) {
+            if(this.id == 0) {
+                this.showing = true;
+                return;
+            }
+
+            if (this.creator != this.username) {
+                this.showing = false;
+                return;
+            }
+        }
     },
 
     methods: {
+        getAccess: function() {
+            this.access1 = false;
+        },
+
+        getUserName: function() {
+            var form_Data = new FormData();
+            let _this = this;
+    
+            axios({
+                method: 'post',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                url: 'api/on_duty_get_myname.php',
+                data: form_Data
+            })
+            .then(function(response) {
+                //handle success
+                _this.username = response.data.username;
+    
+            })
+            .catch(function(response) {
+                //handle error
+                Swal.fire({
+                text: JSON.stringify(response),
+                icon: 'error',
+                confirmButtonText: 'OK'
+                })
+            });
+        },
+
         set_up: function(fromIndex, eid) {
+            if(this.showing == false) return;
+            
             var toIndex = fromIndex - 1;
 
             if (toIndex < 0) toIndex = 0;
@@ -49,6 +100,8 @@ var service = new Vue({
         },
 
         set_down: function(fromIndex, eid) {
+            if(this.showing == false) return;
+
             var toIndex = fromIndex + 1;
 
             if (toIndex > this.items.length - 1) toIndex = this.items.length - 1;
@@ -59,6 +112,7 @@ var service = new Vue({
         },
 
         edit: function(eid) {
+            if(this.showing == false) return;
 
             var element = this.items.find(({ id }) => id === eid);
 
@@ -67,16 +121,41 @@ var service = new Vue({
             this.item_address = element.address;
             this.item_purpose = element.purpose;
             this.editing = true;
+            this.e_id = eid;
         },
 
         del: function(eid) {
+            if(this.showing == false) return;
+
             var index = this.items.findIndex(({ id }) => id === eid);
             if (index > -1) {
                 this.items.splice(index, 1);
             }
         },
 
+        save_item: function() {
+            if(this.showing == false) return;
+
+            var element = this.items.find(({ id }) => id === this.e_id);
+
+            element.schedule = this.item_schedule;
+            element.company = this.item_company;
+            element.address = this.item_address;
+            element.purpose = this.item_purpose;
+
+            this.item_schedule = "";
+            this.item_company = "";
+            this.item_address = "";
+            this.item_purpose = "";
+
+            this.editing = false;
+            this.e_id = 0;
+
+        },
+
         add_item: function() {
+            if(this.showing == false) return;
+
             var ad = {
                 id: ++this.sn,
                 schedule: this.item_schedule,
@@ -90,6 +169,7 @@ var service = new Vue({
             this.item_company = "";
             this.item_address = "";
             this.item_purpose = "";
+
         },
 
         service_save: function(is_send) {
@@ -185,9 +265,9 @@ var service = new Vue({
                                 id: sid,
                                 title: _this.schedule_Name,
                                 Date: moment(_this.date_use).format("YYYY-MM-DD"),
-                                start: _this.date_use + "T" + _this.time_out,
-                                end: _this.date_use + "T" + _this.time_in,
-                                allDay: false,
+                                //start: _this.date_use + "T" + _this.time_out,
+                                //end: _this.date_use + "T" + _this.time_in,
+                                allDay: true,
                                 description: {
                                     icon: symbol,
                                     schedule_Name: UnescapeHTML(_this.schedule_Name),
@@ -212,10 +292,10 @@ var service = new Vue({
                         
                         var event = calendar.getEventById(_this.id);
                         event.title = _this.schedule_Name;
-                        
+                        event.allDay = true;
                         event.Date = moment(_this.date_use).format("YYYY-MM-DD");
-                        event.start = _this.date_use + "T" + _this.time_out;
-                        event.end = _this.date_use + "T" + _this.time_in;
+                        event.start = _this.date_use;
+                        event.end = _this.date_use;
 
                         event.extendedProps.description.schedule_Name = _this.schedule_Name;
                         event.extendedProps.icon = symbol,
@@ -1035,16 +1115,14 @@ var app = new Vue({
                             id: response.data[i].id,
                             title: response.data[i].schedule_Name,
                             Date: moment(response.data[i].date_use).format("YYYY-MM-DD"),
-                            start: moment(response.data[i].time_out).format(
-                                "YYYY-MM-DDTHH:mm"
-                            ), // will be parsed
-                            end: moment(response.data[i].time_in).format("YYYY-MM-DDTHH:mm"),
+                            start: moment(response.data[i].date_use).format("YYYY-MM-DD"), // will be parsed
+                            end: moment(response.data[i].date_use).format("YYYY-MM-DD"),
                             color: "black",
                             // color: ((response.data[i].color_other !== '') ? response.data[i].color_other : response.data[i].color),
                             // color_other: response.data[i].color_other,
                             backgroundColor: backgroundColor,
                             borderColor: backgroundColor,
-                            allDay: isAll,
+                            allDay: true,
                             description: {
                                 icon: symbol,
                                 schedule_Name: UnescapeHTML(response.data[i].schedule_Name),
