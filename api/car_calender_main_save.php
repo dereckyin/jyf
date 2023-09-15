@@ -10,7 +10,7 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$jwt = (isset($_POST['jwt']) ?  $_POST['jwt'] : '');
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 $id = (isset($_POST['id']) ?  $_POST['id'] : 0);
 $schedule_Name = (isset($_POST['schedule_Name']) ?  $_POST['schedule_Name'] : '');

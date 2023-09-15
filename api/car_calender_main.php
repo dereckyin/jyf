@@ -10,7 +10,7 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$jwt = (isset($_POST['jwt']) ?  $_POST['jwt'] : '');
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 $sdate = (isset($_POST['sdate']) ?  $_POST['sdate'] : '');
 $edate = (isset($_POST['edate']) ?  $_POST['edate'] : '');
