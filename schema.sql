@@ -1216,51 +1216,28 @@ ADD COLUMN `sn` int default 0;
 
 
 -- 20230911 car schedule calendar
-CREATE TABLE IF NOT EXISTS `work_calendar_main` (
+CREATE TABLE IF NOT EXISTS `car_calendar_main` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(200) COLLATE utf8mb4_unicode_ci  default '',
-  `start_time` timestamp NULL DEFAULT NULL,
-  `end_time` timestamp NULL DEFAULT NULL,
+  `schedule_Name` varchar(200) COLLATE utf8mb4_unicode_ci  default '',
+  `date_use` timestamp NULL DEFAULT NULL,
   `color` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
   `text_color` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
-  `project` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
-  `sales_executive` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
-  `project_in_charge` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
-  `installer_needed` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
-  `installer_needed_location` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
-  `things_to_bring` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
-  `things_to_bring_location` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
-  `products_to_bring` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
-  `products_to_bring_files` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
-  `service` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `car_use` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
   `driver` varchar(200) COLLATE utf8mb4_unicode_ci  default '',
-  `back_up_driver` varchar(200) COLLATE utf8mb4_unicode_ci  default '',
-  `photoshoot_request` bool default false,
+  `helper` varchar(200) COLLATE utf8mb4_unicode_ci  default '',
+  `time_out` timestamp NULL DEFAULT NULL,
+  `time_in` timestamp NULL DEFAULT NULL,
   `notes` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `items` JSON,
   `is_enabled` bool default false,
+  `status` int(11) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
+  `approve_at` timestamp NULL DEFAULT NULL,
   `created_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
   `updated_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
   `deleted_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
-  
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
-
-CREATE TABLE IF NOT EXISTS `work_calendar_details` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `location` varchar(200) COLLATE utf8mb4_unicode_ci  default '',
-  `appoint_time` timestamp NULL DEFAULT NULL,
-  `end_time` timestamp NULL DEFAULT NULL,
-  `agenda` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
-  `is_enabled` bool default false,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `created_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
-  `updated_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
-  `deleted_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
-  
+  `approve_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';

@@ -14,6 +14,9 @@ var service = new Vue({
         time_out: "",
         time_in: "",
         notes: "",
+        creator: "",
+        status: "",
+        id: 0,
 
         item_schedule: "",
         item_company: "",
@@ -22,6 +25,13 @@ var service = new Vue({
         items: [],
         editing : false,
         sn: 0,
+
+        
+
+        access1 : false,
+        access2 : false,
+
+        username: "dennis",
     },
 
     created() {
@@ -82,21 +92,41 @@ var service = new Vue({
             this.item_purpose = "";
         },
 
-        service_save: function() {
-            if(this.schedule_Name == "" || this.date_use == "")
+        service_save: function(is_send) {
+            let _this = this;
+
+            if(is_send == "1")
             {
-                Swal.fire({
-                    text: "Columns of Schedule Name and Date User cannot be blank.",
-                    icon: "warning",
-                    confirmButtonText: "OK",
-                });
-                return;
+                if(this.schedule_Name == "" || this.date_use == "" || this.time_out == "" || this.time_in == "")
+                {
+                    Swal.fire({
+                        text: "Columns of Schedule Name, Date User, Time Out and Time In cannot be blank.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                    });
+                    return;
+                }
+            }
+
+            if(is_send == "0")
+            {
+                if(this.schedule_Name == "" || this.date_use == "")
+                {
+                    Swal.fire({
+                        text: "Columns of Schedule Name and Date User cannot be blank.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                    });
+                    return;
+                }
             }
 
             var token = localStorage.getItem("token");
             var form_Data = new FormData();
-            let _this = this;
+
+        
             form_Data.append("jwt", token);
+            form_Data.append("id", this.id);
             form_Data.append("schedule_Name", this.schedule_Name);
             form_Data.append("date_use", this.date_use);
             form_Data.append("car_use", this.car_use);
@@ -105,45 +135,106 @@ var service = new Vue({
             form_Data.append("time_out", this.time_out);
             form_Data.append("time_in", this.time_in);
             form_Data.append("notes", this.notes);
+            form_Data.append("status", is_send);
             form_Data.append("items", JSON.stringify(this.items));
+
+            if(this.id == 0)
+                api_url = "api/car_calender_main_save.php";
+
+            if(this.id != 0)
+                api_url = "api/car_calender_main_update.php";
 
             axios({
                     method: "post",
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
-                    url: "api/car_calender_main_save.php",
+                    url: api_url,
                     data: form_Data,
                 })
                 .then(function (response) {
-                    if (response.data !== "") 
+
+                    let symbol = "";
+                    if (is_send == "1") 
+                        symbol = 'fa-question-circle';
+                    if (is_send == "2")
+                        symbol = 'fa-car';
+
+
+                    if(_this.id == 0)
                     {
-                        Swal.fire({
-                            // text: JSON.stringify("Files size over 200MB, Please don't upload file too many at one time."),
-                            text: JSON.stringify(response.data),
-                            icon: "warning",
-                            confirmButtonText: "OK",
-                        });
-                        return;
+                        let sid = 0;
+                        let created_at = "";
+                        let created_by = "";
+
+                        if (response.data !== "") 
+                        {
+                            sid = response.data.sid;
+                            created_at = response.data.created_at;
+                            created_by = response.data.created_by;
+                        }
+
+                        let Lasteditor = created_by + " at " + created_at;
+
+                        if (
+                            _this.time_out != "" &&
+                            _this.time_in != "" &&
+                            _this.time_in >= _this.time_out && sid != 0
+                        ) {
+                            calendar.addEvent({
+                                id: sid,
+                                title: _this.schedule_Name,
+                                Date: moment(_this.date_use).format("YYYY-MM-DD"),
+                                start: _this.date_use + "T" + _this.time_out,
+                                end: _this.date_use + "T" + _this.time_in,
+                                allDay: false,
+                                description: {
+                                    icon: symbol,
+                                    schedule_Name: UnescapeHTML(_this.schedule_Name),
+                                    car_use: _this.car_use,
+                                    driver: _this.driver,
+                                    helper: _this.helper,
+                                    date_use: moment(_this.date_use).format("YYYY-MM-DD"),
+                                    time_out: moment(_this.date_use + ' ' + _this.time_out).format("HH:mm"),
+                                    time_in: moment(_this.date_use + ' ' + _this.time_in).format("HH:mm"),
+                                    notes: _this.notes,
+                                    Lasteditor: Lasteditor,
+                                    items: _this.items,
+                                    status: is_send,
+                                    creator: _this.username,
+                                },
+                            });
+                        }
                     }
 
+                    if(_this.id != 0)
+                    {
+                        
+                        var event = calendar.getEventById(_this.id);
+                        event.title = _this.schedule_Name;
+                        
+                        event.Date = moment(_this.date_use).format("YYYY-MM-DD");
+                        event.start = _this.date_use + "T" + _this.time_out;
+                        event.end = _this.date_use + "T" + _this.time_in;
 
-                    if (
-                        this.time_out != "" &&
-                        this.time_in != "" &&
-                        this.time_in >= this.time_out
-                    ) {
-                        calendar.addEvent({
-                            title: this.schedule_Name,
-                            start: this.date_use + "T" + this.time_out,
-                            end: this.date_use + "T" + this.time_in,
-                            allDay: 0,
-                        });
+                        event.extendedProps.description.schedule_Name = _this.schedule_Name;
+                        event.extendedProps.icon = symbol,
+                        event.extendedProps.description.car_use = _this.car_use;
+                        event.extendedProps.description.driver = _this.driver;
+                        event.extendedProps.description.helper = _this.helper;
+                        event.extendedProps.description.date_use = moment(_this.date_use).format("YYYY-MM-DD");
+                        event.extendedProps.description.time_out = moment(_this.date_use + ' ' + _this.time_out).format("HH:mm");
+                        event.extendedProps.description.time_in = moment(_this.date_use + ' ' + _this.time_in).format("HH:mm");
+                        event.extendedProps.description.notes = _this.notes;
+                        event.extendedProps.description.items = _this.items;
+                        event.extendedProps.description.status = _this.status;
+                        event.extendedProps.description.creator = _this.username;
+
                     }
 
                     $("#serviceModalScrollable").modal("toggle");
 
-                    this.clear_service();
+                    _this.clear_service();
 
                     reload();
                 })
@@ -157,6 +248,46 @@ var service = new Vue({
                 });
         },
 
+        export_service: function () {
+            var form_Data = new FormData();
+
+            const filename = "attendance";
+            let _this = this;
+
+            form_Data.append("schedule_Name", this.schedule_Name);
+            form_Data.append("date_use", this.date_use);
+            form_Data.append("car_use", this.car_use);
+            form_Data.append("driver", this.driver);
+            form_Data.append("helper", this.helper);
+            form_Data.append("time_out", this.time_out);
+            form_Data.append("time_in", this.time_in);
+            form_Data.append("notes", this.notes);
+            form_Data.append("items", JSON.stringify(this.items));
+
+            const token = sessionStorage.getItem("token");
+
+            axios({
+                    method: "post",
+                    url: "car_schedule_data_word.php",
+                    data: form_Data,
+                    responseType: "blob", // important
+                })
+                .then(function (response) {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement("a");
+                    link.href = url;
+
+                    link.setAttribute("download", "car_schedule.docx");
+
+                    document.body.appendChild(link);
+                    link.click();
+                })
+                .catch(function (response) {
+                    //handle error
+                    console.log(response);
+                });
+        },
+
         clear_service: function() {
             this.schedule_Name = "";
             this.date_use = "";
@@ -166,6 +297,8 @@ var service = new Vue({
             this.time_out = "";
             this.time_in = "";
             this.notes = "";
+            this.creator = "";
+            this.status = "";
 
             this.item_schedule = "";
             this.item_company = "";
@@ -821,7 +954,6 @@ var app = new Vue({
             _this.items = [];
             this.action = 10; //select
             form_Data.append("jwt", token);
-            form_Data.append("action", this.action);
 
             sdate = $("#sdate").val();
             edate = $("#edate").val();
@@ -834,23 +966,18 @@ var app = new Vue({
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
-                    url: "api/work_calender_main.php",
+                    url: "api/car_calender_main.php",
                     data: form_Data,
                 })
                 .then(function (response) {
                     //handle success
                     //var data = JSON.parse(response.data);
                     for (var i = 0; i < response.data.length; i++) {
-                        var agendas = [];
+                 
                         var isAll = false;
                         var Lasteditor = "";
-                        var photoshoot = "No";
-                        if (response.data[i].all_day == "1") {
-                            isAll = true;
-                        }
-                        if (response.data[i].photoshoot_request == "1") {
-                            photoshoot = "Yes";
-                        }
+                        
+                        
                         if (
                             response.data[i].updated_by != "" &&
                             response.data[i].updated_by != null
@@ -865,111 +992,73 @@ var app = new Vue({
                                 " at " +
                                 response.data[i].created_at;
                         }
-                        for (var j = 0; j < response.data[i].detail.length; j++) {
-                            //if (_this.agenda[j].main_id == response.data[i].id) {
-                                agendas.push({
-                                    agenda: UnescapeHTML(response.data[i].detail[j].agenda),
-                                    appointtime: moment(response.data[i].detail[j].appoint_time).format(
-                                        "HH:mm"
-                                    ),
-                                    endtime: moment(response.data[i].detail[j].end_time).format("HH:mm"),
-                                    sort: response.data[i].detail[j].sort,
-                                    location: UnescapeHTML(response.data[i].detail[j].location),
-                                });
-                            //}
-                        }
-                        //整理檔案
-                        response.data[i].products_to_bring_files = response.data[
-                            i
-                        ].products_to_bring_files.replaceAll(",", '","');
-                        if (response.data[i].products_to_bring_files.indexOf('"') == 0) {
-                            response.data[i].products_to_bring_files =
-                                "[" + response.data[i].products_to_bring_files + "]";
-                            response.data[i].products_to_bring_files = JSON.parse(
-                                response.data[i].products_to_bring_files
-                            );
-                        } else {
-                            response.data[i].products_to_bring_files =
-                                '["' + response.data[i].products_to_bring_files + '"]';
-                            response.data[i].products_to_bring_files = JSON.parse(
-                                response.data[i].products_to_bring_files
-                            );
-                        }
-                        var files = "";
-                        response.data[i].products_to_bring_files.forEach((element) => {
-                            var file_str =
-                                "<input type='checkbox' class='custom-control-input' id='" + element + "' checked name='file_elements' value='" + element + "' />" + 
-                                "<label class='custom-control-label' style='justify-content: flex-start;' for='" + element + "'>" +
-                                "<a href='https://storage.cloud.google.com/calendarfile/" +
-                                element +
-                                "' target='_blank'>" +
-                                element +
-                                "</a></label>";
-                            if(element.trim() !== '')
-                            {
-                                files += "<div class='custom-control custom-checkbox' style='padding-top: 1%;'>" + file_str + "</div>";
-                            }
-                        });
+                        // for (var j = 0; j < response.data[i].detail.length; j++) {
+                        //     //if (_this.agenda[j].main_id == response.data[i].id) {
+                        //         agendas.push({
+                        //             agenda: UnescapeHTML(response.data[i].detail[j].agenda),
+                        //             appointtime: moment(response.data[i].detail[j].appoint_time).format(
+                        //                 "HH:mm"
+                        //             ),
+                        //             endtime: moment(response.data[i].detail[j].end_time).format("HH:mm"),
+                        //             sort: response.data[i].detail[j].sort,
+                        //             location: UnescapeHTML(response.data[i].detail[j].location),
+                        //         });
+                        //     //}
+                        // }
 
-                        files = "<div class='custom-control custom-checkbox' style='padding-top: 1%;'>" + files + "</div>";
+                        let symbol = "";
+                        if (response.data[i].status == "1") 
+                            symbol = 'fa-question-circle';
+                        if (response.data[i].status == "2")
+                            symbol = 'fa-car';
+
+                        let backgroundColor = "";
+                        if(response.data[i].status == "1")
+                        {
+                            if(response.data[i].car_use == "Alphard")
+                                backgroundColor = "#FECC28;";
+                            if(response.data[i].car_use == "Avanza")
+                                backgroundColor = "#4EB5BB;";
+                            if(response.data[i].car_use == "Travis 1")
+                                backgroundColor = "#009858;";
+                            if(response.data[i].car_use == "Travis 2")
+                                backgroundColor = "#A671AD;";
+                            if(response.data[i].car_use == "Toyota Rush")
+                                backgroundColor = "#F19DB4;";
+                            if(response.data[i].car_use == "")
+                                backgroundColor = "#141415;";
+                        }
+
+                        
                         _this.items.push({
+
                             id: response.data[i].id,
-                            title: response.data[i].title,
-                            Date: moment(response.data[i].start_time).format("YYYY-MM-DD"),
-                            start: moment(response.data[i].start_time).format(
+                            title: response.data[i].schedule_Name,
+                            Date: moment(response.data[i].date_use).format("YYYY-MM-DD"),
+                            start: moment(response.data[i].time_out).format(
                                 "YYYY-MM-DDTHH:mm"
                             ), // will be parsed
-                            end: moment(response.data[i].end_time).format("YYYY-MM-DDTHH:mm"),
-                            color: ((response.data[i].color_other !== '') ? response.data[i].color_other : response.data[i].color),
+                            end: moment(response.data[i].time_in).format("YYYY-MM-DDTHH:mm"),
+                            color: "black",
+                            // color: ((response.data[i].color_other !== '') ? response.data[i].color_other : response.data[i].color),
                             // color_other: response.data[i].color_other,
+                            backgroundColor: backgroundColor,
+                            borderColor: backgroundColor,
                             allDay: isAll,
                             description: {
-                                Title: UnescapeHTML(response.data[i].title),
-                                Color: response.data[i].color,
-                                Color_Other: response.data[i].color_other,
-                                Date: moment(response.data[i].start_time).format("YYYY-MM-DD"),
-                                Allday: isAll,
-                                Starttime: moment(response.data[i].start_time).format("HH:mm"),
-                                Endtime: moment(response.data[i].end_time).format("HH:mm"),
-                                Project: UnescapeHTML(response.data[i].project),
-                                Sales_Executive: UnescapeHTML(response.data[i].sales_executive),
-                                Project_in_charge: UnescapeHTML(
-                                    response.data[i].project_in_charge
-                                ),
-                                Project_relevant: UnescapeHTML(
-                                    response.data[i].project_relevant
-                                ),
-                                Installer_needed:  
-                                    response.data[i].installer_needed
-                                 ,
-                                Installer_needed_other: 
-                                    response.data[i].installer_needed_other
-                                 ,
-                                Location_Things_to_Bring: UnescapeHTML(
-                                    response.data[i].things_to_bring_location
-                                ),
-                                Things_to_Bring: UnescapeHTML(response.data[i].things_to_bring),
-                                Location_Products_to_Bring: UnescapeHTML(
-                                    response.data[i].installer_needed_location
-                                ),
-                                Products_to_Bring: UnescapeHTML(
-                                    response.data[i].products_to_bring
-                                ),
-                                Products_to_bring_files: files,
-                                File_name: response.data[i].products_to_bring_files,
-                                Service: response.data[i].service,
-                                Driver: response.data[i].driver,
-                                Driver_Other: response.data[i].driver_other,
-                                Back_up_Driver: response.data[i].back_up_driver,
-                                Back_up_Driver_Other: response.data[i].back_up_driver_other,
-                                Photoshoot_Request: photoshoot,
-                                Notes: UnescapeHTML(response.data[i].notes),
-                                Lock: response.data[i].lock,
-                                Confirm: response.data[i].confirm,
-                                Agenda: agendas,
+                                icon: symbol,
+                                schedule_Name: UnescapeHTML(response.data[i].schedule_Name),
+                                car_use: response.data[i].car_use,
+                                driver: response.data[i].driver,
+                                helper: response.data[i].helper,
+                                date_use: moment(response.data[i].date_use).format("YYYY-MM-DD"),
+                                time_out: moment(response.data[i].time_out).format("HH:mm"),
+                                time_in: moment(response.data[i].time_in).format("HH:mm"),
+                                notes: response.data[i].notes,
                                 Lasteditor: Lasteditor,
-                                Related_project_id: response.data[i].related_project_id,
-                                Related_stage_id: response.data[i].related_stage_id,
+                                items: response.data[i].items,
+                                status: response.data[i].status,
+                                creator : response.data[i].created_by,
                             },
                         });
                     }
@@ -1752,243 +1841,46 @@ var initial = async (_id) =>  {
         //Schedule被點擊的方法
         eventClick: async function (info) {
 
-            app.sid = 0;
+            service.sid = 0;
             
             document.getElementById("myLargeModalLabel").innerText =
                 "Schedule Details";
             eventObj = info.event;
             resetSchedule();
-            app.id = eventObj.id;
+            service.id = eventObj.id;
             var sc_content = eventObj.extendedProps.description;
 
-            document.getElementById("sc_title").value = sc_content.Title;
-            document.getElementById("sc_color").value = sc_content.Color;
+            service.schedule_Name = sc_content.schedule_Name;
+            service.date_use = sc_content.date_use;
+            service.car_use = sc_content.car_use;
+            service.driver = sc_content.driver;
+            service.helper = sc_content.helper;
+            service.time_out = sc_content.time_out;
+            service.time_in = sc_content.time_in;
+            service.notes = sc_content.notes;
+            service.items = JSON.parse(sc_content.items);
+            service.creator = sc_content.creator;
+            service.status = sc_content.status;
 
-            if(sc_content.Color_Other != "")
-            {
-                document.getElementById("sc_color").value = sc_content.Color_Other;
-                document.getElementById("sc_color_other").checked = true;
-            }
-            else
-            {
-                document.getElementById("sc_color").value = "#000000";
-                document.getElementById("sc_color_other").checked = false;
-            }
-
-            if(sc_content.Color != "")
-            {
-                var checked = 0;
-                var colors = document.getElementsByName("sc_color");
-
-                for(var i = 0; i < colors.length; i++)
-                {
-                    if(colors[i].value == sc_content.Color)
-                    {
-                        checked = 1;
-                        colors[i].checked = true;
-                    }
-                }
-
-                if(checked == 0 && sc_content.Color_Other == "")
-                {
-                    document.getElementById("sc_color").value = sc_content.Color;
-                    document.getElementById("sc_color_other").checked = true;
-                }
-            }
-
-            
-
-            //設定最後編輯者資訊
-            document.getElementById("sc_editor").value = sc_content.Lasteditor;
-            document.getElementById("last_editor").style.display = "inline";
-
-            document.getElementById("sc_date").value = sc_content.Date;
-            document.getElementById("sc_time").checked = sc_content.Allday;
-            document.getElementById("sc_stime").value = sc_content.Starttime;
-            document.getElementById("sc_etime").value = sc_content.Endtime;
-            document.getElementById("sc_project").value = sc_content.Project;
-            document.getElementById("sc_sales").value = sc_content.Sales_Executive;
-            document.getElementById("sc_incharge").value = sc_content.Project_in_charge;
-
-            project.project_id = sc_content.Related_project_id;
-            project.stage_id = sc_content.Related_stage_id;
-
-            await project.getStages(project.project_id);
-
-            // $("#sc_related_project_id").val(sc_content.Related_project_id).trigger("change");
-
-            // await app.setStages(sc_content.Related_project_id);
-
-            // $("#sc_related_stage_id").val(sc_content.Related_stage_id).trigger("change");
-
-            document.getElementById("sc_relevant").value =
-                sc_content.Project_relevant;
-            app.attendee = (sc_content.Project_relevant.split(",") === "" ? app.attendee = [] : sc_content.Project_relevant.split(","));
-            if(sc_content.Project_relevant === "")
-                app.attendee = [];
-                
-            document.getElementById("sc_Installer_needed_other").value = sc_content.Installer_needed_other;
-
-            app.users = app.users_org.concat(app.attendee);
-
-            app.users = app.users.filter((item,index)=>{
-                return (app.users.indexOf(item) == index)
-             })
-
-            app.users.sort(function (a, b) {
-                return a.toLowerCase().localeCompare(b.toLowerCase());
-            });
-            
-            var installer = sc_content.Installer_needed.split(",");
-
-            var elements = document.getElementsByName("sc_Installer_needed");
-
-            for (var i = 0; i < elements.length; i++)
-                elements[i].checked = false;
-
-            for (var i = 0; i < installer.length; i++) {
-                for (var j = 0; j < elements.length; j++) {
-                    if (elements[j].value == installer[i]) {
-                        elements[j].checked = true;
-                    }
-                }
-            }
-
-            /*
-            for (i = 0; i < 5; i++) {
-                document.getElementsByName("sc_Installer_needed")[i].checked = false;
-            }
-
-            for (i = 0; i < installer.length; i++) {
-                if (installer[i] == "EO")
-                    document.getElementsByName("sc_Installer_needed")[0].checked = true;
-
-                if (installer[i] == "JM")
-                    document.getElementsByName("sc_Installer_needed")[1].checked = true;
-
-                if (installer[i] == "JC")
-                    document.getElementsByName("sc_Installer_needed")[2].checked = true;
-
-                if (installer[i] == "GV")
-                    document.getElementsByName("sc_Installer_needed")[3].checked = true;
-
-                if (installer[i] == "JS")
-                    document.getElementsByName("sc_Installer_needed")[4].checked = true;
-
-            }
-            */
-
-            //加入Agenda內容(先刪除未儲存的)
-            var agenda_object = document
-                .getElementById("agenda_table")
-                .getElementsByTagName("tr");
-
-            for (i = agenda_object.length - 1; i > 1; i--) {
-                agenda_object[i].remove();
-            }
-
-            for (i = 0; i < sc_content.Agenda.length; i++) {
-                addAgendaitem(
-                    sc_content.Agenda[i].location,
-                    sc_content.Agenda[i].agenda,
-                    sc_content.Agenda[i].appointtime,
-                    sc_content.Agenda[i].endtime
-                );
-            }
-
-            document.getElementById("sc_location1").value =
-                sc_content.Location_Things_to_Bring;
-            document.getElementById("sc_things").value = sc_content.Things_to_Bring;
-            document.getElementById("sc_location2").value =
-                sc_content.Location_Products_to_Bring;
-            document.getElementById("sc_products").value =
-                sc_content.Products_to_Bring;
-            document.getElementById("upload_input").style = "display:none;";
-            document.getElementById("sc_product_files").innerHTML =
-                sc_content.Products_to_bring_files;
-            if (
-                sc_content.Products_to_bring_files !=
-                "<div class='custom-control custom-checkbox' style='padding-top: 1%;'></div>"
-            )
-                app.download_type = "zip";
-            else app.download_type = "docx";
-
-            document.getElementById("sc_product_files_hide").value =
-                sc_content.File_name;
-            document.getElementById("sc_service").value = sc_content.Service;
-            document.getElementById("sc_driver1").value = sc_content.Driver;
-
-            document.getElementById("sc_driver_other").value = sc_content.Driver_Other;
-
-            document.getElementById("sc_driver2").value = sc_content.Back_up_Driver;
-
-            document.getElementById("sc_backup_driver_other").value = sc_content.Back_up_Driver_Other;
-
-            if(sc_content.Driver != 6)
-                document.getElementById("sc_driver_other").style.display = "none";
-            else
-                document.getElementById("sc_driver_other").style.display = "";
-
-            if(sc_content.Back_up_Driver != 6)
-                document.getElementById("sc_backup_driver_other").style.display = "none";
-            else
-                document.getElementById("sc_backup_driver_other").style.display = "";
-
-            if (sc_content.Photoshoot_Request == "Yes") {
-                document.getElementsByName("sc_Photoshoot_request")[0].checked = true;
-            }
-            if (sc_content.Photoshoot_Request == "No") {
-                document.getElementsByName("sc_Photoshoot_request")[1].checked = true;
-            }
-
-            document.getElementById("sc_notes").value = sc_content.Notes;
-
-            Change_Schedule_State(true, sc_content.Allday);
-            icon_function_enable = false;
-
-            document.getElementById("btn_reset").style.display = "none";
-            document.getElementById("btn_add").style.display = "none";
-            document.getElementById("btn_duplicate").style.display = "inline";
-            document.getElementById("btn_export").style.display = "inline";
-            document.getElementById("btn_edit").style.display = "inline";
-            document.getElementById("btn_delete").style.display = "inline";
-            document.getElementById("btn_cancel").style.display = "none";
-            document.getElementById("btn_save").style.display = "none";
-
-            // add schedual lock
-            document.getElementById("lock").value = sc_content.Lock;
-            if (sc_content.Lock != "") {
-                document.getElementById("btn_lock").style.display = "none";
-                document.getElementById("btn_unlock").style.display = "inline";
-
-                document.getElementById("btn_edit").style.display = "none";
-                document.getElementById("btn_delete").style.display = "none";
-            } else {
-                document.getElementById("btn_lock").style.display = "inline";
-                document.getElementById("btn_unlock").style.display = "none";
-            }
-
-            document.getElementById("confirm").value = sc_content.Confirm;
-            if (sc_content.Confirm != "") {
-                document.getElementById("btn_confirm").style.display = "none";
-                document.getElementById("btn_unconfirm").style.display = "inline";
-            } else {
-                document.getElementById("btn_confirm").style.display = "inline";
-                document.getElementById("btn_unconfirm").style.display = "none";
-            }
-
-            $("#exampleModalScrollable").modal("toggle");
+            $("#serviceModalScrollable").modal("toggle");
         },
 
-        
+        // eventRender: function(info) {
+    
+        //     var i = document.createElement('i');
+        //         if ( info.event.extendedProps.icon != '') {   
+        //                 i.className = info.event.extendedProps.icon;
+        //                 info.el.append(i);
+        //                 }
+        // },
 
         //載入日曆初始化時，如果 Schedule 的 confirmed 為True，則加上一個checkbox圖示在 日曆上的 Schedule 前方。
         eventDidMount: function (arg) {
 
-            if( arg.event.extendedProps.description.Confirm == 'Y' ){
+            if( arg.event.extendedProps.description.icon != '' ){
 
                 let icon = document.createElement("i");
-                icon.classList.add('fa', 'fa-check-square');
+                icon.classList.add('fa', arg.event.extendedProps.description.icon);
 
                 if( arg.el.querySelector(".fc-event-title-container") ){
                     arg.el.querySelector(".fc-event-title").prepend(icon);
@@ -1997,6 +1889,12 @@ var initial = async (_id) =>  {
                     arg.el.prepend(icon);
                 }
             }
+
+            // var i = document.createElement('i');
+            //     if ( arg.event.extendedProps.description.icon != '') {   
+            //             i.className = arg.event.extendedProps.description.icon;
+            //             arg.el.append(i);
+            //             }
         },
 
         //eventDrop: function (info) {
@@ -2637,9 +2535,9 @@ $(document).on("click", "#btn_duplicate", function () {
     //resetSchedule();
 });
 
-$(document).on("click", "#btn_export", function () {
-    app.export();
-});
+// $(document).on("click", "#btn_export", function () {
+//     app.export();
+// });
 
 $(document).on("click", "#btn_cancel", async function () {
     var sc_content = eventObj.extendedProps.description;

@@ -970,12 +970,12 @@ try {
             <div class="modal-body">
 
                 <!-- 指派車輛管理者填寫的表單 -->
-                <div id="approval_section" v-if="is_admin" style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 3px solid #dee2e6;">
+                <div id="approval_section" v-if="access1 == true || access2 == true" style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 3px solid #dee2e6;">
 
                     <div class="row">
                         <div class="col-12" style="text-align: center;">
 
-                            <h4 style="background: palegreen; padding: 8px; margin: 0 20px 5px;">Request Review 2</h4>
+                            <h4 style="background: palegreen; padding: 8px; margin: 0 20px 5px;">Request Review</h4>
 
                         </div>
 
@@ -1097,7 +1097,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="text" class="form-control" style="width:90%;" id="schedule_Name" v-model="schedule_Name">
+                        <input type="text" class="form-control" style="width:90%;" id="schedule_Name" v-model="schedule_Name" :disabled="creator != username">
 
                     </div>
                 </div>
@@ -1113,7 +1113,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="date" class="form-control" style="width:40%;" id="date_use" v-model="date_use">
+                        <input type="date" class="form-control" style="width:40%;" id="date_use" v-model="date_use" :disabled="creator != username">
 
                     </div>
                 </div>
@@ -1129,7 +1129,7 @@ try {
 
                     <div class="col-10">
 
-                        <Select class="form-control" style="width:40%;" id="car_use" v-model="car_use">
+                        <Select class="form-control" style="width:40%;" id="car_use" v-model="car_use" :disabled="creator != username">
                             <option value="">Choose One</option>
                             <option value="Alphard">Alphard</option>
                             <option value="Avanza">Avanza</option>
@@ -1152,7 +1152,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="text" class="form-control" style="width:90%;" id="driver" v-model="driver">
+                        <input type="text" class="form-control" style="width:90%;" id="driver" v-model="driver" :disabled="creator != username">
  
 
                     </div>
@@ -1169,7 +1169,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="text" class="form-control" style="width:90%;" id="helper" v-model="helper">
+                        <input type="text" class="form-control" style="width:90%;" id="helper" v-model="helper" :disabled="creator != username">
  
 
                     </div>
@@ -1186,7 +1186,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="time" class="form-control" style="width:40%; padding-right: 0; text-align: center;" id="time_out" v-model="time_out">
+                        <input type="time" class="form-control" style="width:40%; padding-right: 0; text-align: center;" id="time_out" v-model="time_out" :disabled="creator != username">
 
                     </div>
 
@@ -1203,7 +1203,7 @@ try {
 
                     <div class="col-10">
 
-                        <input type="time" class="form-control" style="width:40%; padding-right: 0; text-align: center;" id="time_in" v-model="time_in">
+                        <input type="time" class="form-control" style="width:40%; padding-right: 0; text-align: center;" id="time_in" v-model="time_in" :disabled="creator != username">
 
                     </div>
 
@@ -1220,7 +1220,7 @@ try {
                     <div class="col-10">
 
                         <textarea class="form-control" style="width:90%; resize:none; overflow:auto;" rows="5"
-                                      onkeyup="autogrow(this);" id="notes" v-model="notes"></textarea>
+                                      onkeyup="autogrow(this);" id="notes" v-model="notes"  :disabled="creator != username"></textarea>
 
                     </div>
 
@@ -1235,11 +1235,11 @@ try {
                         <table style="width:100%;" id="agenda_table">
 
                             <tr>
-                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_schedule" v-model="item_schedule"></td>
-                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_company" v-model="item_company"></td>
-                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_address" v-model="item_address"></td>
-                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_purpose" v-model="item_purpose"></td>
-                                <td style="padding-bottom: 10pt;"><i class="fas fa-plus-circle" id="add_agenda" @click="add_item"></i></td>
+                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_schedule" v-model="item_schedule" :disabled="creator != username"></td>
+                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_company" v-model="item_company" :disabled="creator != username"></td>
+                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_address" v-model="item_address" :disabled="creator != username"></td>
+                                <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_purpose" v-model="item_purpose" :disabled="creator != username"></td>
+                                <td style="padding-bottom: 10pt;"><i class="fas fa-plus-circle" id="add_agenda" @click="!!(creator == username) && add_item"></i></td>
 
                             </tr>
 
@@ -1266,9 +1266,9 @@ try {
                                     {{ it.purpose }}
                                 </td>
                                 <td>
-                                    <i class="fas fa-arrow-alt-circle-up" @click="set_up(index, it.id)"></i>
-                                    <i class="fas fa-arrow-alt-circle-down" @click="set_down(index, it.id)"></i>
-                                    <i class="fas fa-trash-alt" @click="del(it.id)"></i>
+                                    <i class="fas fa-arrow-alt-circle-up" @click="!!(creator == username) && set_up(index, it.id)"></i>
+                                    <i class="fas fa-arrow-alt-circle-down" @click="!!(creator == username) && set_down(index, it.id)"></i>
+                                    <i class="fas fa-trash-alt" @click="!!(creator == username) && del(it.id)"></i>
                                 </td>
                             </tr>
 
@@ -1283,9 +1283,9 @@ try {
 
                 <div class="button_box">
 
-                    <button class="btn btn-secondary" style="width: 155px;" id="btn_reset">Reset Schedule</button>
+                    <button class="btn btn-secondary" style="width: 155px;" id="btn_reset" @click="clear_service">Reset Schedule</button>
 
-                    <button class="btn btn-secondary" id="btn_export">Export</button>
+                    <button class="btn btn-secondary" id="btn_export" @click="export_service()">Export</button>
 
                     <button class="btn btn-secondary" style="width: 155px;" id="btn_duplicate">Duplicate Schedule</button>
 
@@ -1297,9 +1297,9 @@ try {
 
                     <button class="btn btn-danger" id="btn_delete">Delete</button>
 
-                    <button class="btn btn-primary" id="btn_save" @click="service_save()">Save</button>
+                    <button class="btn btn-primary" id="btn_save" @click="service_save(0)">Save</button>
 
-                    <button class="btn btn-primary" style="width: 200px" id="btn_???">Save and Send Request</button>
+                    <button class="btn btn-primary" style="width: 200px" id="btn_save_send" @click="service_save(1)">Save and Send Request</button>
 
                     <button class="btn btn-secondary" id="btn_cancel">Cancel</button>
 

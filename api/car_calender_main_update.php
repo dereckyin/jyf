@@ -83,8 +83,22 @@ if (!isset($jwt)) {
     $tin = $date_use . " " . $time_in;
     
     try {
-        $sql = "insert into car_calendar_main (schedule_Name, date_use, car_use, driver, helper, time_out, time_in, notes, items, created_by, created_at, status) 
-        values (:schedule_Name, :date_use, :car_use, :driver, :helper, :time_out, :time_in, :notes, :items, :created_by, now(), :status)";
+        $sql = "update 
+                    car_calendar_main
+                set 
+                    schedule_Name = :schedule_Name,
+                    date_use = :date_use,
+                    car_use = :car_use,
+                    driver = :driver,
+                    helper = :helper,
+                    time_out = :time_out,
+                    time_in = :time_in,
+                    notes = :notes,
+                    items = :items,
+                    updated_by = :updated_by,
+                    updated_at = now(),
+                    status = :status
+                where id = :id";
 
         $stmt = $db->prepare($sql);
 
@@ -97,15 +111,14 @@ if (!isset($jwt)) {
         $stmt->bindParam(':time_in',  $tin);
         $stmt->bindParam(':notes', $notes);
         $stmt->bindParam(':items', $items);
-        $stmt->bindParam(':created_by', $user_name);
+        $stmt->bindParam(':updated_by', $user_name);
         $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':id', $id);
 
         $stmt->execute();
 
-        $sid = $db->lastInsertId();
-
         http_response_code(200);
-        echo json_encode(array("sid" => $sid, "created_by" => $user_name, "created_at" => date("Y-m-d H:i:s"), "status" => "success"));
+        echo json_encode(array("sid" => $id, "updated_by" => $user_name, "updated_at" => date("Y-m-d H:i:s"), "status" => "success"));
 
     } catch (Exception $e) {
         http_response_code(501);
