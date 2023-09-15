@@ -19,7 +19,7 @@
 
             <li ><a href="user.php">使用者管理</a></li>
             <li ><a href="contactus.php">聯絡我們</a></li>
-
+            <li ><a href="access_control.php">權限設定</a></li>
 
         </ul>
 

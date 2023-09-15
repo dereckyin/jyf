@@ -1241,3 +1241,13 @@ CREATE TABLE IF NOT EXISTS `car_calendar_main` (
   `approve_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20230915 car access control
+CREATE TABLE IF NOT EXISTS `access_control` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `car_access1` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `car_access2` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+insert into access_control(`car_access1`, `car_access2`) values('', '');

@@ -1288,21 +1288,21 @@ try {
 
                     <button class="btn btn-secondary" id="btn_export" @click="export_service()">Export</button>
 
-                    <button class="btn btn-secondary" style="width: 155px;" id="btn_duplicate">Duplicate Schedule</button>
+                    <button class="btn btn-secondary" style="width: 155px;" id="btn_duplicate" v-if="1 == 0">Duplicate Schedule</button>
 
-                    <button class="btn btn-primary" id="btn_edit">Edit</button>
+                    <button class="btn btn-primary" id="btn_edit" v-if="1 == 0">Edit</button>
 
-                    <button class="btn btn-primary" style="width: 155px;" id="btn_???">Send Request</button>
+                    <button class="btn btn-primary" style="width: 155px;" id="btn_???" v-if="1 == 0">Send Request</button>
 
-                    <button class="btn btn-secondary" style="width: 155px;" id="btn_???">Withdraw Request</button>
+                    <button class="btn btn-secondary" style="width: 155px;" id="btn_???" v-if="1 == 0">Withdraw Request</button>
 
-                    <button class="btn btn-danger" id="btn_delete">Delete</button>
+                    <button class="btn btn-danger" id="btn_delete" v-if="1 == 0">Delete</button>
 
                     <button class="btn btn-primary" id="btn_save" @click="service_save(0)">Save</button>
 
                     <button class="btn btn-primary" style="width: 200px" id="btn_save_send" @click="service_save(1)">Save and Send Request</button>
 
-                    <button class="btn btn-secondary" id="btn_cancel">Cancel</button>
+                    <button class="btn btn-secondary" id="btn_cancel" v-if="1 == 0">Cancel</button>
 
                 </div>
 
