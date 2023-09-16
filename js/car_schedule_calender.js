@@ -44,10 +44,14 @@ var service = new Vue({
 
     watch: {
         id: function (val) {
-            if(this.id == 0) {
+            if(this.id == 0) 
+            {
                 this.showing = true;
                 return;
             }
+            else
+               this.showing = false;
+            
 
             if (this.creator != this.username) {
                 this.showing = false;
@@ -152,6 +156,10 @@ var service = new Vue({
 
         service_edit: function() {
             this.showing = true;
+        },
+
+        service_cancel: function() {
+            this.showing = false;
         },
 
         del: function(eid) {
