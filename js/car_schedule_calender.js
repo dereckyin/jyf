@@ -32,6 +32,7 @@ var service = new Vue({
 
         showing : true,
 
+
         username: "",
 
     },
@@ -52,6 +53,7 @@ var service = new Vue({
                 this.showing = false;
                 return;
             }
+
         }
     },
 
@@ -148,6 +150,10 @@ var service = new Vue({
             this.e_id = eid;
         },
 
+        service_edit: function() {
+            this.showing = true;
+        },
+
         del: function(eid) {
             if(this.showing == false) return;
 
@@ -193,6 +199,107 @@ var service = new Vue({
             this.item_company = "";
             this.item_address = "";
             this.item_purpose = "";
+
+        },
+
+        service_status: function(status) {
+            let _this = this;
+
+            var form_Data = new FormData();
+            form_Data.append("id", this.id);
+
+            form_Data.append("status", status);
+
+            axios({
+                method: "post",
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+                url: 'api/car_calender_main_status_update.php',
+                data: form_Data,
+            })
+            .then(function (response) {
+
+                let symbol = "";
+                if (status == "1") 
+                    symbol = 'fa-question-circle';
+                if (status == "2")
+                    symbol = 'fa-car';
+                    
+                    var event = calendar.getEventById(_this.id);
+
+                    event.extendedProps.icon = symbol,
+
+                    event.extendedProps.description.status = _this.status;
+
+                $("#serviceModalScrollable").modal("toggle");
+
+                _this.clear_service();
+
+                reload();
+            })
+            .catch(function (error) {
+                //handle error
+                Swal.fire({
+                    text: error.data,
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                });
+            });
+
+        },
+
+        service_delete: function() {
+            let _this = this;
+
+            Swal.fire({
+                title: "Delete",
+                text: "Are you sure to delete?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+              }).then((result) => {
+                if (result.value) {
+                    var form_Data = new FormData();
+                    form_Data.append("id", _this.id);
+        
+                    form_Data.append("status", -1);
+        
+                    axios({
+                        method: "post",
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                        url: 'api/car_calender_main_status_update.php',
+                        data: form_Data,
+                    })
+                    .then(function (response) {
+
+        
+                        $("#serviceModalScrollable").modal("toggle");
+        
+                        _this.clear_service();
+        
+                        reload();
+                    })
+                    .catch(function (error) {
+                        //handle error
+                        Swal.fire({
+                            text: error.data,
+                            icon: "warning",
+                            confirmButtonText: "OK",
+                        });
+                    });
+
+                  
+                } else {
+ 
+                }
+              });
+
+            
 
         },
 
@@ -393,6 +500,8 @@ var service = new Vue({
         },
 
         clear_service: function() {
+            if(this.showing == false) return;
+
             this.schedule_Name = "";
             this.date_use = "";
             this.car_use = "";
@@ -1713,23 +1822,7 @@ var app = new Vue({
         deleteMe: function(id) {
             let _this = this;
 
-            Swal.fire({
-                title: "Delete",
-                text: "Are you sure to delete?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
-              }).then((result) => {
-                if (result.value) {
-                  
-                    _this.deleteMain(id); // <--- submit form programmatically
-                  
-                } else {
-                  // swal("Cancelled", "Your imaginary file is safe :)", "error");
-                }
-              });
+            
         },
 
         // updateDetail: function(){},
@@ -2307,107 +2400,107 @@ function onChangeFileUpload(e) {
     }
 }
 
-$("button[id='btn_add']").click(function () {
-    var selected = [];
-    $("[name=sc_Installer_needed]:checkbox:checked").each(function () {
-        selected.push($(this).val());
-    });
+// $("button[id='btn_add']").click(function () {
+//     var selected = [];
+//     $("[name=sc_Installer_needed]:checkbox:checked").each(function () {
+//         selected.push($(this).val());
+//     });
 
-    var agenda_object = document
-        .getElementById("agenda_table")
-        .getElementsByTagName("tr");
-    var agenda_content = [];
-    var appointtime = "";
-    var endtime = "";
-    for (i = 2; i < agenda_object.length; i++) {
-        appointtime = "";
-        endtime = "";
-        if (agenda_object[i].getElementsByTagName("input")[2].value != "") {
-            appointtime =
-                document.getElementById("sc_date").value +
-                " " +
-                agenda_object[i].getElementsByTagName("input")[2].value;
-        }
-        if (agenda_object[i].getElementsByTagName("input")[3].value != "") {
-            endtime =
-                document.getElementById("sc_date").value +
-                " " +
-                agenda_object[i].getElementsByTagName("input")[3].value;
-        }
-        agenda_content.push({
-            location: agenda_object[i].getElementsByTagName("input")[0].value,
-            agenda: agenda_object[i].getElementsByTagName("input")[1].value,
-            appointtime: appointtime,
-            endtime: endtime,
-            sort: i,
-        });
-    }
+//     var agenda_object = document
+//         .getElementById("agenda_table")
+//         .getElementsByTagName("tr");
+//     var agenda_content = [];
+//     var appointtime = "";
+//     var endtime = "";
+//     for (i = 2; i < agenda_object.length; i++) {
+//         appointtime = "";
+//         endtime = "";
+//         if (agenda_object[i].getElementsByTagName("input")[2].value != "") {
+//             appointtime =
+//                 document.getElementById("sc_date").value +
+//                 " " +
+//                 agenda_object[i].getElementsByTagName("input")[2].value;
+//         }
+//         if (agenda_object[i].getElementsByTagName("input")[3].value != "") {
+//             endtime =
+//                 document.getElementById("sc_date").value +
+//                 " " +
+//                 agenda_object[i].getElementsByTagName("input")[3].value;
+//         }
+//         agenda_content.push({
+//             location: agenda_object[i].getElementsByTagName("input")[0].value,
+//             agenda: agenda_object[i].getElementsByTagName("input")[1].value,
+//             appointtime: appointtime,
+//             endtime: endtime,
+//             sort: i,
+//         });
+//     }
 
-    related_project_id = $('#sc_related_project_id').val()
-    related_stage_id = $('#sc_related_stage_id').val()
+//     related_project_id = $('#sc_related_project_id').val()
+//     related_stage_id = $('#sc_related_stage_id').val()
 
-    if(related_project_id == undefined || related_project_id == null || related_project_id == "") 
-        related_project_id = 0;
+//     if(related_project_id == undefined || related_project_id == null || related_project_id == "") 
+//         related_project_id = 0;
 
-    if(related_stage_id == undefined || related_stage_id == null || related_stage_id == "")
-        related_stage_id = 0;
+//     if(related_stage_id == undefined || related_stage_id == null || related_stage_id == "")
+//         related_stage_id = 0;
 
-    var sc_content = {
-        Date: document.getElementById("sc_date").value,
-        Title: document.getElementById("sc_project").value,
-        Color: document.getElementById("sc_color").value,
-        Color_Other: document.getElementById("sc_color").value,
-        Allday: document.getElementById("sc_time").checked,
+//     var sc_content = {
+//         Date: document.getElementById("sc_date").value,
+//         Title: document.getElementById("sc_project").value,
+//         Color: document.getElementById("sc_color").value,
+//         Color_Other: document.getElementById("sc_color").value,
+//         Allday: document.getElementById("sc_time").checked,
 
-        Starttime: document.getElementById("sc_date").value +
-            " " +
-            document.getElementById("sc_stime").value,
-        Endtime: document.getElementById("sc_date").value +
-            " " +
-            document.getElementById("sc_etime").value,
-        Project: document.getElementById("sc_project").value,
-        Sales_Executive: document.getElementById("sc_sales").value,
-        Project_in_charge: document.getElementById("sc_incharge").value,
-        Project_relevant: Object.keys(app.attendee).map(function(k){return app.attendee[k]}).join(","),
-        Agenda: agenda_content,
-        Installer_needed: selected.join(),
-        Installer_needed_other: document.getElementById("sc_Installer_needed_other").value,
-        Location_Things_to_Bring: document.getElementById("sc_location1").value,
-        Things_to_Bring: document.getElementById("sc_things").value,
-        Location_Products_to_Bring: document.getElementById("sc_location2").value,
-        Products_to_Bring: document.getElementById("sc_products").value,
-        Service: document.getElementById("sc_service").value,
-        Driver: document.getElementById("sc_driver1").value,
-        Driver_Other: document.getElementById("sc_driver_other").value,
-        Back_up_Driver: document.getElementById("sc_driver2").value,
-        Back_up_Driver_Other: document.getElementById("sc_backup_driver_other").value,
-        Photoshoot_Request: $("input[name=sc_Photoshoot_request]:checked").val(),
-        Notes: document.getElementById("sc_notes").value,
-        Lock: "",
-        Confirm:"",
-        is_enable: true,
+//         Starttime: document.getElementById("sc_date").value +
+//             " " +
+//             document.getElementById("sc_stime").value,
+//         Endtime: document.getElementById("sc_date").value +
+//             " " +
+//             document.getElementById("sc_etime").value,
+//         Project: document.getElementById("sc_project").value,
+//         Sales_Executive: document.getElementById("sc_sales").value,
+//         Project_in_charge: document.getElementById("sc_incharge").value,
+//         Project_relevant: Object.keys(app.attendee).map(function(k){return app.attendee[k]}).join(","),
+//         Agenda: agenda_content,
+//         Installer_needed: selected.join(),
+//         Installer_needed_other: document.getElementById("sc_Installer_needed_other").value,
+//         Location_Things_to_Bring: document.getElementById("sc_location1").value,
+//         Things_to_Bring: document.getElementById("sc_things").value,
+//         Location_Products_to_Bring: document.getElementById("sc_location2").value,
+//         Products_to_Bring: document.getElementById("sc_products").value,
+//         Service: document.getElementById("sc_service").value,
+//         Driver: document.getElementById("sc_driver1").value,
+//         Driver_Other: document.getElementById("sc_driver_other").value,
+//         Back_up_Driver: document.getElementById("sc_driver2").value,
+//         Back_up_Driver_Other: document.getElementById("sc_backup_driver_other").value,
+//         Photoshoot_Request: $("input[name=sc_Photoshoot_request]:checked").val(),
+//         Notes: document.getElementById("sc_notes").value,
+//         Lock: "",
+//         Confirm:"",
+//         is_enable: true,
 
-        Related_project_id : related_project_id,
-        Related_stage_id : related_stage_id,
-    };
+//         Related_project_id : related_project_id,
+//         Related_stage_id : related_stage_id,
+//     };
 
-    if (sc_content.Allday) {
-        sc_content.Starttime =
-            document.getElementById("sc_date").value + " 00:00:00";
-        sc_content.Endtime = document.getElementById("sc_date").value + " 23:59:59";
-    }
+//     if (sc_content.Allday) {
+//         sc_content.Starttime =
+//             document.getElementById("sc_date").value + " 00:00:00";
+//         sc_content.Endtime = document.getElementById("sc_date").value + " 23:59:59";
+//     }
 
-    app.addMain2(agenda_content, sc_content, 1, calendar);
+//     app.addMain2(agenda_content, sc_content, 1, calendar);
 
-});
+// });
 
-$("button[id='btn_close']").click(function () {
-    resetSchedule();
-});
+// $("button[id='btn_close']").click(function () {
+//     resetSchedule();
+// });
 
-$("button[id='btn_reset']").click(function () {
-    resetSchedule();
-});
+// $("button[id='btn_reset']").click(function () {
+//     resetSchedule();
+// });
 
 function resetSchedule() {
     document.getElementById("sc_date").value = "";
@@ -3562,94 +3655,94 @@ $(document).ready(function () {
 
 
 
-var project = new Vue({
-    el: "#projects",
-    data: {
-        projects: [],
-        project_id : 0,
+// var project = new Vue({
+//     el: "#projects",
+//     data: {
+//         projects: [],
+//         project_id : 0,
 
-        stages: [],
-        stage_id : 0,
+//         stages: [],
+//         stage_id : 0,
 
-        add_project_id : 0,
-        add_stage_id : 0,
+//         add_project_id : 0,
+//         add_stage_id : 0,
   
-    },
-    created() {
-        let _this = this;
-        let uri = window.location.href.split("?");
-        if (uri.length >= 2) {
-            let vars = uri[1].split("&");
+//     },
+//     created() {
+//         let _this = this;
+//         let uri = window.location.href.split("?");
+//         if (uri.length >= 2) {
+//             let vars = uri[1].split("&");
 
-            let tmp = "";
-            vars.forEach(async function(v) {
-                tmp = v.split("=");
-                if (tmp.length == 2) {
-                switch (tmp[0]) {
-                    case "project_id":
-                        _this.project_id = tmp[1];
-                        _this.add_project_id = tmp[1];
-                    break;
+//             let tmp = "";
+//             vars.forEach(async function(v) {
+//                 tmp = v.split("=");
+//                 if (tmp.length == 2) {
+//                 switch (tmp[0]) {
+//                     case "project_id":
+//                         _this.project_id = tmp[1];
+//                         _this.add_project_id = tmp[1];
+//                     break;
 
-                    case "stage_id":
-                        _this.stage_id = tmp[1];
-                        _this.add_stage_id = tmp[1];
-                    break;
+//                     case "stage_id":
+//                         _this.stage_id = tmp[1];
+//                         _this.add_stage_id = tmp[1];
+//                     break;
                 
-                    default:
-                    console.log(`Too many args`);
-                }
-                }
-            });
-        }
+//                     default:
+//                     console.log(`Too many args`);
+//                 }
+//                 }
+//             });
+//         }
 
-        //this.getProjects();
-    },
+//         //this.getProjects();
+//     },
 
-    methods: {
-        getProjects() {
-            let _this = this;
-            let token = localStorage.getItem('accessToken');
-            axios
-                .get('api/project02_get_project_name_by_keyword', { headers: { "Authorization": `Bearer ${token}` } })  
-                .then(
-                    (res) => {
-                        _this.projects = res.data;
-                    },
-                    (err) => {
-                        alert(err.response);
-                    },
-                )
-                .finally(() => {
-                });
-        },
+//     methods: {
+//         getProjects() {
+//             let _this = this;
+//             let token = localStorage.getItem('accessToken');
+//             axios
+//                 .get('api/project02_get_project_name_by_keyword', { headers: { "Authorization": `Bearer ${token}` } })  
+//                 .then(
+//                     (res) => {
+//                         _this.projects = res.data;
+//                     },
+//                     (err) => {
+//                         alert(err.response);
+//                     },
+//                 )
+//                 .finally(() => {
+//                 });
+//         },
 
-        async getStages(pid) {
-            let _this = this;
-            let token = localStorage.getItem('accessToken');
+//         async getStages(pid) {
+//             let _this = this;
+//             let token = localStorage.getItem('accessToken');
 
-            // clear select sc_related_stage_id (add by edit)
-            // var select = document.getElementById("sc_related_stage_id");
-            // var length = select.options.length;
-            // for (i = length-1; i >= 0; i--) {
-            //     select.options[i] = null;
-            // }
+//             // clear select sc_related_stage_id (add by edit)
+//             // var select = document.getElementById("sc_related_stage_id");
+//             // var length = select.options.length;
+//             // for (i = length-1; i >= 0; i--) {
+//             //     select.options[i] = null;
+//             // }
 
-            if(pid != undefined) 
-                _this.project_id = pid;
+//             if(pid != undefined) 
+//                 _this.project_id = pid;
 
-            let res = await axios.get('api/project02_stages', { headers: { "Authorization": `Bearer ${token}` }, params: { pid: _this.project_id } });
-                _this.stages = res.data;
+//             let res = await axios.get('api/project02_stages', { headers: { "Authorization": `Bearer ${token}` }, params: { pid: _this.project_id } });
+//                 _this.stages = res.data;
 
-            console.log("getStages");
-            },
+//             console.log("getStages");
+//             },
         
-            clear(){
-                let _this = this;
-                _this.project_id = 0;
-                _this.stage_id = 0;
-                _this.stages = [];
-            },
+//             clear(){
+//                 let _this = this;
+//                 _this.project_id = 0;
+//                 _this.stage_id = 0;
+//                 _this.stages = [];
+//             },
 
-    },
-});
+//     },
+// });

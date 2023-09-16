@@ -1284,25 +1284,25 @@ try {
 
                 <div class="button_box">
 
-                    <button class="btn btn-secondary" style="width: 155px;" id="btn_reset" @click="clear_service">Reset Schedule</button>
+                    <button class="btn btn-secondary" style="width: 155px;" id="btn_service_reset" @click="clear_service">Reset Schedule</button>
 
-                    <button class="btn btn-secondary" id="btn_export" @click="export_service()">Export</button>
+                    <button class="btn btn-secondary" id="btn_service_export" @click="export_service()">Export</button>
 
-                    <button class="btn btn-secondary" style="width: 155px;" id="btn_duplicate" v-if="1 == 0">Duplicate Schedule</button>
+                    <button class="btn btn-secondary" style="width: 155px;" id="btn_service_duplicate" v-if="1 == 0">Duplicate Schedule</button>
 
-                    <button class="btn btn-primary" id="btn_edit" v-if="1 == 0">Edit</button>
+                    <button class="btn btn-primary" id="btn_service_edit" v-if="creator == username && status == 0" @click="service_edit()">Edit</button>
 
-                    <button class="btn btn-primary" style="width: 155px;" id="btn_???" v-if="1 == 0">Send Request</button>
+                    <button class="btn btn-primary" style="width: 155px;" id="btn_send_request" v-if="creator == username && status == 0"  @click="service_status(1)">Send Request</button>
 
-                    <button class="btn btn-secondary" style="width: 155px;" id="btn_???" v-if="1 == 0">Withdraw Request</button>
+                    <button class="btn btn-secondary" style="width: 155px;" id="btn_service_withdraw"  v-if="creator == username && status == 1"  @click="service_status(0)">Withdraw Request</button>
 
-                    <button class="btn btn-danger" id="btn_delete" v-if="1 == 0">Delete</button>
+                    <button class="btn btn-danger" id="btn_service_delete" @click="service_delete(-1)" v-if="creator == username && status == 0">Delete</button>
 
-                    <button class="btn btn-primary" id="btn_save" @click="service_save(0)">Save</button>
+                    <button class="btn btn-primary" id="btn_service_save" @click="service_save(0)">Save</button>
 
                     <button class="btn btn-primary" style="width: 200px" id="btn_save_send" @click="service_save(1)">Save and Send Request</button>
 
-                    <button class="btn btn-secondary" id="btn_cancel" v-if="1 == 0">Cancel</button>
+                    <button class="btn btn-secondary" id="btn_service_cancel" v-if="1 == 0">Cancel</button>
 
                 </div>
 
