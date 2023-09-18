@@ -27,6 +27,8 @@ var service = new Vue({
         sn: 0,
         e_id: 0,
 
+        edit_servie: false,
+
         access1 : false,
         access2 : false,
 
@@ -156,10 +158,12 @@ var service = new Vue({
 
         service_edit: function() {
             this.showing = true;
+            this.edit_servie = true;
         },
 
         service_cancel: function() {
             this.showing = false;
+            this.edit_servie = false;
         },
 
         del: function(eid) {
@@ -625,6 +629,10 @@ var service = new Vue({
             this.item_purpose = "";
             this.items = [];
             this.id = 0;
+
+            this.editing = false;
+            this.sn = 0;
+            this.showing = false;
         },
     },
 });
