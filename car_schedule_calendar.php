@@ -1284,7 +1284,7 @@ try {
 
                 <div class="button_box">
 
-                    <button class="btn btn-secondary" style="width: 155px;" id="btn_service_reset" @click="clear_service">Reset Schedule</button>
+                    <button class="btn btn-secondary" style="width: 155px;" id="btn_service_reset" @click="reset_service">Reset Schedule</button>
 
                     <button class="btn btn-secondary" id="btn_service_export" @click="export_service()">Export</button>
 

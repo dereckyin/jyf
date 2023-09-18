@@ -609,6 +609,28 @@ var service = new Vue({
                 });
         },
 
+        reset_service: function() {
+            if(this.showing == false) return;
+
+            this.schedule_Name = "";
+            this.date_use = "";
+            this.car_use = "";
+            this.driver = "";
+            this.helper = "";
+            this.time_out = "";
+            this.time_in = "";
+            this.notes = "";
+            this.creator = "";
+            this.status = "";
+
+            this.item_schedule = "";
+            this.item_company = "";
+            this.item_address = "";
+            this.item_purpose = "";
+            this.items = [];
+            this.id = 0;
+        },
+
         clear_service: function() {
             if(this.showing == false) return;
 
@@ -631,6 +653,7 @@ var service = new Vue({
             this.id = 0;
 
             this.editing = false;
+            this.edit_servie = false;
             this.sn = 0;
             this.showing = false;
         },
@@ -2155,7 +2178,9 @@ var initial = async (_id) =>  {
             document.getElementById("myLargeModalLabel").innerText =
                 "Schedule Details";
             eventObj = info.event;
-            resetSchedule();
+
+            service.clear_service();
+
             service.id = eventObj.id;
             var sc_content = eventObj.extendedProps.description;
 
