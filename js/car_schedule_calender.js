@@ -609,6 +609,26 @@ var service = new Vue({
                 });
         },
 
+        clean_service: function() {
+            this.schedule_Name = "";
+            this.date_use = "";
+            this.car_use = "";
+            this.driver = "";
+            this.helper = "";
+            this.time_out = "";
+            this.time_in = "";
+            this.notes = "";
+            this.creator = "";
+            this.status = "";
+
+            this.item_schedule = "";
+            this.item_company = "";
+            this.item_address = "";
+            this.item_purpose = "";
+            this.items = [];
+            this.id = 0;
+        },
+
         reset_service: function() {
             if(this.showing == false) return;
 
@@ -2148,6 +2168,8 @@ var initial = async (_id) =>  {
                     //     "display: flex; align-items: center; margin-top:1%;";
 
                     resetSchedule();
+
+                    service.clean_service();
 
                     // if(project.add_project_id != 0 && project.add_stage_id != 0)
                     // {
