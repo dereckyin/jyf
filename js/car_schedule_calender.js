@@ -1363,7 +1363,7 @@ var app = new Vue({
                             symbol = 'fa-car';
 
                         let backgroundColor = "";
-                        if(response.data[i].status == "1")
+                        if(response.data[i].status == "1" || response.data[i].status == "0")
                         {
                             if(response.data[i].car_use == "Alphard")
                                 backgroundColor = "#FECC28;";
