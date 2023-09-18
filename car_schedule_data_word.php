@@ -44,6 +44,22 @@ $notes = (isset($_POST['notes']) ?  $_POST['notes'] : "");
 $items = (isset($_POST['items']) ?  $_POST['items'] : []);
 $status = (isset($_POST['status']) ?  $_POST['status'] : 0);
 
+$dateString = "";
+
+$tout = "";
+if($date_use != "" && $time_out != "")
+{
+    $dateString = new DateTime($date_use . " " . $time_out);
+    $tout = date('h:i A', strtotime($date_use . " " . $time_out));
+}
+
+$tin = "";
+if($date_use != "" && $time_in != "")
+{
+    $dateString = new DateTime($date_use . " " . $time_in);
+    $tin = date('h:i A', strtotime($date_use . " " . $time_in));
+}
+
 $items_detail = json_decode($items, true);
 
 // Creating the new document...
@@ -89,11 +105,11 @@ $table->addCell(8500, ['borderSize' => 6])->addText($helper);
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Time Out:", array('bold' => true));
-$table->addCell(8500, ['borderSize' => 6])->addText($time_out);
+$table->addCell(8500, ['borderSize' => 6])->addText($tout);
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Time In:", array('bold' => true));
-$table->addCell(8500, ['borderSize' => 6])->addText($time_in);
+$table->addCell(8500, ['borderSize' => 6])->addText($tin);
 
 
 $table->addRow();
