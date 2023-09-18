@@ -27,6 +27,8 @@ var service = new Vue({
         sn: 0,
         e_id: 0,
 
+        org_schedule: {},
+
         edit_servie: false,
 
         access1 : false,
@@ -164,6 +166,18 @@ var service = new Vue({
         service_cancel: function() {
             this.showing = false;
             this.edit_servie = false;
+
+            this.schedule_Name = this.org_schedule.schedule_Name;
+            this.date_use = this.org_schedule.date_use;
+            this.car_use = this.org_schedule.car_use;
+            this.driver = this.org_schedule.driver;
+            this.helper = this.org_schedule.helper;
+            this.time_out = this.org_schedule.time_out;
+            this.time_in = this.org_schedule.time_in;
+            this.notes = this.org_schedule.notes;
+            this.items = JSON.parse(this.org_schedule.items);
+            this.creator = this.org_schedule.creator;
+     
         },
 
         del: function(eid) {
@@ -2206,6 +2220,8 @@ var initial = async (_id) =>  {
 
             service.id = eventObj.id;
             var sc_content = eventObj.extendedProps.description;
+
+            service.org_schedule = JSON.parse(JSON.stringify(sc_content));
 
             service.schedule_Name = sc_content.schedule_Name;
             service.date_use = sc_content.date_use;
