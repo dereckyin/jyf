@@ -171,6 +171,104 @@ var service = new Vue({
             }
         },
 
+        duplicate_service: function() {
+            let _this = this;
+            let is_send = "0";
+
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
+
+            form_Data.append("jwt", token);
+            form_Data.append("id", 0);
+            form_Data.append("schedule_Name", this.schedule_Name);
+            form_Data.append("date_use", this.date_use);
+            form_Data.append("car_use", this.car_use);
+            form_Data.append("driver", this.driver);
+            form_Data.append("helper", this.helper);
+            form_Data.append("time_out", this.time_out);
+            form_Data.append("time_in", this.time_in);
+            form_Data.append("notes", this.notes);
+            form_Data.append("status", is_send);
+            form_Data.append("items", JSON.stringify(this.items));
+
+            api_url = "api/car_calender_main_save.php";
+
+            axios({
+                    method: "post",
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    url: api_url,
+                    data: form_Data,
+                })
+                .then(function (response) {
+
+                    let symbol = "";
+                    if (is_send == "1") 
+                        symbol = 'fa-question-circle';
+                    if (is_send == "2")
+                        symbol = 'fa-car';
+
+                        let sid = 0;
+                        let created_at = "";
+                        let created_by = "";
+
+                        if (response.data !== "") 
+                        {
+                            sid = response.data.sid;
+                            created_at = response.data.created_at;
+                            created_by = response.data.created_by;
+                        }
+
+                        let Lasteditor = created_by + " at " + created_at;
+
+                        if (
+                            _this.time_out != "" &&
+                            _this.time_in != "" &&
+                            _this.time_in >= _this.time_out && sid != 0
+                        ) {
+                            calendar.addEvent({
+                                id: sid,
+                                title: _this.schedule_Name,
+                                Date: moment(_this.date_use).format("YYYY-MM-DD"),
+                                //start: _this.date_use + "T" + _this.time_out,
+                                //end: _this.date_use + "T" + _this.time_in,
+                                allDay: true,
+                                description: {
+                                    icon: symbol,
+                                    schedule_Name: UnescapeHTML(_this.schedule_Name),
+                                    car_use: _this.car_use,
+                                    driver: _this.driver,
+                                    helper: _this.helper,
+                                    date_use: moment(_this.date_use).format("YYYY-MM-DD"),
+                                    time_out: moment(_this.date_use + ' ' + _this.time_out).format("HH:mm"),
+                                    time_in: moment(_this.date_use + ' ' + _this.time_in).format("HH:mm"),
+                                    notes: _this.notes,
+                                    Lasteditor: Lasteditor,
+                                    items: _this.items,
+                                    status: is_send,
+                                    creator: _this.username,
+                                },
+                            });
+                        }
+
+
+                    $("#serviceModalScrollable").modal("toggle");
+
+                    _this.clear_service();
+
+                    reload();
+                })
+                .catch(function (error) {
+                    //handle error
+                    Swal.fire({
+                        text: error.data,
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                    });
+                });
+        },
+
         save_item: function() {
             if(this.showing == false) return;
 
@@ -1996,41 +2094,41 @@ var initial = async (_id) =>  {
             addEventButton: {
                 text: "Add Schedule",
                 click: async function () {
-                    document.getElementById("myLargeModalLabel").innerText =
-                        "Add Schedule";
-                    document.getElementById("last_editor").style.display = "none";
-                    document.getElementById("btn_reset").style.display = "inline";
-                    document.getElementById("btn_add").style.display = "inline";
-                    document.getElementById("btn_duplicate").style.display = "none";
-                    document.getElementById("btn_export").style.display = "none";
-                    document.getElementById("btn_edit").style.display = "none";
-                    document.getElementById("btn_delete").style.display = "none";
-                    document.getElementById("btn_cancel").style.display = "none";
-                    document.getElementById("btn_save").style.display = "none";
+                    // document.getElementById("myLargeModalLabel").innerText =
+                    //     "Add Schedule";
+                    // document.getElementById("last_editor").style.display = "none";
+                    // document.getElementById("btn_reset").style.display = "inline";
+                    // document.getElementById("btn_add").style.display = "inline";
+                    // document.getElementById("btn_duplicate").style.display = "none";
+                    // document.getElementById("btn_export").style.display = "none";
+                    // document.getElementById("btn_edit").style.display = "none";
+                    // document.getElementById("btn_delete").style.display = "none";
+                    // document.getElementById("btn_cancel").style.display = "none";
+                    // document.getElementById("btn_save").style.display = "none";
 
-                    document.getElementById("btn_lock").style.display = "none";
-                    document.getElementById("btn_unlock").style.display = "none";
+                    // document.getElementById("btn_lock").style.display = "none";
+                    // document.getElementById("btn_unlock").style.display = "none";
 
-                    document.getElementById("btn_confirm").style.display = "none";
-                    document.getElementById("btn_unconfirm").style.display = "none";
+                    // document.getElementById("btn_confirm").style.display = "none";
+                    // document.getElementById("btn_unconfirm").style.display = "none";
 
-                    document.getElementById("sc_product_files").innerHTML = "";
-                    document.getElementById("upload_input").style =
-                        "display: flex; align-items: center; margin-top:1%;";
+                    // document.getElementById("sc_product_files").innerHTML = "";
+                    // document.getElementById("upload_input").style =
+                    //     "display: flex; align-items: center; margin-top:1%;";
 
                     resetSchedule();
 
-                    if(project.add_project_id != 0 && project.add_stage_id != 0)
-                    {
-                        project.project_id = project.add_project_id;
-                        project.stage_id = project.add_stage_id;
-                        await project.getStages(project.project_id);
-                    }
-                    else
-                    {
-                        $('#sc_related_project_id').val(0);
-                        $('#sc_related_stage_id').val(0);
-                    }
+                    // if(project.add_project_id != 0 && project.add_stage_id != 0)
+                    // {
+                    //     project.project_id = project.add_project_id;
+                    //     project.stage_id = project.add_stage_id;
+                    //     await project.getStages(project.project_id);
+                    // }
+                    // else
+                    // {
+                    //     $('#sc_related_project_id').val(0);
+                    //     $('#sc_related_stage_id').val(0);
+                    // }
                     
 
                     Change_Schedule_State(false, true);

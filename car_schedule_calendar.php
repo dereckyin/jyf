@@ -1288,11 +1288,11 @@ try {
 
                     <button class="btn btn-secondary" id="btn_service_export" v-if="!showing" @click="export_service()">Export</button>
 
-                    <button class="btn btn-secondary" style="width: 155px;" v-if="!showing" id="btn_service_duplicate">Duplicate Schedule</button>
+                    <button class="btn btn-secondary" style="width: 155px;" v-if="!showing" id="btn_service_duplicate" @click="duplicate_service()">Duplicate Schedule</button>
 
                     <button class="btn btn-primary" id="btn_service_edit" v-if="creator == username && status == 0 && !showing" @click="service_edit()">Edit</button>
 
-                    <button class="btn btn-primary" id="btn_service_cancel" v-if="showing" @click="service_cancel()">Cancel</button>
+                    <button class="btn btn-primary" id="btn_service_cancel" v-if="showing && id != 0" @click="service_cancel()">Cancel</button>
 
                     <button class="btn btn-primary" style="width: 155px;" id="btn_send_request" v-if="creator == username && status == 0 && !showing"  @click="service_status(1)">Send Request</button>
 
