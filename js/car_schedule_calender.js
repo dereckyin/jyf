@@ -1382,21 +1382,21 @@ var app = new Vue({
                         if (response.data[i].status == "2")
                             symbol = 'fa-car';
 
-                        let backgroundColor = "";
+                        let gbcolor = "";
                         if(response.data[i].status == "1" || response.data[i].status == "0")
                         {
                             if(response.data[i].car_use == "Alphard")
-                                backgroundColor = "#FECC28;";
+                            gbcolor = "#FECC28";
                             if(response.data[i].car_use == "Avanza")
-                                backgroundColor = "#4EB5BB;";
+                            gbcolor = "#4EB5BB";
                             if(response.data[i].car_use == "Travis 1")
-                                backgroundColor = "#009858;";
+                            gbcolor = "#009858";
                             if(response.data[i].car_use == "Travis 2")
-                                backgroundColor = "#A671AD;";
+                            gbcolor = "#A671AD";
                             if(response.data[i].car_use == "Toyota Rush")
-                                backgroundColor = "#F19DB4;";
+                            gbcolor = "#F19DB4";
                             if(response.data[i].car_use == "")
-                                backgroundColor = "#141415;";
+                            gbcolor = "#141415";
                         }
 
                         
@@ -1407,11 +1407,12 @@ var app = new Vue({
                             Date: moment(response.data[i].date_use).format("YYYY-MM-DD"),
                             start: moment(response.data[i].date_use).format("YYYY-MM-DD"), // will be parsed
                             end: moment(response.data[i].date_use).format("YYYY-MM-DD"),
-                            color: "black",
+                            color: gbcolor,
+                            display: 'block',
                             // color: ((response.data[i].color_other !== '') ? response.data[i].color_other : response.data[i].color),
                             // color_other: response.data[i].color_other,
-                            backgroundColor: backgroundColor,
-                            borderColor: backgroundColor,
+                            backgroundColor: gbcolor,
+                            borderColor: gbcolor,
                             allDay: true,
                             description: {
                                 icon: symbol,

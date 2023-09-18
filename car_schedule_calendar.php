@@ -1284,7 +1284,7 @@ try {
 
                 <div class="button_box">
 
-                    <button class="btn btn-secondary" style="width: 155px;" id="btn_service_reset" @click="reset_service">Reset Schedule</button>
+                    <button class="btn btn-secondary" style="width: 155px;" id="btn_service_reset" v-if="showing" @click="reset_service">Reset Schedule</button>
 
                     <button class="btn btn-secondary" id="btn_service_export" @click="export_service()">Export</button>
 
@@ -1298,7 +1298,7 @@ try {
 
                     <button class="btn btn-secondary" style="width: 155px;" id="btn_service_withdraw"  v-if="creator == username && status == 1 && !showing"  @click="service_status(0)">Withdraw Request</button>
 
-                    <button class="btn btn-danger" id="btn_service_delete" @click="service_delete(-1)" v-if="creator == username && status == 0 && !showing">Delete</button>
+                    <button class="btn btn-danger" id="btn_service_delete" @click="service_delete(-1)" v-if="creator == username && status < 2 && !showing">Delete</button>
 
                     <button class="btn btn-primary" id="btn_service_save" @click="service_save(0)"  v-if="(creator == username && status == 0 && showing) || id == 0">Save</button>
 
