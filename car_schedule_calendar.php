@@ -992,7 +992,7 @@ try {
 
                         <div class="col-10">
 
-                            <input type="date" class="form-control" style="width:40%;" id="sc_date">
+                            <input type="date" class="form-control" style="width:40%;" id="check_date_use" v-model="check_date_use" :disabled="!check_showing">
 
                         </div>
                     </div>
@@ -1008,7 +1008,7 @@ try {
 
                         <div class="col-10">
 
-                            <input type="time" class="form-control" style="width:40%; margin-right:1%; padding-right: 0; text-align: center;" id="sc_stime"> to <input type="time" class="form-control" style="width:40%; margin-left:1%; padding-right: 0; text-align: center;" id="sc_etime">
+                            <input type="time" class="form-control" style="width:40%; margin-right:1%; padding-right: 0; text-align: center;" id="check_time_out" v-model="check_time_out" :disabled="!check_showing"> to <input type="time" class="form-control" style="width:40%; margin-left:1%; padding-right: 0; text-align: center;" id="check_time_in" v-model="check_time_in" :disabled="!check_showing">
 
                         </div>
 
@@ -1025,8 +1025,8 @@ try {
 
                         <div class="col-10">
 
-                            <Select class="form-control" style="width:40%;" id="???">
-                                <option value="0">Choose One</option>
+                            <Select class="form-control" style="width:40%;" id="check_car_use" v-model="check_car_use" :disabled="!check_showing">
+                                <option value="">Choose One</option>
                                 <option value="Alphard">Alphard</option>
                                 <option value="Avanza">Avanza</option>
                                 <option value="Travis 1">Travis 1</option>
@@ -1048,8 +1048,8 @@ try {
 
                         <div class="col-10">
 
-                            <input type="text" class="form-control" style="width:90%;" id="???">
-                            <input type="text" class="form-control" style="display: none;" id="???">
+                            <input type="text" class="form-control" style="width:90%;" id="check_driver" v-model="check_driver" :disabled="!check_showing">
+                          
 
                         </div>
                     </div>
@@ -1058,19 +1058,19 @@ try {
 
                     <div class="button_box">
 
-                        <button class="btn btn-secondary" id="btn_reset???">Reset</button>
+                        <button class="btn btn-secondary" id="btn_service_reset_check">Reset</button>
 
-                        <button class="btn btn-primary" id="btn_???">Assign</button>
+                        <button class="btn btn-primary" id="btn_service_assign_check">Assign</button>
 
-                        <button class="btn btn-secondary" id="btn_???">Not Yet Assign</button>
+                        <button class="btn btn-secondary" id="btn_service_not_assign_check">Not Yet Assign</button>
 
-                        <button class="btn btn-danger" id="btn_???">Reject</button>
+                        <button class="btn btn-danger" id="btn_service_reject_check">Reject</button>
 
-                        <button class="btn btn-primary" id="btn_edit???">Edit</button>
+                        <button class="btn btn-primary" id="btn_service_edit_check">Edit</button>
 
-                        <button class="btn btn-secondary" id="btn_cancel">Cancel</button>
+                        <button class="btn btn-secondary" id="btn_service_cancel_check">Cancel</button>
 
-                        <button class="btn btn-primary" id="btn_save">Save</button>
+                        <button class="btn btn-primary" id="btn_service_save_check">Save</button>
 
                     </div>
 

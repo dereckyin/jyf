@@ -39,6 +39,15 @@ var service = new Vue({
 
         username: "",
 
+        // for check
+        check_showing: false,
+
+        check_date_use: "",
+        check_car_use: "",
+        check_driver: "",
+        check_time_out: "",
+        check_time_in: "",
+
     },
 
     created() {
@@ -621,6 +630,22 @@ var service = new Vue({
                     //handle error
                     console.log(response);
                 });
+        },
+
+        service_click: function(sc_content) {
+            this.org_schedule = JSON.parse(JSON.stringify(sc_content));
+
+            this.schedule_Name = sc_content.schedule_Name;
+            this.date_use = sc_content.date_use;
+            this.car_use = sc_content.car_use;
+            this.driver = sc_content.driver;
+            this.helper = sc_content.helper;
+            this.time_out = sc_content.time_out;
+            this.time_in = sc_content.time_in;
+            this.notes = sc_content.notes;
+            this.items = JSON.parse(sc_content.items);
+            this.creator = sc_content.creator;
+            this.status = sc_content.status;
         },
 
         clean_service: function() {
@@ -2221,19 +2246,7 @@ var initial = async (_id) =>  {
             service.id = eventObj.id;
             var sc_content = eventObj.extendedProps.description;
 
-            service.org_schedule = JSON.parse(JSON.stringify(sc_content));
-
-            service.schedule_Name = sc_content.schedule_Name;
-            service.date_use = sc_content.date_use;
-            service.car_use = sc_content.car_use;
-            service.driver = sc_content.driver;
-            service.helper = sc_content.helper;
-            service.time_out = sc_content.time_out;
-            service.time_in = sc_content.time_in;
-            service.notes = sc_content.notes;
-            service.items = JSON.parse(sc_content.items);
-            service.creator = sc_content.creator;
-            service.status = sc_content.status;
+            service.service_click(sc_content);
 
             $("#serviceModalScrollable").modal("toggle");
         },

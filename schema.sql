@@ -1251,3 +1251,26 @@ CREATE TABLE IF NOT EXISTS `access_control` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
 
 insert into access_control(`car_access1`, `car_access2`) values('', '');
+
+-- 20230911 car schedule check
+CREATE TABLE IF NOT EXISTS `car_calendar_check` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `sid` bigint(20) unsigned NOT NULL,
+  `kind` varchar(10) COLLATE utf8mb4_unicode_ci  default '',
+  `date_use` timestamp NULL DEFAULT NULL,
+  `car_use` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `driver` varchar(200) COLLATE utf8mb4_unicode_ci  default '',
+  `time_out` timestamp NULL DEFAULT NULL,
+  `time_in` timestamp NULL DEFAULT NULL,
+  `is_enabled` bool default false,
+  `status` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `approve_at` timestamp NULL DEFAULT NULL,
+  `created_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `updated_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `deleted_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `approve_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';

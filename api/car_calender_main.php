@@ -94,6 +94,13 @@ if (!isset($jwt)) {
 
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $merged_results[] = $row;
+
+            $check1 = GetCheck($db, $row['id'], "1");
+            $check2 = GetCheck($db, $row['id'], "2");
+
+            $merged_results[count($merged_results) - 1]['check1'] = $check1;
+            $merged_results[count($merged_results) - 1]['check2'] = $check2;
+
         }
 
 
@@ -104,4 +111,21 @@ if (!isset($jwt)) {
         echo json_encode(array("message" => ".$e."));
     }
 
+}
+
+function GetCheck($db, $sid, $kind)
+{
+    $result = array();
+
+    $query = "SELECT * from car_calendar_check 
+              where `status` <> -1 and kind = '" . $kind . "' and sid = " . $sid . "";
+
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $result[] = $row;
+    }
+
+    return $result;
 }
