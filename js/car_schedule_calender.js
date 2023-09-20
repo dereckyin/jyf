@@ -28,6 +28,8 @@ var service = new Vue({
         e_id: 0,
 
         org_schedule: {},
+        org_schedule_check1: {},
+        org_schedule_check2: {},
 
         edit_servie: false,
 
@@ -50,6 +52,8 @@ var service = new Vue({
 
         access_check1: false,
         access_check2: false,
+
+        edit_servie_check1: false,
 
     },
 
@@ -120,17 +124,112 @@ var service = new Vue({
             });
         },
 
-        service_save_check: function(check1, check2, is_send) {
+        service_reject_check: function(status) {
+            let _this = this;
+
+            Swal.fire({
+                title: "Reject",
+                text: "Are you sure to reject?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+              }).then((result) => {
+                if (result.value) {
+
+                var token = localStorage.getItem("token");
+                var form_Data = new FormData();
+
+                let id = 0;
+                let sid = 0;
+
+                if(_this.org_schedule_check1.length > 0){
+                    id = _this.org_schedule_check1[0].id;
+                    sid = _this.id;
+                    api_url = "api/car_calender_check_remove.php";
+                }
+                else{
+                    api_url = "api/car_calender_check_reject.php";
+                    id = _this.id;
+                }
+            
+                form_Data.append("jwt", token);
+                form_Data.append("id", id);
+                form_Data.append("sid", sid);
+                form_Data.append("status", status);
+
+                axios({
+                        method: "post",
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                        url: api_url,
+                        data: form_Data,
+                    })
+                    .then(function (response) {
+
+                        let is_send = status;
+
+                        let symbol = "";
+                        if (is_send == "1") 
+                            symbol = 'fa-question-circle';
+                        if (is_send == "2")
+                            symbol = 'fa-car';
+
+
+                        if(_this.id != 0)
+                        {
+                            
+                            var event = calendar.getEventById(_this.id);
+
+                            event.extendedProps.description.status = is_send;
+
+                            _this.id = 0;
+                        }
+
+                        $("#serviceModalScrollable").modal("toggle");
+
+                        _this.clear_service();
+
+                        reload();
+                
+                    
+                })
+                .catch(function (error) {
+                    //handle error
+                    Swal.fire({
+                        text: error.data,
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                    });
+                });
+            }
+            else{
+                return;
+            }
+        });
+    },
+
+        service_update_check: function() {
             let _this = this;
 
             var token = localStorage.getItem("token");
             var form_Data = new FormData();
 
-            let kind = "1";
-            if(check2 == true) kind = "2";
+            let id = 0;
+
+            if(this.org_schedule_check1.length > 0){
+                id = this.org_schedule_check1[0].id;
+                api_url = "api/car_calender_check_update.php";
+            }
+            else{
+                api_url = "api/car_calender_check_save.php";
+                id = this.id;
+            }
         
             form_Data.append("jwt", token);
-            form_Data.append("id", this.id);
+            form_Data.append("id", id);
            
             form_Data.append("date_use", this.check_date_use);
             form_Data.append("car_use", this.check_car_use);
@@ -138,11 +237,7 @@ var service = new Vue({
         
             form_Data.append("time_out", this.check_time_out);
             form_Data.append("time_in", this.check_time_in);
-            form_Data.append("status", is_send);
 
-            form_Data.append("kind")
-
-            api_url = "api/car_calender_check_save.php";
 
             axios({
                     method: "post",
@@ -248,6 +343,137 @@ var service = new Vue({
                 });
         },
 
+        service_save_check: function(check1, check2, is_send) {
+            let _this = this;
+
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
+
+            let kind = "1";
+
+            if(check2 == true) kind = "2";
+        
+            form_Data.append("jwt", token);
+            form_Data.append("id", this.id);
+           
+            form_Data.append("date_use", this.check_date_use);
+            form_Data.append("car_use", this.check_car_use);
+            form_Data.append("driver", this.check_driver);
+        
+            form_Data.append("time_out", this.check_time_out);
+            form_Data.append("time_in", this.check_time_in);
+            form_Data.append("status", is_send);
+
+            form_Data.append("kind", kind);
+
+            api_url = "api/car_calender_check_save.php";
+
+            axios({
+                    method: "post",
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    url: api_url,
+                    data: form_Data,
+                })
+                .then(function (response) {
+
+                    let symbol = "";
+                    if (is_send == "1") 
+                        symbol = 'fa-question-circle';
+                    if (is_send == "2")
+                        symbol = 'fa-car';
+
+
+                    if(_this.id == 0)
+                    {
+                        let sid = 0;
+                        let created_at = "";
+                        let created_by = "";
+
+                        if (response.data !== "") 
+                        {
+                            sid = response.data.sid;
+                            created_at = response.data.created_at;
+                            created_by = response.data.created_by;
+                        }
+
+                        let Lasteditor = created_by + " at " + created_at;
+
+                        if (
+                            _this.time_out != "" &&
+                            _this.time_in != "" &&
+                            _this.time_in >= _this.time_out && sid != 0
+                        ) {
+                            calendar.addEvent({
+                                id: sid,
+                                title: _this.schedule_Name,
+                                Date: moment(_this.date_use).format("YYYY-MM-DD"),
+                                //start: _this.date_use + "T" + _this.time_out,
+                                //end: _this.date_use + "T" + _this.time_in,
+                                allDay: true,
+                                description: {
+                                    icon: symbol,
+                                    schedule_Name: UnescapeHTML(_this.schedule_Name),
+                                    car_use: _this.car_use,
+                                    driver: _this.driver,
+                                    helper: _this.helper,
+                                    date_use: moment(_this.date_use).format("YYYY-MM-DD"),
+                                    time_out: moment(_this.date_use + ' ' + _this.time_out).format("HH:mm"),
+                                    time_in: moment(_this.date_use + ' ' + _this.time_in).format("HH:mm"),
+                                    notes: _this.notes,
+                                    Lasteditor: Lasteditor,
+                                    items: _this.items,
+                                    status: is_send,
+                                    creator: _this.username,
+                                },
+                            });
+                        }
+                    }
+
+                    if(_this.id != 0)
+                    {
+                        
+                        var event = calendar.getEventById(_this.id);
+                        event.title = _this.schedule_Name;
+                        event.allDay = true;
+                        event.Date = moment(_this.date_use).format("YYYY-MM-DD");
+                        event.start = _this.date_use;
+                        event.end = _this.date_use;
+
+                        event.extendedProps.description.schedule_Name = _this.schedule_Name;
+                        event.extendedProps.icon = symbol,
+                        event.extendedProps.description.car_use = _this.car_use;
+                        event.extendedProps.description.driver = _this.driver;
+                        event.extendedProps.description.helper = _this.helper;
+                        event.extendedProps.description.date_use = moment(_this.date_use).format("YYYY-MM-DD");
+                        event.extendedProps.description.time_out = moment(_this.date_use + ' ' + _this.time_out).format("HH:mm");
+                        event.extendedProps.description.time_in = moment(_this.date_use + ' ' + _this.time_in).format("HH:mm");
+                        event.extendedProps.description.notes = _this.notes;
+                        event.extendedProps.description.items = _this.items;
+                        event.extendedProps.description.status = _this.status;
+                        event.extendedProps.description.creator = _this.username;
+
+                    }
+
+                    _this.id = 0
+
+                    $("#serviceModalScrollable").modal("toggle");
+
+                    _this.clear_service();
+
+                    reload();
+                })
+                .catch(function (error) {
+                    //handle error
+                    Swal.fire({
+                        text: error.data,
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                    });
+                });
+        },
+
         getUserName: function() {
             var form_Data = new FormData();
             let _this = this;
@@ -315,6 +541,33 @@ var service = new Vue({
         service_edit: function() {
             this.showing = true;
             this.edit_servie = true;
+        },
+
+        service_edit_check: function() {
+            this.check_showing = true;
+            this.edit_servie_check1 = true;
+        },
+
+        service_cancel_check: function() {
+            this.check_showing = false;
+            this.edit_servie_check1 = false;
+
+            if(this.org_schedule_check1.length > 0){
+                this.check_date_use = moment(this.org_schedule_check1[0].date_use).format("YYYY-MM-DD");
+                this.check_car_use = this.org_schedule_check1[0].car_use;
+                this.check_driver = this.org_schedule_check1[0].driver;
+                this.check_time_out = moment(this.org_schedule_check1[0].time_out).format("HH:mm");
+                this.check_time_in = moment(this.org_schedule_check1[0].time_in).format("HH:mm");
+            }
+            else{
+                this.check_date_use = moment(this.org_schedule.date_use).format("YYYY-MM-DD");
+                this.check_car_use = this.org_schedule.car_use;
+                this.check_driver = this.org_schedule.driver;
+                this.check_time_out = moment(this.org_schedule.time_out).format("HH:mm");
+                this.check_time_in = moment(this.org_schedule.time_in).format("HH:mm");
+            }
+            
+
         },
 
         service_cancel: function() {
@@ -509,6 +762,8 @@ var service = new Vue({
                     event.extendedProps.icon = symbol,
 
                     event.extendedProps.description.status = _this.status;
+
+                _this.id = 0;
 
                 $("#serviceModalScrollable").modal("toggle");
 
@@ -779,6 +1034,8 @@ var service = new Vue({
 
         service_click: function(sc_content) {
             this.org_schedule = JSON.parse(JSON.stringify(sc_content));
+            this.org_schedule_check1 = JSON.parse(JSON.stringify(sc_content.check1));
+            this.org_schedule_check2 = JSON.parse(JSON.stringify(sc_content.check2));
 
             this.schedule_Name = sc_content.schedule_Name;
             this.date_use = sc_content.date_use;
@@ -801,11 +1058,11 @@ var service = new Vue({
 
             if(sc_content.check1.length > 0)
             {
-                this.check_date_use = sc_content.check1[0].date_use;
+                this.check_date_use = moment(sc_content.check1[0].date_use).format("YYYY-MM-DD");
                 this.check_car_use = sc_content.check1[0].car_use;
                 this.check_driver = sc_content.check1[0].driver;
-                this.check_time_out = sc_content.check1[0].time_out;
-                this.check_time_in = sc_content.check1[0].time_in;
+                this.check_time_out = moment(sc_content.check1[0].time_out).format("HH:mm");
+                this.check_time_in = moment(sc_content.check1[0].time_in).format("HH:mm");
             }
 
             if(sc_content.check2.length > 0)
@@ -832,6 +1089,18 @@ var service = new Vue({
             this.item_purpose = "";
             this.items = [];
             this.id = 0;
+        },
+
+        reset_service_check: function() {
+            if(this.check_showing == false) return;
+
+            this.check_date_use = "";
+            this.check_car_use = "";
+            this.check_driver = "";
+
+            this.check_time_out = "";
+            this.check_time_in = "";
+        
         },
 
         reset_service: function() {

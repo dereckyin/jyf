@@ -1048,7 +1048,7 @@ try {
 
                         <div class="col-10">
 
-                            <input type="text" class="form-control" style="width:90%;" id="check_driver" v-model="check_driver" :disabled="!check_showing2">
+                            <input type="text" class="form-control" style="width:90%;" id="check_driver" v-model="check_driver" :disabled="!check_showing2 && !check_showing">
                           
 
                         </div>
@@ -1060,17 +1060,17 @@ try {
 
                         <button class="btn btn-secondary" id="btn_service_reset_check" v-if="check_showing" @click="reset_service_check">Reset</button>
 
-                        <button class="btn btn-primary" id="btn_service_assign_check">Assign</button>
+                        <button class="btn btn-primary" id="btn_service_assign_check" v-if="!check_showing && access_check1" @click="service_save_check(access_check1, access_check2, '2')">Assign</button>
 
-                        <button class="btn btn-secondary" id="btn_service_not_assign_check" @click="service_save_check(access_check1, access_check2)">Not Yet Assign</button>
+                        <button class="btn btn-secondary" id="btn_service_not_assign_check" v-if="!check_showing && access_check1" @click="service_save_check(access_check1, access_check2, '1')">Not Yet Assign</button>
 
-                        <button class="btn btn-danger" id="btn_service_reject_check">Reject</button>
+                        <button class="btn btn-danger" id="btn_service_reject_check" v-if="!check_showing && access_check1" @click="service_reject_check('0')">Reject</button>
 
-                        <button class="btn btn-primary" id="btn_service_edit_check">Edit</button>
+                        <button class="btn btn-primary" id="btn_service_edit_check" v-if="status == 1 && !edit_servie_check1" @click="service_edit_check()">Edit</button>
 
-                        <button class="btn btn-secondary" id="btn_service_cancel_check">Cancel</button>
+                        <button class="btn btn-secondary" id="btn_service_cancel_check" v-if="edit_servie_check1" @click="service_cancel_check()">Cancel</button>
 
-                        <button class="btn btn-primary" id="btn_service_save_check">Save</button>
+                        <button class="btn btn-primary" id="btn_service_save_check" v-if="edit_servie_check1" @click="service_update_check()">Save</button>
 
                     </div>
 
