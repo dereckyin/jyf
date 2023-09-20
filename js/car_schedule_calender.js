@@ -36,17 +36,20 @@ var service = new Vue({
 
         showing : true,
 
-
         username: "",
 
         // for check
         check_showing: false,
+        check_showing2: false,
 
         check_date_use: "",
         check_car_use: "",
         check_driver: "",
         check_time_out: "",
         check_time_in: "",
+
+        access_check1: false,
+        access_check2: false,
 
     },
 
@@ -57,6 +60,20 @@ var service = new Vue({
 
     watch: {
         id: function (val) {
+
+            this.access_check1 = false;
+            this.access_check2 = false;
+
+            if(this.status == "1" && this.access1 == true)
+            {
+                this.access_check1 = true;
+            }
+
+            if(this.status == "2" && this.access2 == true)
+            {
+                this.access_check2 = true;
+            }
+
             if(this.id == 0) 
             {
                 this.showing = true;
@@ -64,13 +81,13 @@ var service = new Vue({
             }
             else
                this.showing = false;
-            
 
             if (this.creator != this.username) {
                 this.showing = false;
                 return;
             }
 
+            
         }
     },
 
@@ -101,6 +118,134 @@ var service = new Vue({
                 confirmButtonText: 'OK'
                 })
             });
+        },
+
+        service_save_check: function(check1, check2, is_send) {
+            let _this = this;
+
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
+
+            let kind = "1";
+            if(check2 == true) kind = "2";
+        
+            form_Data.append("jwt", token);
+            form_Data.append("id", this.id);
+           
+            form_Data.append("date_use", this.check_date_use);
+            form_Data.append("car_use", this.check_car_use);
+            form_Data.append("driver", this.check_driver);
+        
+            form_Data.append("time_out", this.check_time_out);
+            form_Data.append("time_in", this.check_time_in);
+            form_Data.append("status", is_send);
+
+            form_Data.append("kind")
+
+            api_url = "api/car_calender_check_save.php";
+
+            axios({
+                    method: "post",
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    url: api_url,
+                    data: form_Data,
+                })
+                .then(function (response) {
+
+                    let symbol = "";
+                    if (is_send == "1") 
+                        symbol = 'fa-question-circle';
+                    if (is_send == "2")
+                        symbol = 'fa-car';
+
+
+                    if(_this.id == 0)
+                    {
+                        let sid = 0;
+                        let created_at = "";
+                        let created_by = "";
+
+                        if (response.data !== "") 
+                        {
+                            sid = response.data.sid;
+                            created_at = response.data.created_at;
+                            created_by = response.data.created_by;
+                        }
+
+                        let Lasteditor = created_by + " at " + created_at;
+
+                        if (
+                            _this.time_out != "" &&
+                            _this.time_in != "" &&
+                            _this.time_in >= _this.time_out && sid != 0
+                        ) {
+                            calendar.addEvent({
+                                id: sid,
+                                title: _this.schedule_Name,
+                                Date: moment(_this.date_use).format("YYYY-MM-DD"),
+                                //start: _this.date_use + "T" + _this.time_out,
+                                //end: _this.date_use + "T" + _this.time_in,
+                                allDay: true,
+                                description: {
+                                    icon: symbol,
+                                    schedule_Name: UnescapeHTML(_this.schedule_Name),
+                                    car_use: _this.car_use,
+                                    driver: _this.driver,
+                                    helper: _this.helper,
+                                    date_use: moment(_this.date_use).format("YYYY-MM-DD"),
+                                    time_out: moment(_this.date_use + ' ' + _this.time_out).format("HH:mm"),
+                                    time_in: moment(_this.date_use + ' ' + _this.time_in).format("HH:mm"),
+                                    notes: _this.notes,
+                                    Lasteditor: Lasteditor,
+                                    items: _this.items,
+                                    status: is_send,
+                                    creator: _this.username,
+                                },
+                            });
+                        }
+                    }
+
+                    if(_this.id != 0)
+                    {
+                        
+                        var event = calendar.getEventById(_this.id);
+                        event.title = _this.schedule_Name;
+                        event.allDay = true;
+                        event.Date = moment(_this.date_use).format("YYYY-MM-DD");
+                        event.start = _this.date_use;
+                        event.end = _this.date_use;
+
+                        event.extendedProps.description.schedule_Name = _this.schedule_Name;
+                        event.extendedProps.icon = symbol,
+                        event.extendedProps.description.car_use = _this.car_use;
+                        event.extendedProps.description.driver = _this.driver;
+                        event.extendedProps.description.helper = _this.helper;
+                        event.extendedProps.description.date_use = moment(_this.date_use).format("YYYY-MM-DD");
+                        event.extendedProps.description.time_out = moment(_this.date_use + ' ' + _this.time_out).format("HH:mm");
+                        event.extendedProps.description.time_in = moment(_this.date_use + ' ' + _this.time_in).format("HH:mm");
+                        event.extendedProps.description.notes = _this.notes;
+                        event.extendedProps.description.items = _this.items;
+                        event.extendedProps.description.status = _this.status;
+                        event.extendedProps.description.creator = _this.username;
+
+                    }
+
+                    $("#serviceModalScrollable").modal("toggle");
+
+                    _this.clear_service();
+
+                    reload();
+                })
+                .catch(function (error) {
+                    //handle error
+                    Swal.fire({
+                        text: error.data,
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                    });
+                });
         },
 
         getUserName: function() {
@@ -646,6 +791,27 @@ var service = new Vue({
             this.items = JSON.parse(sc_content.items);
             this.creator = sc_content.creator;
             this.status = sc_content.status;
+
+            // for check
+            this.check_date_use = sc_content.date_use;
+            this.check_car_use = sc_content.car_use;
+            this.check_driver = sc_content.driver;
+            this.check_time_out = sc_content.time_out;
+            this.check_time_in = sc_content.time_in;
+
+            if(sc_content.check1.length > 0)
+            {
+                this.check_date_use = sc_content.check1[0].date_use;
+                this.check_car_use = sc_content.check1[0].car_use;
+                this.check_driver = sc_content.check1[0].driver;
+                this.check_time_out = sc_content.check1[0].time_out;
+                this.check_time_in = sc_content.check1[0].time_in;
+            }
+
+            if(sc_content.check2.length > 0)
+            {
+                his.check_driver = sc_content.check2[0].driver;
+            }
         },
 
         clean_service: function() {
@@ -1467,6 +1633,9 @@ var app = new Vue({
                                 items: response.data[i].items,
                                 status: response.data[i].status,
                                 creator : response.data[i].created_by,
+
+                                check1 : response.data[i].check1,
+                                check2 : response.data[i].check2,
                             },
                         });
                     }

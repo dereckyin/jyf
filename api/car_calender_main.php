@@ -118,7 +118,7 @@ function GetCheck($db, $sid, $kind)
     $result = array();
 
     $query = "SELECT * from car_calendar_check 
-              where `status` <> -1 and kind = '" . $kind . "' and sid = " . $sid . "";
+              where `status` <> -1 and kind = '" . $kind . "' and sid = " . $sid . " order by id desc limit 1";
 
     $stmt = $db->prepare($query);
     $stmt->execute();

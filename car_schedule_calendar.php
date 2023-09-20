@@ -970,7 +970,7 @@ try {
             <div class="modal-body">
 
                 <!-- 指派車輛管理者填寫的表單 -->
-                <div id="approval_section" v-if="access1 == true || access2 == true" style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 3px solid #dee2e6;">
+                <div id="approval_section" v-if="access_check1 == true || access_check2 == true" style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 3px solid #dee2e6;">
 
                     <div class="row">
                         <div class="col-12" style="text-align: center;">
@@ -1048,7 +1048,7 @@ try {
 
                         <div class="col-10">
 
-                            <input type="text" class="form-control" style="width:90%;" id="check_driver" v-model="check_driver" :disabled="!check_showing">
+                            <input type="text" class="form-control" style="width:90%;" id="check_driver" v-model="check_driver" :disabled="!check_showing2">
                           
 
                         </div>
@@ -1058,11 +1058,11 @@ try {
 
                     <div class="button_box">
 
-                        <button class="btn btn-secondary" id="btn_service_reset_check">Reset</button>
+                        <button class="btn btn-secondary" id="btn_service_reset_check" v-if="check_showing" @click="reset_service_check">Reset</button>
 
                         <button class="btn btn-primary" id="btn_service_assign_check">Assign</button>
 
-                        <button class="btn btn-secondary" id="btn_service_not_assign_check">Not Yet Assign</button>
+                        <button class="btn btn-secondary" id="btn_service_not_assign_check" @click="service_save_check(access_check1, access_check2)">Not Yet Assign</button>
 
                         <button class="btn btn-danger" id="btn_service_reject_check">Reject</button>
 
