@@ -13,14 +13,6 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 $id = (isset($_POST['id']) ?  $_POST['id'] : 0);
-$date_use = (isset($_POST['date_use']) ?  $_POST['date_use'] : '');
-$car_use = (isset($_POST['car_use']) ?  $_POST['car_use'] : '');
-$driver = (isset($_POST['driver']) ?  $_POST['driver'] : '');
-$time_out = (isset($_POST['time_out']) ?  $_POST['time_out'] : '');
-$time_in = (isset($_POST['time_in']) ?  $_POST['time_in'] : '');
-$status = (isset($_POST['status']) ?  $_POST['status'] : 1);
-$kind = (isset($_POST['kind']) ?  $_POST['kind'] : '1');
-
 
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -34,7 +26,6 @@ include_once 'config/database.php';
 include_once 'config/conf.php';
 
 //include_once 'mail.php';
-
 
 $database = new Database();
 $db = $database->getConnection();
@@ -76,44 +67,54 @@ if (!isset($jwt)) {
         die();
     }
 
-    $tout = $date_use . " " . $time_out;
-    $tin = $date_use . " " . $time_in;
-    
     try {
-        $sql = "insert into car_calendar_check (sid, date_use, car_use, driver, time_out, time_in, kind, created_by, created_at, status) 
-        values (:sid, :date_use, :car_use, :driver, :time_out, :time_in, :kind, :created_by, now(), 0)";
 
-        $stmt = $db->prepare($sql);
+        $merged_results = array();
+            
+        $query = "SELECT * from car_calendar_main main 
+                  where `status` <> -1  ";
 
-        $stmt->bindParam(':sid', $id);
-        $stmt->bindParam(':date_use', $date_use);
-        $stmt->bindParam(':car_use', $car_use);
-        $stmt->bindParam(':driver', $driver);
-        $stmt->bindParam(':time_out',  $tout);
-        $stmt->bindParam(':time_in',  $tin);
+        if($id != ""){
+            $query .= " and main.id " . $id;
+        }
 
-        $stmt->bindParam(':kind', $kind);
-
-        $stmt->bindParam(':created_by', $user_name);
-        
+        $stmt = $db->prepare( $query );
         $stmt->execute();
 
-        // update car_calendar_main status
-        $sql = "update car_calendar_main set status = :status where id = :id";
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $merged_results[] = $row;
 
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':status', $status);
+            $check1 = GetCheck($db, $row['id'], "1");
+            $check2 = GetCheck($db, $row['id'], "2");
 
-        $stmt->execute();
+            $merged_results[count($merged_results) - 1]['check1'] = $check1;
+            $merged_results[count($merged_results) - 1]['check2'] = $check2;
 
-        http_response_code(200);
-        echo json_encode(array("id" => $id, "created_by" => $user_name, "created_at" => date("Y-m-d H:i:s"), "status" => "success"));
+        }
 
+
+        echo json_encode($merged_results, JSON_UNESCAPED_SLASHES);
     } catch (Exception $e) {
-        http_response_code(501);
-        echo json_encode(array("insertion error" => $e->getMessage()));
-        die();
+        http_response_code(401);
+
+        echo json_encode(array("message" => ".$e."));
     }
 
+}
+
+function GetCheck($db, $sid, $kind)
+{
+    $result = array();
+
+    $query = "SELECT * from car_calendar_check 
+              where `status` <> -1 and kind = '" . $kind . "' and sid = " . $sid . " order by id desc limit 1";
+
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $result[] = $row;
+    }
+
+    return $result;
 }

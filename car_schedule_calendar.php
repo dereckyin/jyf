@@ -1070,8 +1070,14 @@ try {
 
                         <button class="btn btn-secondary" id="btn_service_cancel_check" v-if="edit_servie_check1" @click="service_cancel_check()">Cancel</button>
 
-                        <button class="btn btn-primary" id="btn_service_save_check" v-if="edit_servie_check1" @click="service_update_check()">Save</button>
+                        <button class="btn btn-primary" id="btn_service_save_check" v-if="edit_servie_check1" @click="service_update_check('1')">Save</button>
 
+
+                        <!-- for check 2 -->
+                        <button class="btn btn-secondary" id="btn_service_reset_check2" v-if="status == 2 && check_showing2" @click="reset_service_check2">Reset</button>
+                        <button class="btn btn-primary" id="btn_service_edit_check2" v-if="status == 2 && !edit_servie_check2" @click="service_edit_check2()">Edit</button>
+                        <button class="btn btn-secondary" id="btn_service_cancel_check2" v-if="status == 2 && edit_servie_check2" @click="service_cancel_check2()">Cancel</button>
+                        <button class="btn btn-primary" id="btn_service_save_check2" v-if="status == 2 && edit_servie_check2" @click="service_update_check('2')">Save</button>
                     </div>
 
                 </div>
