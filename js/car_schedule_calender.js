@@ -73,7 +73,7 @@ var service = new Vue({
             this.check_showing = false;
             this.check_showing2 = false;
 
-            if(this.status == "1" && this.access1 == true)
+            if((this.status == "1" || this.status == "2") && this.access1 == true)
             {
                 this.access_check1 = true;
             }
@@ -215,6 +215,94 @@ var service = new Vue({
             }
         });
     },
+
+    
+    service_change_check: function(status) {
+        let _this = this;
+
+        Swal.fire({
+            title: "Change",
+            text: "Are you sure to change?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+          }).then((result) => {
+            if (result.value) {
+
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
+
+            let id = 0;
+            let sid = 0;
+
+            if(_this.org_schedule_check1.length > 0){
+                id = _this.org_schedule_check1[0].id;
+                sid = _this.id;
+                api_url = "api/car_calender_check_remove.php";
+            }
+            else{
+                api_url = "api/car_calender_check_reject.php";
+                id = _this.id;
+            }
+        
+            form_Data.append("jwt", token);
+            form_Data.append("id", id);
+            form_Data.append("sid", sid);
+            form_Data.append("status", status);
+
+            axios({
+                    method: "post",
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    url: api_url,
+                    data: form_Data,
+                })
+                .then(function (response) {
+
+                    let is_send = status;
+
+                    let symbol = "";
+                    if (is_send == "1") 
+                        symbol = 'fa-question-circle';
+                    if (is_send == "2")
+                        symbol = 'fa-car';
+
+
+                    if(_this.id != 0)
+                    {
+                        
+                        var event = calendar.getEventById(_this.id);
+
+                        event.extendedProps.description.status = is_send;
+
+                        _this.id = 0;
+                    }
+
+                    $("#serviceModalScrollable").modal("toggle");
+
+                    _this.clear_service();
+
+                    reload();
+            
+                
+            })
+            .catch(function (error) {
+                //handle error
+                Swal.fire({
+                    text: error.data,
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                });
+            });
+        }
+        else{
+            return;
+        }
+    });
+},
 
         service_update_check: function(status) {
             let _this = this;
