@@ -1287,6 +1287,7 @@ var service = new Vue({
             const filename = "attendance";
             
             form_Data.append("full", full);
+            form_Data.append("id", this.id);
             form_Data.append("schedule_Name", this.schedule_Name);
             form_Data.append("date_use", this.date_use);
             form_Data.append("car_use", this.car_use);

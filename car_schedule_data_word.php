@@ -33,6 +33,8 @@ catch (Exception $e){
 $database = new Database();
 $db = $database->getConnection();
 
+$full = (isset($_POST['full']) ?  $_POST['full'] : "");
+$id = (isset($_POST['id']) ?  $_POST['id'] : 0);
 $schedule_Name = (isset($_POST['schedule_Name']) ?  $_POST['schedule_Name'] : "");
 $date_use = (isset($_POST['date_use']) ?  $_POST['date_use'] : "");
 $car_use = (isset($_POST['car_use']) ?  $_POST['car_use'] : "");
@@ -62,6 +64,9 @@ if($date_use != "" && $time_in != "")
 
 $items_detail = json_decode($items, true);
 
+$check1 = GetCheck($db, $id, "1");
+$check2 = GetCheck($db, $id, "2");
+
 // Creating the new document...
 $phpWord = new PhpOffice\PhpWord\PhpWord();
 
@@ -73,6 +78,76 @@ $section = $phpWord->addSection();
 $section->addText($date_use . " Schedule");
 
 $section->addText("");
+
+if($full == '1')
+{
+    $table2 = $section->addTable('table2', [
+        'borderSize' => 6, 
+        'borderColor' => 'F73605', 
+        'afterSpacing' => 0, 
+        'Spacing'=> 0, 
+        'cellMargin'=> 0
+    ]);
+    
+    $check_date_use = "";
+    $check_car_use = "";
+    $check_driver = "";
+    $check_time_out = "";
+    $check_time_in = "";
+    $check_date = "";
+    $check_tout = "";
+    $check_tin = "";
+    if(count($check1) > 0)
+    {
+        $check_date_use = $check1[0]['date_use'];
+        $check_car_use = $check1[0]['car_use'];
+        $check_driver = $check1[0]['driver'];
+        $check_time_out = $check1[0]['time_out'];
+        $check_time_in = $check1[0]['time_in'];
+    
+        $check_tout = "";
+        if($check_date_use != "" && $check_time_out != "")
+        {
+            $check_tout = date('h:i A', strtotime($check_time_out));
+
+            $check_date = date('Y-m-d', strtotime($check_date_use));
+        }
+    
+        $check_tin = "";
+        if($check_date_use != "" && $check_time_in != "")
+        {
+            $check_tin = date('h:i A', strtotime($check_time_in));
+        }
+    }
+    if(count($check2) > 0)
+    {
+        $check_driver = $check2[0]['driver'];
+    }
+    
+    
+    $table2->addRow();
+    $table2->addCell(2000, ['borderSize' => 6])->addText("Date Use:", array('bold' => true));
+    $table2->addCell(8500, ['borderSize' => 6])->addText($check_date);
+    
+    $table2->addRow();
+    $table2->addCell(2000, ['borderSize' => 6])->addText("Car Use:", array('bold' => true));
+    $table2->addCell(8500, ['borderSize' => 6])->addText($check_car_use);
+    
+    $table2->addRow();
+    $table2->addCell(2000, ['borderSize' => 6])->addText("Driver:", array('bold' => true));
+    $table2->addCell(8500, ['borderSize' => 6])->addText($check_driver);
+    
+    $table2->addRow();
+    $table2->addCell(2000, ['borderSize' => 6])->addText("Time Out:", array('bold' => true));
+    $table2->addCell(8500, ['borderSize' => 6])->addText($check_tout);
+    
+    $table2->addRow();
+    $table2->addCell(2000, ['borderSize' => 6])->addText("Time In:", array('bold' => true));
+    $table2->addCell(8500, ['borderSize' => 6])->addText($check_tin);
+    
+    
+    $section->addText("");
+}
 
 $table = $section->addTable('table', [
     'borderSize' => 6, 
@@ -322,6 +397,23 @@ else
         curl_exec ($ch);
         curl_close ($ch);
         fclose($fp);
+    }
+
+    function GetCheck($db, $sid, $kind)
+    {
+        $result = array();
+
+        $query = "SELECT * from car_calendar_check 
+                where `status` <> -1 and kind = '" . $kind . "' and sid = " . $sid . " order by id desc limit 1";
+
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = $row;
+        }
+
+        return $result;
     }
 
 ?>
