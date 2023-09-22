@@ -195,13 +195,31 @@ var service = new Vue({
                         if (is_send == "2")
                             symbol = 'fa-car';
 
+                        let gbcolor = "";
+
+                        if(_this.car_use == "Alphard")
+                        gbcolor = "#FECC28";
+                        if(_this.car_use == "Avanza")
+                        gbcolor = "#4EB5BB";
+                        if(_this.car_use == "Travis 1")
+                        gbcolor = "#009858";
+                        if(_this.car_use == "Travis 2")
+                        gbcolor = "#A671AD";
+                        if(_this.car_use == "Toyota Rush")
+                        gbcolor = "#F19DB4";
+                        if(_this.car_use == "")
+                        gbcolor = "#141415";
 
                         if(_this.id != 0)
                         {
                             
                             var event = calendar.getEventById(_this.id);
 
+                            event.color = gbcolor;
+                            event.backgroundColor = gbcolor;
+                            event.borderColor = gbcolor;
                             event.extendedProps.description.status = is_send;
+                            event.extendedProps.description.icon = symbol;
 
                             _this.id = 0;
                         }
@@ -283,13 +301,31 @@ var service = new Vue({
                     if (is_send == "2")
                         symbol = 'fa-car';
 
+                        let gbcolor = "";
+
+                        if(_this.car_use == "Alphard")
+                        gbcolor = "#FECC28";
+                        if(_this.car_use == "Avanza")
+                        gbcolor = "#4EB5BB";
+                        if(_this.car_use == "Travis 1")
+                        gbcolor = "#009858";
+                        if(_this.car_use == "Travis 2")
+                        gbcolor = "#A671AD";
+                        if(_this.car_use == "Toyota Rush")
+                        gbcolor = "#F19DB4";
+                        if(_this.car_use == "")
+                        gbcolor = "#141415";
 
                     if(_this.id != 0)
                     {
                         
                         var event = calendar.getEventById(_this.id);
 
+                        event.color = gbcolor;
+                        event.backgroundColor = gbcolor;
+                        event.borderColor = gbcolor;
                         event.extendedProps.description.status = is_send;
+                        event.extendedProps.description.icon = symbol;
 
                         _this.id = 0;
                     }
@@ -493,7 +529,7 @@ var service = new Vue({
                             symbol = 'fa-car';
 
                         let gbcolor = "";
-                        if(response.data[i].status == "1" || response.data[i].status == "0")
+                        if(response.data[i].status == "2" || response.data[i].status == "1" || response.data[i].status == "0")
                         {
                             if(response.data[i].car_use == "Alphard")
                             gbcolor = "#FECC28";
@@ -584,6 +620,21 @@ var service = new Vue({
                     if (is_send == "2")
                         symbol = 'fa-car';
 
+                    let gbcolor = "";
+
+                    if(_this.check_car_use == "Alphard")
+                    gbcolor = "#FECC28";
+                    if(_this.check_car_use == "Avanza")
+                    gbcolor = "#4EB5BB";
+                    if(_this.check_car_use == "Travis 1")
+                    gbcolor = "#009858";
+                    if(_this.check_car_use == "Travis 2")
+                    gbcolor = "#A671AD";
+                    if(_this.check_car_use == "Toyota Rush")
+                    gbcolor = "#F19DB4";
+                    if(_this.check_car_use == "")
+                    gbcolor = "#141415";
+                    
 
                     if(_this.id == 0)
                     {
@@ -611,6 +662,9 @@ var service = new Vue({
                                 Date: moment(_this.date_use).format("YYYY-MM-DD"),
                                 //start: _this.date_use + "T" + _this.time_out,
                                 //end: _this.date_use + "T" + _this.time_in,
+                                color : gbcolor,
+                                backgroundColor : gbcolor,
+                                borderColor : gbcolor,
                                 allDay: true,
                                 description: {
                                     icon: symbol,
@@ -906,6 +960,21 @@ var service = new Vue({
                     if (is_send == "2")
                         symbol = 'fa-car';
 
+                        let gbcolor = "";
+
+                        if(_this.car_use == "Alphard")
+                        gbcolor = "#FECC28";
+                        if(_this.car_use == "Avanza")
+                        gbcolor = "#4EB5BB";
+                        if(_this.car_use == "Travis 1")
+                        gbcolor = "#009858";
+                        if(_this.car_use == "Travis 2")
+                        gbcolor = "#A671AD";
+                        if(_this.car_use == "Toyota Rush")
+                        gbcolor = "#F19DB4";
+                        if(_this.car_use == "")
+                        gbcolor = "#141415";
+
                         let sid = 0;
                         let created_at = "";
                         let created_by = "";
@@ -930,6 +999,9 @@ var service = new Vue({
                                 Date: moment(_this.date_use).format("YYYY-MM-DD"),
                                 //start: _this.date_use + "T" + _this.time_out,
                                 //end: _this.date_use + "T" + _this.time_in,
+                                color : gbcolor,
+                                backgroundColor : gbcolor,
+                                borderColor : gbcolor,
                                 allDay: true,
                                 description: {
                                     icon: symbol,
@@ -1028,10 +1100,27 @@ var service = new Vue({
                     symbol = 'fa-question-circle';
                 if (status == "2")
                     symbol = 'fa-car';
+
+                    let gbcolor = "";
+
+                    if(_this.car_use == "Alphard")
+                    gbcolor = "#FECC28";
+                    if(_this.car_use == "Avanza")
+                    gbcolor = "#4EB5BB";
+                    if(_this.car_use == "Travis 1")
+                    gbcolor = "#009858";
+                    if(_this.car_use == "Travis 2")
+                    gbcolor = "#A671AD";
+                    if(_this.car_use == "Toyota Rush")
+                    gbcolor = "#F19DB4";
+                    if(_this.car_use == "")
+                    gbcolor = "#141415";
                     
                     var event = calendar.getEventById(_this.id);
-
-                    event.extendedProps.icon = symbol,
+                    event.color = gbcolor;
+                    event.backgroundColor = gbcolor;
+                    event.borderColor = gbcolor;
+                    event.extendedProps.icon = symbol;
 
                     event.extendedProps.description.status = _this.status;
 
@@ -1176,6 +1265,21 @@ var service = new Vue({
                     if (is_send == "2")
                         symbol = 'fa-car';
 
+                        let gbcolor = "";
+
+                    if(_this.car_use == "Alphard")
+                    gbcolor = "#FECC28";
+                    if(_this.car_use == "Avanza")
+                    gbcolor = "#4EB5BB";
+                    if(_this.car_use == "Travis 1")
+                    gbcolor = "#009858";
+                    if(_this.car_use == "Travis 2")
+                    gbcolor = "#A671AD";
+                    if(_this.car_use == "Toyota Rush")
+                    gbcolor = "#F19DB4";
+                    if(_this.car_use == "")
+                    gbcolor = "#141415";
+                    
 
                     if(_this.id == 0)
                     {
@@ -1203,6 +1307,9 @@ var service = new Vue({
                                 Date: moment(_this.date_use).format("YYYY-MM-DD"),
                                 //start: _this.date_use + "T" + _this.time_out,
                                 //end: _this.date_use + "T" + _this.time_in,
+                                color : gbcolor,
+                                backgroundColor : gbcolor,
+                                borderColor : gbcolor,
                                 allDay: true,
                                 description: {
                                     icon: symbol,
@@ -2194,18 +2301,33 @@ var app = new Vue({
                         let gbcolor = "";
                         if(response.data[i].status == "1" || response.data[i].status == "0")
                         {
-                            if(response.data[i].car_use == "Alphard")
-                            gbcolor = "#FECC28";
-                            if(response.data[i].car_use == "Avanza")
-                            gbcolor = "#4EB5BB";
-                            if(response.data[i].car_use == "Travis 1")
-                            gbcolor = "#009858";
-                            if(response.data[i].car_use == "Travis 2")
-                            gbcolor = "#A671AD";
-                            if(response.data[i].car_use == "Toyota Rush")
-                            gbcolor = "#F19DB4";
-                            if(response.data[i].car_use == "")
-                            gbcolor = "#141415";
+                            if(response.data[i].check1.length > 0){
+                                if(response.data[i].check1[0].car_use == "Alphard")
+                                gbcolor = "#FECC28";
+                                if(response.data[i].check1[0].car_use == "Avanza")
+                                gbcolor = "#4EB5BB";
+                                if(response.data[i].check1[0].car_use == "Travis 1")
+                                gbcolor = "#009858";
+                                if(response.data[i].check1[0].car_use == "Travis 2")
+                                gbcolor = "#A671AD";
+                                if(response.data[i].check1[0].car_use == "Toyota Rush")
+                                gbcolor = "#F19DB4";
+                                if(response.data[i].check1[0].car_use == "")
+                                gbcolor = "#141415";
+                            }else{
+                                if(response.data[i].car_use == "Alphard")
+                                gbcolor = "#FECC28";
+                                if(response.data[i].car_use == "Avanza")
+                                gbcolor = "#4EB5BB";
+                                if(response.data[i].car_use == "Travis 1")
+                                gbcolor = "#009858";
+                                if(response.data[i].car_use == "Travis 2")
+                                gbcolor = "#A671AD";
+                                if(response.data[i].car_use == "Toyota Rush")
+                                gbcolor = "#F19DB4";
+                                if(response.data[i].car_use == "")
+                                gbcolor = "#141415";
+                            }
                         }
 
                         
