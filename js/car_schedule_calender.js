@@ -96,6 +96,15 @@ var service = new Vue({
                 return;
             }
 
+            if(this.status == "1" && this.access1 == true)
+            {
+                this.service_edit_check();
+            }
+
+            if(this.status == "2" && this.access2 == true)
+            {
+                this.service_edit_check2();
+            }
             
         }
     },
