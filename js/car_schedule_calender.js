@@ -740,49 +740,99 @@ var service = new Vue({
         },
 
         service_edit_check: function() {
-            this.check_showing = true;
-            this.edit_servie_check1 = true;
+            if(this.access_check1){
+                this.check_showing = true;
+                this.edit_servie_check1 = true;
+            }
+            if(this.access_check2){
+                this.check_showing2 = true;
+                this.edit_servie_check2 = true;
+            }
         },
 
         service_edit_check2: function() {
-            this.check_showing2 = true;
-            this.edit_servie_check2 = true;
+            if(this.access_check1){
+                this.check_showing = true;
+                this.edit_servie_check1 = true;
+            }
+            if(this.access_check2){
+                this.check_showing2 = true;
+                this.edit_servie_check2 = true;
+            }
         },
 
         service_cancel_check: function() {
-            this.check_showing = false;
-            this.edit_servie_check1 = false;
+            if(this.access_check1){
+                this.check_showing = false;
+                this.edit_servie_check1 = false;
 
-            if(this.org_schedule_check1.length > 0){
-                this.check_date_use = moment(this.org_schedule_check1[0].date_use).format("YYYY-MM-DD");
-                this.check_car_use = this.org_schedule_check1[0].car_use;
-                this.check_driver = this.org_schedule_check1[0].driver;
-                this.check_time_out = moment(this.org_schedule_check1[0].time_out).format("HH:mm");
-                this.check_time_in = moment(this.org_schedule_check1[0].time_in).format("HH:mm");
+                if(this.org_schedule_check1.length > 0){
+                    this.check_date_use = moment(this.org_schedule_check1[0].date_use).format("YYYY-MM-DD");
+                    this.check_car_use = this.org_schedule_check1[0].car_use;
+                    this.check_driver = this.org_schedule_check1[0].driver;
+                    this.check_time_out = moment(this.org_schedule_check1[0].time_out).format("HH:mm");
+                    this.check_time_in = moment(this.org_schedule_check1[0].time_in).format("HH:mm");
+                }
+                else{
+                    this.check_date_use = moment(this.org_schedule.date_use).format("YYYY-MM-DD");
+                    this.check_car_use = this.org_schedule.car_use;
+                    this.check_driver = this.org_schedule.driver;
+                    this.check_time_out = moment(this.org_schedule.time_out).format("HH:mm");
+                    this.check_time_in = moment(this.org_shedule.time_in).format("HH:mm");
+                }
             }
-            else{
-                this.check_date_use = moment(this.org_schedule.date_use).format("YYYY-MM-DD");
-                this.check_car_use = this.org_schedule.car_use;
-                this.check_driver = this.org_schedule.driver;
-                this.check_time_out = moment(this.org_schedule.time_out).format("HH:mm");
-                this.check_time_in = moment(this.org_shedule.time_in).format("HH:mm");
+
+            if(this.access_check2){
+                this.check_showing2 = false;
+                this.edit_servie_check2 = false;
+
+                if(this.org_schedule_check2.length > 0){
+                    this.check_driver = this.org_schedule_check2[0].driver;
+                }
+                else if(this.org_schedule_check1.length > 0){
+                    this.check_driver = this.org_schedule_check1[0].driver;
+                }
+                else{
+                    this.check_driver = this.org_schedule.driver;
+                }
             }
-            
 
         },
 
         service_cancel_check2: function() {
-            this.check_showing2 = false;
-            this.edit_servie_check2 = false;
+            if(this.access_check1){
+                this.check_showing = false;
+                this.edit_servie_check1 = false;
 
-            if(this.org_schedule_check2.length > 0){
-                this.check_driver = this.org_schedule_check2[0].driver;
+                if(this.org_schedule_check1.length > 0){
+                    this.check_date_use = moment(this.org_schedule_check1[0].date_use).format("YYYY-MM-DD");
+                    this.check_car_use = this.org_schedule_check1[0].car_use;
+                    this.check_driver = this.org_schedule_check1[0].driver;
+                    this.check_time_out = moment(this.org_schedule_check1[0].time_out).format("HH:mm");
+                    this.check_time_in = moment(this.org_schedule_check1[0].time_in).format("HH:mm");
+                }
+                else{
+                    this.check_date_use = moment(this.org_schedule.date_use).format("YYYY-MM-DD");
+                    this.check_car_use = this.org_schedule.car_use;
+                    this.check_driver = this.org_schedule.driver;
+                    this.check_time_out = moment(this.org_schedule.time_out).format("HH:mm");
+                    this.check_time_in = moment(this.org_shedule.time_in).format("HH:mm");
+                }
             }
-            else if(this.org_schedule_check1.length > 0){
-                this.check_driver = this.org_schedule_check1[0].driver;
-            }
-            else{
-                this.check_driver = this.org_schedule.driver;
+
+            if(this.access_check2){
+                this.check_showing2 = false;
+                this.edit_servie_check2 = false;
+
+                if(this.org_schedule_check2.length > 0){
+                    this.check_driver = this.org_schedule_check2[0].driver;
+                }
+                else if(this.org_schedule_check1.length > 0){
+                    this.check_driver = this.org_schedule_check1[0].driver;
+                }
+                else{
+                    this.check_driver = this.org_schedule.driver;
+                }
             }
             
 
@@ -1324,22 +1374,45 @@ var service = new Vue({
         },
 
         reset_service_check: function() {
-            if(this.check_showing == false) return;
+            if(this.access_check1){
+                if(this.check_showing == false) return;
+    
+                this.check_date_use = "";
+                this.check_car_use = "";
+                this.check_driver = "";
+    
+                this.check_time_out = "";
+                this.check_time_in = "";
 
-            this.check_date_use = "";
-            this.check_car_use = "";
-            this.check_driver = "";
+            }
 
-            this.check_time_out = "";
-            this.check_time_in = "";
+            if(this.access_check2){
+                if(this.check_showing2 == false) return;
+
+                this.check_driver = "";
+            }
         
         },
 
         reset_service_check2: function() {
-            if(this.check_showing2 == false) return;
+            
+            if(this.access_check1){
+                if(this.check_showing == false) return;
+    
+                this.check_date_use = "";
+                this.check_car_use = "";
+                this.check_driver = "";
+    
+                this.check_time_out = "";
+                this.check_time_in = "";
 
-            this.check_driver = "";
+            }
 
+            if(this.access_check2){
+                if(this.check_showing2 == false) return;
+
+                this.check_driver = "";
+            }
         
         },
 
