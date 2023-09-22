@@ -1265,11 +1265,28 @@ var service = new Vue({
         },
 
         export_service: function () {
+            let _this = this;
+
+            Swal.fire({
+                title: "Export",
+                icon: "warning",
+                html: "Which do you want to export?" +
+                    "<br>" +
+                    '<button type="button" role="button" tabindex="0" class="SwalBtn1 customSwalBtn">' + 'Only “Content of Request”' + '</button>' +
+                    '<button type="button" role="button" tabindex="0" class="SwalBtn2 customSwalBtn">' + '”Request Review” and “Content of Request”' + '</button>' + 
+                    '<button type="button" role="button" tabindex="0" class="SwalBtn3 customSwalBtn">' + 'Cancel' + '</button>', 
+                showCancelButton: false,
+                showConfirmButton: false
+              })
+        },
+
+        export_service_full: function (full) {
+            let _this = this;
             var form_Data = new FormData();
 
             const filename = "attendance";
-            let _this = this;
-
+            
+            form_Data.append("full", full);
             form_Data.append("schedule_Name", this.schedule_Name);
             form_Data.append("date_use", this.date_use);
             form_Data.append("car_use", this.car_use);
@@ -3644,6 +3661,25 @@ $(document).on("click", "#btn_edit", function () {
 $(document).on("click", "#btn_delete", function () {
     app.deleteMe(eventObj.id);
     
+});
+
+$(document).on('click', '.SwalBtn1', function() {
+    //Some code 1
+    console.log('Button 1');
+    service.export_service_full('');
+    swal.clickConfirm();
+});
+$(document).on('click', '.SwalBtn2', function() {
+    //Some code 2 
+    console.log('Button 2');
+    service.export_service_full('1');
+    swal.clickConfirm();
+});
+$(document).on('click', '.SwalBtn3', function() {
+    //Some code 2 
+    console.log('Button 3');
+   
+    swal.clickConfirm();
 });
 
 $(document).on("click", "#btn_duplicate", function () {
