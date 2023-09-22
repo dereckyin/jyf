@@ -78,7 +78,7 @@ var service = new Vue({
                 this.access_check1 = true;
             }
 
-            if(this.status == "2" && this.access2 == true)
+            if(this.status == "2" && this.access2 == true && this.access1 == false)
             {
                 this.access_check2 = true;
             }
@@ -101,7 +101,11 @@ var service = new Vue({
                 this.service_edit_check();
             }
 
-            if(this.status == "2" && this.access2 == true)
+            if(this.status == "2" && this.access1 == true && this.access2 == true)
+            {
+                this.service_edit_check();
+            }
+            else if(this.status == "2" && this.access1 == false && this.access2 == true)
             {
                 this.service_edit_check2();
             }
@@ -744,7 +748,7 @@ var service = new Vue({
                 this.check_showing = true;
                 this.edit_servie_check1 = true;
             }
-            if(this.access_check2){
+            if(this.access_check2 && this.access_check1 == false){
                 this.check_showing2 = true;
                 this.edit_servie_check2 = true;
             }
@@ -755,7 +759,7 @@ var service = new Vue({
                 this.check_showing = true;
                 this.edit_servie_check1 = true;
             }
-            if(this.access_check2){
+            if(this.access_check2 && this.access_check1 == false){
                 this.check_showing2 = true;
                 this.edit_servie_check2 = true;
             }
@@ -782,7 +786,7 @@ var service = new Vue({
                 }
             }
 
-            if(this.access_check2){
+            if(this.access_check2 && this.access_check1 == false){
                 this.check_showing2 = false;
                 this.edit_servie_check2 = false;
 
@@ -820,7 +824,7 @@ var service = new Vue({
                 }
             }
 
-            if(this.access_check2){
+            if(this.access_check2 && this.access_check1 == false){
                 this.check_showing2 = false;
                 this.edit_servie_check2 = false;
 
@@ -1386,7 +1390,7 @@ var service = new Vue({
 
             }
 
-            if(this.access_check2){
+            if(this.access_check2 && this.access_check1 == false){
                 if(this.check_showing2 == false) return;
 
                 this.check_driver = "";
@@ -1408,7 +1412,7 @@ var service = new Vue({
 
             }
 
-            if(this.access_check2){
+            if(this.access_check2 && this.access_check1 == false){
                 if(this.check_showing2 == false) return;
 
                 this.check_driver = "";
