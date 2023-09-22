@@ -107,7 +107,7 @@ var service = new Vue({
             }
             else if(this.status == "2" && this.access1 == false && this.access2 == true)
             {
-                this.service_edit_check2();
+               // this.service_edit_check2();
             }
             
         }
