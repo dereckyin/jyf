@@ -1080,7 +1080,7 @@ try {
                         <button class="btn btn-secondary" id="btn_service_not_assign_check" v-if="access_check1 && status == '1'" @click="service_save_check(access_check1, access_check2, '1')">Not Yet Assign</button>
 
                         <button class="btn btn-secondary" id="btn_service_change_check" v-if="!check_showing && access_check1 && status == '2'" @click="service_change_check('1')">Change To Under Reivew</button>
-                        <button class="btn btn-danger" id="btn_service_reject_check" v-if="access_check1 && (status == 1 || !check_showing)" @click="service_reject_check('0')">Reject</button>
+                        <button class="btn btn-danger" id="btn_service_reject_check" v-if="access_check1 && (status == '1' || !check_showing)" @click="service_reject_check('0')">Reject</button>
 
                         <button class="btn btn-primary" id="btn_service_edit_check" v-if="access_check1 && !edit_servie_check1 && status == '2'" @click="service_edit_check()">Edit</button>
 
@@ -1090,10 +1090,10 @@ try {
 
 
                         <!-- for check 2 -->
-                        <button class="btn btn-secondary" id="btn_service_reset_check2" v-if="status == 2 && check_showing2" @click="reset_service_check2">Reset</button>
+                        <button class="btn btn-secondary" id="btn_service_reset_check2" v-if="status == '2' && check_showing2" @click="reset_service_check2">Reset</button>
                         <button class="btn btn-primary" id="btn_service_edit_check2" v-if="access_check2 && !edit_servie_check2" @click="service_edit_check2()">Edit</button>
-                        <button class="btn btn-secondary" id="btn_service_cancel_check2" v-if="status == 2 && edit_servie_check2" @click="service_cancel_check2()">Cancel</button>
-                        <button class="btn btn-primary" id="btn_service_save_check2" v-if="status == 2 && edit_servie_check2" @click="service_update_check('2')">Save</button>
+                        <button class="btn btn-secondary" id="btn_service_cancel_check2" v-if="status == '2' && edit_servie_check2" @click="service_cancel_check2()">Cancel</button>
+                        <button class="btn btn-primary" id="btn_service_save_check2" v-if="status == '2' && edit_servie_check2" @click="service_update_check('2')">Save</button>
                     </div>
 
                 </div>
@@ -1312,19 +1312,19 @@ try {
 
                     <button class="btn btn-secondary" style="width: 155px;" v-if="!showing" id="btn_service_duplicate" @click="duplicate_service()">Duplicate Schedule</button>
 
-                    <button class="btn btn-primary" id="btn_service_edit" v-if="creator == username && status == 0 && !edit_servie" @click="service_edit()">Edit</button>
+                    <button class="btn btn-primary" id="btn_service_edit" v-if="creator == username && status == '0' && !edit_servie" @click="service_edit()">Edit</button>
 
                     <button class="btn btn-primary" id="btn_service_cancel" v-if="edit_servie" @click="service_cancel()">Cancel</button>
 
                     <button class="btn btn-primary" style="width: 155px;" id="btn_send_request" v-if="creator == username && status == 0 && !showing"  @click="service_status(1)">Send Request</button>
 
-                    <button class="btn btn-secondary" style="width: 155px;" id="btn_service_withdraw"  v-if="creator == username && status == 1 && !showing"  @click="service_status(0)">Withdraw Request</button>
+                    <button class="btn btn-secondary" style="width: 155px;" id="btn_service_withdraw"  v-if="creator == username && status == '1' && !showing"  @click="service_status(0)">Withdraw Request</button>
 
-                    <button class="btn btn-danger" id="btn_service_delete" @click="service_delete(-1)" v-if="creator == username && status < 2 && !showing">Delete</button>
+                    <button class="btn btn-danger" id="btn_service_delete" @click="service_delete(-1)" v-if="creator == username && (status == '1') && !showing">Delete</button>
 
-                    <button class="btn btn-primary" id="btn_service_save" @click="service_save(0)"  v-if="(creator == username && status == 0 && showing) || id == 0">Save</button>
+                    <button class="btn btn-primary" id="btn_service_save" @click="service_save(0)"  v-if="(creator == username && status == '0' && showing) || id == 0">Save</button>
 
-                    <button class="btn btn-primary" style="width: 200px" id="btn_save_send" v-if="(creator == username && status == 0 && showing) || id == 0" @click="service_save(1)">Save and Send Request</button>
+                    <button class="btn btn-primary" style="width: 200px" id="btn_save_send" v-if="(creator == username && status == '0' && showing) || id == 0" @click="service_save(1)">Save and Send Request</button>
 
                     <button class="btn btn-secondary" id="btn_service_cancel" v-if="1 == 0">Cancel</button>
 
