@@ -75,7 +75,7 @@ if (!isset($jwt)) {
                   where `status` <> -1  ";
 
         if($id != ""){
-            $query .= " and main.id " . $id;
+            $query .= " and main.id =" . $id;
         }
 
         $stmt = $db->prepare( $query );

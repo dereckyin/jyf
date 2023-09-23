@@ -405,7 +405,7 @@ var service = new Vue({
 
                     //_this.clear_service();
 
-                    //reload();
+                    reload();
                 })
                 .catch(function (error) {
                     //handle error
@@ -500,7 +500,7 @@ var service = new Vue({
                     //handle success
                     //var data = JSON.parse(response.data);
 
-                    var event = calendar.getEventById(_this.id);
+                    let event = calendar.getEventById(_this.id);
 
                     for (var i = 0; i < response.data.length; i++) {
                  
@@ -529,28 +529,55 @@ var service = new Vue({
                         if (response.data[i].status == "2")
                             symbol = 'fa-car';
 
-                        let gbcolor = "";
-                        if(response.data[i].status == "2" || response.data[i].status == "1" || response.data[i].status == "0")
-                        {
-                            if(response.data[i].car_use == "Alphard")
-                            gbcolor = "#FECC28";
-                            if(response.data[i].car_use == "Avanza")
-                            gbcolor = "#4EB5BB";
-                            if(response.data[i].car_use == "Travis 1")
-                            gbcolor = "#009858";
-                            if(response.data[i].car_use == "Travis 2")
-                            gbcolor = "#A671AD";
-                            if(response.data[i].car_use == "Toyota Rush")
-                            gbcolor = "#F19DB4";
-                            if(response.data[i].car_use == "")
-                            gbcolor = "#141415";
-                        }
+                            let gbcolor = "";
+                            let dateuse = "";
+    
+                            if(response.data[i].status == "2")
+                            {
+                                if(response.data[i].check1.length > 0){
+                                    if(response.data[i].check1[0].car_use == "Alphard")
+                                    gbcolor = "#FECC28";
+                                    if(response.data[i].check1[0].car_use == "Avanza")
+                                    gbcolor = "#4EB5BB";
+                                    if(response.data[i].check1[0].car_use == "Travis 1")
+                                    gbcolor = "#009858";
+                                    if(response.data[i].check1[0].car_use == "Travis 2")
+                                    gbcolor = "#A671AD";
+                                    if(response.data[i].check1[0].car_use == "Toyota Rush")
+                                    gbcolor = "#F19DB4";
+                                    if(response.data[i].check1[0].car_use == "")
+                                    gbcolor = "#141415";
+    
+                                    dateuse = moment(response.data[i].check1[0].date_use).format("YYYY-MM-DD");
+                                }
+                            }
+    
+                            if(response.data[i].status == "1" || response.data[i].status == "0")
+                            {
+                                    if(response.data[i].car_use == "Alphard")
+                                    gbcolor = "#FECC28";
+                                    if(response.data[i].car_use == "Avanza")
+                                    gbcolor = "#4EB5BB";
+                                    if(response.data[i].car_use == "Travis 1")
+                                    gbcolor = "#009858";
+                                    if(response.data[i].car_use == "Travis 2")
+                                    gbcolor = "#A671AD";
+                                    if(response.data[i].car_use == "Toyota Rush")
+                                    gbcolor = "#F19DB4";
+                                    if(response.data[i].car_use == "")
+                                    gbcolor = "#141415";
+    
+                                    dateuse = moment(response.data[i].date_use).format("YYYY-MM-DD");
+                            }
+
+
 
                         
                         event.title = response.data[i].schedule_Name;
-                        event.Date = moment(response.data[i].date_use).format("YYYY-MM-DD");
-                        event.start = moment(response.data[i].date_use).format("YYYY-MM-DD"); // will be parsed
-                        event.end = moment(response.data[i].date_use).format("YYYY-MM-DD");
+                        event.setDate(moment(dateuse).format("YYYY-MM-DD"));
+                        event.Date = moment(dateuse).format("YYYY-MM-DD");
+                        event.start = moment(dateuse).format("YYYY-MM-DD"); // will be parsed
+                        event.end = moment(dateuse).format("YYYY-MM-DD");
                         event.color = gbcolor;
                         event.backgroundColor = gbcolor;
                         event.borderColor = gbcolor;
@@ -564,13 +591,13 @@ var service = new Vue({
                         event.extendedProps.description.time_out = moment(response.data[i].time_out).format("HH:mm");
                         event.extendedProps.description.time_in = moment(response.data[i].time_in).format("HH:mm");
                         event.extendedProps.description.notes = response.data[i].notes;
-                        Levent.extendedProps.description.asteditor = Lasteditor;
+                        event.extendedProps.description.asteditor = Lasteditor;
                         event.extendedProps.description.items = response.data[i].items;
                         event.extendedProps.description.status = response.data[i].status;
-                        cevent.extendedProps.description.reator = response.data[i].created_by;
+                        event.extendedProps.description.reator = response.data[i].created_by;
 
                         event.extendedProps.description.check1 = response.data[i].check1;
-                        cevent.extendedProps.description.heck2 = response.data[i].check2;
+                        event.extendedProps.description.heck2 = response.data[i].check2;
                     
                     }
                 })
@@ -1386,14 +1413,24 @@ var service = new Vue({
         export_service: function () {
             let _this = this;
 
+            let buttons = "Which do you want to export?" +
+            "<br>" +
+            '<button type="button" role="button" tabindex="0" class="SwalBtn1 customSwalBtn">' + 'Only “Content of Request”' + '</button>' +
+            '<button type="button" role="button" tabindex="0" class="SwalBtn2 customSwalBtn">' + '”Request Review” and “Content of Request”' + '</button>' + 
+            '<button type="button" role="button" tabindex="0" class="SwalBtn3 customSwalBtn">' + 'Cancel' + '</button>';
+
+            if(this.status == "0")
+            {
+                buttons = "Which do you want to export?" +
+                "<br>" +
+                '<button type="button" role="button" tabindex="0" class="SwalBtn1 customSwalBtn">' + 'Only “Content of Request”' + '</button>' +
+                '<button type="button" role="button" tabindex="0" class="SwalBtn3 customSwalBtn">' + 'Cancel' + '</button>';
+            }
+
             Swal.fire({
                 title: "Export",
                 icon: "warning",
-                html: "Which do you want to export?" +
-                    "<br>" +
-                    '<button type="button" role="button" tabindex="0" class="SwalBtn1 customSwalBtn">' + 'Only “Content of Request”' + '</button>' +
-                    '<button type="button" role="button" tabindex="0" class="SwalBtn2 customSwalBtn">' + '”Request Review” and “Content of Request”' + '</button>' + 
-                    '<button type="button" role="button" tabindex="0" class="SwalBtn3 customSwalBtn">' + 'Cancel' + '</button>', 
+                html: buttons,
                 showCancelButton: false,
                 showConfirmButton: false
               })
@@ -1415,6 +1452,7 @@ var service = new Vue({
             form_Data.append("time_out", this.time_out);
             form_Data.append("time_in", this.time_in);
             form_Data.append("notes", this.notes);
+            form_Data.append("status", this.status);
             form_Data.append("items", JSON.stringify(this.items));
 
             const token = sessionStorage.getItem("token");

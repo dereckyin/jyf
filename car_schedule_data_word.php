@@ -79,7 +79,7 @@ $section->addText($date_use . " Schedule");
 
 $section->addText("");
 
-if($full == '1')
+if($full == '1' && $status > 0)
 {
     $table2 = $section->addTable('table2', [
         'borderSize' => 6, 
@@ -119,9 +119,36 @@ if($full == '1')
             $check_tin = date('h:i A', strtotime($check_time_in));
         }
     }
+    else
+    {
+        $check_date_use = $date_use;
+        $check_car_use = $car_use;
+        $check_driver = $driver;
+        $check_time_out = $time_out;
+        $check_time_in = $time_in;
+    
+        $check_tout = "";
+        if($check_date_use != "" && $check_time_out != "")
+        {
+            $check_tout = date('h:i A', strtotime($check_time_out));
+
+            $check_date = date('Y-m-d', strtotime($check_date_use));
+        }
+    
+        $check_tin = "";
+        if($check_date_use != "" && $check_time_in != "")
+        {
+            $check_tin = date('h:i A', strtotime($check_time_in));
+        }
+    }
+
     if(count($check2) > 0)
     {
         $check_driver = $check2[0]['driver'];
+    }
+    else
+    {
+        $check_driver = $driver;
     }
     
     
