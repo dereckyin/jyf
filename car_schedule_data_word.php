@@ -46,26 +46,18 @@ $notes = (isset($_POST['notes']) ?  $_POST['notes'] : "");
 $items = (isset($_POST['items']) ?  $_POST['items'] : []);
 $status = (isset($_POST['status']) ?  $_POST['status'] : 0);
 
-$dateString = "";
+$check_date_use = (isset($_POST['check_date_use']) ?  $_POST['check_date_use'] : "");
+$check_car_use = (isset($_POST['check_car_use']) ?  $_POST['check_car_use'] : "");
+$check_driver = (isset($_POST['check_driver']) ?  $_POST['check_driver'] : "");
+$check_time_out = (isset($_POST['check_time_out']) ?  $_POST['check_time_out'] : "");
+$check_time_in = (isset($_POST['check_time_in']) ?  $_POST['check_time_in'] : "");
 
-$tout = "";
-if($date_use != "" && $time_out != "")
-{
-    $dateString = new DateTime($date_use . " " . $time_out);
-    $tout = date('h:i A', strtotime($date_use . " " . $time_out));
-}
 
-$tin = "";
-if($date_use != "" && $time_in != "")
-{
-    $dateString = new DateTime($date_use . " " . $time_in);
-    $tin = date('h:i A', strtotime($date_use . " " . $time_in));
-}
 
 $items_detail = json_decode($items, true);
 
-$check1 = GetCheck($db, $id, "1");
-$check2 = GetCheck($db, $id, "2");
+// $check1 = GetCheck($db, $id, "1");
+// $check2 = GetCheck($db, $id, "2");
 
 // Creating the new document...
 $phpWord = new PhpOffice\PhpWord\PhpWord();
@@ -81,6 +73,24 @@ $section->addText("");
 
 if($full == '1' && $status > 0)
 {
+
+    $check_dateString = "";
+
+    $check_tout = "";
+    if($check_date_use != "" && $check_time_out != "")
+    {
+        $check_dateString = new DateTime($check_date_use . " " . $check_time_out);
+        $check_tout = date('h:i A', strtotime($check_date_use . " " . $check_time_out));
+    }
+
+    $check_tin = "";
+    if($check_date_use != "" && $check_time_in != "")
+    {
+        $check_dateString = new DateTime($check_date_use . " " . $check_time_in);
+        $check_tin = date('h:i A', strtotime($check_date_use . " " . $check_time_in));
+    }
+
+
     $table2 = $section->addTable('table2', [
         'borderSize' => 6, 
         'borderColor' => 'F73605', 
@@ -89,72 +99,9 @@ if($full == '1' && $status > 0)
         'cellMargin'=> 0
     ]);
     
-    $check_date_use = "";
-    $check_car_use = "";
-    $check_driver = "";
-    $check_time_out = "";
-    $check_time_in = "";
-    $check_date = "";
-    $check_tout = "";
-    $check_tin = "";
-    if(count($check1) > 0)
-    {
-        $check_date_use = $check1[0]['date_use'];
-        $check_car_use = $check1[0]['car_use'];
-        $check_driver = $check1[0]['driver'];
-        $check_time_out = $check1[0]['time_out'];
-        $check_time_in = $check1[0]['time_in'];
-    
-        $check_tout = "";
-        if($check_date_use != "" && $check_time_out != "")
-        {
-            $check_tout = date('h:i A', strtotime($check_time_out));
-
-            $check_date = date('Y-m-d', strtotime($check_date_use));
-        }
-    
-        $check_tin = "";
-        if($check_date_use != "" && $check_time_in != "")
-        {
-            $check_tin = date('h:i A', strtotime($check_time_in));
-        }
-    }
-    else
-    {
-        $check_date_use = $date_use;
-        $check_car_use = $car_use;
-        $check_driver = $driver;
-        $check_time_out = $time_out;
-        $check_time_in = $time_in;
-    
-        $check_tout = "";
-        if($check_date_use != "" && $check_time_out != "")
-        {
-            $check_tout = date('h:i A', strtotime($check_time_out));
-
-            $check_date = date('Y-m-d', strtotime($check_date_use));
-        }
-    
-        $check_tin = "";
-        if($check_date_use != "" && $check_time_in != "")
-        {
-            $check_tin = date('h:i A', strtotime($check_time_in));
-        }
-    }
-
-    if(count($check2) > 0)
-    {
-        $check_driver = $check2[0]['driver'];
-    }
-    else
-    {
-        $check_driver = $driver;
-    }
-    
-    
     $table2->addRow();
     $table2->addCell(2000, ['borderSize' => 6])->addText("Date Use:", array('bold' => true));
-    $table2->addCell(8500, ['borderSize' => 6])->addText($check_date);
+    $table2->addCell(8500, ['borderSize' => 6])->addText($check_date_use);
     
     $table2->addRow();
     $table2->addCell(2000, ['borderSize' => 6])->addText("Car Use:", array('bold' => true));
@@ -174,6 +121,22 @@ if($full == '1' && $status > 0)
     
     
     $section->addText("");
+}
+
+$dateString = "";
+
+$tout = "";
+if($date_use != "" && $time_out != "")
+{
+    $dateString = new DateTime($date_use . " " . $time_out);
+    $tout = date('h:i A', strtotime($date_use . " " . $time_out));
+}
+
+$tin = "";
+if($date_use != "" && $time_in != "")
+{
+    $dateString = new DateTime($date_use . " " . $time_in);
+    $tin = date('h:i A', strtotime($date_use . " " . $time_in));
 }
 
 $table = $section->addTable('table', [

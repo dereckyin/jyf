@@ -65,6 +65,7 @@ var service = new Vue({
 
     watch: {
         id: function (val) {
+            if(val == -1) this.id = 0;
 
             this.access_check1 = false;
             this.access_check2 = false;
@@ -221,7 +222,7 @@ var service = new Vue({
                             event.extendedProps.description.status = is_send;
                             event.extendedProps.description.icon = symbol;
 
-                            _this.id = 0;
+                            _this.id = -1;
                         }
 
                         $("#serviceModalScrollable").modal("toggle");
@@ -327,7 +328,7 @@ var service = new Vue({
                         event.extendedProps.description.status = is_send;
                         event.extendedProps.description.icon = symbol;
 
-                        _this.id = 0;
+                        _this.id = -1;
                     }
 
                     $("#serviceModalScrollable").modal("toggle");
@@ -761,7 +762,7 @@ var service = new Vue({
 
                     }
 
-                    _this.id = 0
+                    _this.id = -1
 
                     $("#serviceModalScrollable").modal("toggle");
 
@@ -1186,7 +1187,7 @@ var service = new Vue({
 
                     event.extendedProps.description.status = _this.status;
 
-                _this.id = 0;
+                _this.id = -1;
 
                 $("#serviceModalScrollable").modal("toggle");
 
@@ -1478,6 +1479,13 @@ var service = new Vue({
             form_Data.append("status", this.status);
             form_Data.append("items", JSON.stringify(this.items));
 
+            form_Data.append("check_date_use", this.check_date_use);
+            form_Data.append("check_car_use", this.check_car_use);
+            form_Data.append("check_driver", this.check_driver);
+            form_Data.append("check_time_out", this.check_time_out);
+            form_Data.append("check_time_in", this.check_time_in);
+
+
             const token = sessionStorage.getItem("token");
 
             axios({
@@ -1572,7 +1580,7 @@ var service = new Vue({
             this.item_address = "";
             this.item_purpose = "";
             this.items = [];
-            this.id = 0;
+            this.id = -1;
         },
 
         reset_service_check: function() {
@@ -1637,7 +1645,7 @@ var service = new Vue({
             this.item_address = "";
             this.item_purpose = "";
             this.items = [];
-            this.id = 0;
+            this.id = -1;
         },
 
         clear_service: function() {
@@ -1659,7 +1667,7 @@ var service = new Vue({
             this.item_address = "";
             this.item_purpose = "";
             this.items = [];
-            this.id = 0;
+            this.id = -1;
 
             this.editing = false;
             this.edit_servie = false;
