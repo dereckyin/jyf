@@ -356,6 +356,16 @@ var service = new Vue({
         service_update_check: function(status) {
             let _this = this;
 
+            if(this.check_date_use == "" || this.check_time_out == "" || this.check_time_in == "" || this.check_car_use == "")
+            {
+                Swal.fire({
+                    text: "Columns of Date, Time, Assigned Car cannot be blank.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                });
+                return;
+            }
+
             var token = localStorage.getItem("token");
             var form_Data = new FormData();
 
