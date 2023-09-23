@@ -1086,7 +1086,7 @@ try {
 
                         <button class="btn btn-secondary" id="btn_service_cancel_check" v-if="edit_servie_check1 && status == '2'" @click="service_cancel_check()">Cancel</button>
 
-                        <button class="btn btn-primary" id="btn_service_save_check" v-if="edit_servie_check1 && status == '2'" @click="service_update_check('1')">Save</button>
+                        <button class="btn btn-primary" id="btn_service_save_check" v-if="edit_servie_check1 && status == '2'" @click="service_update_check('2')">Save</button>
 
 
                         <!-- for check 2 -->

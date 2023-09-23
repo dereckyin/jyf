@@ -101,13 +101,13 @@ if (!isset($jwt)) {
         $stmt->bindParam(':driver', $driver);
         $stmt->bindParam(':time_out',  $tout);
         $stmt->bindParam(':time_in',  $tin);
-
+        $stmt->bindParam(':status', $status);
         $stmt->bindParam(':updated_by', $user_name);
         
         $stmt->execute();
 
         http_response_code(200);
-        echo json_encode(array("sid" => $sid, "created_by" => $user_name, "created_at" => date("Y-m-d H:i:s"), "status" => "success"));
+        echo json_encode(array("id" => $id, "created_by" => $user_name, "created_at" => date("Y-m-d H:i:s"), "status" => "success"));
 
     } catch (Exception $e) {
         http_response_code(501);

@@ -396,15 +396,16 @@ var service = new Vue({
                     {
                         
                         _this.reload_schedule(_this.id);
+                        _this.undo_service_edit_check();
 
                     }
 
-                    _this.id = 0;
-                    $("#serviceModalScrollable").modal("toggle");
+                    //_this.id = 0;
+                    //$("#serviceModalScrollable").modal("toggle");
 
-                    _this.clear_service();
+                    //_this.clear_service();
 
-                    reload();
+                    //reload();
                 })
                 .catch(function (error) {
                     //handle error
@@ -417,68 +418,68 @@ var service = new Vue({
         },
 
         
-        service_update_check: function(status) {
-            let _this = this;
+        // service_update_check: function(status) {
+        //     let _this = this; // for axios
 
-            var token = localStorage.getItem("token");
-            var form_Data = new FormData();
+        //     var token = localStorage.getItem("token");
+        //     var form_Data = new FormData();
 
-            let id = 0;
+        //     let id = 0;
 
-            if(this.org_schedule_check2.length > 0){
-                id = this.org_schedule_check1[0].id;
-                api_url = "api/car_calender_check_update.php";
-            }
-            else{
-                api_url = "api/car_calender_check_save.php";
-                id = this.id;
-            }
+        //     if(this.org_schedule_check2.length > 0){
+        //         id = this.org_schedule_check1[0].id;
+        //         api_url = "api/car_calender_check_update.php";
+        //     }
+        //     else{
+        //         api_url = "api/car_calender_check_save.php";
+        //         id = this.id;
+        //     }
         
-            form_Data.append("jwt", token);
-            form_Data.append("id", id);
+        //     form_Data.append("jwt", token);
+        //     form_Data.append("id", id);
            
-            form_Data.append("date_use", this.check_date_use);
-            form_Data.append("car_use", this.check_car_use);
-            form_Data.append("driver", this.check_driver);
+        //     form_Data.append("date_use", this.check_date_use);
+        //     form_Data.append("car_use", this.check_car_use);
+        //     form_Data.append("driver", this.check_driver);
         
-            form_Data.append("time_out", this.check_time_out);
-            form_Data.append("time_in", this.check_time_in);
-            form_Data.append("status", status);
+        //     form_Data.append("time_out", this.check_time_out);
+        //     form_Data.append("time_in", this.check_time_in);
+        //     form_Data.append("status", status);
 
 
-            axios({
-                    method: "post",
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                    url: api_url,
-                    data: form_Data,
-                })
-                .then(function (response) {
+        //     axios({
+        //             method: "post",
+        //             headers: {
+        //                 "Content-Type": "multipart/form-data",
+        //             },
+        //             url: api_url,
+        //             data: form_Data,
+        //         })
+        //         .then(function (response) {
 
-                    if(_this.id != 0)
-                    {
+        //             if(_this.id != 0)
+        //             {
                         
-                        _this.reload_schedule(_this.id);
+        //                 _this.reload_schedule(_this.id);
 
-                    }
+        //             }
 
-                    _this.id = 0;
-                    $("#serviceModalScrollable").modal("toggle");
+        //             _this.id = 0;
+        //             $("#serviceModalScrollable").modal("toggle");
 
-                    _this.clear_service();
+        //             _this.clear_service();
 
-                    reload();
-                })
-                .catch(function (error) {
-                    //handle error
-                    Swal.fire({
-                        text: error.data,
-                        icon: "warning",
-                        confirmButtonText: "OK",
-                    });
-                });
-        },
+        //             reload();
+        //         })
+        //         .catch(function (error) {
+        //             //handle error
+        //             Swal.fire({
+        //                 text: error.data,
+        //                 icon: "warning",
+        //                 confirmButtonText: "OK",
+        //             });
+        //         });
+        // },
 
         reload_schedule: function(id) {
             var token = localStorage.getItem("token");
@@ -805,6 +806,17 @@ var service = new Vue({
             if(this.access_check2 && this.access_check1 == false){
                 this.check_showing2 = true;
                 this.edit_servie_check2 = true;
+            }
+        },
+
+        undo_service_edit_check: function() {
+            if(this.access_check1){
+                this.check_showing = false;
+                this.edit_servie_check1 = false;
+            }
+            if(this.access_check2 && this.access_check1 == false){
+                this.check_showing2 = false;
+                this.edit_servie_check2 = false;
             }
         },
 

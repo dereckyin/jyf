@@ -91,6 +91,17 @@ if (!isset($jwt)) {
 
         $stmt->execute();
 
+        if($status == 0)
+        {
+            // update car_calendar_main status
+            $sql = "update car_calendar_check set status = -1 where sid = :id";
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':id', $id);
+
+            $stmt->execute();
+        }
+
         http_response_code(200);
         echo json_encode(array("sid" => $id, "updated_by" => $user_name, "updated_at" => date("Y-m-d H:i:s"), "status" => "success"));
 
