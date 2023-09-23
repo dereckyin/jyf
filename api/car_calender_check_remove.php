@@ -94,7 +94,7 @@ if (!isset($jwt)) {
         $stmt->execute();
 
         // update car_calendar_main status
-        $sql = "update car_calendar_check set status = -1 where id = :id";
+        $sql = "update car_calendar_check set status = -1 where sid = :id";
 
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':id', $id);

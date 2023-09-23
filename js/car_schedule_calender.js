@@ -162,15 +162,15 @@ var service = new Vue({
                 let id = 0;
                 let sid = 0;
 
-                if(_this.org_schedule_check1.length > 0){
-                    id = _this.org_schedule_check1[0].id;
-                    sid = _this.id;
-                    api_url = "api/car_calender_check_remove.php";
-                }
-                else{
+                // if(_this.org_schedule_check1.length > 0){
+                //     id = _this.org_schedule_check1[0].id;
+                //     sid = _this.id;
+                //     api_url = "api/car_calender_check_remove.php";
+                // }
+                // else{
                     api_url = "api/car_calender_check_reject.php";
                     id = _this.id;
-                }
+                // }
             
                 form_Data.append("jwt", token);
                 form_Data.append("id", id);
@@ -1467,19 +1467,19 @@ var service = new Vue({
                 this.check_driver = sc_content.check2[0].driver;
             }
 
-            if(this.status == "2" && sc_content.check1.length > 0)
-            {
-                this.date_use = moment(sc_content.check1[0].date_use).format("YYYY-MM-DD");
-                this.car_use = sc_content.check1[0].car_use;
-                this.driver = sc_content.check1[0].driver;
-                this.time_out = moment(sc_content.check1[0].time_out).format("HH:mm");
-                this.time_in = moment(sc_content.check1[0].time_in).format("HH:mm");
-            }
+            // if(this.status == "2" && sc_content.check1.length > 0)
+            // {
+            //     this.date_use = moment(sc_content.check1[0].date_use).format("YYYY-MM-DD");
+            //     this.car_use = sc_content.check1[0].car_use;
+            //     this.driver = sc_content.check1[0].driver;
+            //     this.time_out = moment(sc_content.check1[0].time_out).format("HH:mm");
+            //     this.time_in = moment(sc_content.check1[0].time_in).format("HH:mm");
+            // }
 
-            if(this.status == "3" && sc_content.check2.length > 0)
-            {
-                this.check_driver = sc_content.check2[0].driver;
-            }
+            // if(this.status == "3" && sc_content.check2.length > 0)
+            // {
+            //     this.check_driver = sc_content.check2[0].driver;
+            // }
         },
 
         clean_service: function() {
@@ -2299,7 +2299,9 @@ var app = new Vue({
                             symbol = 'fa-car';
 
                         let gbcolor = "";
-                        if(response.data[i].status == "1" || response.data[i].status == "0")
+                        let dateuse = "";
+
+                        if(response.data[i].status == "2")
                         {
                             if(response.data[i].check1.length > 0){
                                 if(response.data[i].check1[0].car_use == "Alphard")
@@ -2314,7 +2316,13 @@ var app = new Vue({
                                 gbcolor = "#F19DB4";
                                 if(response.data[i].check1[0].car_use == "")
                                 gbcolor = "#141415";
-                            }else{
+
+                                dateuse = moment(response.data[i].check1[0].date_use).format("YYYY-MM-DD");
+                            }
+                        }
+
+                        if(response.data[i].status == "1" || response.data[i].status == "0")
+                        {
                                 if(response.data[i].car_use == "Alphard")
                                 gbcolor = "#FECC28";
                                 if(response.data[i].car_use == "Avanza")
@@ -2327,7 +2335,8 @@ var app = new Vue({
                                 gbcolor = "#F19DB4";
                                 if(response.data[i].car_use == "")
                                 gbcolor = "#141415";
-                            }
+
+                                dateuse = moment(response.data[i].date_use).format("YYYY-MM-DD");
                         }
 
                         
@@ -2335,9 +2344,9 @@ var app = new Vue({
 
                             id: response.data[i].id,
                             title: response.data[i].schedule_Name,
-                            Date: moment(response.data[i].date_use).format("YYYY-MM-DD"),
-                            start: moment(response.data[i].date_use).format("YYYY-MM-DD"), // will be parsed
-                            end: moment(response.data[i].date_use).format("YYYY-MM-DD"),
+                            Date: moment(dateuse).format("YYYY-MM-DD"),
+                            start: moment(dateuse).format("YYYY-MM-DD"), // will be parsed
+                            end: moment(dateuse).format("YYYY-MM-DD"),
                             color: gbcolor,
                             display: 'block',
                             // color: ((response.data[i].color_other !== '') ? response.data[i].color_other : response.data[i].color),
