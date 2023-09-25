@@ -127,9 +127,11 @@ if (!isset($jwt)) {
                 echo json_encode(array("insertion error" => $e->getMessage()));
                 die();
             }
+
+            $status = 2;
         }
 
-        $status = 2;
+        
         
     }
 
