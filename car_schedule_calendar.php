@@ -341,8 +341,8 @@ try {
                                 <option value="0">Choose One</option>
                                 <option value="Alphard">Alphard</option>
                                 <option value="Avanza">Avanza</option>
-                                <option value="Travis 1">Travis 1</option>
-                                <option value="Travis 2">Travis 2</option>
+                                <option value="Traviz 1">Traviz 1</option>
+                                <option value="Traviz 2">Traviz 2</option>
                                 <option value="Toyota Rush">Toyota Rush</option>
                             </Select>
 
@@ -1044,8 +1044,8 @@ try {
                                 <option value="">Choose One</option>
                                 <option value="Alphard">Alphard</option>
                                 <option value="Avanza">Avanza</option>
-                                <option value="Travis 1">Travis 1</option>
-                                <option value="Travis 2">Travis 2</option>
+                                <option value="Traviz 1">Traviz 1</option>
+                                <option value="Traviz 2">Traviz 2</option>
                                 <option value="Toyota Rush">Toyota Rush</option>
                             </Select>
 
@@ -1155,8 +1155,8 @@ try {
                             <option value="">Choose One</option>
                             <option value="Alphard">Alphard</option>
                             <option value="Avanza">Avanza</option>
-                            <option value="Travis 1">Travis 1</option>
-                            <option value="Travis 2">Travis 2</option>
+                            <option value="Traviz 1">Traviz 1</option>
+                            <option value="Traviz 2">Traviz 2</option>
                             <option value="Toyota Rush">Toyota Rush</option>
                         </Select>
 

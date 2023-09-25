@@ -202,9 +202,9 @@ var service = new Vue({
                         gbcolor = "#FECC28";
                         if(_this.car_use == "Avanza")
                         gbcolor = "#4EB5BB";
-                        if(_this.car_use == "Travis 1")
+                        if(_this.car_use == "Traviz 1")
                         gbcolor = "#009858";
-                        if(_this.car_use == "Travis 2")
+                        if(_this.car_use == "Traviz 2")
                         gbcolor = "#A671AD";
                         if(_this.car_use == "Toyota Rush")
                         gbcolor = "#F19DB4";
@@ -308,9 +308,9 @@ var service = new Vue({
                         gbcolor = "#FECC28";
                         if(_this.car_use == "Avanza")
                         gbcolor = "#4EB5BB";
-                        if(_this.car_use == "Travis 1")
+                        if(_this.car_use == "Traviz 1")
                         gbcolor = "#009858";
-                        if(_this.car_use == "Travis 2")
+                        if(_this.car_use == "Traviz 2")
                         gbcolor = "#A671AD";
                         if(_this.car_use == "Toyota Rush")
                         gbcolor = "#F19DB4";
@@ -550,9 +550,9 @@ var service = new Vue({
                                     gbcolor = "#FECC28";
                                     if(response.data[i].check1[0].car_use == "Avanza")
                                     gbcolor = "#4EB5BB";
-                                    if(response.data[i].check1[0].car_use == "Travis 1")
+                                    if(response.data[i].check1[0].car_use == "Traviz 1")
                                     gbcolor = "#009858";
-                                    if(response.data[i].check1[0].car_use == "Travis 2")
+                                    if(response.data[i].check1[0].car_use == "Traviz 2")
                                     gbcolor = "#A671AD";
                                     if(response.data[i].check1[0].car_use == "Toyota Rush")
                                     gbcolor = "#F19DB4";
@@ -569,9 +569,9 @@ var service = new Vue({
                                     gbcolor = "#FECC28";
                                     if(response.data[i].car_use == "Avanza")
                                     gbcolor = "#4EB5BB";
-                                    if(response.data[i].car_use == "Travis 1")
+                                    if(response.data[i].car_use == "Traviz 1")
                                     gbcolor = "#009858";
-                                    if(response.data[i].car_use == "Travis 2")
+                                    if(response.data[i].car_use == "Traviz 2")
                                     gbcolor = "#A671AD";
                                     if(response.data[i].car_use == "Toyota Rush")
                                     gbcolor = "#F19DB4";
@@ -678,9 +678,9 @@ var service = new Vue({
                     gbcolor = "#FECC28";
                     if(_this.check_car_use == "Avanza")
                     gbcolor = "#4EB5BB";
-                    if(_this.check_car_use == "Travis 1")
+                    if(_this.check_car_use == "Traviz 1")
                     gbcolor = "#009858";
-                    if(_this.check_car_use == "Travis 2")
+                    if(_this.check_car_use == "Traviz 2")
                     gbcolor = "#A671AD";
                     if(_this.check_car_use == "Toyota Rush")
                     gbcolor = "#F19DB4";
@@ -1029,9 +1029,9 @@ var service = new Vue({
                         gbcolor = "#FECC28";
                         if(_this.car_use == "Avanza")
                         gbcolor = "#4EB5BB";
-                        if(_this.car_use == "Travis 1")
+                        if(_this.car_use == "Traviz 1")
                         gbcolor = "#009858";
-                        if(_this.car_use == "Travis 2")
+                        if(_this.car_use == "Traviz 2")
                         gbcolor = "#A671AD";
                         if(_this.car_use == "Toyota Rush")
                         gbcolor = "#F19DB4";
@@ -1177,9 +1177,9 @@ var service = new Vue({
                     gbcolor = "#FECC28";
                     if(_this.car_use == "Avanza")
                     gbcolor = "#4EB5BB";
-                    if(_this.car_use == "Travis 1")
+                    if(_this.car_use == "Traviz 1")
                     gbcolor = "#009858";
-                    if(_this.car_use == "Travis 2")
+                    if(_this.car_use == "Traviz 2")
                     gbcolor = "#A671AD";
                     if(_this.car_use == "Toyota Rush")
                     gbcolor = "#F19DB4";
@@ -1341,9 +1341,9 @@ var service = new Vue({
                     gbcolor = "#FECC28";
                     if(_this.car_use == "Avanza")
                     gbcolor = "#4EB5BB";
-                    if(_this.car_use == "Travis 1")
+                    if(_this.car_use == "Traviz 1")
                     gbcolor = "#009858";
-                    if(_this.car_use == "Travis 2")
+                    if(_this.car_use == "Traviz 2")
                     gbcolor = "#A671AD";
                     if(_this.car_use == "Toyota Rush")
                     gbcolor = "#F19DB4";
@@ -2396,9 +2396,9 @@ var app = new Vue({
                                 gbcolor = "#FECC28";
                                 if(response.data[i].check1[0].car_use == "Avanza")
                                 gbcolor = "#4EB5BB";
-                                if(response.data[i].check1[0].car_use == "Travis 1")
+                                if(response.data[i].check1[0].car_use == "Traviz 1")
                                 gbcolor = "#009858";
-                                if(response.data[i].check1[0].car_use == "Travis 2")
+                                if(response.data[i].check1[0].car_use == "Traviz 2")
                                 gbcolor = "#A671AD";
                                 if(response.data[i].check1[0].car_use == "Toyota Rush")
                                 gbcolor = "#F19DB4";
@@ -2415,9 +2415,9 @@ var app = new Vue({
                                 gbcolor = "#FECC28";
                                 if(response.data[i].car_use == "Avanza")
                                 gbcolor = "#4EB5BB";
-                                if(response.data[i].car_use == "Travis 1")
+                                if(response.data[i].car_use == "Traviz 1")
                                 gbcolor = "#009858";
-                                if(response.data[i].car_use == "Travis 2")
+                                if(response.data[i].car_use == "Traviz 2")
                                 gbcolor = "#A671AD";
                                 if(response.data[i].car_use == "Toyota Rush")
                                 gbcolor = "#F19DB4";
