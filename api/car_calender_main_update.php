@@ -79,6 +79,51 @@ if (!isset($jwt)) {
         die();
     }
 
+        // if status = 1 (send), and not any same car and date_use in car_calendar_main, insert car_calendar_check
+        if($status == 1)
+        {
+            $sql = "select count(*) as cnt from car_calendar_check where car_use = :car_use 
+                    and date_use = :date_use and status = 1 and id <> :id";
+
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindParam(':car_use', $car_use);
+            $stmt->bindParam(':date_use', $date_use);
+            $stmt->bindParam(':id', $id);
+
+            $stmt->execute();
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if($row['cnt'] == 0)
+            {
+                $sql = "insert into car_calendar_check
+                            (sid, kind, date_use, car_use, driver, helper, time_out, time_in, notes, items, created_by, created_at, updated_by, updated_at, status)
+                        values
+                            (:sid, '0', :date_use, :car_use, :driver, :helper, :time_out, :time_in, :notes, :items, :created_by, now(), :updated_by, now(), :status)";
+
+                $stmt = $db->prepare($sql);
+
+                $stmt->bindParam(':sid', $id);
+                $stmt->bindParam(':date_use', $date_use);
+                $stmt->bindParam(':car_use', $car_use);
+                $stmt->bindParam(':driver', $driver);
+                $stmt->bindParam(':helper', $helper);
+                $stmt->bindParam(':time_out',  $tout);
+                $stmt->bindParam(':time_in',  $tin);
+                $stmt->bindParam(':notes', $notes);
+                $stmt->bindParam(':items', $items);
+                $stmt->bindParam(':created_by', $user_name);
+                $stmt->bindParam(':updated_by', $user_name);
+                $stmt->bindParam(':status', $status);
+
+                $stmt->execute();
+            }
+
+            $status = 2;
+            
+        }
+
     $tout = $date_use . " " . $time_out;
     $tin = $date_use . " " . $time_in;
     
@@ -116,6 +161,7 @@ if (!isset($jwt)) {
         $stmt->bindParam(':id', $id);
 
         $stmt->execute();
+
 
         http_response_code(200);
         echo json_encode(array("sid" => $id, "updated_by" => $user_name, "updated_at" => date("Y-m-d H:i:s"), "status" => "success"));
