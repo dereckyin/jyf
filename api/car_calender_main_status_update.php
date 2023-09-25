@@ -79,54 +79,61 @@ if (!isset($jwt)) {
         die();
     }
 
+    $tout = $date_use . " " . $time_out;
+    $tin = $date_use . " " . $time_in;
+
     // if status = 1 (send), and not any same car and date_use in car_calendar_main, insert car_calendar_check
-    if($status == 1)
+    if($status == '1')
     {
-        $sql = "select count(*) as cnt from car_calendar_check where car_use = :car_use 
-                and date_use = :date_use and status = 1 and id <> :id";
+        $sql = "select count(*) as cnt 
+                    from car_calendar_check ck left join car_calendar_main cm on ck.sid = cm.id
+                where ck.car_use = :car_use 
+                and ck.date_use = :date_use 
+                and ck.status <> -1
+                and cm.status = 2 ";
 
         $stmt = $db->prepare($sql);
 
         $stmt->bindParam(':car_use', $car_use);
         $stmt->bindParam(':date_use', $date_use);
-        $stmt->bindParam(':id', $id);
 
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        
         if($row['cnt'] == 0)
         {
-            $sql = "insert into car_calendar_check
-                        (sid, kind, date_use, car_use, driver, helper, time_out, time_in, notes, items, created_by, created_at, updated_by, updated_at, status)
-                    values
-                        (:sid, '0', :date_use, :car_use, :driver, :helper, :time_out, :time_in, :notes, :items, :created_by, now(), :updated_by, now(), :status)";
+            try {
+                $sql = "insert into car_calendar_check
+                            (sid, kind, date_use, car_use, driver, time_out, time_in,  created_by, created_at)
+                        values
+                            (:sid, '1', :date_use, :car_use, :driver, :time_out, :time_in, :created_by, now())";
 
-            $stmt = $db->prepare($sql);
+                $stmt = $db->prepare($sql);
 
-            $stmt->bindParam(':sid', $id);
-        
-            $stmt->bindParam(':date_use', $date_use);
-            $stmt->bindParam(':car_use', $car_use);
-            $stmt->bindParam(':driver', $driver);
-            $stmt->bindParam(':helper', $helper);
-            $stmt->bindParam(':time_out',  $tout);
-            $stmt->bindParam(':time_in',  $tin);
-            $stmt->bindParam(':notes', $notes);
-            $stmt->bindParam(':items', $items);
-            $stmt->bindParam(':created_by', $user_name);
-            $stmt->bindParam(':updated_by', $user_name);
-            $stmt->bindParam(':status', $status);
+                $stmt->bindParam(':sid', $id);
+                $stmt->bindParam(':date_use', $date_use);
+                $stmt->bindParam(':car_use', $car_use);
+                $stmt->bindParam(':driver', $driver);
+                $stmt->bindParam(':time_out',  $tout);
+                $stmt->bindParam(':time_in',  $tin);
+                $stmt->bindParam(':created_by', $user_name);
 
-            $stmt->execute();
+
+                $stmt->execute();
+            } catch (Exception $e) {
+                http_response_code(501);
+                echo json_encode(array("insertion error" => $e->getMessage()));
+                die();
+            }
         }
 
         $status = 2;
         
     }
 
-    $tout = $date_use . " " . $time_out;
-    $tin = $date_use . " " . $time_in;
+    
     
     try {
         $sql = "update 

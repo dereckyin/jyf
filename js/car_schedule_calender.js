@@ -1146,6 +1146,13 @@ var service = new Vue({
             var form_Data = new FormData();
             form_Data.append("id", this.id);
 
+            form_Data.append("date_use", this.date_use);
+            form_Data.append("car_use", this.car_use);
+            form_Data.append("driver", this.driver);
+            form_Data.append("time_out", this.time_out);
+            form_Data.append("time_in", this.time_in);
+
+
             form_Data.append("status", status);
 
             axios({
