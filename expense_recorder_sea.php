@@ -332,6 +332,7 @@ try {
                                     <option>GCash Cash In</option>
                                     <option>GCash Cash Out</option>
                                     <option>Helper Fees</option>
+                                    <option>Lalamove Fee</option>
                                     <option>Other</option>
                                     <option>Petty</option>
                                     <option>Prepaid Load</option>
@@ -595,6 +596,7 @@ try {
             <option>GCash Cash In</option>
             <option>GCash Cash Out</option>
             <option>Helper Fees</option>
+            <option>Lalamove Fee</option>
             <option>Other</option>
             <option>Petty</option>
             <option>Prepaid Load</option>
