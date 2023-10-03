@@ -112,6 +112,10 @@ if (!isset($jwt)) {
         $merged_results_feliix = array();
         $merged_results_feliix = GetFeliix($db_feliix, $sdate, $edate);
 
+        foreach ($merged_results_feliix as $key => $value) {
+            $merged_results[] = $value;
+        }
+
         echo json_encode($merged_results, JSON_UNESCAPED_SLASHES);
     } catch (Exception $e) {
         http_response_code(401);
@@ -137,7 +141,7 @@ function GetFeliix($db, $sdate, $edate)
                         detail.main_id, detail.agenda, detail.appoint_time, detail.end_time, detail.sort, detail.location, main.status
                     from work_calendar_main main 
                     left join work_calendar_details detail on detail.main_id = main.id and detail.is_enabled = true
-                    where main.is_enabled = true ";
+                    where main.is_enabled = true and main.status > 0 ";
 
         if($sdate != ""){
             $query .= " and main.start_time >= '" . $sdate . "-01 00:00:00' ";
@@ -197,6 +201,9 @@ function GetFeliix($db, $sdate, $edate)
 
         $confirm = "";
 
+        $check1 = array();
+        $check2 = array();
+
         // detail
         $main_id = 0;
         $agenda = "";
@@ -252,7 +259,19 @@ function GetFeliix($db, $sdate, $edate)
                     "updated_by" => $updated_by,
                     "updated_at" => $updated_at,
                     "detail" => $detail_array,
-                    "status" => $status
+                    "status" => $status,
+
+                    
+                    "schedule_Name" => $title,
+                    "date_use" => $start_time,
+                    "car_use" => $service,
+                    "time_out" => $start_time,
+                    "time_in" => $end_time,
+
+                    "check1" => $check1,
+                    "check2" => $check2,
+                    "feliix" => "1",
+                    
                 );
 
                 $detail_array = array();
@@ -302,6 +321,9 @@ function GetFeliix($db, $sdate, $edate)
             $end_time = $row['end_time'];
             $sort = $row['sort'];
             $location = $row['location'];
+
+            $check1 = GetCheck($db, $row['id'], "1", "1");
+            $check2 = GetCheck($db, $row['id'], "2", "1");
 
             $old_id = $id;
 
@@ -360,7 +382,17 @@ function GetFeliix($db, $sdate, $edate)
                 "updated_by" => $updated_by,
                 "updated_at" => $updated_at,
                 "detail" => $detail_array,
-                "status" => $status
+                "status" => $status,
+                
+                "schedule_Name" => $title,
+                "date_use" => $start_time,
+                "car_use" => $service,
+                "time_out" => $start_time,
+                "time_in" => $end_time,
+
+                "check1" => $check1,
+                "check2" => $check2,
+                "feliix" => "1",
             );
         }
     } catch (Exception $e) {

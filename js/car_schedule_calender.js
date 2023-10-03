@@ -2427,40 +2427,182 @@ var app = new Vue({
                                 dateuse = moment(response.data[i].date_use).format("YYYY-MM-DD");
                         }
 
-                        
-                        _this.items.push({
+                        if(response.data[i].feliix == "1")
+                        {
+                            var agendas = [];
+                            var isAll = false;
+                            var Lasteditor = "";
+                            var photoshoot = "No";
+                            if (response.data[i].all_day == "1") {
+                                isAll = true;
+                            }
+                            if (response.data[i].photoshoot_request == "1") {
+                                photoshoot = "Yes";
+                            }
+                            if (
+                                response.data[i].updated_by != "" &&
+                                response.data[i].updated_by != null
+                            ) {
+                                Lasteditor =
+                                    response.data[i].updated_by +
+                                    " at " +
+                                    response.data[i].updated_at;
+                            } else {
+                                Lasteditor =
+                                    response.data[i].created_by +
+                                    " at " +
+                                    response.data[i].created_at;
+                            }
+                            for (var j = 0; j < _this.agenda.length; j++) {
+                                if (_this.agenda[j].main_id == response.data[i].id) {
+                                    agendas.push({
+                                        agenda: UnescapeHTML(_this.agenda[j].agenda),
+                                        appointtime: moment(_this.agenda[j].appoint_time).format(
+                                            "HH:mm"
+                                        ),
+                                        endtime: moment(_this.agenda[j].end_time).format("HH:mm"),
+                                        sort: _this.agenda[j].sort,
+                                        location: UnescapeHTML(_this.agenda[j].location),
+                                    });
+                                }
+                            }
+                            //整理檔案
+                            response.data[i].products_to_bring_files = response.data[
+                                i
+                            ].products_to_bring_files.replaceAll(",", '","');
+                            if (response.data[i].products_to_bring_files.indexOf('"') == 0) {
+                                response.data[i].products_to_bring_files =
+                                    "[" + response.data[i].products_to_bring_files + "]";
+                                response.data[i].products_to_bring_files = JSON.parse(
+                                    response.data[i].products_to_bring_files
+                                );
+                            } else {
+                                response.data[i].products_to_bring_files =
+                                    '["' + response.data[i].products_to_bring_files + '"]';
+                                response.data[i].products_to_bring_files = JSON.parse(
+                                    response.data[i].products_to_bring_files
+                                );
+                            }
+                            var files = "";
+                            response.data[i].products_to_bring_files.forEach((element) => {
+                                var file_str =
+                                    "<input type='checkbox' class='custom-control-input' id='" + element + "' checked name='file_elements' value='" + element + "' />" + 
+                                    "<label class='custom-control-label' style='justify-content: flex-start;' for='" + element + "'>" +
+                                    "<a href='" +
+                                    element +
+                                    "' target='_blank'>" +
+                                    element +
+                                    "</a></label>";
+                                if(element.trim() !== '')
+                                {
+                                    files += "<div class='custom-control custom-checkbox' style='padding-top: 1%;'>" + file_str + "</div>";
+                                }
+                            });
 
-                            id: response.data[i].id,
-                            title: response.data[i].schedule_Name,
-                            Date: moment(dateuse).format("YYYY-MM-DD"),
-                            start: moment(dateuse).format("YYYY-MM-DD"), // will be parsed
-                            end: moment(dateuse).format("YYYY-MM-DD"),
-                            color: gbcolor,
-                            display: 'block',
-                            // color: ((response.data[i].color_other !== '') ? response.data[i].color_other : response.data[i].color),
-                            // color_other: response.data[i].color_other,
-                            backgroundColor: gbcolor,
-                            borderColor: gbcolor,
-                            allDay: true,
-                            description: {
-                                icon: symbol,
-                                schedule_Name: UnescapeHTML(response.data[i].schedule_Name),
-                                car_use: response.data[i].car_use,
-                                driver: response.data[i].driver,
-                                helper: response.data[i].helper,
-                                date_use: moment(response.data[i].date_use).format("YYYY-MM-DD"),
-                                time_out: moment(response.data[i].time_out).format("HH:mm"),
-                                time_in: moment(response.data[i].time_in).format("HH:mm"),
-                                notes: response.data[i].notes,
-                                Lasteditor: Lasteditor,
-                                items: response.data[i].items,
-                                status: response.data[i].status,
-                                creator : response.data[i].created_by,
+                            files = "<div class='custom-control custom-checkbox' style='padding-top: 1%;'>" + files + "</div>";
+                            _this.items.push({
+                                id: response.data[i].id,
+                                title: response.data[i].title,
+                                Date: moment(response.data[i].start_time).format("YYYY-MM-DD"),
+                                start: moment(response.data[i].start_time).format(
+                                    "YYYY-MM-DDTHH:mm"
+                                ), // will be parsed
+                                end: moment(response.data[i].end_time).format("YYYY-MM-DDTHH:mm"),
+                                color: ((response.data[i].color_other !== '') ? response.data[i].color_other : response.data[i].color),
+                                // color_other: response.data[i].color_other,
+                                allDay: true,
+                                
+                                description: {
+                                    icon: symbol,
+                                    Title: UnescapeHTML(response.data[i].title),
+                                    Color: response.data[i].color,
+                                    Color_Other: response.data[i].color_other,
+                                    Date: moment(response.data[i].start_time).format("YYYY-MM-DD"),
+                                    Allday: isAll,
+                                    Starttime: moment(response.data[i].start_time).format("HH:mm"),
+                                    Endtime: moment(response.data[i].end_time).format("HH:mm"),
+                                    Project: UnescapeHTML(response.data[i].project),
+                                    Sales_Executive: UnescapeHTML(response.data[i].sales_executive),
+                                    Project_in_charge: UnescapeHTML(
+                                        response.data[i].project_in_charge
+                                    ),
+                                    Project_relevant: UnescapeHTML(
+                                        response.data[i].project_relevant
+                                    ),
+                                    Installer_needed: UnescapeHTML(
+                                        response.data[i].installer_needed
+                                    ),
+                                    Installer_needed_other: UnescapeHTML(
+                                        response.data[i].installer_needed_other
+                                    ),
+                                    Location_Things_to_Bring: UnescapeHTML(
+                                        response.data[i].things_to_bring_location
+                                    ),
+                                    Things_to_Bring: UnescapeHTML(response.data[i].things_to_bring),
+                                    Location_Products_to_Bring: UnescapeHTML(
+                                        response.data[i].installer_needed_location
+                                    ),
+                                    Products_to_Bring: UnescapeHTML(
+                                        response.data[i].products_to_bring
+                                    ),
+                                    Products_to_bring_files: files,
+                                    File_name: response.data[i].products_to_bring_files,
+                                    Service: response.data[i].service,
+                                    Driver: response.data[i].driver,
+                                    Driver_Other: response.data[i].driver_other,
+                                    Back_up_Driver: response.data[i].back_up_driver,
+                                    Back_up_Driver_Other: response.data[i].back_up_driver_other,
+                                    Photoshoot_Request: photoshoot,
+                                    Notes: UnescapeHTML(response.data[i].notes),
+                                    Lock: response.data[i].lock,
+                                    Agenda: agendas,
+                                    Lasteditor: Lasteditor,
+                                    check1 : response.data[i].check1,
+                                    check2 : response.data[i].check2,
+                                    status: response.data[i].status,
+                                    feliix: response.data[i].feliix,
+                                    
+                                },
+                            });
+                        }
+                        else
+                        {
+                            _this.items.push({
 
-                                check1 : response.data[i].check1,
-                                check2 : response.data[i].check2,
-                            },
-                        });
+                                id: response.data[i].id,
+                                title: response.data[i].schedule_Name,
+                                Date: moment(dateuse).format("YYYY-MM-DD"),
+                                start: moment(dateuse).format("YYYY-MM-DD"), // will be parsed
+                                end: moment(dateuse).format("YYYY-MM-DD"),
+                                color: gbcolor,
+                                display: 'block',
+                                // color: ((response.data[i].color_other !== '') ? response.data[i].color_other : response.data[i].color),
+                                // color_other: response.data[i].color_other,
+                                backgroundColor: gbcolor,
+                                borderColor: gbcolor,
+                                allDay: true,
+                                
+                                description: {
+                                    icon: symbol,
+                                    schedule_Name: UnescapeHTML(response.data[i].schedule_Name),
+                                    car_use: response.data[i].car_use,
+                                    driver: response.data[i].driver,
+                                    helper: response.data[i].helper,
+                                    date_use: moment(response.data[i].date_use).format("YYYY-MM-DD"),
+                                    time_out: moment(response.data[i].time_out).format("HH:mm"),
+                                    time_in: moment(response.data[i].time_in).format("HH:mm"),
+                                    notes: response.data[i].notes,
+                                    Lasteditor: Lasteditor,
+                                    items: response.data[i].items,
+                                    status: response.data[i].status,
+                                    creator : response.data[i].created_by,
+    
+                                    check1 : response.data[i].check1,
+                                    check2 : response.data[i].check2,
+                                    feliix: response.data[i].feliix,
+                                },
+                            });
+                        }
                     }
 
                     initial();
@@ -3233,14 +3375,215 @@ var initial = async (_id) =>  {
                 "Schedule Details";
             eventObj = info.event;
 
-            service.clear_service();
+            if(eventObj.extendedProps.description.feliix == '')
+            {
+                service.clear_service();
+    
+                service.id = eventObj.id;
+                var sc_content = eventObj.extendedProps.description;
+    
+                service.service_click(sc_content);
+    
+                $("#serviceModalScrollable").modal("toggle");
+            }
 
-            service.id = eventObj.id;
+            if(eventObj.extendedProps.description.feliix == '1')
+            {
+                document.getElementById("myLargeModalLabel").innerText =
+                "Schedule Details";
+            eventObj = info.event;
+            resetSchedule();
+            app.id = eventObj.id;
             var sc_content = eventObj.extendedProps.description;
 
-            service.service_click(sc_content);
+            document.getElementById("sc_title").value = sc_content.Title;
+            document.getElementById("sc_color").value = sc_content.Color;
 
-            $("#serviceModalScrollable").modal("toggle");
+            if(sc_content.Color_Other != "")
+            {
+                document.getElementById("sc_color").value = sc_content.Color_Other;
+                document.getElementById("sc_color_other").checked = true;
+            }
+            else
+            {
+                document.getElementById("sc_color").value = "#000000";
+                document.getElementById("sc_color_other").checked = false;
+            }
+
+            if(sc_content.Color != "")
+            {
+                var checked = 0;
+                var colors = document.getElementsByName("sc_color");
+
+                for(var i = 0; i < colors.length; i++)
+                {
+                    if(colors[i].value == sc_content.Color)
+                    {
+                        checked = 1;
+                        colors[i].checked = true;
+                    }
+                }
+
+                if(checked == 0 && sc_content.Color_Other == "")
+                {
+                    document.getElementById("sc_color").value = sc_content.Color;
+                    document.getElementById("sc_color_other").checked = true;
+                }
+            }
+
+            
+
+            //設定最後編輯者資訊
+            document.getElementById("sc_editor").value = sc_content.Lasteditor;
+            document.getElementById("last_editor").style.display = "inline";
+
+            document.getElementById("sc_date").value = sc_content.Date;
+            document.getElementById("sc_time").checked = sc_content.Allday;
+            document.getElementById("sc_stime").value = sc_content.Starttime;
+            document.getElementById("sc_etime").value = sc_content.Endtime;
+            document.getElementById("sc_project").value = sc_content.Project;
+            document.getElementById("sc_sales").value = sc_content.Sales_Executive;
+            document.getElementById("sc_incharge").value =
+                sc_content.Project_in_charge;
+            document.getElementById("sc_relevant").value =
+                sc_content.Project_relevant;
+            app.attendee = (sc_content.Project_relevant.split(",") === "" ? app.attendee = [] : sc_content.Project_relevant.split(","));
+            if(sc_content.Project_relevant === "")
+                app.attendee = [];
+                
+            document.getElementById("sc_Installer_needed_other").value = sc_content.Installer_needed_other;
+
+            app.users = app.users_org.concat(app.attendee);
+
+            app.users = app.users.filter((item,index)=>{
+                return (app.users.indexOf(item) == index)
+             })
+
+            app.users.sort(function (a, b) {
+                return a.toLowerCase().localeCompare(b.toLowerCase());
+            });
+            
+            var installer = sc_content.Installer_needed.split(",");
+
+            // for (i = 0; i < 5; i++) {
+            //     document.getElementsByName("sc_Installer_needed")[i].checked = false;
+            // }
+
+            // for (i = 0; i < installer.length; i++) {
+            //     if (installer[i] == "AS")
+            //         document.getElementsByName("sc_Installer_needed")[0].checked = true;
+
+            //     if (installer[i] == "RM")
+            //         document.getElementsByName("sc_Installer_needed")[1].checked = true;
+
+            //     if (installer[i] == "RS")
+            //         document.getElementsByName("sc_Installer_needed")[2].checked = true;
+
+            //     if (installer[i] == "CJ")
+            //         document.getElementsByName("sc_Installer_needed")[3].checked = true;
+
+            //     if (installer[i] == "JO")
+            //         document.getElementsByName("sc_Installer_needed")[4].checked = true;
+
+            //     if (installer[i] == "EO")
+            //         document.getElementsByName("sc_Installer_needed")[5].checked = true;
+
+            //     if (installer[i] == "JM")
+            //         document.getElementsByName("sc_Installer_needed")[6].checked = true;
+            // }
+
+            //加入Agenda內容(先刪除未儲存的)
+            var agenda_object = document
+                .getElementById("agenda_table")
+                .getElementsByTagName("tr");
+
+            for (i = agenda_object.length - 1; i > 1; i--) {
+                agenda_object[i].remove();
+            }
+
+            for (i = 0; i < sc_content.Agenda.length; i++) {
+                addAgendaitem(
+                    sc_content.Agenda[i].location,
+                    sc_content.Agenda[i].agenda,
+                    sc_content.Agenda[i].appointtime,
+                    sc_content.Agenda[i].endtime
+                );
+            }
+
+            document.getElementById("sc_location1").value =
+                sc_content.Location_Things_to_Bring;
+            document.getElementById("sc_things").value = sc_content.Things_to_Bring;
+            document.getElementById("sc_location2").value =
+                sc_content.Location_Products_to_Bring;
+            document.getElementById("sc_products").value =
+                sc_content.Products_to_Bring;
+            document.getElementById("upload_input").style = "display:none;";
+            document.getElementById("sc_product_files").innerHTML =
+                sc_content.Products_to_bring_files;
+            if (
+                sc_content.Products_to_bring_files !=
+                "<div class='custom-control custom-checkbox' style='padding-top: 1%;'></div>"
+            )
+                app.download_type = "zip";
+            else app.download_type = "docx";
+
+            document.getElementById("sc_product_files_hide").value =
+                sc_content.File_name;
+            document.getElementById("sc_service").value = sc_content.Service;
+            document.getElementById("sc_driver1").value = sc_content.Driver;
+
+            document.getElementById("sc_driver_other").value = sc_content.Driver_Other;
+
+            document.getElementById("sc_driver2").value = sc_content.Back_up_Driver;
+
+            document.getElementById("sc_backup_driver_other").value = sc_content.Back_up_Driver_Other;
+
+            if(sc_content.Driver != 6)
+                document.getElementById("sc_driver_other").style.display = "none";
+            else
+                document.getElementById("sc_driver_other").style.display = "";
+
+            if(sc_content.Back_up_Driver != 6)
+                document.getElementById("sc_backup_driver_other").style.display = "none";
+            else
+                document.getElementById("sc_backup_driver_other").style.display = "";
+
+            if (sc_content.Photoshoot_Request == "Yes") {
+                document.getElementsByName("sc_Photoshoot_request")[0].checked = true;
+            }
+            if (sc_content.Photoshoot_Request == "No") {
+                document.getElementsByName("sc_Photoshoot_request")[1].checked = true;
+            }
+
+            document.getElementById("sc_notes").value = sc_content.Notes;
+
+            Change_Schedule_State(true, sc_content.Allday);
+            icon_function_enable = false;
+
+            document.getElementById("btn_reset").style.display = "none";
+            document.getElementById("btn_add").style.display = "none";
+            document.getElementById("btn_duplicate").style.display = "inline";
+            document.getElementById("btn_export").style.display = "inline";
+            document.getElementById("btn_edit").style.display = "inline";
+            document.getElementById("btn_delete").style.display = "inline";
+            document.getElementById("btn_cancel").style.display = "none";
+            document.getElementById("btn_save").style.display = "none";
+
+            // add schedual lock
+            document.getElementById("lock").value = sc_content.Lock;
+            if (sc_content.Lock != "") {
+                document.getElementById("btn_lock").style.display = "none";
+                document.getElementById("btn_unlock").style.display = "inline";
+
+                document.getElementById("btn_edit").style.display = "none";
+                document.getElementById("btn_delete").style.display = "none";
+            } else {
+                document.getElementById("btn_lock").style.display = "inline";
+                document.getElementById("btn_unlock").style.display = "none";
+            }
+
+                $("#exampleModalScrollable").modal("toggle");
+            }
         },
 
         // eventRender: function(info) {
