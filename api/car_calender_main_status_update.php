@@ -87,7 +87,9 @@ if (!isset($jwt)) {
     {
         $sql = "select count(*) as cnt 
                     from car_calendar_check ck left join car_calendar_main cm on ck.sid = cm.id
-                where ck.car_use = :car_use 
+                where 
+                ck.`feliix` = 0 
+                and ck.car_use = :car_use 
                 and ck.date_use = :date_use 
                 and ck.status <> -1
                 and cm.status = 2 ";
@@ -163,7 +165,7 @@ if (!isset($jwt)) {
                         status = -1,
                         deleted_at = now(),
                         deleted_by = :deleted_by
-                    where sid = :id";
+                    where `feliix` = 0 and sid = :id";
 
             $stmt = $db->prepare($sql);
 

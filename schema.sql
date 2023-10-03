@@ -1274,3 +1274,5 @@ CREATE TABLE IF NOT EXISTS `car_calendar_check` (
   `approve_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+ALTER TABLE car_calendar_check ADD COLUMN feliix INT DEFAULT 0;

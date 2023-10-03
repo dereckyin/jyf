@@ -91,7 +91,7 @@ if (!isset($jwt)) {
                     updated_by = :updated_by,
                     updated_at = now(),
                     status = :status
-                where id = :id";
+                where `feliix` = 0 and id = :id";
 
         $stmt = $db->prepare($sql);
 
