@@ -190,7 +190,6 @@ var service_feliix = new Vue({
 
     watch: {
         id: function (val) {
-            if(val == -1) this.id = 0;
 
             this.access_check1 = false;
             this.access_check2 = false;
@@ -314,12 +313,56 @@ var service_feliix = new Vue({
             this.item_address = "";
             this.item_purpose = "";
             this.items = [];
-            this.id = -1;
+            this.id = 0;
 
             this.editing = false;
             this.edit_servie = false;
             this.sn = 0;
             this.showing = false;
+        },
+
+        
+        reset_service_check: function() {
+            if(this.access_check1){
+                if(this.check_showing == false) return;
+    
+                this.check_date_use = "";
+                this.check_car_use = "";
+                this.check_driver = "";
+    
+                this.check_time_out = "";
+                this.check_time_in = "";
+
+            }
+
+            if(this.access_check2 && this.access_check1 == false){
+                if(this.check_showing2 == false) return;
+
+                this.check_driver = "";
+            }
+        
+        },
+
+        reset_service_check2: function() {
+            
+            if(this.access_check1){
+                if(this.check_showing == false) return;
+    
+                this.check_date_use = "";
+                this.check_car_use = "";
+                this.check_driver = "";
+    
+                this.check_time_out = "";
+                this.check_time_in = "";
+
+            }
+
+            if(this.access_check2 && this.access_check1 == false){
+                if(this.check_showing2 == false) return;
+
+                this.check_driver = "";
+            }
+        
         },
 
         service_click: function(sc_content) {
@@ -376,6 +419,104 @@ var service_feliix = new Vue({
         },
 
         
+    service_change_check: function(status) {
+        let _this = this;
+
+        Swal.fire({
+            title: "Change",
+            text: "Are you sure to change?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+          }).then((result) => {
+            if (result.value) {
+
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
+
+            let id = 0;
+            let sid = 0;
+
+            if(_this.org_schedule_check1.length > 0){
+                id = _this.org_schedule_check1[0].id;
+                sid = _this.id * -1;
+                api_url = "api/car_calender_check_remove_feliix.php";
+            }
+            else{
+                api_url = "api/car_calender_check_reject_feliix.php";
+                id = _this.id * -1;
+            }
+        
+            form_Data.append("jwt", token);
+            form_Data.append("id", id);
+            form_Data.append("sid", sid);
+            form_Data.append("status", status);
+
+            axios({
+                    method: "post",
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    url: api_url,
+                    data: form_Data,
+                })
+                .then(function (response) {
+
+                    let is_send = status;
+
+                    let symbol = "";
+                    if (is_send == "1") 
+                        symbol = 'fa-question-circle';
+                    if (is_send == "2")
+                        symbol = 'fa-car';
+
+                    let gbcolor = "";
+
+                    if(_this.car_use == "Alphard")
+                    gbcolor = "#FECC28";
+                    if(_this.car_use == "Avanza")
+                    gbcolor = "#4EB5BB";
+                    if(_this.car_use == "Traviz 1")
+                    gbcolor = "#009858";
+                    if(_this.car_use == "Traviz 2")
+                    gbcolor = "#A671AD";
+                    if(_this.car_use == "Toyota Rush")
+                    gbcolor = "#F19DB4";
+                    if(_this.car_use == "")
+                    gbcolor = "#141415";
+
+                    if(_this.id != 0)
+                    {
+                        
+                        var event = calendar.getEventById(_this.id);
+
+                        event.color = gbcolor;
+                        event.backgroundColor = gbcolor;
+                        event.borderColor = gbcolor;
+                        event.extendedProps.description.status = is_send;
+                        event.extendedProps.description.icon = symbol;
+
+                        _this.id = 0;
+                    }
+
+                    $("#exampleModalScrollable").modal("toggle");
+
+                    _this.clear_service();
+
+                    reload();
+            
+                
+                })
+            }
+            else{
+                return;
+            }
+        });
+    },
+
+        
         service_save_check: function(check1, check2, is_send) {
             let _this = this;
 
@@ -400,7 +541,7 @@ var service_feliix = new Vue({
             if(check2 == true) kind = "2";
         
             form_Data.append("jwt", token);
-            form_Data.append("id", this.id);
+            form_Data.append("id", this.id * -1);
            
             form_Data.append("date_use", this.check_date_use);
             form_Data.append("car_use", this.check_car_use);
@@ -446,54 +587,6 @@ var service_feliix = new Vue({
                     gbcolor = "#141415";
                     
 
-                    if(_this.id == 0)
-                    {
-                        let sid = 0;
-                        let created_at = "";
-                        let created_by = "";
-
-                        if (response.data !== "") 
-                        {
-                            sid = response.data.sid;
-                            created_at = response.data.created_at;
-                            created_by = response.data.created_by;
-                        }
-
-                        let Lasteditor = created_by + " at " + created_at;
-
-                        if (
-                            _this.time_out != "" &&
-                            _this.time_in != "" &&
-                            _this.time_in >= _this.time_out && sid != 0
-                        ) {
-                            calendar.addEvent({
-                                id: sid,
-                                title: _this.schedule_Name,
-                                Date: moment(_this.date_use).format("YYYY-MM-DD"),
-                                //start: _this.date_use + "T" + _this.time_out,
-                                //end: _this.date_use + "T" + _this.time_in,
-                                color : gbcolor,
-                                backgroundColor : gbcolor,
-                                borderColor : gbcolor,
-                                allDay: true,
-                                description: {
-                                    icon: symbol,
-                                    schedule_Name: UnescapeHTML(_this.schedule_Name),
-                                    car_use: _this.car_use,
-                                    driver: _this.driver,
-                                    helper: _this.helper,
-                                    date_use: moment(_this.date_use).format("YYYY-MM-DD"),
-                                    time_out: moment(_this.date_use + ' ' + _this.time_out).format("HH:mm"),
-                                    time_in: moment(_this.date_use + ' ' + _this.time_in).format("HH:mm"),
-                                    notes: _this.notes,
-                                    Lasteditor: Lasteditor,
-                                    items: _this.items,
-                                    status: is_send,
-                                    creator: _this.username,
-                                },
-                            });
-                        }
-                    }
 
                     if(_this.id != 0)
                     {
@@ -505,37 +598,253 @@ var service_feliix = new Vue({
                         event.start = _this.date_use;
                         event.end = _this.date_use;
 
-                        event.extendedProps.description.schedule_Name = _this.schedule_Name;
-                        event.extendedProps.icon = symbol,
-                        event.extendedProps.description.car_use = _this.car_use;
-                        event.extendedProps.description.driver = _this.driver;
-                        event.extendedProps.description.helper = _this.helper;
-                        event.extendedProps.description.date_use = moment(_this.date_use).format("YYYY-MM-DD");
-                        event.extendedProps.description.time_out = moment(_this.date_use + ' ' + _this.time_out).format("HH:mm");
-                        event.extendedProps.description.time_in = moment(_this.date_use + ' ' + _this.time_in).format("HH:mm");
-                        event.extendedProps.description.notes = _this.notes;
-                        event.extendedProps.description.items = _this.items;
-                        event.extendedProps.description.status = _this.status;
-                        event.extendedProps.description.creator = _this.username;
+                        event.extendedProps.description.icon = symbol,
+
+                        event.extendedProps.description.status = is_send;
+        
 
                     }
 
-                    _this.id = -1
+                    _this.id = 0
 
-                    $("#serviceModalScrollable").modal("toggle");
+                    $("#exampleModalScrollable").modal("toggle");
 
                     _this.clear_service();
 
                     reload();
                 })
-                .catch(function (error) {
-                    //handle error
-                    Swal.fire({
-                        text: error.data,
-                        icon: "warning",
-                        confirmButtonText: "OK",
-                    });
-                });
+        },
+
+        
+        service_reject_check: function(status) {
+            let _this = this;
+
+            Swal.fire({
+                title: "Reject",
+                text: "Are you sure to reject?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+              }).then((result) => {
+                if (result.value) {
+
+                var token = localStorage.getItem("token");
+                var form_Data = new FormData();
+
+                let id = 0;
+                let sid = 0;
+
+                // if(_this.org_schedule_check1.length > 0){
+                //     id = _this.org_schedule_check1[0].id;
+                //     sid = _this.id;
+                //     api_url = "api/car_calender_check_remove.php";
+                // }
+                // else{
+                    api_url = "api/car_calender_check_reject_feliix.php";
+                    id = _this.id * -1;
+                // }
+            
+                form_Data.append("jwt", token);
+                form_Data.append("id", id);
+                form_Data.append("sid", sid);
+                form_Data.append("status", status);
+
+                axios({
+                        method: "post",
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                        url: api_url,
+                        data: form_Data,
+                    })
+                    .then(function (response) {
+
+                        let is_send = status;
+
+                        let symbol = "";
+                        if (is_send == "1") 
+                            symbol = 'fa-question-circle';
+                        if (is_send == "2")
+                            symbol = 'fa-car';
+
+                        let gbcolor = "";
+
+                        if(_this.car_use == "Alphard")
+                        gbcolor = "#FECC28";
+                        if(_this.car_use == "Avanza")
+                        gbcolor = "#4EB5BB";
+                        if(_this.car_use == "Traviz 1")
+                        gbcolor = "#009858";
+                        if(_this.car_use == "Traviz 2")
+                        gbcolor = "#A671AD";
+                        if(_this.car_use == "Toyota Rush")
+                        gbcolor = "#F19DB4";
+                        if(_this.car_use == "")
+                        gbcolor = "#141415";
+
+                        if(_this.id != 0)
+                        {
+                            
+                            var event = calendar.getEventById(_this.id);
+
+                            event.color = gbcolor;
+                            event.backgroundColor = gbcolor;
+                            event.borderColor = gbcolor;
+                            event.extendedProps.description.status = is_send;
+                            event.extendedProps.description.icon = symbol;
+
+                            _this.id = 0;
+                        }
+
+                        $("#exampleModalScrollable").modal("toggle");
+
+                        _this.clear_service();
+
+                        reload();
+                
+                    
+                })
+            }
+            else{
+                return;
+            }
+        });
+    },
+
+
+        
+        service_edit: function() {
+            this.showing = true;
+            this.edit_servie = true;
+        },
+
+        service_edit_check: function() {
+            if(this.access_check1){
+                this.check_showing = true;
+                this.edit_servie_check1 = true;
+            }
+            if(this.access_check2 && this.access_check1 == false){
+                this.check_showing2 = true;
+                this.edit_servie_check2 = true;
+            }
+        },
+
+        undo_service_edit_check: function() {
+            if(this.access_check1){
+                this.check_showing = false;
+                this.edit_servie_check1 = false;
+            }
+            if(this.access_check2 && this.access_check1 == false){
+                this.check_showing2 = false;
+                this.edit_servie_check2 = false;
+            }
+        },
+
+        service_edit_check2: function() {
+            if(this.access_check1){
+                this.check_showing = true;
+                this.edit_servie_check1 = true;
+            }
+            if(this.access_check2 && this.access_check1 == false){
+                this.check_showing2 = true;
+                this.edit_servie_check2 = true;
+            }
+        },
+
+        service_cancel_check: function() {
+            if(this.access_check1){
+                this.check_showing = false;
+                this.edit_servie_check1 = false;
+
+                if(this.org_schedule_check1.length > 0){
+                    this.check_date_use = moment(this.org_schedule_check1[0].date_use).format("YYYY-MM-DD");
+                    this.check_car_use = this.org_schedule_check1[0].car_use;
+                    this.check_driver = this.org_schedule_check1[0].driver;
+                    this.check_time_out = moment(this.org_schedule_check1[0].time_out).format("HH:mm");
+                    this.check_time_in = moment(this.org_schedule_check1[0].time_in).format("HH:mm");
+                }
+                else{
+                    this.check_date_use = moment(this.org_schedule.date_use).format("YYYY-MM-DD");
+                    this.check_car_use = this.org_schedule.car_use;
+                    this.check_driver = this.org_schedule.driver;
+                    this.check_time_out = moment(this.org_schedule.time_out).format("HH:mm");
+                    this.check_time_in = moment(this.org_shedule.time_in).format("HH:mm");
+                }
+            }
+
+            if(this.access_check2 && this.access_check1 == false){
+                this.check_showing2 = false;
+                this.edit_servie_check2 = false;
+
+                if(this.org_schedule_check2.length > 0){
+                    this.check_driver = this.org_schedule_check2[0].driver;
+                }
+                else if(this.org_schedule_check1.length > 0){
+                    this.check_driver = this.org_schedule_check1[0].driver;
+                }
+                else{
+                    this.check_driver = this.org_schedule.driver;
+                }
+            }
+
+        },
+
+        service_cancel_check2: function() {
+            if(this.access_check1){
+                this.check_showing = false;
+                this.edit_servie_check1 = false;
+
+                if(this.org_schedule_check1.length > 0){
+                    this.check_date_use = moment(this.org_schedule_check1[0].date_use).format("YYYY-MM-DD");
+                    this.check_car_use = this.org_schedule_check1[0].car_use;
+                    this.check_driver = this.org_schedule_check1[0].driver;
+                    this.check_time_out = moment(this.org_schedule_check1[0].time_out).format("HH:mm");
+                    this.check_time_in = moment(this.org_schedule_check1[0].time_in).format("HH:mm");
+                }
+                else{
+                    this.check_date_use = moment(this.org_schedule.date_use).format("YYYY-MM-DD");
+                    this.check_car_use = this.org_schedule.car_use;
+                    this.check_driver = this.org_schedule.driver;
+                    this.check_time_out = moment(this.org_schedule.time_out).format("HH:mm");
+                    this.check_time_in = moment(this.org_shedule.time_in).format("HH:mm");
+                }
+            }
+
+            if(this.access_check2 && this.access_check1 == false){
+                this.check_showing2 = false;
+                this.edit_servie_check2 = false;
+
+                if(this.org_schedule_check2.length > 0){
+                    this.check_driver = this.org_schedule_check2[0].driver;
+                }
+                else if(this.org_schedule_check1.length > 0){
+                    this.check_driver = this.org_schedule_check1[0].driver;
+                }
+                else{
+                    this.check_driver = this.org_schedule.driver;
+                }
+            }
+            
+
+        },
+
+        service_cancel: function() {
+            this.showing = false;
+            this.edit_servie = false;
+
+            this.schedule_Name = this.org_schedule.schedule_Name;
+            this.date_use = this.org_schedule.date_use;
+            this.car_use = this.org_schedule.car_use;
+            this.driver = this.org_schedule.driver;
+            this.helper = this.org_schedule.helper;
+            this.time_out = this.org_schedule.time_out;
+            this.time_in = this.org_schedule.time_in;
+            this.notes = this.org_schedule.notes;
+            this.items = JSON.parse(this.org_schedule.items);
+            this.creator = this.org_schedule.creator;
+     
         },
     }
 });
@@ -3035,7 +3344,7 @@ var app = new Vue({
 
                             files = "<div class='custom-control custom-checkbox' style='padding-top: 1%;'>" + files + "</div>";
                             _this.items.push({
-                                id: response.data[i].id,
+                                id: response.data[i].id * -1,
                                 title: response.data[i].title,
                                 Date: moment(response.data[i].start_time).format("YYYY-MM-DD"),
                                 start: moment(response.data[i].start_time).format(

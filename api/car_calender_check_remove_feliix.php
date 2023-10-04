@@ -36,6 +36,9 @@ $database = new Database();
 $db = $database->getConnection();
 $conf = new Conf();
 
+$database_feliix = new Database_Feliix();
+$db_feliix = $database_feliix->getConnection();
+
 //$workCalenderMain = new WorkCalenderMain($db);
 //$workCalenderDetails = new WorkCalenderDetails($db);
 //$workCalenderMessages = new WorkCalenderMessages($db);
@@ -77,14 +80,14 @@ if (!isset($jwt)) {
     
     try {
         $sql = "update 
-                    car_calendar_main
+                    work_calendar_main
                 set 
                     updated_by = :updated_by,
                     updated_at = now(),
                     status = :status
                 where id = :id";
 
-        $stmt = $db->prepare($sql);
+        $stmt = $db_feliix->prepare($sql);
 
 
         $stmt->bindParam(':updated_by', $user_name);
@@ -94,7 +97,7 @@ if (!isset($jwt)) {
         $stmt->execute();
 
         // update car_calendar_main status
-        $sql = "update car_calendar_check set status = -1 where `feliix` = 0 and id = :id";
+        $sql = "update car_calendar_check set status = -1 where `feliix` = 1 and id = :id";
 
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':id', $id);

@@ -13,8 +13,6 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 $id = (isset($_POST['id']) ?  $_POST['id'] : 0);
-$sid = (isset($_POST['sid']) ?  $_POST['sid'] : 0);
-
 $status = (isset($_POST['status']) ?  $_POST['status'] : 0);
 
 
@@ -34,6 +32,10 @@ include_once 'config/conf.php';
 
 $database = new Database();
 $db = $database->getConnection();
+
+$database_feliix = new Database_Feliix();
+$db_feliix = $database_feliix->getConnection();
+
 $conf = new Conf();
 
 //$workCalenderMain = new WorkCalenderMain($db);
@@ -77,29 +79,32 @@ if (!isset($jwt)) {
     
     try {
         $sql = "update 
-                    car_calendar_main
+        work_calendar_main
                 set 
                     updated_by = :updated_by,
                     updated_at = now(),
                     status = :status
                 where id = :id";
 
-        $stmt = $db->prepare($sql);
+        $stmt = $db_feliix->prepare($sql);
 
 
         $stmt->bindParam(':updated_by', $user_name);
         $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':id', $sid);
-
-        $stmt->execute();
-
-        // update car_calendar_main status
-        $sql = "update car_calendar_check set status = -1 where `feliix` = 0 and id = :id";
-
-        $stmt = $db->prepare($sql);
         $stmt->bindParam(':id', $id);
 
         $stmt->execute();
+
+        if($status == 0)
+        {
+            // update car_calendar_main status
+            $sql = "update car_calendar_check set status = -1 where `feliix` = 1 and sid = :id";
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':id', $id);
+
+            $stmt->execute();
+        }
 
         http_response_code(200);
         echo json_encode(array("sid" => $id, "updated_by" => $user_name, "updated_at" => date("Y-m-d H:i:s"), "status" => "success"));

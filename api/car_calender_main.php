@@ -110,7 +110,7 @@ if (!isset($jwt)) {
 
         // for feliix
         $merged_results_feliix = array();
-        $merged_results_feliix = GetFeliix($db_feliix, $sdate, $edate);
+        $merged_results_feliix = GetFeliix($db_feliix, $sdate, $edate, $db);
 
         foreach ($merged_results_feliix as $key => $value) {
             $merged_results[] = $value;
@@ -125,7 +125,7 @@ if (!isset($jwt)) {
 
 }
 
-function GetFeliix($db, $sdate, $edate)
+function GetFeliix($db, $sdate, $edate, $db_check)
 {
     //select all
     try {
@@ -322,8 +322,8 @@ function GetFeliix($db, $sdate, $edate)
             $sort = $row['sort'];
             $location = $row['location'];
 
-            $check1 = GetCheck($db, $row['id'], "1", "1");
-            $check2 = GetCheck($db, $row['id'], "2", "1");
+            $check1 = GetCheck($db_check, $row['id'], "1", "1");
+            $check2 = GetCheck($db_check, $row['id'], "2", "1");
 
             $old_id = $id;
 
