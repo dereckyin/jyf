@@ -1,5 +1,546 @@
 Vue.component('v-select', VueSelect.VueSelect)
 
+var install = new Vue({
+    el: '#install', 
+    data: {
+        installer:[],
+    },created() {
+    
+        this.getLeadMan();
+    },
+    methods: {
+        getLeadMan() {
+  
+            let _this = this;
+      
+            let token = localStorage.getItem('accessToken');
+      
+            axios
+              .get('api/project02_user_leadman.php', { headers: { "Authorization": `Bearer ${token}` } })
+              .then(
+                (res) => {
+                    var _users = res.data;
+                    _this.installer = Object.keys(_users).map(function(k){return _users[k].username})
+                    
+                  
+                },
+                (err) => {
+                  alert(err.response);
+                },
+              )
+              .finally(() => {
+      
+              });
+          }, }});
+
+var project = new Vue({
+    el: "#projects",
+    data: {
+        projects: [],
+        project_id : 0,
+
+        stages: [],
+        stage_id : 0,
+
+        add_project_id : 0,
+        add_stage_id : 0,
+  
+    },
+    created() {
+        let _this = this;
+        let uri = window.location.href.split("?");
+        if (uri.length >= 2) {
+            let vars = uri[1].split("&");
+
+            let tmp = "";
+            vars.forEach(async function(v) {
+                tmp = v.split("=");
+                if (tmp.length == 2) {
+                switch (tmp[0]) {
+                    case "project_id":
+                        _this.project_id = tmp[1];
+                        _this.add_project_id = tmp[1];
+                    break;
+
+                    case "stage_id":
+                        _this.stage_id = tmp[1];
+                        _this.add_stage_id = tmp[1];
+                    break;
+                
+                    default:
+                    console.log(`Too many args`);
+                }
+                }
+            });
+        }
+
+        this.getProjects();
+    },
+
+    methods: {
+        getProjects() {
+            let _this = this;
+            let token = localStorage.getItem('accessToken');
+            axios
+                .get('api/project02_get_project_name_by_keyword.php', { headers: { "Authorization": `Bearer ${token}` } })  
+                .then(
+                    (res) => {
+                        _this.projects = res.data;
+                    },
+                    (err) => {
+                        alert(err.response);
+                    },
+                )
+                .finally(() => {
+                });
+        },
+
+        async getStages(pid) {
+            let _this = this;
+            let token = localStorage.getItem('accessToken');
+
+            // clear select sc_related_stage_id (add by edit)
+            // var select = document.getElementById("sc_related_stage_id");
+            // var length = select.options.length;
+            // for (i = length-1; i >= 0; i--) {
+            //     select.options[i] = null;
+            // }
+
+            if(pid != undefined) 
+                _this.project_id = pid;
+
+            let res = await axios.get('api/project02_stages.php', { headers: { "Authorization": `Bearer ${token}` }, params: { pid: _this.project_id } });
+                _this.stages = res.data;
+
+            console.log("getStages");
+            },
+        
+            clear(){
+                let _this = this;
+                _this.project_id = 0;
+                _this.stage_id = 0;
+                _this.stages = [];
+            },
+
+    },
+});
+
+
+var service_feliix = new Vue({
+    el: '#approval_section_feliix',
+    data: {
+        is_admin:false,
+
+        schedule_Name: "",
+        date_use: "",
+        car_use: "",
+        driver: "",
+        helper: "",
+        time_out: "",
+        time_in: "",
+        notes: "",
+        creator: "",
+        status: "",
+        id: 0,
+
+        item_schedule: "",
+        item_company: "",
+        item_address: "",
+        item_purpose: "",
+        items: [],
+        editing : false,
+        sn: 0,
+        e_id: 0,
+
+        org_schedule: {},
+        org_schedule_check1: {},
+        org_schedule_check2: {},
+
+        edit_servie: false,
+
+        access1 : false,
+        access2 : false,
+
+        showing : true,
+
+        username: "",
+
+        // for check
+        check_showing: false,
+        check_showing2: false,
+
+        check_date_use: "",
+        check_car_use: "",
+        check_driver: "",
+        check_time_out: "",
+        check_time_in: "",
+
+        access_check1: false,
+        access_check2: false,
+
+        edit_servie_check1: false,
+        edit_servie_check2: false,
+
+    },
+
+    created() {
+        this.getAccess();
+        this.getUserName();
+    },
+
+    watch: {
+        id: function (val) {
+            if(val == -1) this.id = 0;
+
+            this.access_check1 = false;
+            this.access_check2 = false;
+            this.edit_servie_check1 = false;
+            this.edit_servie_check2 = false;
+            this.check_showing = false;
+            this.check_showing2 = false;
+
+            if((this.status == "1" || this.status == "2") && this.access1 == true)
+            {
+                this.access_check1 = true;
+            }
+
+            if(this.status == "2" && this.access2 == true && this.access1 == false)
+            {
+                this.access_check2 = true;
+            }
+
+            if(this.id == 0) 
+            {
+                this.showing = true;
+                return;
+            }
+            else
+               this.showing = false;
+
+            if (this.creator != this.username) {
+                this.showing = false;
+                return;
+            }
+
+            if(this.status == "1" && this.access1 == true)
+            {
+                this.service_edit_check();
+            }
+
+            if(this.status == "2" && this.access1 == true && this.access2 == true)
+            {
+                this.service_edit_check();
+            }
+            else if(this.status == "2" && this.access1 == false && this.access2 == true)
+            {
+               // this.service_edit_check2();
+            }
+            
+        }
+    },
+
+    methods: {
+        getAccess: function() {
+            let _this = this;
+    
+    
+            axios({
+                method: 'get',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                url: 'api/car_calender_access_control.php',
+                data: {}
+            })
+            .then(function(response) {
+                //handle success
+                _this.access1 = response.data.car_access1;
+                _this.access2 = response.data.car_access2;
+
+            })
+            .catch(function(response) {
+                //handle error
+                Swal.fire({
+                text: JSON.stringify(response),
+                icon: 'error',
+                confirmButtonText: 'OK'
+                })
+            });
+        },
+
+        getUserName: function() {
+            var form_Data = new FormData();
+            let _this = this;
+    
+            axios({
+                method: 'post',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                url: 'api/on_duty_get_myname.php',
+                data: form_Data
+            })
+            .then(function(response) {
+                //handle success
+                _this.username = response.data.username;
+    
+            })
+            .catch(function(response) {
+                //handle error
+                Swal.fire({
+                text: JSON.stringify(response),
+                icon: 'error',
+                confirmButtonText: 'OK'
+                })
+            });
+        },
+
+        clear_service: function() {
+            if(this.showing == false) return;
+
+            this.schedule_Name = "";
+            this.date_use = "";
+            this.car_use = "";
+            this.driver = "";
+            this.helper = "";
+            this.time_out = "";
+            this.time_in = "";
+            this.notes = "";
+            this.creator = "";
+            this.status = "";
+
+            this.item_schedule = "";
+            this.item_company = "";
+            this.item_address = "";
+            this.item_purpose = "";
+            this.items = [];
+            this.id = -1;
+
+            this.editing = false;
+            this.edit_servie = false;
+            this.sn = 0;
+            this.showing = false;
+        },
+
+        service_click: function(sc_content) {
+            this.org_schedule = JSON.parse(JSON.stringify(sc_content));
+            this.org_schedule_check1 = JSON.parse(JSON.stringify(sc_content.check1));
+            this.org_schedule_check2 = JSON.parse(JSON.stringify(sc_content.check2));
+
+            this.schedule_Name = sc_content.Title;
+            this.date_use = sc_content.Date;
+            this.car_use = sc_content.Service;
+            this.driver = sc_content.Driver;
+            this.helper = sc_content.helper;
+            this.time_out = sc_content.Starttime;
+            this.time_in = sc_content.Endtime;
+            this.notes = sc_content.Notes;
+            // this.items = JSON.parse(sc_content.items);
+            this.creator = sc_content.Lasteditor;
+            this.status = sc_content.status;
+
+            // for check
+            this.check_date_use = sc_content.Date;
+            this.check_car_use = sc_content.Service;
+            this.check_driver = sc_content.Driver;
+            this.check_time_out = sc_content.Starttime;
+            this.check_time_in = sc_content.Endtime;
+
+            if(sc_content.check1.length > 0)
+            {
+                this.check_date_use = moment(sc_content.check1[0].date_use).format("YYYY-MM-DD");
+                this.check_car_use = sc_content.check1[0].car_use;
+                this.check_driver = sc_content.check1[0].driver;
+                this.check_time_out = moment(sc_content.check1[0].time_out).format("HH:mm");
+                this.check_time_in = moment(sc_content.check1[0].time_in).format("HH:mm");
+            }
+
+            if(sc_content.check2.length > 0)
+            {
+                this.check_driver = sc_content.check2[0].driver;
+            }
+
+            // if(this.status == "2" && sc_content.check1.length > 0)
+            // {
+            //     this.date_use = moment(sc_content.check1[0].date_use).format("YYYY-MM-DD");
+            //     this.car_use = sc_content.check1[0].car_use;
+            //     this.driver = sc_content.check1[0].driver;
+            //     this.time_out = moment(sc_content.check1[0].time_out).format("HH:mm");
+            //     this.time_in = moment(sc_content.check1[0].time_in).format("HH:mm");
+            // }
+
+            // if(this.status == "3" && sc_content.check2.length > 0)
+            // {
+            //     this.check_driver = sc_content.check2[0].driver;
+            // }
+        },
+
+        
+        service_save_check: function(check1, check2, is_send) {
+            let _this = this;
+
+            if(is_send == "2")
+            {
+                if(this.check_date_use == "" || this.check_time_out == "" || this.check_time_in == "" || this.check_car_use == "")
+                {
+                    Swal.fire({
+                        text: "Columns of Date, Time, Assigned Car cannot be blank.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                    });
+                    return;
+                }
+            }
+
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
+
+            let kind = "1";
+
+            if(check2 == true) kind = "2";
+        
+            form_Data.append("jwt", token);
+            form_Data.append("id", this.id);
+           
+            form_Data.append("date_use", this.check_date_use);
+            form_Data.append("car_use", this.check_car_use);
+            form_Data.append("driver", this.check_driver);
+        
+            form_Data.append("time_out", this.check_time_out);
+            form_Data.append("time_in", this.check_time_in);
+            form_Data.append("status", is_send);
+
+            form_Data.append("kind", kind);
+
+            api_url = "api/car_calender_check_save_feliix.php";
+
+            axios({
+                    method: "post",
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    url: api_url,
+                    data: form_Data,
+                })
+                .then(function (response) {
+
+                    let symbol = "";
+                    if (is_send == "1") 
+                        symbol = 'fa-question-circle';
+                    if (is_send == "2")
+                        symbol = 'fa-car';
+
+                    let gbcolor = "";
+
+                    if(_this.check_car_use == "Alphard")
+                    gbcolor = "#FECC28";
+                    if(_this.check_car_use == "Avanza")
+                    gbcolor = "#4EB5BB";
+                    if(_this.check_car_use == "Traviz 1")
+                    gbcolor = "#009858";
+                    if(_this.check_car_use == "Traviz 2")
+                    gbcolor = "#A671AD";
+                    if(_this.check_car_use == "Toyota Rush")
+                    gbcolor = "#F19DB4";
+                    if(_this.check_car_use == "")
+                    gbcolor = "#141415";
+                    
+
+                    if(_this.id == 0)
+                    {
+                        let sid = 0;
+                        let created_at = "";
+                        let created_by = "";
+
+                        if (response.data !== "") 
+                        {
+                            sid = response.data.sid;
+                            created_at = response.data.created_at;
+                            created_by = response.data.created_by;
+                        }
+
+                        let Lasteditor = created_by + " at " + created_at;
+
+                        if (
+                            _this.time_out != "" &&
+                            _this.time_in != "" &&
+                            _this.time_in >= _this.time_out && sid != 0
+                        ) {
+                            calendar.addEvent({
+                                id: sid,
+                                title: _this.schedule_Name,
+                                Date: moment(_this.date_use).format("YYYY-MM-DD"),
+                                //start: _this.date_use + "T" + _this.time_out,
+                                //end: _this.date_use + "T" + _this.time_in,
+                                color : gbcolor,
+                                backgroundColor : gbcolor,
+                                borderColor : gbcolor,
+                                allDay: true,
+                                description: {
+                                    icon: symbol,
+                                    schedule_Name: UnescapeHTML(_this.schedule_Name),
+                                    car_use: _this.car_use,
+                                    driver: _this.driver,
+                                    helper: _this.helper,
+                                    date_use: moment(_this.date_use).format("YYYY-MM-DD"),
+                                    time_out: moment(_this.date_use + ' ' + _this.time_out).format("HH:mm"),
+                                    time_in: moment(_this.date_use + ' ' + _this.time_in).format("HH:mm"),
+                                    notes: _this.notes,
+                                    Lasteditor: Lasteditor,
+                                    items: _this.items,
+                                    status: is_send,
+                                    creator: _this.username,
+                                },
+                            });
+                        }
+                    }
+
+                    if(_this.id != 0)
+                    {
+                        
+                        var event = calendar.getEventById(_this.id);
+                        event.title = _this.schedule_Name;
+                        event.allDay = true;
+                        event.Date = moment(_this.date_use).format("YYYY-MM-DD");
+                        event.start = _this.date_use;
+                        event.end = _this.date_use;
+
+                        event.extendedProps.description.schedule_Name = _this.schedule_Name;
+                        event.extendedProps.icon = symbol,
+                        event.extendedProps.description.car_use = _this.car_use;
+                        event.extendedProps.description.driver = _this.driver;
+                        event.extendedProps.description.helper = _this.helper;
+                        event.extendedProps.description.date_use = moment(_this.date_use).format("YYYY-MM-DD");
+                        event.extendedProps.description.time_out = moment(_this.date_use + ' ' + _this.time_out).format("HH:mm");
+                        event.extendedProps.description.time_in = moment(_this.date_use + ' ' + _this.time_in).format("HH:mm");
+                        event.extendedProps.description.notes = _this.notes;
+                        event.extendedProps.description.items = _this.items;
+                        event.extendedProps.description.status = _this.status;
+                        event.extendedProps.description.creator = _this.username;
+
+                    }
+
+                    _this.id = -1
+
+                    $("#serviceModalScrollable").modal("toggle");
+
+                    _this.clear_service();
+
+                    reload();
+                })
+                .catch(function (error) {
+                    //handle error
+                    Swal.fire({
+                        text: error.data,
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                    });
+                });
+        },
+    }
+});
+
+
 
 var service = new Vue({
     el: '#serviceModalScrollable',
@@ -2366,19 +2907,8 @@ var app = new Vue({
                                 " at " +
                                 response.data[i].created_at;
                         }
-                        // for (var j = 0; j < response.data[i].detail.length; j++) {
-                        //     //if (_this.agenda[j].main_id == response.data[i].id) {
-                        //         agendas.push({
-                        //             agenda: UnescapeHTML(response.data[i].detail[j].agenda),
-                        //             appointtime: moment(response.data[i].detail[j].appoint_time).format(
-                        //                 "HH:mm"
-                        //             ),
-                        //             endtime: moment(response.data[i].detail[j].end_time).format("HH:mm"),
-                        //             sort: response.data[i].detail[j].sort,
-                        //             location: UnescapeHTML(response.data[i].detail[j].location),
-                        //         });
-                        //     //}
-                        // }
+
+                        
 
                         let symbol = "";
                         if (response.data[i].status == "1") 
@@ -2453,19 +2983,23 @@ var app = new Vue({
                                     " at " +
                                     response.data[i].created_at;
                             }
-                            for (var j = 0; j < _this.agenda.length; j++) {
-                                if (_this.agenda[j].main_id == response.data[i].id) {
+
+
+                            for (var j = 0; j < response.data[i].detail.length; j++) {
+                                //if (_this.agenda[j].main_id == response.data[i].id) {
                                     agendas.push({
-                                        agenda: UnescapeHTML(_this.agenda[j].agenda),
-                                        appointtime: moment(_this.agenda[j].appoint_time).format(
+                                        agenda: UnescapeHTML(response.data[i].detail[j].agenda),
+                                        appointtime: moment(response.data[i].detail[j].appoint_time).format(
                                             "HH:mm"
                                         ),
-                                        endtime: moment(_this.agenda[j].end_time).format("HH:mm"),
-                                        sort: _this.agenda[j].sort,
-                                        location: UnescapeHTML(_this.agenda[j].location),
+                                        endtime: moment(response.data[i].detail[j].end_time).format("HH:mm"),
+                                        sort: response.data[i].detail[j].sort,
+                                        location: UnescapeHTML(response.data[i].detail[j].location),
                                     });
-                                }
+                                //}
                             }
+                        
+                            
                             //整理檔案
                             response.data[i].products_to_bring_files = response.data[
                                 i
@@ -2508,7 +3042,8 @@ var app = new Vue({
                                     "YYYY-MM-DDTHH:mm"
                                 ), // will be parsed
                                 end: moment(response.data[i].end_time).format("YYYY-MM-DDTHH:mm"),
-                                color: ((response.data[i].color_other !== '') ? response.data[i].color_other : response.data[i].color),
+                                // color: ((response.data[i].color_other !== '') ? response.data[i].color_other : response.data[i].color),
+                                color: gbcolor,
                                 // color_other: response.data[i].color_other,
                                 allDay: true,
                                 
@@ -2557,6 +3092,8 @@ var app = new Vue({
                                     Lock: response.data[i].lock,
                                     Agenda: agendas,
                                     Lasteditor: Lasteditor,
+                                    Related_project_id: response.data[i].related_project_id,
+                                    Related_stage_id: response.data[i].related_stage_id,
                                     check1 : response.data[i].check1,
                                     check2 : response.data[i].check2,
                                     status: response.data[i].status,
@@ -3391,196 +3928,216 @@ var initial = async (_id) =>  {
             {
                 document.getElementById("myLargeModalLabel").innerText =
                 "Schedule Details";
-            eventObj = info.event;
-            resetSchedule();
-            app.id = eventObj.id;
-            var sc_content = eventObj.extendedProps.description;
+                eventObj = info.event;
+                resetSchedule();
+                app.id = eventObj.id;
+                var sc_content = eventObj.extendedProps.description;
 
-            document.getElementById("sc_title").value = sc_content.Title;
-            document.getElementById("sc_color").value = sc_content.Color;
+                document.getElementById("sc_title").value = sc_content.Title;
+                document.getElementById("sc_color").value = sc_content.Color;
 
-            if(sc_content.Color_Other != "")
-            {
-                document.getElementById("sc_color").value = sc_content.Color_Other;
-                document.getElementById("sc_color_other").checked = true;
-            }
-            else
-            {
-                document.getElementById("sc_color").value = "#000000";
-                document.getElementById("sc_color_other").checked = false;
-            }
-
-            if(sc_content.Color != "")
-            {
-                var checked = 0;
-                var colors = document.getElementsByName("sc_color");
-
-                for(var i = 0; i < colors.length; i++)
+                if(sc_content.Color_Other != "")
                 {
-                    if(colors[i].value == sc_content.Color)
+                    document.getElementById("sc_color").value = sc_content.Color_Other;
+                    document.getElementById("sc_color_other").checked = true;
+                }
+                else
+                {
+                    document.getElementById("sc_color").value = "#000000";
+                    document.getElementById("sc_color_other").checked = false;
+                }
+
+                if(sc_content.Color != "")
+                {
+                    var checked = 0;
+                    var colors = document.getElementsByName("sc_color");
+
+                    for(var i = 0; i < colors.length; i++)
                     {
-                        checked = 1;
-                        colors[i].checked = true;
+                        if(colors[i].value == sc_content.Color)
+                        {
+                            checked = 1;
+                            colors[i].checked = true;
+                        }
+                    }
+
+                    if(checked == 0 && sc_content.Color_Other == "")
+                    {
+                        document.getElementById("sc_color").value = sc_content.Color;
+                        document.getElementById("sc_color_other").checked = true;
                     }
                 }
 
-                if(checked == 0 && sc_content.Color_Other == "")
-                {
-                    document.getElementById("sc_color").value = sc_content.Color;
-                    document.getElementById("sc_color_other").checked = true;
-                }
-            }
-
-            
-
-            //設定最後編輯者資訊
-            document.getElementById("sc_editor").value = sc_content.Lasteditor;
-            document.getElementById("last_editor").style.display = "inline";
-
-            document.getElementById("sc_date").value = sc_content.Date;
-            document.getElementById("sc_time").checked = sc_content.Allday;
-            document.getElementById("sc_stime").value = sc_content.Starttime;
-            document.getElementById("sc_etime").value = sc_content.Endtime;
-            document.getElementById("sc_project").value = sc_content.Project;
-            document.getElementById("sc_sales").value = sc_content.Sales_Executive;
-            document.getElementById("sc_incharge").value =
-                sc_content.Project_in_charge;
-            document.getElementById("sc_relevant").value =
-                sc_content.Project_relevant;
-            app.attendee = (sc_content.Project_relevant.split(",") === "" ? app.attendee = [] : sc_content.Project_relevant.split(","));
-            if(sc_content.Project_relevant === "")
-                app.attendee = [];
                 
-            document.getElementById("sc_Installer_needed_other").value = sc_content.Installer_needed_other;
 
-            app.users = app.users_org.concat(app.attendee);
+                //設定最後編輯者資訊
+                document.getElementById("sc_editor").value = sc_content.Lasteditor;
+                document.getElementById("last_editor").style.display = "inline";
 
-            app.users = app.users.filter((item,index)=>{
-                return (app.users.indexOf(item) == index)
-             })
+                document.getElementById("sc_date").value = sc_content.Date;
+                document.getElementById("sc_time").checked = sc_content.Allday;
+                document.getElementById("sc_stime").value = sc_content.Starttime;
+                document.getElementById("sc_etime").value = sc_content.Endtime;
+                document.getElementById("sc_project").value = sc_content.Project;
+                document.getElementById("sc_sales").value = sc_content.Sales_Executive;
+                document.getElementById("sc_incharge").value =
+                    sc_content.Project_in_charge;
+                document.getElementById("sc_relevant").value =
+                    sc_content.Project_relevant;
+                app.attendee = (sc_content.Project_relevant.split(",") === "" ? app.attendee = [] : sc_content.Project_relevant.split(","));
+                if(sc_content.Project_relevant === "")
+                    app.attendee = [];
 
-            app.users.sort(function (a, b) {
-                return a.toLowerCase().localeCompare(b.toLowerCase());
-            });
-            
-            var installer = sc_content.Installer_needed.split(",");
+                project.project_id = sc_content.Related_project_id;
+                project.stage_id = sc_content.Related_stage_id;
+    
+                await project.getStages(project.project_id);
+                    
+                document.getElementById("sc_Installer_needed_other").value = sc_content.Installer_needed_other;
 
-            // for (i = 0; i < 5; i++) {
-            //     document.getElementsByName("sc_Installer_needed")[i].checked = false;
-            // }
+                app.users = app.users_org.concat(app.attendee);
 
-            // for (i = 0; i < installer.length; i++) {
-            //     if (installer[i] == "AS")
-            //         document.getElementsByName("sc_Installer_needed")[0].checked = true;
+                app.users = app.users.filter((item,index)=>{
+                    return (app.users.indexOf(item) == index)
+                })
 
-            //     if (installer[i] == "RM")
-            //         document.getElementsByName("sc_Installer_needed")[1].checked = true;
+                app.users.sort(function (a, b) {
+                    return a.toLowerCase().localeCompare(b.toLowerCase());
+                });
+                
+                var installer = sc_content.Installer_needed.split(",");
+                var elements = document.getElementsByName("sc_Installer_needed");
 
-            //     if (installer[i] == "RS")
-            //         document.getElementsByName("sc_Installer_needed")[2].checked = true;
+                for (var i = 0; i < elements.length; i++)
+                    elements[i].checked = false;
 
-            //     if (installer[i] == "CJ")
-            //         document.getElementsByName("sc_Installer_needed")[3].checked = true;
+                for (var i = 0; i < installer.length; i++) {
+                    for (var j = 0; j < elements.length; j++) {
+                        if (elements[j].value == installer[i]) {
+                            elements[j].checked = true;
+                        }
+                    }
+                }
 
-            //     if (installer[i] == "JO")
-            //         document.getElementsByName("sc_Installer_needed")[4].checked = true;
+                // for (i = 0; i < installer.length; i++) {
+                //     if (installer[i] == "AS")
+                //         document.getElementsByName("sc_Installer_needed")[0].checked = true;
 
-            //     if (installer[i] == "EO")
-            //         document.getElementsByName("sc_Installer_needed")[5].checked = true;
+                //     if (installer[i] == "RM")
+                //         document.getElementsByName("sc_Installer_needed")[1].checked = true;
 
-            //     if (installer[i] == "JM")
-            //         document.getElementsByName("sc_Installer_needed")[6].checked = true;
-            // }
+                //     if (installer[i] == "RS")
+                //         document.getElementsByName("sc_Installer_needed")[2].checked = true;
 
-            //加入Agenda內容(先刪除未儲存的)
-            var agenda_object = document
-                .getElementById("agenda_table")
-                .getElementsByTagName("tr");
+                //     if (installer[i] == "CJ")
+                //         document.getElementsByName("sc_Installer_needed")[3].checked = true;
 
-            for (i = agenda_object.length - 1; i > 1; i--) {
-                agenda_object[i].remove();
-            }
+                //     if (installer[i] == "JO")
+                //         document.getElementsByName("sc_Installer_needed")[4].checked = true;
 
-            for (i = 0; i < sc_content.Agenda.length; i++) {
-                addAgendaitem(
-                    sc_content.Agenda[i].location,
-                    sc_content.Agenda[i].agenda,
-                    sc_content.Agenda[i].appointtime,
-                    sc_content.Agenda[i].endtime
-                );
-            }
+                //     if (installer[i] == "EO")
+                //         document.getElementsByName("sc_Installer_needed")[5].checked = true;
 
-            document.getElementById("sc_location1").value =
-                sc_content.Location_Things_to_Bring;
-            document.getElementById("sc_things").value = sc_content.Things_to_Bring;
-            document.getElementById("sc_location2").value =
-                sc_content.Location_Products_to_Bring;
-            document.getElementById("sc_products").value =
-                sc_content.Products_to_Bring;
-            document.getElementById("upload_input").style = "display:none;";
-            document.getElementById("sc_product_files").innerHTML =
-                sc_content.Products_to_bring_files;
-            if (
-                sc_content.Products_to_bring_files !=
-                "<div class='custom-control custom-checkbox' style='padding-top: 1%;'></div>"
-            )
-                app.download_type = "zip";
-            else app.download_type = "docx";
+                //     if (installer[i] == "JM")
+                //         document.getElementsByName("sc_Installer_needed")[6].checked = true;
+                // }
 
-            document.getElementById("sc_product_files_hide").value =
-                sc_content.File_name;
-            document.getElementById("sc_service").value = sc_content.Service;
-            document.getElementById("sc_driver1").value = sc_content.Driver;
+                //加入Agenda內容(先刪除未儲存的)
+                var agenda_object = document
+                    .getElementById("agenda_table")
+                    .getElementsByTagName("tr");
 
-            document.getElementById("sc_driver_other").value = sc_content.Driver_Other;
+                for (i = agenda_object.length - 1; i > 1; i--) {
+                    agenda_object[i].remove();
+                }
 
-            document.getElementById("sc_driver2").value = sc_content.Back_up_Driver;
+                for (i = 0; i < sc_content.Agenda.length; i++) {
+                    addAgendaitem(
+                        sc_content.Agenda[i].location,
+                        sc_content.Agenda[i].agenda,
+                        sc_content.Agenda[i].appointtime,
+                        sc_content.Agenda[i].endtime
+                    );
+                }
 
-            document.getElementById("sc_backup_driver_other").value = sc_content.Back_up_Driver_Other;
+                document.getElementById("sc_location1").value =
+                    sc_content.Location_Things_to_Bring;
+                document.getElementById("sc_things").value = sc_content.Things_to_Bring;
+                document.getElementById("sc_location2").value =
+                    sc_content.Location_Products_to_Bring;
+                document.getElementById("sc_products").value =
+                    sc_content.Products_to_Bring;
+                document.getElementById("upload_input").style = "display:none;";
+                document.getElementById("sc_product_files").innerHTML =
+                    sc_content.Products_to_bring_files;
+                if (
+                    sc_content.Products_to_bring_files !=
+                    "<div class='custom-control custom-checkbox' style='padding-top: 1%;'></div>"
+                )
+                    app.download_type = "zip";
+                else app.download_type = "docx";
 
-            if(sc_content.Driver != 6)
-                document.getElementById("sc_driver_other").style.display = "none";
-            else
-                document.getElementById("sc_driver_other").style.display = "";
+                document.getElementById("sc_product_files_hide").value =
+                    sc_content.File_name;
+                document.getElementById("sc_service").value = sc_content.Service;
+                document.getElementById("sc_driver1").value = sc_content.Driver;
 
-            if(sc_content.Back_up_Driver != 6)
-                document.getElementById("sc_backup_driver_other").style.display = "none";
-            else
-                document.getElementById("sc_backup_driver_other").style.display = "";
+                document.getElementById("sc_driver_other").value = sc_content.Driver_Other;
 
-            if (sc_content.Photoshoot_Request == "Yes") {
-                document.getElementsByName("sc_Photoshoot_request")[0].checked = true;
-            }
-            if (sc_content.Photoshoot_Request == "No") {
-                document.getElementsByName("sc_Photoshoot_request")[1].checked = true;
-            }
+                document.getElementById("sc_driver2").value = sc_content.Back_up_Driver;
 
-            document.getElementById("sc_notes").value = sc_content.Notes;
+                document.getElementById("sc_backup_driver_other").value = sc_content.Back_up_Driver_Other;
 
-            Change_Schedule_State(true, sc_content.Allday);
-            icon_function_enable = false;
+                if(sc_content.Driver != 6)
+                    document.getElementById("sc_driver_other").style.display = "none";
+                else
+                    document.getElementById("sc_driver_other").style.display = "";
 
-            document.getElementById("btn_reset").style.display = "none";
-            document.getElementById("btn_add").style.display = "none";
-            document.getElementById("btn_duplicate").style.display = "inline";
-            document.getElementById("btn_export").style.display = "inline";
-            document.getElementById("btn_edit").style.display = "inline";
-            document.getElementById("btn_delete").style.display = "inline";
-            document.getElementById("btn_cancel").style.display = "none";
-            document.getElementById("btn_save").style.display = "none";
+                if(sc_content.Back_up_Driver != 6)
+                    document.getElementById("sc_backup_driver_other").style.display = "none";
+                else
+                    document.getElementById("sc_backup_driver_other").style.display = "";
 
-            // add schedual lock
-            document.getElementById("lock").value = sc_content.Lock;
-            if (sc_content.Lock != "") {
-                document.getElementById("btn_lock").style.display = "none";
-                document.getElementById("btn_unlock").style.display = "inline";
+                if (sc_content.Photoshoot_Request == "Yes") {
+                    document.getElementsByName("sc_Photoshoot_request")[0].checked = true;
+                }
+                if (sc_content.Photoshoot_Request == "No") {
+                    document.getElementsByName("sc_Photoshoot_request")[1].checked = true;
+                }
 
-                document.getElementById("btn_edit").style.display = "none";
-                document.getElementById("btn_delete").style.display = "none";
-            } else {
-                document.getElementById("btn_lock").style.display = "inline";
-                document.getElementById("btn_unlock").style.display = "none";
-            }
+                document.getElementById("sc_notes").value = sc_content.Notes;
+
+                Change_Schedule_State(true, sc_content.Allday);
+                icon_function_enable = false;
+
+                // document.getElementById("btn_reset").style.display = "none";
+                // document.getElementById("btn_add").style.display = "none";
+                // document.getElementById("btn_duplicate").style.display = "inline";
+                document.getElementById("btn_export").style.display = "inline";
+                // document.getElementById("btn_edit").style.display = "inline";
+                // document.getElementById("btn_delete").style.display = "inline";
+                // document.getElementById("btn_cancel").style.display = "none";
+                // document.getElementById("btn_save").style.display = "none";
+
+                // // add schedual lock
+                // document.getElementById("lock").value = sc_content.Lock;
+                // if (sc_content.Lock != "") {
+                //     document.getElementById("btn_lock").style.display = "none";
+                //     document.getElementById("btn_unlock").style.display = "inline";
+
+                //     document.getElementById("btn_edit").style.display = "none";
+                //     document.getElementById("btn_delete").style.display = "none";
+                // } else {
+                //     document.getElementById("btn_lock").style.display = "inline";
+                //     document.getElementById("btn_unlock").style.display = "none";
+                // }
+
+                service_feliix.clear_service();
+    
+                service_feliix.id = eventObj.id;
+                var sc_content = eventObj.extendedProps.description;
+    
+                service_feliix.service_click(sc_content);
 
                 $("#exampleModalScrollable").modal("toggle");
             }
@@ -3636,34 +4193,34 @@ var initial = async (_id) =>  {
             "fc-addEventButton-button"
         )[0].style.visibility = "hidden";
 
-        document.getElementById("add_message").style.visibility = "hidden";
+        // document.getElementById("add_message").style.visibility = "hidden";
 
-        document.getElementById("btn_duplicate").style.visibility = "hidden";
-        // document.getElementById("btn_export").style.visibility="hidden";
-        document.getElementById("btn_delete").style.visibility = "hidden";
-        document.getElementById("btn_edit").style.visibility = "hidden";
+        // document.getElementById("btn_duplicate").style.visibility = "hidden";
+        // // document.getElementById("btn_export").style.visibility="hidden";
+        // document.getElementById("btn_delete").style.visibility = "hidden";
+        // document.getElementById("btn_edit").style.visibility = "hidden";
     }
 
-    if (
-        app.name != "Dennis Lin" &&
-        app.name != "dereck" &&
-        app.name != "Glendon Wendell Co" &&
-        app.name != "Mary Jude Jeng Articulo" &&
-        app.name != "Stefanie Mika C. Santos" &&
-        app.name != "Edneil Fernandez" &&
-        app.name != "Aiza Eisma" &&
-        app.name != "Kristel Tan"
-    ) {
-        document.getElementById("btn_lock").style.visibility = "hidden";
-        document.getElementById("btn_unlock").style.visibility = "hidden";
-    }
+    // if (
+    //     app.name != "Dennis Lin" &&
+    //     app.name != "dereck" &&
+    //     app.name != "Glendon Wendell Co" &&
+    //     app.name != "Mary Jude Jeng Articulo" &&
+    //     app.name != "Stefanie Mika C. Santos" &&
+    //     app.name != "Edneil Fernandez" &&
+    //     app.name != "Aiza Eisma" &&
+    //     app.name != "Kristel Tan"
+    // ) {
+    //     document.getElementById("btn_lock").style.visibility = "hidden";
+    //     document.getElementById("btn_unlock").style.visibility = "hidden";
+    // }
 
-    if (
-        app.schedule_confirm != true 
-    ) {
-        document.getElementById("btn_confirm").style.visibility = "hidden";
-        document.getElementById("btn_unconfirm").style.visibility = "hidden";
-    }
+    // if (
+    //     app.schedule_confirm != true 
+    // ) {
+    //     document.getElementById("btn_confirm").style.visibility = "hidden";
+    //     document.getElementById("btn_unconfirm").style.visibility = "hidden";
+    // }
 
     
 
@@ -3879,36 +4436,36 @@ var initial = async (_id) =>  {
             Change_Schedule_State(true, sc_content.Allday);
             icon_function_enable = false;
 
-            document.getElementById("btn_reset").style.display = "none";
-            document.getElementById("btn_add").style.display = "none";
-            document.getElementById("btn_duplicate").style.display = "none";
+            // document.getElementById("btn_reset").style.display = "none";
+            // document.getElementById("btn_add").style.display = "none";
+            // document.getElementById("btn_duplicate").style.display = "none";
             document.getElementById("btn_export").style.display = "none";
-            document.getElementById("btn_edit").style.display = "none";
-            document.getElementById("btn_delete").style.display = "none";
-            document.getElementById("btn_cancel").style.display = "none";
-            document.getElementById("btn_save").style.display = "none";
+            // document.getElementById("btn_edit").style.display = "none";
+            // document.getElementById("btn_delete").style.display = "none";
+            // document.getElementById("btn_cancel").style.display = "none";
+            // document.getElementById("btn_save").style.display = "none";
 
-            // add schedual lock
-            document.getElementById("lock").value = sc_content.Lock;
-            if (sc_content.Lock != "") {
-                document.getElementById("btn_lock").style.display = "none";
-                document.getElementById("btn_unlock").style.display = "none";
+            // // add schedual lock
+            // document.getElementById("lock").value = sc_content.Lock;
+            // if (sc_content.Lock != "") {
+            //     document.getElementById("btn_lock").style.display = "none";
+            //     document.getElementById("btn_unlock").style.display = "none";
 
-                document.getElementById("btn_edit").style.display = "none";
-                document.getElementById("btn_delete").style.display = "none";
-            } else {
-                document.getElementById("btn_lock").style.display = "none";
-                document.getElementById("btn_unlock").style.display = "none";
-            }
+            //     document.getElementById("btn_edit").style.display = "none";
+            //     document.getElementById("btn_delete").style.display = "none";
+            // } else {
+            //     document.getElementById("btn_lock").style.display = "none";
+            //     document.getElementById("btn_unlock").style.display = "none";
+            // }
 
-            document.getElementById("confirm").value = sc_content.Confirm;
-            if (sc_content.Confirm != "") {
-                document.getElementById("btn_confirm").style.display = "none";
-                document.getElementById("btn_unconfirm").style.display = "none";
-            } else {
-                document.getElementById("btn_confirm").style.display = "none";
-                document.getElementById("btn_unconfirm").style.display = "none";
-            }
+            // document.getElementById("confirm").value = sc_content.Confirm;
+            // if (sc_content.Confirm != "") {
+            //     document.getElementById("btn_confirm").style.display = "none";
+            //     document.getElementById("btn_unconfirm").style.display = "none";
+            // } else {
+            //     document.getElementById("btn_confirm").style.display = "none";
+            //     document.getElementById("btn_unconfirm").style.display = "none";
+            // }
 
             $("#exampleModalScrollable").modal("toggle");
     }

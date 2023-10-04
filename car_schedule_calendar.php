@@ -282,12 +282,12 @@ try {
             <div class="modal-body">
 
                 <!-- 指派車輛管理者填寫的表單 -->
-                <div id="approval_section" style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 3px solid #dee2e6;">
+                <div id="approval_section_feliix" v-if="access_check1 == true || access_check2 == true" style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 3px solid #dee2e6;">
 
                     <div class="row">
                         <div class="col-12" style="text-align: center;">
 
-                            <h4 style="background: palegreen; padding: 8px; margin: 0 20px 5px;">Request Review 1</h4>
+                            <h4 style="background: palegreen; padding: 8px; margin: 0 20px 5px;">Request Review Feliix</h4>
 
                         </div>
 
@@ -304,7 +304,7 @@ try {
 
                         <div class="col-10">
 
-                            <input type="date" class="form-control" style="width:40%;" id="sc_date">
+                            <input type="date" class="form-control" style="width:40%;" id="sc_date_feliix" v-model="check_date_use" :disabled="!check_showing">
 
                         </div>
                     </div>
@@ -320,7 +320,7 @@ try {
 
                         <div class="col-10">
 
-                            <input type="time" class="form-control" style="width:40%; margin-right:1%; padding-right: 0; text-align: center;" id="sc_stime"> to <input type="time" class="form-control" style="width:40%; margin-left:1%; padding-right: 0; text-align: center;" id="sc_etime">
+                            <input type="time" class="form-control" style="width:40%; margin-right:1%; padding-right: 0; text-align: center;" id="sc_stime_feliix" v-model="check_time_out" :disabled="!check_showing"> to <input type="time" class="form-control" style="width:40%; margin-left:1%; padding-right: 0; text-align: center;" id="sc_etime_feliix" v-model="check_time_in" :disabled="!check_showing">
 
                         </div>
 
@@ -337,7 +337,7 @@ try {
 
                         <div class="col-10">
 
-                            <Select class="form-control" style="width:40%;" id="???">
+                            <Select class="form-control" style="width:40%;" id="sc_service_feliix" v-model="check_car_use" :disabled="!check_showing">
                                 <option value="0">Choose One</option>
                                 <option value="Alphard">Alphard</option>
                                 <option value="Avanza">Avanza</option>
@@ -360,9 +360,8 @@ try {
 
                         <div class="col-10">
 
-                            <input type="text" class="form-control" style="width:90%;" id="???">
-                            <input type="text" class="form-control" style="display: none;" id="???">
-
+                            <input type="text" class="form-control" style="width:90%;" id="sc_driver_feliix"  v-model="check_driver" :disabled="!check_showing2 && !check_showing">
+                      
                         </div>
                     </div>
 
@@ -370,19 +369,27 @@ try {
 
                     <div class="button_box">
 
-                        <button class="btn btn-secondary" id="btn_reset???">Reset</button>
+                        <button class="btn btn-secondary" id="btn_service_reset_check_feliix" v-if="check_showing" @click="reset_service_check">Reset</button>
 
-                        <button class="btn btn-primary" id="btn_???">Assign</button>
+                        <button class="btn btn-primary" id="btn_service_assign_check_feliix" v-if="access_check1 && status == '1'" @click="service_save_check(access_check1, access_check2, '2')">Assign</button>
 
-                        <button class="btn btn-secondary" id="btn_???">Not Yet Assign</button>
+                        <button class="btn btn-secondary" id="btn_service_not_assign_check_feliix" v-if="access_check1 && status == '1'" @click="service_save_check(access_check1, access_check2, '1')">Not Yet Assign</button>
 
-                        <button class="btn btn-danger" id="btn_???">Reject</button>
+                        <button class="btn btn-secondary" id="btn_service_change_check_feliix" v-if="!check_showing && access_check1 && status == '2'" @click="service_change_check('1')">Change To Under Reivew</button>
+                        <button class="btn btn-danger" id="btn_service_reject_check_feliix" v-if="access_check1 && (status == '1' || !check_showing)" @click="service_reject_check('0')">Reject</button>
 
-                        <button class="btn btn-primary" id="btn_edit???">Edit</button>
+                        <button class="btn btn-primary" id="btn_service_edit_check_feliix" v-if="access_check1 && !edit_servie_check1 && status == '2'" @click="service_edit_check()">Edit</button>
 
-                        <button class="btn btn-secondary" id="btn_cancel">Cancel</button>
+                        <button class="btn btn-secondary" id="btn_service_cancel_check_feliix" v-if="edit_servie_check1 && status == '2'" @click="service_cancel_check()">Cancel</button>
 
-                        <button class="btn btn-primary" id="btn_save">Save</button>
+                        <button class="btn btn-primary" id="btn_service_save_check_feliix" v-if="edit_servie_check1 && status == '2'" @click="service_update_check('2')">Save</button>
+
+
+                        <!-- for check 2 -->
+                        <button class="btn btn-secondary" id="btn_service_reset_check2_feliix" v-if="status == '2' && check_showing2" @click="reset_service_check2">Reset</button>
+                        <button class="btn btn-primary" id="btn_service_edit_check2_feliix" v-if="access_check2 && !edit_servie_check2" @click="service_edit_check2()">Edit</button>
+                        <button class="btn btn-secondary" id="btn_service_cancel_check2_feliix" v-if="status == '2' && edit_servie_check2" @click="service_cancel_check2()">Cancel</button>
+                        <button class="btn btn-primary" id="btn_service_save_check2_feliix" v-if="status == '2' && edit_servie_check2" @click="service_update_check('2')">Save</button>
 
                     </div>
 
@@ -805,12 +812,11 @@ try {
 
                         <Select class="form-control" style="width:40%;" id="sc_service">
                             <option value="0">Choose One</option>
-                            <option value="1">innova</option>
-                            <option value="2">avanza gold</option>
-                            <option value="3">avanza gray</option>
-                            <option value="4">L3001</option>
-                            <option value="5">L3002</option>
-                            <option value="6">Grab</option>
+                            <option value="Alphard">Alphard</option>
+                            <option value="Avanza">Avanza</option>
+                            <option value="Traviz 1">Traviz 1</option>
+                            <option value="Traviz 2">Traviz 2</option>
+                            <option value="Toyota Rush">Toyota Rush</option>
                         </Select>
 
                     </div>
@@ -922,29 +928,8 @@ try {
 
                 <div class="button_box">
 
-                    <button class="btn btn-secondary" style="width: 155px" id="btn_reset">Reset Schedule</button>
-
-                    <button class="btn btn-primary" id="btn_add">Add</button>
 
                     <button class="btn btn-secondary" id="btn_export">Export</button>
-
-                    <button class="btn btn-secondary" style="width: 155px" id="btn_duplicate">Duplicate Schedule</button>
-
-                    <button class="btn btn-danger" id="btn_delete">Delete</button>
-
-                    <button class="btn btn-primary" id="btn_edit">Edit</button>
-
-                    <button class="btn btn-secondary" id="btn_cancel">Cancel</button>
-
-                    <button class="btn btn-primary" id="btn_save">Save</button>
-                    
-                    <button class="btn btn-info" id="btn_lock">Lock</button>
-
-                    <button class="btn btn-info" id="btn_unlock">Unlock</button>
-
-                    <button class="btn btn-info" id="btn_confirm">Confirmed</button>
-
-                    <button class="btn btn-info" id="btn_unconfirm">Unconfirmed</button>
 
                 </div>
 
