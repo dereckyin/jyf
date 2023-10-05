@@ -766,7 +766,7 @@ var service_feliix = new Vue({
                 if(_this.id != 0)
                 {
                     
-                    _this.reload_schedule(_this.id);
+                    //_this.reload_schedule(_this.id);
                     _this.undo_service_edit_check();
 
                 }
