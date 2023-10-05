@@ -216,10 +216,10 @@ var service_feliix = new Vue({
             else
                this.showing = false;
 
-            if (this.creator != this.username) {
-                this.showing = false;
-                return;
-            }
+            // if (this.creator != this.username) {
+            //     this.showing = false;
+            //     return;
+            // }
 
             if(this.status == "1" && this.access1 == true)
             {
@@ -713,6 +713,80 @@ var service_feliix = new Vue({
         });
     },
 
+    
+    service_update_check: function(status) {
+        let _this = this;
+
+        if(this.check_date_use == "" || this.check_time_out == "" || this.check_time_in == "" || this.check_car_use == "")
+        {
+            Swal.fire({
+                text: "Columns of Date, Time, Assigned Car cannot be blank.",
+                icon: "warning",
+                confirmButtonText: "OK",
+            });
+            return;
+        }
+
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+
+        let id = 0;
+
+        if(this.org_schedule_check1.length > 0){
+            id = this.org_schedule_check1[0].id;
+            api_url = "api/car_calender_check_update_feliix.php";
+        }
+        else{
+            api_url = "api/car_calender_check_save_feliix.php";
+            id = this.id;
+        }
+    
+        form_Data.append("jwt", token);
+        form_Data.append("id", id);
+       
+        form_Data.append("date_use", this.check_date_use);
+        form_Data.append("car_use", this.check_car_use);
+        form_Data.append("driver", this.check_driver);
+    
+        form_Data.append("time_out", this.check_time_out);
+        form_Data.append("time_in", this.check_time_in);
+        form_Data.append("status", status);
+
+
+        axios({
+                method: "post",
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+                url: api_url,
+                data: form_Data,
+            })
+            .then(function (response) {
+
+                if(_this.id != 0)
+                {
+                    
+                    _this.reload_schedule(_this.id);
+                    _this.undo_service_edit_check();
+
+                }
+
+                //_this.id = 0;
+                //$("#serviceModalScrollable").modal("toggle");
+
+                //_this.clear_service();
+
+                reload();
+            })
+            .catch(function (error) {
+                //handle error
+                Swal.fire({
+                    text: error.data,
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                });
+            });
+    },
 
         
         service_edit: function() {
@@ -845,6 +919,56 @@ var service_feliix = new Vue({
             this.items = JSON.parse(this.org_schedule.items);
             this.creator = this.org_schedule.creator;
      
+        },
+
+        export_service_full: function (full) {
+            let _this = this;
+            var form_Data = new FormData();
+
+            const filename = "attendance";
+            
+            form_Data.append("full", full);
+            form_Data.append("id", this.id * -1);
+            form_Data.append("schedule_Name", this.schedule_Name);
+            form_Data.append("date_use", this.date_use);
+            form_Data.append("car_use", this.car_use);
+            form_Data.append("driver", this.driver);
+            form_Data.append("helper", this.helper);
+            form_Data.append("time_out", this.time_out);
+            form_Data.append("time_in", this.time_in);
+            form_Data.append("notes", this.notes);
+            form_Data.append("status", this.status);
+            form_Data.append("items", JSON.stringify(this.items));
+
+            form_Data.append("check_date_use", this.check_date_use);
+            form_Data.append("check_car_use", this.check_car_use);
+            form_Data.append("check_driver", this.check_driver);
+            form_Data.append("check_time_out", this.check_time_out);
+            form_Data.append("check_time_in", this.check_time_in);
+
+
+            const token = sessionStorage.getItem("token");
+
+            axios({
+                    method: "post",
+                    url: "car_schedule_data_word_feliix.php",
+                    data: form_Data,
+                    responseType: "blob", // important
+                })
+                .then(function (response) {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement("a");
+                    link.href = url;
+
+                    link.setAttribute("download", "car_schedule.docx");
+
+                    document.body.appendChild(link);
+                    link.click();
+                })
+                .catch(function (response) {
+                    //handle error
+                    console.log(response);
+                });
         },
     }
 });
@@ -3346,11 +3470,9 @@ var app = new Vue({
                             _this.items.push({
                                 id: response.data[i].id * -1,
                                 title: response.data[i].title,
-                                Date: moment(response.data[i].start_time).format("YYYY-MM-DD"),
-                                start: moment(response.data[i].start_time).format(
-                                    "YYYY-MM-DDTHH:mm"
-                                ), // will be parsed
-                                end: moment(response.data[i].end_time).format("YYYY-MM-DDTHH:mm"),
+                                Date: moment(dateuse).format("YYYY-MM-DD"),
+                                start: moment(dateuse).format("YYYY-MM-DD"), // will be parsed
+                                end: moment(dateuse).format("YYYY-MM-DD"),
                                 // color: ((response.data[i].color_other !== '') ? response.data[i].color_other : response.data[i].color),
                                 color: gbcolor,
                                 // color_other: response.data[i].color_other,
@@ -3358,6 +3480,7 @@ var app = new Vue({
                                 
                                 description: {
                                     icon: symbol,
+                                    id: response.data[i].id,
                                     Title: UnescapeHTML(response.data[i].title),
                                     Color: response.data[i].color,
                                     Color_Other: response.data[i].color_other,
@@ -4216,6 +4339,7 @@ var initial = async (_id) =>  {
         eventClick: async function (info) {
 
             service.sid = 0;
+            service_feliix.sid = 0;
             
             document.getElementById("myLargeModalLabel").innerText =
                 "Schedule Details";
@@ -5111,6 +5235,25 @@ $(document).on('click', '.SwalBtn3', function() {
     swal.clickConfirm();
 });
 
+$(document).on('click', '.SwalBtn1_feliix', function() {
+    //Some code 1
+    console.log('Button 1');
+    service_feliix.export_service_full('');
+    swal.clickConfirm();
+});
+$(document).on('click', '.SwalBtn2_feliix', function() {
+    //Some code 2 
+    console.log('Button 2');
+    service_feliix.export_service_full('1');
+    swal.clickConfirm();
+});
+$(document).on('click', '.SwalBtn3_feliix', function() {
+    //Some code 2 
+    console.log('Button 3');
+   
+    swal.clickConfirm();
+});
+
 $(document).on("click", "#btn_duplicate", function () {
     var sc_content = eventObj.extendedProps.description;
     sc_content.Lock = "";
@@ -5144,6 +5287,32 @@ $(document).on("click", "#btn_duplicate", function () {
 // $(document).on("click", "#btn_export", function () {
 //     app.export();
 // });
+
+$(document).on("click", "#btn_export", function () {
+    let _this = this;
+
+    let buttons = "Which do you want to export?" +
+    "<br>" +
+    '<button type="button" role="button" tabindex="0" class="SwalBtn1_feliix customSwalBtn">' + 'Only “Content of Request”' + '</button>' +
+    '<button type="button" role="button" tabindex="0" class="SwalBtn2_feliix customSwalBtn">' + '”Request Review” and “Content of Request”' + '</button>' + 
+    '<button type="button" role="button" tabindex="0" class="SwalBtn3_feliix customSwalBtn">' + 'Cancel' + '</button>';
+
+    if(service_feliix.status == "0")
+    {
+        buttons = "Which do you want to export?" +
+        "<br>" +
+        '<button type="button" role="button" tabindex="0" class="SwalBtn1_feliix customSwalBtn">' + 'Only “Content of Request”' + '</button>' +
+        '<button type="button" role="button" tabindex="0" class="SwalBtn3_feliix customSwalBtn">' + 'Cancel' + '</button>';
+    }
+
+    Swal.fire({
+        title: "Export",
+        icon: "warning",
+        html: buttons,
+        showCancelButton: false,
+        showConfirmButton: false
+        })
+});
 
 $(document).on("click", "#btn_cancel", async function () {
     var sc_content = eventObj.extendedProps.description;
