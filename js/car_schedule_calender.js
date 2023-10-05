@@ -373,7 +373,7 @@ var service_feliix = new Vue({
             this.schedule_Name = sc_content.Title;
             this.date_use = sc_content.Date;
             this.car_use = sc_content.Service;
-            this.driver = sc_content.Driver;
+            this.driver = sc_content.Driver_Text;
             this.helper = sc_content.helper;
             this.time_out = sc_content.Starttime;
             this.time_in = sc_content.Endtime;
@@ -385,7 +385,7 @@ var service_feliix = new Vue({
             // for check
             this.check_date_use = sc_content.Date;
             this.check_car_use = sc_content.Service;
-            this.check_driver = sc_content.Driver;
+            this.check_driver = sc_content.Driver_Text;
             this.check_time_out = sc_content.Starttime;
             this.check_time_in = sc_content.Endtime;
 
@@ -3517,6 +3517,7 @@ var app = new Vue({
                                     Service: response.data[i].service,
                                     Driver: response.data[i].driver,
                                     Driver_Other: response.data[i].driver_other,
+                                    Driver_Text : response.data[i].driver_text,
                                     Back_up_Driver: response.data[i].back_up_driver,
                                     Back_up_Driver_Other: response.data[i].back_up_driver_other,
                                     Photoshoot_Request: photoshoot,

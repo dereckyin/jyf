@@ -248,6 +248,7 @@ function GetFeliix($db, $sdate, $edate, $db_check)
                     "service" => $service,
                     "driver" => $driver,
                     "driver_other" => $driver_other,
+                    "driver_text" => $driver_text,
                     "back_up_driver" => $back_up_driver,
                     "back_up_driver_other" => $back_up_driver_other,
                     "notes" => $notes,
@@ -302,6 +303,9 @@ function GetFeliix($db, $sdate, $edate, $db_check)
             $service = $row['service'];
             $driver = $row['driver'];
             $driver_other = $row['driver_other'];
+
+            $driver_text = GetDriver($driver, $driver_other);
+
             $back_up_driver = $row['back_up_driver'];
             $back_up_driver_other = $row['back_up_driver_other'];
             $notes = $row['notes'];
@@ -371,6 +375,7 @@ function GetFeliix($db, $sdate, $edate, $db_check)
                 "service" => $service,
                 "driver" => $driver,
                 "driver_other" => $driver_other,
+                "driver_text" => $driver_text,
                 "back_up_driver" => $back_up_driver,
                 "back_up_driver_other" => $back_up_driver_other,
                 "notes" => $notes,
@@ -470,4 +475,23 @@ function GetCheck($db, $sid, $kind, $feliix)
     }
 
     return $result;
+}
+
+function GetDriver($did, $other)
+{
+    $driver = "";
+    if($did == '1')
+        $driver = "MG";
+    if($did == '2')
+        $driver = "AY";
+    if($did == '3')
+        $driver = "EV";
+    if($did == '4')
+        $driver = "JB";
+    if($did == '5')
+        $driver = "MA";
+    if($did == '6')
+        $driver = $other;
+
+    return $driver;
 }
