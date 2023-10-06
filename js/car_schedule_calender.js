@@ -382,12 +382,21 @@ var service_feliix = new Vue({
             this.creator = sc_content.Lasteditor;
             this.status = sc_content.status;
 
+            var tout = sc_content.Starttime;
+            var tin = sc_content.Endtime;
+
+            if(sc_content.Allday == true)
+            {
+                tout = "00:00:00";
+                tin = "23:59:59";
+            }
+
             // for check
             this.check_date_use = sc_content.Date;
             this.check_car_use = sc_content.Service;
             this.check_driver = sc_content.Driver_Text;
-            this.check_time_out = sc_content.Starttime;
-            this.check_time_in = sc_content.Endtime;
+            this.check_time_out = tout;
+            this.check_time_in = tin;
 
             if(sc_content.check1.length > 0)
             {
