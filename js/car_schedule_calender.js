@@ -181,6 +181,8 @@ var service_feliix = new Vue({
         edit_servie_check1: false,
         edit_servie_check2: false,
 
+        
+
     },
 
     created() {
@@ -319,6 +321,8 @@ var service_feliix = new Vue({
             this.edit_servie = false;
             this.sn = 0;
             this.showing = false;
+
+            
         },
 
         
@@ -387,8 +391,8 @@ var service_feliix = new Vue({
 
             if(sc_content.Allday == true)
             {
-                tout = "00:00:00";
-                tin = "23:59:59";
+                tout = "00:00";
+                tin = "23:59";
             }
 
             // for check
@@ -630,14 +634,20 @@ var service_feliix = new Vue({
 
             Swal.fire({
                 title: "Reject",
-                text: "Are you sure to reject?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
+                text: "Reason",
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                  },
+                  showCancelButton: true,
+                  confirmButtonText: 'OK',
               }).then((result) => {
+
                 if (result.value) {
+                
+                    if(result.isDismissed) return;
+
+                console.log("Result: " + result.value);
 
                 var token = localStorage.getItem("token");
                 var form_Data = new FormData();
@@ -1039,6 +1049,8 @@ var service = new Vue({
         edit_servie_check1: false,
         edit_servie_check2: false,
 
+        schedule_Creator: "",
+
     },
 
     created() {
@@ -1131,14 +1143,20 @@ var service = new Vue({
 
             Swal.fire({
                 title: "Reject",
-                text: "Are you sure to reject?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
+                text: "Reason",
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                  },
+                  showCancelButton: true,
+                  confirmButtonText: 'OK',
               }).then((result) => {
                 if (result.value) {
+
+                    if(result.isDismissed) return;
+
+                console.log("Result: " + result.value);
+    
 
                 var token = localStorage.getItem("token");
                 var form_Data = new FormData();
@@ -1588,7 +1606,7 @@ var service = new Vue({
                         event.extendedProps.description.asteditor = Lasteditor;
                         event.extendedProps.description.items = response.data[i].items;
                         event.extendedProps.description.status = response.data[i].status;
-                        event.extendedProps.description.reator = response.data[i].created_by;
+                        event.extendedProps.description.creator = response.data[i].created_by;
 
                         event.extendedProps.description.check1 = response.data[i].check1;
                         event.extendedProps.description.heck2 = response.data[i].check2;
@@ -2517,6 +2535,8 @@ var service = new Vue({
             this.creator = sc_content.creator;
             this.status = sc_content.status;
 
+            this.schedule_Creator = sc_content.creator + " at " + sc_content.create_at;
+
             // for check
             this.check_date_use = sc_content.date_use;
             this.check_car_use = sc_content.car_use;
@@ -2571,6 +2591,8 @@ var service = new Vue({
             this.item_purpose = "";
             this.items = [];
             this.id = -1;
+
+            this.schedule_Creator = "";
         },
 
         reset_service_check: function() {
@@ -3575,6 +3597,7 @@ var app = new Vue({
                                     items: response.data[i].items,
                                     status: response.data[i].status,
                                     creator : response.data[i].created_by,
+                                    create_at: response.data[i].created_at,
     
                                     check1 : response.data[i].check1,
                                     check2 : response.data[i].check2,
@@ -4298,8 +4321,8 @@ var initial = async (_id) =>  {
             addEventButton: {
                 text: "Add Schedule",
                 click: async function () {
-                    // document.getElementById("myLargeModalLabel").innerText =
-                    //     "Add Schedule";
+                    document.getElementById("myLargeModalLabel_service").innerText =
+                        "Add Schedule";
                     // document.getElementById("last_editor").style.display = "none";
                     // document.getElementById("btn_reset").style.display = "inline";
                     // document.getElementById("btn_add").style.display = "inline";
@@ -4351,7 +4374,7 @@ var initial = async (_id) =>  {
             service.sid = 0;
             service_feliix.sid = 0;
             
-            document.getElementById("myLargeModalLabel").innerText =
+            document.getElementById("myLargeModalLabel_service").innerText =
                 "Schedule Details";
             eventObj = info.event;
 
@@ -6063,6 +6086,8 @@ $(document).ready(function () {
  
     $('#sdate').val(sixMonthsAgo.toISOString().slice(0,7));
     $('#edate').val(netmonth.toISOString().slice(0,7));
+
+    $.fn.modal.Constructor.prototype._enforceFocus = function() {};
 
     reload(_id);
 });

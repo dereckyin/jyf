@@ -1276,3 +1276,8 @@ CREATE TABLE IF NOT EXISTS `car_calendar_check` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
 
 ALTER TABLE car_calendar_check ADD COLUMN feliix INT DEFAULT 0;
+
+-- 20231011
+ALTER TABLE user ADD COLUMN sea_feliix INT DEFAULT 0;
+
+ALTER TABLE user ADD COLUMN parts_feliix INT DEFAULT 0;

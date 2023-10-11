@@ -25,6 +25,8 @@ class User{
     public $sea_expense_v2;
     public $gcash_expense_sea;
     public $gcash_expense_sea_2;
+    public $sea_feliix;
+    public $parts_feliix;
     public $is_admin;
  
     // constructor
@@ -55,6 +57,8 @@ class User{
                     sea_expense_v2 = :sea_expense_v2,
                     gcash_expense_sea = :gcash_expense_sea,
                     gcash_expense_sea_2 = :gcash_expense_sea_2,
+                    sea_feliix = :sea_feliix,
+                    parts_feliix = :parts_feliix,
                     is_admin = :is_admin";
     
         // prepare the query
@@ -83,6 +87,8 @@ class User{
         $stmt->bindParam(':sea_expense_v2', $this->sea_expense_v2);
         $stmt->bindParam(':gcash_expense_sea', $this->gcash_expense_sea);
         $stmt->bindParam(':gcash_expense_sea_2', $this->gcash_expense_sea_2);
+        $stmt->bindParam(':sea_feliix', $this->sea_feliix);
+        $stmt->bindParam(':parts_feliix', $this->parts_feliix);
         $stmt->bindParam(':is_admin', $this->is_admin);
     
         // hash the password before saving to database
@@ -101,7 +107,7 @@ class User{
     function userExists(){
     
         // query to check if email exists
-        $query = "SELECT id, username, status, phili, status_1, status_2, taiwan_read, phili_read, report1, report2, airship, airship_read, sea_expense, sea_expense_v2, gcash_expense_sea, gcash_expense_sea_2, password
+        $query = "SELECT id, username, status, phili, status_1, status_2, taiwan_read, phili_read, report1, report2, airship, airship_read, sea_expense, sea_expense_v2, gcash_expense_sea, gcash_expense_sea_2, sea_feliix, parts_feliix password
                 FROM " . $this->table_name . "
                 WHERE username = ?
                 LIMIT 0,1";
@@ -145,6 +151,8 @@ class User{
             $this->sea_expense_v2 = $row['sea_expense_v2'];
             $this->gcash_expense_sea = $row['gcash_expense_sea'];
             $this->gcash_expense_sea_2 = $row['gcash_expense_sea_2'];
+            $this->sea_feliix = $row['sea_feliix'];
+            $this->parts_feliix = $row['parts_feliix'];
     
             // return true because email exists in the database
             return true;
@@ -156,7 +164,7 @@ class User{
 
     function userCanLogin(){
         // query to check if email exists
-        $query = "SELECT id, username, password, status, phili, status_1, status_2, taiwan_read, phili_read, report1, report2, airship, airship_read, is_admin, sea_expense, sea_expense_v2, gcash_expense_sea, gcash_expense_sea_2
+        $query = "SELECT id, username, password, status, phili, status_1, status_2, taiwan_read, phili_read, report1, report2, airship, airship_read, is_admin, sea_expense, sea_expense_v2, gcash_expense_sea, gcash_expense_sea_2, sea_feliix, parts_feliix
                 FROM " . $this->table_name . "
                 WHERE username = ? 
                 LIMIT 0,1";
@@ -200,6 +208,8 @@ class User{
             $this->sea_expense_v2 = $row['sea_expense_v2'];
             $this->gcash_expense_sea = $row['gcash_expense_sea'];
             $this->gcash_expense_sea_2 = $row['gcash_expense_sea_2'];
+            $this->sea_feliix = $row['sea_feliix'];
+            $this->parts_feliix = $row['parts_feliix'];
             $this->is_admin = $row['is_admin'];
             // return true because email exists in the database
             return true;
@@ -295,6 +305,8 @@ class User{
                     sea_expense_v2 = :sea_expense_v2,
                     gcash_expense_sea = :gcash_expense_sea,
                     gcash_expense_sea_2 = :gcash_expense_sea_2,
+                    sea_feliix = :sea_feliix,
+                    parts_feliix = :parts_feliix,
                     is_admin = :is_admin
                 WHERE id = :id";
     
@@ -320,6 +332,8 @@ class User{
         $stmt->bindParam(':sea_expense_v2', $this->sea_expense_v2);
         $stmt->bindParam(':gcash_expense_sea', $this->gcash_expense_sea);
         $stmt->bindParam(':gcash_expense_sea_2', $this->gcash_expense_sea_2);
+        $stmt->bindParam(':sea_feliix', $this->sea_feliix);
+        $stmt->bindParam(':parts_feliix', $this->parts_feliix);
         $stmt->bindParam(':is_admin', $this->is_admin);
 
         // unique ID of record to be edited

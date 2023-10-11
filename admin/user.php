@@ -297,6 +297,24 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
+                                    <input class="form-check-input" type="checkbox" name="status" required id="A1"
+                                           :true-value="1" v-model:checked="sea_feliix" @change="updateSeaFeliix"> 海運菲籍員工
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
+                                    <input class="form-check-input" type="checkbox" name="status" required id="A1"
+                                           :true-value="1" v-model:checked="parts_feliix" @change="updatePartsFeliix"> 機械菲籍員工
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
                                     <input class="form-check-input" type="checkbox" name="is_admin" required id="A1"
                                            :true-value="1" v-model:checked="is_admin" @change="updateIsAdmin"> 是否為管理者
                                 </li>
@@ -455,6 +473,22 @@ include 'menu.php';
                                 <li>
                                 </li>
                                 <li>
+                                    <input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.sea_feliix" @change="updateEditSeaFeliix" required> 海運菲籍員工
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
+                                    <input class="form-check-input" type="checkbox" id="B1" :true-value="1"  v-model:checked="record.parts_feliix" @change="updateEditPartsFeliix" required> 機械菲籍員工
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                </li>
+                                <li>
                                     <input class="form-check-input" type="checkbox" id="B2" :true-value="1"  v-model:checked="record.is_admin" @change="updateEditIsAdmin" required> 是否為管理者
                                 </li>
                             </ul>
@@ -493,6 +527,8 @@ include 'menu.php';
                             <th>啟用空運唯讀</th>
                             <th>啟用報表1</th>
                             <th>啟用報表2</th>
+                            <th>海運菲籍員工</th>
+                            <th>機械菲籍員工</th>
                             <th>是否為管理者</th>
                             <th>上次登入日期</th>
                         </tr>
@@ -517,6 +553,8 @@ include 'menu.php';
                             <td>{{ (rec.airship_read == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.report1 == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.report2 == '1') ? "是 (yes)" : "否 (no)" }}</td>
+                            <td>{{ (rec.sea_feliix == '1') ? "是 (yes)" : "否 (no)" }}</td>
+                            <td>{{ (rec.parts_feliix == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td>{{ (rec.is_admin == '1') ? "是 (yes)" : "否 (no)" }}</td>
                             <td> {{ rec.login_time }}</td>
                         </tr>

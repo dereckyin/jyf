@@ -33,11 +33,17 @@ var app = new Vue({
 					}
 					else{
 
-                        if(response.data['pg1'] === "" && response.data['pg2'] === "" )
+                        if(response.data['parts_feliix'] === "")
                         {
                             app.errorMessage = "Permission Denied";
                             return;
                         }
+
+						// if(response.data['pg1'] === "" && response.data['pg2'] === "" )
+                        // {
+                        //     app.errorMessage = "Permission Denied";
+                        //     return;
+                        // }
 
 						setCookie("jwt", response.data['jwt']);
 						setCookie("uid", response.data['uid']);
@@ -45,21 +51,23 @@ var app = new Vue({
 						app.logDetails = {username: '', password:''};
 						app.successMessage = response.data['message'];
 
-				
+						setTimeout(function(){
+							window.location.href="car_schedule_calendar.php";
+						},1000);
 
-						if(response.data['pg1'] === "other")
-						{
-							setTimeout(function(){
-								window.location.href="expense_recorder.php";
-							},1000);
-						}
+						// if(response.data['pg1'] === "other")
+						// {
+						// 	setTimeout(function(){
+						// 		window.location.href="expense_recorder.php";
+						// 	},1000);
+						// }
 
-						if(response.data['pg2'] === "other" && response.data['pg1'] !== "other")
-						{
-							setTimeout(function(){
-								window.location.href="expense_recorder_v2.php";
-							},1000);
-						}
+						// if(response.data['pg2'] === "other" && response.data['pg1'] !== "other")
+						// {
+						// 	setTimeout(function(){
+						// 		window.location.href="expense_recorder_v2.php";
+						// 	},1000);
+						// }
  
 					}
 				});

@@ -18,6 +18,9 @@ use \Firebase\JWT\JWT;
 
 $test_manager = "0";
 
+$sea_feliix = "0";
+$parts_feliix = "0";
+
 try {
         // decode jwt
         try {
@@ -25,6 +28,9 @@ try {
             // decode jwt
             $decoded = JWT::decode($jwt, $key, array('HS256'));
             $user_id = $decoded->data->id;
+
+            $sea_feliix = $decoded->data->sea_feliix;
+            $parts_feliix = $decoded->data->parts_feliix;
 
             if(!is_numeric($user_id))
                 header( 'location:index' );
@@ -50,7 +56,7 @@ try {
 <head>
     <meta charset='utf-8'/>
     <title>
-        Schedule Calendar
+        Car Schedule
     </title>
 
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -76,6 +82,52 @@ try {
             font-size: 14px;
         }
 
+        header {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #1E6BA8;
+            color: #FFF;
+            padding: 10px;
+            box-shadow: 2px 2px 2px rgb(0 0 0 / 40%);
+            z-index: 1040;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header a.menu {
+            margin-left: 25px;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        header a.menu span {
+            color: #FFFFFF;
+        }
+
+        a.nav_link {
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 0 20px;
+            text-decoration: none;
+            cursor: pointer;
+            border-right: 2px solid #FFFFFF;
+            font-size: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+
+        a.nav_link:last-of-type {
+            border-right: none;
+            margin-right: 90px;
+        }
+
+        div.modal.fade.bd-example-modal-xl {
+            z-index: 1050;
+        }
+
         #calendar {
             max-width: 90%;
             margin: 2% auto;
@@ -84,7 +136,7 @@ try {
 
         #filter {
             display: flex;
-            margin-top: 2%;
+            margin-top: 105px;
             padding: 0 5vw 20px;
         }
 
@@ -170,7 +222,7 @@ try {
             display: inline!important;
         }
 
-        div.fc-event-title.fc-sticky > i.fa-check-square{
+        div.fc-event-title.fc-sticky > i.fa-check-square, div.fc-event-title.fc-sticky > i.fa-car, div.fc-event-title.fc-sticky > i.fa-question-circle {
             font-size: 18px;
             margin: 0 5px 0 2px;
             color: white;
@@ -222,18 +274,18 @@ try {
         }
 
         .customSwalBtn{
-            background-color: rgba(214,130,47,1.00);
-            border-left-color: rgba(214,130,47,1.00);
-            border-right-color: rgba(214,130,47,1.00);
+            background-color: rgb(48, 133, 214);
+            border-left-color: rgb(48, 133, 214);
+            border-right-color: rgb(48, 133, 214);
             border: 0;
             border-radius: 3px;
             box-shadow: none;
             color: #fff;
             cursor: pointer;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 500;
             margin: 30px 5px 0px 5px;
-            padding: 10px 32px;
+            padding: 10px 20px;
         }
 
     </style>
@@ -241,11 +293,128 @@ try {
 </head>
 <body>
 
-<div style="background: rgb(2,106,167); padding: 0.5vh; height:7.5vh;">
+<div class="bodybox">
 
-    <a href="default" style="margin-left:1vw; position: relative; top:-10%;" ><span style="color: white;">&#9776;</span></a>
+    <!-- header 給海運的菲籍員工-->
+<?php
+    if($decoded->data->sea_feliix)
+    {
+?>
+    <header>
+        <a href="main.php" class="menu"><span>&#9776;</span></a>
 
-    <a href="default"><span style="margin-left:1vw; font-weight:700; font-size:xx-large; color: white;">FELIIX</span></a>
+        <div>
+                    <a class="nav_link" href="car_schedule_calendar.php">
+                        <eng>Car Schedule</eng>
+                    </a>
+
+            <?php
+                        if($decoded->data->sea_expense)
+                        {
+                    ?>
+                    <a class="nav_link" href="attendance_sea_v2.php">
+                        <eng>Attendance</eng>
+                    </a>
+
+                    <a class="nav_link" href="staff_list_sea.php">
+                        <eng>Staff List</eng>
+                    </a>
+
+                    <a class="nav_link" href="salary_recorder_sea.php">
+                        <eng>Salary Recorder</eng>
+                    </a>
+
+                    <a class="nav_link" href="expense_recorder_sea.php">
+                        <eng>Expense Recorder</eng>
+                    </a>
+                    <?php
+                        }
+                    ?>
+                    <?php
+                        if($decoded->data->sea_expense_v2)
+                        {
+                    ?>
+                    <a class="nav_link" href="expense_recorder_sea_v2.php">
+                        <eng>Expense Recorder2</eng>
+                    </a>
+                    <?php
+                        }
+                    ?>
+
+<?php
+                        if($decoded->data->gcash_expense_sea)
+            {
+            ?>
+            <a class="nav_link" href="gcash_expense_recorder_sea.php">
+                <eng>GCash Recorder</eng>
+            </a>
+            <?php
+                        }
+                    ?>
+<?php
+                        if($decoded->data->gcash_expense_sea_2)
+            {
+            ?>
+            <a class="nav_link" href="gcash_expense_recorder_sea_2.php">
+                <eng>GCash Recorder 2</eng>
+            </a>
+            <?php
+                        }
+                    ?>
+        </div>
+    </header>
+    <!-- header end -->
+<?php
+    }
+?>
+
+<?php
+    if($decoded->data->parts_feliix)
+    {
+?>
+    <!-- header 給機械零件的菲籍員工-->
+    <header>
+        <a href="parts_index.php" class="menu"><span>&#9776;</span></a>
+
+        <div>
+                    <a class="nav_link" href="car_schedule_calendar.php">
+                        <eng>Car Schedule</eng>
+                    </a>
+
+            <?php
+                if($decoded->data->status_1)
+                {
+            ?>
+            <a class="nav_link" href="staff_list.php">
+                <eng>Staff List</eng>
+            </a>
+
+            <a class="nav_link" href="salary_recorder.php">
+                <eng>Salary Recorder</eng>
+            </a>
+            <a class="nav_link" href="expense_recorder.php">
+                <eng>Expense Recorder</eng>
+            </a>
+            <?php
+                }
+            ?>
+
+            <?php
+                if($decoded->data->status_2)
+                {
+            ?>
+            <a class="nav_link" href="expense_recorder_v2.php">
+                <eng>Expense Recorder2</eng>
+            </a>
+            <?php
+                }
+            ?>
+        </div>
+    </header>
+    <!-- header end -->
+<?php
+    }
+?>
 
 </div>
 
@@ -282,7 +451,7 @@ try {
             <div class="modal-body">
 
                 <!-- 指派車輛管理者填寫的表單 -->
-                <div id="approval_section_feliix" v-if="access_check1 == true || access_check2 == true" style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 3px solid #dee2e6;">
+                <div id="approval_section_feliix" v-if="access_check1 == true || access_check2 == true || status == 2" style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 3px solid #dee2e6;">
 
                     <div class="row">
                         <div class="col-12" style="text-align: center;">
@@ -375,7 +544,7 @@ try {
 
                         <button class="btn btn-secondary" id="btn_service_not_assign_check_feliix" v-if="access_check1 && status == '1'" @click="service_save_check(access_check1, access_check2, '1')">Not Yet Assign</button>
 
-                        <button class="btn btn-secondary" id="btn_service_change_check_feliix" v-if="!check_showing && access_check1 && status == '2'" @click="service_change_check('1')">Change To Under Reivew</button>
+                        <button class="btn btn-secondary" style="width: 200px;" id="btn_service_change_check_feliix" v-if="!check_showing && access_check1 && status == '2'" @click="service_change_check('1')">Change To Under Review</button>
                         <button class="btn btn-danger" id="btn_service_reject_check_feliix" v-if="access_check1 && (status == '1' || !check_showing)" @click="service_reject_check('0')">Reject</button>
 
                         <button class="btn btn-primary" id="btn_service_edit_check_feliix" v-if="access_check1 && !edit_servie_check1 && status == '2'" @click="service_edit_check()">Edit</button>
@@ -949,7 +1118,7 @@ try {
 
 
 <!-- Servictory Schedule Form Begin -->
-<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel_service"
      aria-hidden="true" id="serviceModalScrollable">
 
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
@@ -958,7 +1127,7 @@ try {
 
             <div class="modal-header">
 
-                <h4 class="modal-title" id="myLargeModalLabel"></h4>
+                <h4 class="modal-title" id="myLargeModalLabel_service"></h4>
 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn_close">
                     <span aria-hidden="true">&times;</span>
@@ -970,7 +1139,7 @@ try {
             <div class="modal-body">
 
                 <!-- 指派車輛管理者填寫的表單 -->
-                <div id="approval_section" v-if="access_check1 == true || access_check2 == true" style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 3px solid #dee2e6;">
+                <div id="approval_section" v-if="access_check1 == true || access_check2 == true || status == 2" style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 3px solid #dee2e6;">
 
                     <div class="row">
                         <div class="col-12" style="text-align: center;">
@@ -1064,7 +1233,7 @@ try {
 
                         <button class="btn btn-secondary" id="btn_service_not_assign_check" v-if="access_check1 && status == '1'" @click="service_save_check(access_check1, access_check2, '1')">Not Yet Assign</button>
 
-                        <button class="btn btn-secondary" id="btn_service_change_check" v-if="!check_showing && access_check1 && status == '2'" @click="service_change_check('1')">Change To Under Reivew</button>
+                        <button class="btn btn-secondary" style="width: 200px;" id="btn_service_change_check" v-if="!check_showing && access_check1 && status == '2'" @click="service_change_check('1')">Change To Under Review</button>
                         <button class="btn btn-danger" id="btn_service_reject_check" v-if="access_check1 && (status == '1' || !check_showing)" @click="service_reject_check('0')">Reject</button>
 
                         <button class="btn btn-primary" id="btn_service_edit_check" v-if="access_check1 && !edit_servie_check1 && status == '2'" @click="service_edit_check()">Edit</button>
@@ -1105,6 +1274,23 @@ try {
                     <div class="col-10">
 
                         <input type="text" class="form-control" style="width:90%;" id="schedule_Name" v-model="schedule_Name" :disabled="!showing">
+
+                    </div>
+                </div>
+
+                <br v-if="!showing">
+
+                <div class="row" v-if="!showing">
+                    <div class="col-2 align-self-center" style="text-align: center;">
+
+                        <label>Creator</label>
+
+                    </div>
+
+                    <div class="col-10">
+
+                        <!-- 會顯示 行程的建立者 和 建立時間，例如 「Dennis Lin at 2023-10-09 09:28:52」 -->
+                        <input type="text" class="form-control" style="width:90%;" id="" v-model="schedule_Creator" :disabled="!showing">
 
                     </div>
                 </div>
