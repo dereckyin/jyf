@@ -109,13 +109,12 @@ if (!isset($jwt)) {
             $status = 2;
             $auto_pass = true;
         }
-
         
     }
     
     try {
-        $sql = "insert into car_calendar_main (schedule_Name, date_use, car_use, driver, helper, time_out, time_in, notes, items, created_by, created_at, status) 
-        values (:schedule_Name, :date_use, :car_use, :driver, :helper, :time_out, :time_in, :notes, :items, :created_by, now(), :status)";
+        $sql = "insert into car_calendar_main (schedule_Name, date_use, car_use, driver, helper, time_out, time_in, notes, items, created_by, created_at, status, requestor) 
+        values (:schedule_Name, :date_use, :car_use, :driver, :helper, :time_out, :time_in, :notes, :items, :created_by, now(), :status, :requestor)";
 
         $stmt = $db->prepare($sql);
 
@@ -130,6 +129,7 @@ if (!isset($jwt)) {
         $stmt->bindParam(':items', $items);
         $stmt->bindParam(':created_by', $user_name);
         $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':requestor', $user_name);
 
         $stmt->execute();
 

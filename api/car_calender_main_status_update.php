@@ -133,8 +133,45 @@ if (!isset($jwt)) {
             $status = 2;
         }
 
+        // for requestor
+        $requestor = "";
+        $sql = "select requestor from car_calendar_main where id = :id";
+
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        // read old and append into array
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $requestor = $row['requestor'];
+        }
         
-        
+        if($requestor == "")
+            $requestor = $user_name;
+        else
+            $requestor = $requestor . "," . $user_name;
+
+        // update requestor
+        try {
+            $sql = "update 
+                        car_calendar_main
+                    set 
+                        requestor = :requestor
+                    where id = :id";
+
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindParam(':requestor', $requestor);
+            $stmt->bindParam(':id', $id);
+
+            $stmt->execute();
+
+        } catch (Exception $e) {
+            http_response_code(501);
+            echo json_encode(array("insertion error" => $e->getMessage()));
+            die();
+        }
     }
 
     

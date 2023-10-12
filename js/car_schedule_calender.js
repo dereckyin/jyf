@@ -437,14 +437,19 @@ var service_feliix = new Vue({
 
         Swal.fire({
             title: "Change",
-            text: "Are you sure to change?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
+            text: "Reason",
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                  },
+                  showCancelButton: true,
+                  confirmButtonText: 'OK',
           }).then((result) => {
             if (result.value) {
+
+                if(result.isDismissed) return;
+
+                console.log("Result: " + result.value);
 
             var token = localStorage.getItem("token");
             var form_Data = new FormData();
@@ -1255,12 +1260,13 @@ var service = new Vue({
 
         Swal.fire({
             title: "Change",
-            text: "Are you sure to change?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
+            text: "Reason",
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                  },
+                  showCancelButton: true,
+                  confirmButtonText: 'OK',
           }).then((result) => {
             if (result.value) {
 

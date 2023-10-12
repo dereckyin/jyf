@@ -1281,3 +1281,5 @@ ALTER TABLE car_calendar_check ADD COLUMN feliix INT DEFAULT 0;
 ALTER TABLE user ADD COLUMN sea_feliix INT DEFAULT 0;
 
 ALTER TABLE user ADD COLUMN parts_feliix INT DEFAULT 0;
+
+ALTER TABLE car_calendar_main ADD COLUMN `requestor` varchar(1024) COLLATE utf8mb4_unicode_ci  default '';
