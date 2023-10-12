@@ -86,6 +86,32 @@ try {
             border-right: none;
             margin-right: 90px;
         }
+
+        header {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #1E6BA8;
+            color: #FFF;
+            padding: 10px;
+            box-shadow: 2px 2px 2px rgb(0 0 0 / 40%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header a.menu {
+            margin-left: 25px;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        header a.menu span {
+            color: #FFFFFF;
+        }
     </style>
 
     <!-- jQuery和js載入 -->
@@ -111,42 +137,44 @@ try {
 <div id="contactor">
     <div class="bodybox">
         <!-- header -->
-        <header style="background: rgb(30, 107, 168); height: 70px; display: flex; align-items: center; justify-content: space-between;">
+        <header>
+        <a href="main.php" class="menu"><span>&#9776;</span></a>
 
-                <a href="main.php" style="margin-left: 25px; font-size: 25px; cursor: pointer;"><span
-                        style="color: rgb(255, 255, 255);">☰</span></a>
+        <div>
+            <a class="nav_link" href="car_schedule_calendar.php">
+                <eng>Car Schedule</eng>
+            </a>
 
-                <div>
-                    <?php
+            <?php
                         if($decoded->data->sea_expense)
-                        {
-                    ?>
-                    <a class="nav_link" href="attendance_sea_v2.php">
-                        <eng>Attendance</eng>
-                    </a>
+            {
+            ?>
+            <a class="nav_link" href="attendance_sea_v2.php">
+                <eng>Attendance</eng>
+            </a>
 
-                    <a class="nav_link" href="staff_list_sea.php">
-                        <eng>Staff List</eng>
-                    </a>
+            <a class="nav_link" href="staff_list_sea.php">
+                <eng>Staff List</eng>
+            </a>
 
-                    <a class="nav_link" href="salary_recorder_sea.php">
-                        <eng>Salary Recorder</eng>
-                    </a>
+            <a class="nav_link" href="salary_recorder_sea.php">
+                <eng>Salary Recorder</eng>
+            </a>
 
-                    <a class="nav_link" href="expense_recorder_sea.php">
-                        <eng>Expense Recorder</eng>
-                    </a>
-                    <?php
+            <a class="nav_link" href="expense_recorder_sea.php">
+                <eng>Expense Recorder</eng>
+            </a>
+            <?php
                         }
                     ?>
-                    <?php
+            <?php
                         if($decoded->data->sea_expense_v2)
-                        {
-                    ?>
-                    <a class="nav_link" href="expense_recorder_sea_v2.php">
-                        <eng>Expense Recorder2</eng>
-                    </a>
-                    <?php
+            {
+            ?>
+            <a class="nav_link" href="expense_recorder_sea_v2.php">
+                <eng>Expense Recorder2</eng>
+            </a>
+            <?php
                         }
                     ?>
                     <?php
@@ -159,7 +187,7 @@ try {
             <?php
                         }
                     ?>
-<?php
+                    <?php
                         if($decoded->data->gcash_expense_sea_2)
             {
             ?>
@@ -169,8 +197,8 @@ try {
             <?php
                         }
                     ?>
-            </div>
-        </header>
+        </div>
+    </header>
         <!-- header end -->
         <div class="mainContent" style="padding-top: 70px;">
             <h6>Staff List</h6>
