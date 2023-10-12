@@ -97,7 +97,9 @@ if($full == '1' && $status > 0)
     ]);
 
     $table2->addRow();
-    $table2->addCell(10500, ['borderSize' => 6])->addText("Request Review", array('bold' => true));
+    $cell = $table2->addCell(10500, ['borderSize' => 6]);
+    $cell->getStyle()->setGridSpan(2);
+    $cell->addText("Request Review", array('bold' => true));
 
     $table2->addRow();
     $table2->addCell(2000, ['borderSize' => 6])->addText("Date:", array('bold' => true));
@@ -148,7 +150,7 @@ $table = $section->addTable('table', [
 ]);
 
 $table->addRow();
-$table->addCell(10500, ['borderSize' => 6])->addText("Content of Request", array('bold' => true));
+$table->addCell(10500, null, 2, ['borderSize' => 6])->addText("Content of Request", array('bold' => true));
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Schedule Name:", array('bold' => true));
