@@ -67,9 +67,6 @@ $phpWord = new PhpOffice\PhpWord\PhpWord();
 // Adding an empty Section to the document...
 $section = $phpWord->addSection();
 // Adding Text element to the Section having font styled by default...
-$section->addText($date_use . " Schedule");
-
-$section->addText("");
 
 if($full == '1' && $status > 0)
 {
@@ -98,28 +95,31 @@ if($full == '1' && $status > 0)
         'Spacing'=> 0, 
         'cellMargin'=> 0
     ]);
-    
+
     $table2->addRow();
-    $table2->addCell(2000, ['borderSize' => 6])->addText("Date Use:", array('bold' => true));
+    $table2->addCell(10500, ['borderSize' => 6])->addText("Request Review", array('bold' => true));
+
+    $table2->addRow();
+    $table2->addCell(2000, ['borderSize' => 6])->addText("Date:", array('bold' => true));
     $table2->addCell(8500, ['borderSize' => 6])->addText($check_date_use);
-    
+
     $table2->addRow();
-    $table2->addCell(2000, ['borderSize' => 6])->addText("Car Use:", array('bold' => true));
+    $table2->addCell(2000, ['borderSize' => 6])->addText("Time:", array('bold' => true));
+    $TextRun = $table2->addCell(8500, ['borderSize' => 6])->addTextRun();
+    $TextRun->addText($check_tout);
+    $TextRun->addText(" to ");
+    $TextRun->addText($check_tin);
+
+    $table2->addRow();
+    $table2->addCell(2000, ['borderSize' => 6])->addText("Assigned Car:", array('bold' => true));
     $table2->addCell(8500, ['borderSize' => 6])->addText($check_car_use);
     
     $table2->addRow();
-    $table2->addCell(2000, ['borderSize' => 6])->addText("Driver:", array('bold' => true));
+    $table2->addCell(2000, ['borderSize' => 6])->addText("Assigned Driver:", array('bold' => true));
     $table2->addCell(8500, ['borderSize' => 6])->addText($check_driver);
+       
     
-    $table2->addRow();
-    $table2->addCell(2000, ['borderSize' => 6])->addText("Time Out:", array('bold' => true));
-    $table2->addCell(8500, ['borderSize' => 6])->addText($check_tout);
-    
-    $table2->addRow();
-    $table2->addCell(2000, ['borderSize' => 6])->addText("Time In:", array('bold' => true));
-    $table2->addCell(8500, ['borderSize' => 6])->addText($check_tin);
-    
-    
+    $section->addText("");
     $section->addText("");
 }
 
@@ -147,10 +147,8 @@ $table = $section->addTable('table', [
     'cellMargin'=> 0
 ]);
 
-
 $table->addRow();
-$table->addCell(2000, ['borderSize' => 6])->addText("Date Use:", array('bold' => true));
-$table->addCell(8500, ['borderSize' => 6])->addText($date_use);
+$table->addCell(10500, ['borderSize' => 6])->addText("Content of Request", array('bold' => true));
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Schedule Name:", array('bold' => true));
@@ -159,6 +157,10 @@ $table->addCell(8500, ['borderSize' => 6])->addText($schedule_Name);
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Creator:", array('bold' => true));
 $table->addCell(8500, ['borderSize' => 6])->addText($creator);
+
+$table->addRow();
+$table->addCell(2000, ['borderSize' => 6])->addText("Date Use:", array('bold' => true));
+$table->addCell(8500, ['borderSize' => 6])->addText($date_use);
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Car Use:", array('bold' => true));

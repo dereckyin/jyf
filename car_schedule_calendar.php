@@ -377,14 +377,18 @@ try {
         <a href="parts_index.php" class="menu"><span>&#9776;</span></a>
 
         <div>
-                    <a class="nav_link" href="car_schedule_calendar.php">
-                        <eng>Car Schedule</eng>
-                    </a>
+            <a class="nav_link" href="car_schedule_calendar.php">
+                <eng>Car Schedule</eng>
+            </a>
 
             <?php
                 if($decoded->data->status_1)
                 {
             ?>
+            <a class="nav_link" href="attendance_v2.php">
+                <eng>Attendance</eng>
+            </a>
+
             <a class="nav_link" href="staff_list.php">
                 <eng>Staff List</eng>
             </a>
@@ -392,8 +396,13 @@ try {
             <a class="nav_link" href="salary_recorder.php">
                 <eng>Salary Recorder</eng>
             </a>
+
             <a class="nav_link" href="expense_recorder.php">
                 <eng>Expense Recorder</eng>
+            </a>
+
+            <a class="nav_link" href="details_ntd_php.php">
+                <eng>NTD~PHP</eng>
             </a>
             <?php
                 }

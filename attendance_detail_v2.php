@@ -299,6 +299,10 @@ header( 'location:index.php' );
         <a href="main.php" class="menu"><span>&#9776;</span></a>
 
         <div>
+            <a class="nav_link" href="car_schedule_calendar.php">
+                <eng>Car Schedule</eng>
+            </a>
+
             <?php
                         if($decoded->data->status_1)
             {
