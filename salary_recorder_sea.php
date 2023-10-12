@@ -102,9 +102,6 @@ try {
             display: none;
         }
 
-    </style>
-
-    <style>
         div.record_color {
             display: flex;
             align-items: center;
@@ -276,11 +273,7 @@ try {
 
 
 
-
-
-
-
-    <div style="margin-top:2.5vh; margin-left:1.5vw; margin-bottom:3vh;">
+    <div style="margin-top: 92px; margin-left:1.5vw; margin-bottom:3vh;">
 
 
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="width:98.5%;">

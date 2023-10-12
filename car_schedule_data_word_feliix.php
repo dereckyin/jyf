@@ -209,13 +209,6 @@ $phpWord = new PhpOffice\PhpWord\PhpWord();
 // Adding an empty Section to the document...
 $section = $phpWord->addSection();
 // Adding Text element to the Section having font styled by default...
-$section->addText($weekday . ", " . $start_time . " Schedule");
-
-$section->addText("");
-
-
-
-
 
 if($full == '1' && $status > 0)
 {
@@ -244,28 +237,33 @@ if($full == '1' && $status > 0)
         'Spacing'=> 0, 
         'cellMargin'=> 0
     ]);
-    
+
+
     $table2->addRow();
-    $table2->addCell(2000, ['borderSize' => 6])->addText("Date Use:", array('bold' => true));
+    $cell = $table2->addCell(10500, ['borderSize' => 6]);
+    $cell->getStyle()->setGridSpan(2);
+    $cell->addText("Request Review", array('bold' => true, 'size' => 12), array('align' => 'center', 'valign' => 'center'));
+
+    $table2->addRow();
+    $table2->addCell(2000, ['borderSize' => 6])->addText("Date:", array('bold' => true));
     $table2->addCell(8500, ['borderSize' => 6])->addText($check_date_use);
-    
+
     $table2->addRow();
-    $table2->addCell(2000, ['borderSize' => 6])->addText("Car Use:", array('bold' => true));
+    $table2->addCell(2000, ['borderSize' => 6])->addText("Time:", array('bold' => true));
+    $TextRun = $table2->addCell(8500, ['borderSize' => 6])->addTextRun();
+    $TextRun->addText($check_tout);
+    $TextRun->addText(" to ");
+    $TextRun->addText($check_tin);
+
+    $table2->addRow();
+    $table2->addCell(2000, ['borderSize' => 6])->addText("Assigned Car:", array('bold' => true));
     $table2->addCell(8500, ['borderSize' => 6])->addText($check_car_use);
     
     $table2->addRow();
-    $table2->addCell(2000, ['borderSize' => 6])->addText("Driver:", array('bold' => true));
+    $table2->addCell(2000, ['borderSize' => 6])->addText("Assigned Driver:", array('bold' => true));
     $table2->addCell(8500, ['borderSize' => 6])->addText($check_driver);
-    
-    $table2->addRow();
-    $table2->addCell(2000, ['borderSize' => 6])->addText("Time Out:", array('bold' => true));
-    $table2->addCell(8500, ['borderSize' => 6])->addText($check_tout);
-    
-    $table2->addRow();
-    $table2->addCell(2000, ['borderSize' => 6])->addText("Time In:", array('bold' => true));
-    $table2->addCell(8500, ['borderSize' => 6])->addText($check_tin);
-    
-    
+
+    $section->addText("");
     $section->addText("");
 }
 
@@ -306,12 +304,17 @@ if($related_project == " - : ")
 }
 
 $table->addRow();
-$table->addCell(2000, ['borderSize' => 6])->addText("Date:", array('bold' => true));
-$table->addCell(8500, ['borderSize' => 6])->addText($start_time);
+$cell = $table->addCell(10500, ['borderSize' => 6]);
+$cell->getStyle()->setGridSpan(2);
+$cell->addText("Content of Request", array('bold' => true, 'size' => 12), array('align' => 'center', 'valign' => 'center'));
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Project:", array('bold' => true));
 $table->addCell(8500, ['borderSize' => 6])->addText($title);
+
+$table->addRow();
+$table->addCell(2000, ['borderSize' => 6])->addText("Date:", array('bold' => true));
+$table->addCell(8500, ['borderSize' => 6])->addText($start_time);
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Related Project:", array('bold' => true));
@@ -322,11 +325,11 @@ $table->addCell(2000, ['borderSize' => 6])->addText("Sales Executive:", array('b
 $table->addCell(8500, ['borderSize' => 6])->addText($sales_executive);
 
 $table->addRow();
-$table->addCell(2000, ['borderSize' => 6])->addText("project_in_charge:", array('bold' => true));
+$table->addCell(2000, ['borderSize' => 6])->addText("Project_in_charge:", array('bold' => true));
 $table->addCell(8500, ['borderSize' => 6])->addText($project_in_charge);
 
 $table->addRow();
-$table->addCell(2000, ['borderSize' => 6])->addText("project_relevant:", array('bold' => true));
+$table->addCell(2000, ['borderSize' => 6])->addText("Relevant Persons:", array('bold' => true));
 $table->addCell(8500, ['borderSize' => 6])->addText($project_relevant);
 
 // CONCAT installer_needed and installer_needed_other and remove duplicate
@@ -388,7 +391,7 @@ $table->addCell(2000, ['borderSize' => 6])->addText("Photoshoot Request:", array
 $table->addCell(8500, ['borderSize' => 6])->addText(getRequest($photoshoot_request));
 
 $table->addRow();
-$table->addCell(2000, ['borderSize' => 6])->addText("Note/s:", array('bold' => true));
+$table->addCell(2000, ['borderSize' => 6])->addText("Notes:", array('bold' => true));
 $cell = $table->addCell(8500, ['borderSize' => 6]);
 addMultiLineText($cell, $notes);
 

@@ -102,9 +102,6 @@ try {
             display:none;
         }
 
-    </style>
-
-    <style>
         div.record_color {
             display: flex;
             align-items: center;
@@ -160,6 +157,32 @@ try {
             right: 0;
             margin: auto;
         }
+
+        header {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #1E6BA8;
+            color: #FFF;
+            padding: 10px;
+            box-shadow: 2px 2px 2px rgb(0 0 0 / 40%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header a.menu {
+            margin-left: 25px;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        header a.menu span {
+            color: #FFFFFF;
+        }
         
     </style>
 
@@ -176,13 +199,41 @@ try {
 
 
 <div id="app">
-<div style="background: rgb(30, 107, 168); padding: 0.5vh; height: 70px; display: flex; align-items: center; justify-content: space-between;">
-        <a @click="logout()" style="margin-left: 25px; font-size: 25px;"><span style="color: rgb(255, 255, 255); cursor: pointer">☰</span></a>
+
+    <!-- header -->
+    <header>
+        <?php
+            if($decoded->data->status_1 == 1 || $decoded->data->status_2 == 1)
+            {
+         ?>
+
+            <a href="main.php" class="menu"><span>&#9776;</span></a>
+
+        <?php
+             }
+         ?>
+
+
+        <?php
+            if($decoded->data->status_1 == 0 && $decoded->data->status_2 == 0)
+            {
+         ?>
+
+            <a @click="logout()" class="menu"><span>&#9776;</span></a>
+
+        <?php
+             }
+         ?>
+
 
         <div>
-        <?php
-                if($decoded->data->status_1)
-                {
+            <a class="nav_link" href="car_schedule_calendar.php">
+                <eng>Car Schedule</eng>
+            </a>
+
+            <?php
+                        if($decoded->data->status_1)
+            {
             ?>
             <a class="nav_link" href="attendance_v2.php">
                 <eng>Attendance</eng>
@@ -195,37 +246,41 @@ try {
             <a class="nav_link" href="salary_recorder.php">
                 <eng>Salary Recorder</eng>
             </a>
+
             <a class="nav_link" href="expense_recorder.php">
                 <eng>Expense Recorder</eng>
             </a>
+
             <a class="nav_link" href="details_ntd_php.php">
                 <eng>NTD~PHP</eng>
             </a>
-            <?php
-                }
-            ?>
 
             <?php
-                if($decoded->data->status_2)
-                {
+                        }
+                    ?>
+            <?php
+                        if($decoded->data->status_2)
+            {
             ?>
             <a class="nav_link" href="expense_recorder_v2.php">
                 <eng>Expense Recorder2</eng>
             </a>
             <?php
-                }
-            ?>
+                        }
+             ?>
+
             <button data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
                     aria-controls="collapseOne" class=""
                     style="border: none; margin-right: 25px; font-weight: 700; font-size: x-large; background-color: rgb(30, 107, 168); color: rgb(255, 255, 255);">
                 <i aria-hidden="true" class="fas fa-plus-square fa-lg"></i></button>
+
         </div>
-    </div>
+    </header>
+    <!-- header end -->
 
 
 
-
-<div style="margin-top:2.5vh; margin-left:1.5vw; margin-bottom:3vh;">
+<div style="margin-top: 92px; margin-left:1.5vw; margin-bottom:3vh;">
 
 
 
