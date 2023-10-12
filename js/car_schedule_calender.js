@@ -436,7 +436,7 @@ var service_feliix = new Vue({
         let _this = this;
 
         Swal.fire({
-            title: "Change",
+            title: "Change To Under Review",
             text: "Reason",
                 input: 'text',
                 inputAttributes: {
@@ -1259,7 +1259,7 @@ var service = new Vue({
         let _this = this;
 
         Swal.fire({
-            title: "Change",
+            title: "Change To Under Review",
             text: "Reason",
                 input: 'text',
                 inputAttributes: {
@@ -2498,6 +2498,8 @@ var service = new Vue({
             form_Data.append("check_driver", this.check_driver);
             form_Data.append("check_time_out", this.check_time_out);
             form_Data.append("check_time_in", this.check_time_in);
+
+            form_Data.append("creator", this.schedule_Creator);
 
 
             const token = sessionStorage.getItem("token");

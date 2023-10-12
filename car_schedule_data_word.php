@@ -51,7 +51,7 @@ $check_car_use = (isset($_POST['check_car_use']) ?  $_POST['check_car_use'] : ""
 $check_driver = (isset($_POST['check_driver']) ?  $_POST['check_driver'] : "");
 $check_time_out = (isset($_POST['check_time_out']) ?  $_POST['check_time_out'] : "");
 $check_time_in = (isset($_POST['check_time_in']) ?  $_POST['check_time_in'] : "");
-
+$creator = (isset($_POST['creator']) ?  $_POST['creator'] : "");
 
 
 $items_detail = json_decode($items, true);
@@ -155,6 +155,10 @@ $table->addCell(8500, ['borderSize' => 6])->addText($date_use);
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Schedule Name:", array('bold' => true));
 $table->addCell(8500, ['borderSize' => 6])->addText($schedule_Name);
+
+$table->addRow();
+$table->addCell(2000, ['borderSize' => 6])->addText("Creator:", array('bold' => true));
+$table->addCell(8500, ['borderSize' => 6])->addText($creator);
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Car Use:", array('bold' => true));
