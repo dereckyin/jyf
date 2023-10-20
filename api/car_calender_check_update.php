@@ -13,6 +13,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 $id = (isset($_POST['id']) ?  $_POST['id'] : 0);
+$sid = (isset($_POST['sid']) ?  $_POST['sid'] : 0);
 $date_use = (isset($_POST['date_use']) ?  $_POST['date_use'] : '');
 $car_use = (isset($_POST['car_use']) ?  $_POST['car_use'] : '');
 $driver = (isset($_POST['driver']) ?  $_POST['driver'] : '');
@@ -33,7 +34,7 @@ include_once 'config/database.php';
 // include_once 'objects/work_calender.php';
 include_once 'config/conf.php';
 
-//include_once 'mail.php';
+include_once 'mail.php';
 
 
 $database = new Database();
@@ -106,8 +107,12 @@ if (!isset($jwt)) {
         
         $stmt->execute();
 
+
+        $att = get_car_schedule_word($sid, "1", $date_use, $car_use, $driver, $tout, $tin);
+        send_car_edit_mail_6($sid, $user_name, $date_use, $car_use, $driver, $tout, $tin, $att);
+
         http_response_code(200);
-        echo json_encode(array("id" => $id, "created_by" => $user_name, "created_at" => date("Y-m-d H:i:s"), "status" => "success"));
+        echo json_encode(array("id" => $sid, "created_by" => $user_name, "created_at" => date("Y-m-d H:i:s"), "status" => "success"));
 
     } catch (Exception $e) {
         http_response_code(501);

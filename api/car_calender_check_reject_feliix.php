@@ -13,6 +13,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 $id = (isset($_POST['id']) ?  $_POST['id'] : 0);
+$reason = (isset($_POST['reason']) ?  $_POST['reason'] : '');
 $status = (isset($_POST['status']) ?  $_POST['status'] : 0);
 
 
@@ -105,6 +106,10 @@ if (!isset($jwt)) {
 
             $stmt->execute();
         }
+
+        $att = get_car_schedule_word($id, "0", $date_use, $car_use, $driver, $tout, $tin);
+        send_car_reject_mail_3($id, $user_name, $date_use, $car_use, $driver, $tout, $tin, $att, $reason);
+        
 
         http_response_code(200);
         echo json_encode(array("sid" => $id, "updated_by" => $user_name, "updated_at" => date("Y-m-d H:i:s"), "status" => "success"));

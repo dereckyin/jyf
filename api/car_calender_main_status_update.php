@@ -24,6 +24,11 @@ $notes = (isset($_POST['notes']) ?  $_POST['notes'] : '');
 $items = (isset($_POST['items']) ?  $_POST['items'] : []);
 $status = (isset($_POST['status']) ?  $_POST['status'] : 0);
 
+$check_date_use = (isset($_POST['check_date_use']) ?  $_POST['check_date_use'] : '');
+$check_car_use = (isset($_POST['check_car_use']) ?  $_POST['check_car_use'] : '');
+$check_driver = (isset($_POST['check_driver']) ?  $_POST['check_driver'] : '');
+$check_time_out = (isset($_POST['check_time_out']) ?  $_POST['check_time_out'] : '');
+$check_time_in = (isset($_POST['check_time_in']) ?  $_POST['check_time_in'] : '');
 
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -79,8 +84,51 @@ if (!isset($jwt)) {
         die();
     }
 
+    // get current car_calendar_main status
+    $current_status = "";
+    $sql = "select status from car_calendar_main where id = :id";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $current_status = $row['status'];
+
     $tout = $date_use . " " . $time_out;
     $tin = $date_use . " " . $time_in;
+
+    $check_tout = $check_date_use . " " . $check_time_out;
+    $check_tin = $check_date_use . " " . $check_time_in;
+
+    if($status == '0')
+    {
+        if($current_status == "2")
+        {
+            $att = get_car_schedule_word($id, "1", $check_date_use, $check_car_use, $check_driver, $check_tout, $check_tin);
+            send_car_approved_withdraw_mail_7($id, $user_name, $check_date_use, $check_car_use, $check_driver, $check_tout, $check_tin, $att);
+        }
+
+        if($current_status == "1")
+        {
+            $att = get_car_schedule_word($id, "0", $date_use, $car_use, $driver, $tout, $tin);
+            send_car_withdraw_mail_8($id, $user_name, $date_use, $car_use, $driver, $tout, $tin, $att);
+        }
+    }
+
+    if($status == '-1')
+    {
+        if($current_status == "2")
+        {
+            $att = get_car_schedule_word($id, "1", $check_date_use, $check_car_use, $check_driver, $check_tout, $check_tin);
+            send_car_approved_delete_mail_9($id, $user_name, $check_date_use, $check_car_use, $check_driver, $check_tout, $check_tin, $att);
+        }
+
+        if($current_status == "1")
+        {
+            $att = get_car_schedule_word($id, "0", $date_use, $car_use, $driver, $tout, $tin);
+            send_car_delete_mail_10($id, $user_name, $date_use, $car_use, $driver, $tout, $tin, $att);
+        }
+    }
+    
 
     // if status = 1 (send), and not any same car and date_use in car_calendar_main, insert car_calendar_check
     if($status == '1')
@@ -195,7 +243,7 @@ if (!isset($jwt)) {
         $stmt->execute();
 
         // if status = 0 (withdraw), set car_calendar_check status = 0
-        if($status == 0)
+        if($status == 0 || $status == -1)
         {
             $sql = "update 
                         car_calendar_check
@@ -231,8 +279,10 @@ if (!isset($jwt)) {
 
     if($status == '1')
     {
-        $att = get_car_schedule_word($id, "1", $date_use, $car_use, $driver, $tout, $tin);
+        $att = get_car_schedule_word($id, "0", $date_use, $car_use, $driver, $tout, $tin);
         send_car_request_mail_2($id, $user_name, $date_use, $car_use, $driver, $tout, $tin, $att);
     }
+
+    
 
 }

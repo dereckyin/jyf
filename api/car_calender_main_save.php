@@ -36,7 +36,7 @@ include_once 'config/database.php';
 // include_once 'objects/work_calender.php';
 include_once 'config/conf.php';
 
-//include_once 'mail.php';
+include_once 'mail.php';
 
 
 $database = new Database();
@@ -171,6 +171,19 @@ if (!isset($jwt)) {
             die();
         }
 
+    }
+
+    if($status == '2')
+    {
+        $att = get_car_schedule_word($sid, "1", $date_use, $car_use, $driver, $tout, $tin);
+        send_car_approval_mail_1($sid, $user_name, $date_use, $car_use, $driver, $tout, $tin, $att);
+    }
+    
+
+    if($status == '1')
+    {
+        $att = get_car_schedule_word($sid, "0", $date_use, $car_use, $driver, $tout, $tin);
+        send_car_request_mail_2($sid, $user_name, $date_use, $car_use, $driver, $tout, $tin, $att);
     }
 
 }

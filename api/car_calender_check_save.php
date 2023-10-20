@@ -33,7 +33,7 @@ include_once 'config/database.php';
 // include_once 'objects/work_calender.php';
 include_once 'config/conf.php';
 
-//include_once 'mail.php';
+include_once 'mail.php';
 
 
 $database = new Database();
@@ -106,6 +106,12 @@ if (!isset($jwt)) {
         $stmt->bindParam(':status', $status);
 
         $stmt->execute();
+
+        if($status == '2')
+        {
+            $att = get_car_schedule_word($id, "1", $date_use, $car_use, $driver, $tout, $tin);
+            send_car_approve_mail_11($id, $user_name, $date_use, $car_use, $driver, $tout, $tin, $att);
+        }
 
         http_response_code(200);
         echo json_encode(array("id" => $id, "created_by" => $user_name, "created_at" => date("Y-m-d H:i:s"), "status" => "success"));

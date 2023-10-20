@@ -673,6 +673,7 @@ var service_feliix = new Vue({
                 form_Data.append("jwt", token);
                 form_Data.append("id", id);
                 form_Data.append("sid", sid);
+                form_Data.append("reason", result.value);
                 form_Data.append("status", status);
 
                 axios({
@@ -1092,10 +1093,7 @@ var service = new Vue({
             else
                this.showing = false;
 
-            if (this.creator != this.username) {
-                this.showing = false;
-                return;
-            }
+            
 
             if(this.status == "1" && this.access1 == true)
             {
@@ -1109,6 +1107,11 @@ var service = new Vue({
             else if(this.status == "2" && this.access1 == false && this.access2 == true)
             {
                // this.service_edit_check2();
+            }
+
+            if (this.creator != this.username) {
+                this.showing = false;
+                return;
             }
             
         }
@@ -1182,6 +1185,14 @@ var service = new Vue({
                 form_Data.append("jwt", token);
                 form_Data.append("id", id);
                 form_Data.append("sid", sid);
+
+                form_Data.append("date_use", this.check_date_use);
+                form_Data.append("car_use", this.check_car_use);
+                form_Data.append("driver", this.check_driver);
+                form_Data.append("time_out", this.check_time_out);
+                form_Data.append("time_in", this.check_time_in);
+                form_Data.append("reason", result.value);
+
                 form_Data.append("status", status);
 
                 axios({
@@ -1289,6 +1300,14 @@ var service = new Vue({
             form_Data.append("jwt", token);
             form_Data.append("id", id);
             form_Data.append("sid", sid);
+
+            form_Data.append("date_use", this.check_date_use);
+            form_Data.append("car_use", this.check_car_use);
+            form_Data.append("driver", this.check_driver);
+            form_Data.append("time_out", this.check_time_out);
+            form_Data.append("time_in", this.check_time_in);
+            form_Data.append("reason", result.value);
+
             form_Data.append("status", status);
 
             axios({
@@ -1381,6 +1400,7 @@ var service = new Vue({
 
             if(this.org_schedule_check1.length > 0){
                 id = this.org_schedule_check1[0].id;
+                sid = this.id;
                 api_url = "api/car_calender_check_update.php";
             }
             else{
@@ -1390,6 +1410,7 @@ var service = new Vue({
         
             form_Data.append("jwt", token);
             form_Data.append("id", id);
+            form_Data.append("sid", sid);
            
             form_Data.append("date_use", this.check_date_use);
             form_Data.append("car_use", this.check_car_use);
@@ -1435,6 +1456,7 @@ var service = new Vue({
                 });
         },
 
+        
         
         // service_update_check: function(status) {
         //     let _this = this; // for axios
@@ -1654,9 +1676,9 @@ var service = new Vue({
             form_Data.append("date_use", this.check_date_use);
             form_Data.append("car_use", this.check_car_use);
             form_Data.append("driver", this.check_driver);
-        
             form_Data.append("time_out", this.check_time_out);
             form_Data.append("time_in", this.check_time_in);
+
             form_Data.append("status", is_send);
 
             form_Data.append("kind", kind);
@@ -2153,6 +2175,12 @@ var service = new Vue({
             var form_Data = new FormData();
             form_Data.append("id", this.id);
 
+            form_Data.append("check_date_use", this.check_date_use);
+            form_Data.append("check_car_use", this.check_car_use);
+            form_Data.append("check_driver", this.check_driver);
+            form_Data.append("check_time_out", this.check_time_out);
+            form_Data.append("check_time_in", this.check_time_in);
+
             form_Data.append("date_use", this.date_use);
             form_Data.append("car_use", this.car_use);
             form_Data.append("driver", this.driver);
@@ -2235,6 +2263,18 @@ var service = new Vue({
                 if (result.value) {
                     var form_Data = new FormData();
                     form_Data.append("id", _this.id);
+
+                    form_Data.append("check_date_use", _this.check_date_use);
+                    form_Data.append("check_car_use", _this.check_car_use);
+                    form_Data.append("check_driver", _this.check_driver);
+                    form_Data.append("check_time_out", _this.check_time_out);
+                    form_Data.append("check_time_in", _this.check_time_in);
+
+                    form_Data.append("date_use", _this.date_use);
+                    form_Data.append("car_use", _this.car_use);
+                    form_Data.append("driver", _this.driver);
+                    form_Data.append("time_out", _this.time_out);
+                    form_Data.append("time_in", _this.time_in);
         
                     form_Data.append("status", -1);
         

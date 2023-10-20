@@ -15,6 +15,14 @@ $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 $id = (isset($_POST['id']) ?  $_POST['id'] : 0);
 $sid = (isset($_POST['sid']) ?  $_POST['sid'] : 0);
 
+$date_use = (isset($_POST['date_use']) ?  $_POST['date_use'] : '');
+$car_use = (isset($_POST['car_use']) ?  $_POST['car_use'] : '');
+$driver = (isset($_POST['driver']) ?  $_POST['driver'] : '');
+$time_out = (isset($_POST['time_out']) ?  $_POST['time_out'] : '');
+$time_in = (isset($_POST['time_in']) ?  $_POST['time_in'] : '');
+
+$reason = (isset($_POST['reason']) ?  $_POST['reason'] : '');
+
 $status = (isset($_POST['status']) ?  $_POST['status'] : 0);
 
 
@@ -29,7 +37,7 @@ include_once 'config/database.php';
 // include_once 'objects/work_calender.php';
 include_once 'config/conf.php';
 
-//include_once 'mail.php';
+include_once 'mail.php';
 
 
 $database = new Database();
@@ -72,8 +80,19 @@ if (!isset($jwt)) {
         die();
     }
 
+    
     $tout = $date_use . " " . $time_out;
     $tin = $date_use . " " . $time_in;
+
+    // get current car_calendar_main status
+    $current_status = "";
+    $sql = "select status from car_calendar_main where id = :id";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':id', $sid);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $current_status = $row['status'];
+
     
     try {
         $sql = "update 
@@ -93,6 +112,8 @@ if (!isset($jwt)) {
 
         $stmt->execute();
 
+        //$arr = $stmt->errorInfo();
+
         // update car_calendar_main status
         $sql = "update car_calendar_check set status = -1 where `feliix` = 0 and id = :id";
 
@@ -100,6 +121,15 @@ if (!isset($jwt)) {
         $stmt->bindParam(':id', $id);
 
         $stmt->execute();
+
+        //$arr = $stmt->errorInfo();
+
+        if($status == '1')
+        {
+            $att = get_car_schedule_word($sid, "1", $date_use, $car_use, $driver, $tout, $tin);
+            send_car_under_review_mail_4($sid, $user_name, $date_use, $car_use, $driver, $tout, $tin, $att, $reason);
+        }
+
 
         http_response_code(200);
         echo json_encode(array("sid" => $id, "updated_by" => $user_name, "updated_at" => date("Y-m-d H:i:s"), "status" => "success"));
