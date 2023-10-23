@@ -114,13 +114,13 @@ if (!isset($jwt)) {
 
         //$arr = $stmt->errorInfo();
 
-        // update car_calendar_main status
-        $sql = "update car_calendar_check set status = -1 where `feliix` = 0 and id = :id";
+        // // update car_calendar_main status
+        // $sql = "update car_calendar_check set status = -1 where `feliix` = 0 and id = :id";
 
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam(':id', $id);
+        // $stmt = $db->prepare($sql);
+        // $stmt->bindParam(':id', $id);
 
-        $stmt->execute();
+        // $stmt->execute();
 
         //$arr = $stmt->errorInfo();
 
