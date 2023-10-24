@@ -13,6 +13,9 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 $id = (isset($_POST['id']) ?  $_POST['id'] : 0);
+
+$sid = (isset($_POST['sid']) ?  $_POST['sid'] : 0);
+
 $date_use = (isset($_POST['date_use']) ?  $_POST['date_use'] : '');
 $car_use = (isset($_POST['car_use']) ?  $_POST['car_use'] : '');
 $driver = (isset($_POST['driver']) ?  $_POST['driver'] : '');
@@ -21,6 +24,17 @@ $time_in = (isset($_POST['time_in']) ?  $_POST['time_in'] : '');
 $status = (isset($_POST['status']) ?  $_POST['status'] : 0);
 $kind = (isset($_POST['kind']) ?  $_POST['kind'] : '1');
 
+$schedule_Name_f = (isset($_POST['schedule_Name_f']) ?  $_POST['schedule_Name_f'] : "");
+$date_use_f = (isset($_POST['date_use_f']) ?  $_POST['date_use_f'] : "");
+$car_use_f = (isset($_POST['car_use_f']) ?  $_POST['car_use_f'] : "");
+$driver_f = (isset($_POST['driver_f']) ?  $_POST['driver_f'] : "");
+$helper_f = (isset($_POST['helper_f']) ?  $_POST['helper_f'] : "");
+$time_out_f = (isset($_POST['time_out_f']) ?  $_POST['time_out_f'] : "");
+$time_in_f = (isset($_POST['time_in_f']) ?  $_POST['time_in_f'] : "");
+$notes_f = (isset($_POST['notes_f']) ?  $_POST['notes_f'] : "");
+$items_f = (isset($_POST['items_f']) ?  $_POST['items_f'] : []);
+$status_f = (isset($_POST['status_f']) ?  $_POST['status_f'] : 0);
+$creator_f = (isset($_POST['creator_f']) ?  $_POST['creator_f'] : "");
 
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -33,7 +47,7 @@ include_once 'config/database.php';
 // include_once 'objects/work_calender.php';
 include_once 'config/conf.php';
 
-//include_once 'mail.php';
+include_once 'mail.php';
 
 
 $database = new Database();
@@ -106,6 +120,9 @@ if (!isset($jwt)) {
         $stmt->bindParam(':updated_by', $user_name);
         
         $stmt->execute();
+
+        $att = get_car_schedule_word_feliix($sid, "1", $schedule_Name_f, $date_use_f, $car_use_f, $driver_f, $helper_f, $time_out_f, $time_in_f, $notes_f, $items_f, $status_f, $creator_f, $date_use, $car_use, $driver, $tout, $tin);
+        send_car_edit_mail_5_feliix($sid, $user_name, $date_use, $car_use, $driver, $tout, $tin, $att);
 
         http_response_code(200);
         echo json_encode(array("id" => $id, "created_by" => $user_name, "created_at" => date("Y-m-d H:i:s"), "status" => "success"));

@@ -472,6 +472,27 @@ var service_feliix = new Vue({
             form_Data.append("sid", sid);
             form_Data.append("status", status);
 
+            form_Data.append("reason", result.value);
+
+            form_Data.append("date_use", this.check_date_use);
+            form_Data.append("car_use", this.check_car_use);
+            form_Data.append("driver", this.check_driver);
+        
+            form_Data.append("time_out", this.check_time_out);
+            form_Data.append("time_in", this.check_time_in);
+
+            form_Data.append("schedule_Name_f", this.schedule_Name);
+            form_Data.append("date_use_f", this.date_use);
+            form_Data.append("car_use_f", this.car_use);
+            form_Data.append("driver_f", this.driver);
+            form_Data.append("helper_f", this.helper);
+            form_Data.append("time_out_f", this.time_out);
+            form_Data.append("time_in_f", this.time_in);
+            form_Data.append("notes_f", this.notes);
+            form_Data.append("status_f", this.status);
+            form_Data.append("items_f", JSON.stringify(this.items));
+            form_Data.append("creator_f", this.creator.split(' at ')[0]);
+
             axios({
                     method: "post",
                     headers: {
@@ -568,6 +589,18 @@ var service_feliix = new Vue({
             form_Data.append("time_out", this.check_time_out);
             form_Data.append("time_in", this.check_time_in);
             form_Data.append("status", is_send);
+
+            form_Data.append("schedule_Name_f", this.schedule_Name);
+            form_Data.append("date_use_f", this.date_use);
+            form_Data.append("car_use_f", this.car_use);
+            form_Data.append("driver_f", this.driver);
+            form_Data.append("helper_f", this.helper);
+            form_Data.append("time_out_f", this.time_out);
+            form_Data.append("time_in_f", this.time_in);
+            form_Data.append("notes_f", this.notes);
+            form_Data.append("status_f", this.status);
+            form_Data.append("items_f", JSON.stringify(this.items));
+            form_Data.append("creator_f", this.creator.split(' at ')[0]);
 
             form_Data.append("kind", kind);
 
@@ -676,6 +709,25 @@ var service_feliix = new Vue({
                 form_Data.append("reason", result.value);
                 form_Data.append("status", status);
 
+                form_Data.append("date_use", this.check_date_use);
+                form_Data.append("car_use", this.check_car_use);
+                form_Data.append("driver", this.check_driver);
+            
+                form_Data.append("time_out", this.check_time_out);
+                form_Data.append("time_in", this.check_time_in);
+
+                form_Data.append("schedule_Name_f", this.schedule_Name);
+                form_Data.append("date_use_f", this.date_use);
+                form_Data.append("car_use_f", this.car_use);
+                form_Data.append("driver_f", this.driver);
+                form_Data.append("helper_f", this.helper);
+                form_Data.append("time_out_f", this.time_out);
+                form_Data.append("time_in_f", this.time_in);
+                form_Data.append("notes_f", this.notes);
+                form_Data.append("status_f", this.status);
+                form_Data.append("items_f", JSON.stringify(this.items));
+                form_Data.append("creator_f", this.creator.split(' at ')[0]);
+
                 axios({
                         method: "post",
                         headers: {
@@ -759,6 +811,7 @@ var service_feliix = new Vue({
 
         if(this.org_schedule_check1.length > 0){
             id = this.org_schedule_check1[0].id;
+            sid = this.id * -1;
             api_url = "api/car_calender_check_update_feliix.php";
         }
         else{
@@ -768,6 +821,8 @@ var service_feliix = new Vue({
     
         form_Data.append("jwt", token);
         form_Data.append("id", id);
+
+        form_Data.append("sid", sid);
        
         form_Data.append("date_use", this.check_date_use);
         form_Data.append("car_use", this.check_car_use);
@@ -776,6 +831,18 @@ var service_feliix = new Vue({
         form_Data.append("time_out", this.check_time_out);
         form_Data.append("time_in", this.check_time_in);
         form_Data.append("status", status);
+
+        form_Data.append("schedule_Name_f", this.schedule_Name);
+        form_Data.append("date_use_f", this.date_use);
+        form_Data.append("car_use_f", this.car_use);
+        form_Data.append("driver_f", this.driver);
+        form_Data.append("helper_f", this.helper);
+        form_Data.append("time_out_f", this.time_out);
+        form_Data.append("time_in_f", this.time_in);
+        form_Data.append("notes_f", this.notes);
+        form_Data.append("status_f", this.status);
+        form_Data.append("items_f", JSON.stringify(this.items));
+        form_Data.append("creator_f", this.creator.split(' at ')[0]);
 
 
         axios({
@@ -1307,6 +1374,7 @@ var service = new Vue({
             form_Data.append("time_out", this.check_time_out);
             form_Data.append("time_in", this.check_time_in);
             form_Data.append("reason", result.value);
+            
 
             form_Data.append("status", status);
 
