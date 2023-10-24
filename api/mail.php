@@ -345,8 +345,6 @@ $sql = "select DAYNAME(start_time) weekday, DATE_FORMAT(start_time,'%d %M %Y') s
     $stage_name = '';
     $sequence = '';
 
-    $status = '';
-
     $onrecord = 0;
 
     $details = array();
@@ -403,7 +401,7 @@ $phpWord = new PhpOffice\PhpWord\PhpWord();
 $section = $phpWord->addSection();
 // Adding Text element to the Section having font styled by default...
 
-if($full == '1' && $status > 0)
+if($full == '1')
 {
 
     $check_dateString = date('Y-m-d', strtotime($check_date_use));
