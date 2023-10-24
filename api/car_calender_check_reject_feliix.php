@@ -114,16 +114,7 @@ if (!isset($jwt)) {
 
         $stmt->execute();
 
-        if($status == 0)
-        {
-            // update car_calendar_main status
-            $sql = "update car_calendar_check set status = -1 where `feliix` = 1 and sid = :id";
-
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam(':id', $id);
-
-            $stmt->execute();
-        }
+        
 
         if($status == '1')
         {
@@ -144,6 +135,17 @@ if (!isset($jwt)) {
                 $att = get_car_schedule_word_feliix($id, "0", $schedule_Name_f, $date_use_f, $car_use_f, $driver_f, $helper_f, $time_out_f, $time_in_f, $notes_f, $items_f, $status_f, $creator_f, $date_use, $car_use, $driver, $tout, $tin);
                 send_car_reject_mail_2_feliix($id, $user_name, $date_use, $car_use, $driver, $tout, $tin, $att, $reason);
             }
+        }
+
+        if($status == 0)
+        {
+            // update car_calendar_main status
+            $sql = "update car_calendar_check set status = -1 where `feliix` = 1 and sid = :id";
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':id', $id);
+
+            $stmt->execute();
         }
         
         
