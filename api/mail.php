@@ -303,15 +303,13 @@ $db = $database->getConnection();
 $sql = "select DAYNAME(start_time) weekday, DATE_FORMAT(start_time,'%d %M %Y') start_time, title, sales_executive, 
         project_in_charge, project_relevant, installer_needed, installer_needed_other, things_to_bring, installer_needed_location, things_to_bring_location, 
         products_to_bring, service, driver, driver_other,
-        back_up_driver, back_up_driver_other, photoshoot_request, notes, detail.location, agenda, DATE_FORMAT(appoint_time, '%I:%i %p') appoint_time, 
-        DATE_FORMAT(detail.end_time, '%I:%i %p') end_time, products_to_bring_files,
-        coalesce(pm.project_name, '') project_name, coalesce(pst.stage, '') stage_name, coalesce(`sequence`, '') sequence
+        back_up_driver, back_up_driver_other, photoshoot_request, notes, products_to_bring_files,
+        coalesce(pm.project_name, '') project_name, coalesce(pst.stage, '') stage_name, coalesce(`sequence`, '') sequence, main.status
         from work_calendar_main main 
-        left join work_calendar_details detail on detail.main_id = main.id 
         left join project_main pm on pm.id = main.related_project_id
         left join project_stages ps on ps.id = main.related_stage_id
         LEFT JOIN project_stage pst ON ps.stage_id = pst.id
-        where coalesce(detail.is_enabled, 1) = 1 and main.id = " . $id . " order by sort " ;
+        where  main.id = " . $id;
 
     $stmt = $db->prepare( $sql );
     $stmt->execute();
@@ -347,7 +345,11 @@ $sql = "select DAYNAME(start_time) weekday, DATE_FORMAT(start_time,'%d %M %Y') s
     $stage_name = '';
     $sequence = '';
 
+    $status = '';
+
     $onrecord = 0;
+
+    $details = array();
 
 while($row = $stmt->fetch(PDO::FETCH_ASSOC)) 
 {
@@ -377,14 +379,18 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
     $details = GetDetails($id, $db);
 
 
-    $location = $row['location'];
-    $agenda = $row['agenda'];
-    $appoint_time = $row['appoint_time'];
-    $end_time = $row['end_time'];
+    // $location = $row['location'];
+    // $agenda = $row['agenda'];
+    // $appoint_time = $row['appoint_time'];
+    // $end_time = $row['end_time'];
 
     $project_name = $row['project_name'];
     $stage_name = $row['stage_name'];
     $sequence = $row['sequence'];
+
+    $status = $row['status'];
+
+    break;
 
 }
 
@@ -608,11 +614,11 @@ $table1->addCell(2600, ['borderSize' => 6])->addText("Appoint Time",  ['bold' =>
 $table1->addCell(2600, ['borderSize' => 6])->addText("End Time",  ['bold' => true], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
 
 
-    $table1->addRow();
-    $table1->addCell(2600, ['borderSize' => 6])->addText($location,  [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(2600, ['borderSize' => 6])->addText($agenda, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(2600, ['borderSize' => 6])->addText($appoint_time, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(2600, ['borderSize' => 6])->addText($end_time, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    // $table1->addRow();
+    // $table1->addCell(2600, ['borderSize' => 6])->addText($location,  [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    // $table1->addCell(2600, ['borderSize' => 6])->addText($agenda, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    // $table1->addCell(2600, ['borderSize' => 6])->addText($appoint_time, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    // $table1->addCell(2600, ['borderSize' => 6])->addText($end_time, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
 
 foreach ($details as &$value)
 {
