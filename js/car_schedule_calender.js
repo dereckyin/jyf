@@ -521,6 +521,8 @@ var service_feliix = new Vue({
                     gbcolor = "#009858";
                     if(_this.car_use == "Traviz 2")
                     gbcolor = "#A671AD";
+                    if(_this.car_use == "Traviz 3")
+                    gbcolor = "#1A17E8";
                     if(_this.car_use == "Toyota Rush")
                     gbcolor = "#F19DB4";
                     if(_this.car_use == "")
@@ -632,6 +634,8 @@ var service_feliix = new Vue({
                     gbcolor = "#009858";
                     if(_this.check_car_use == "Traviz 2")
                     gbcolor = "#A671AD";
+                    if(_this.check_car_use == "Traviz 3")
+                    gbcolor = "#1A17E8";
                     if(_this.check_car_use == "Toyota Rush")
                     gbcolor = "#F19DB4";
                     if(_this.check_car_use == "")
@@ -756,6 +760,8 @@ var service_feliix = new Vue({
                         gbcolor = "#009858";
                         if(_this.car_use == "Traviz 2")
                         gbcolor = "#A671AD";
+                        if(_this.car_use == "Traviz 3")
+                        gbcolor = "#1A17E8";
                         if(_this.car_use == "Toyota Rush")
                         gbcolor = "#F19DB4";
                         if(_this.car_use == "")
@@ -1290,6 +1296,8 @@ var service = new Vue({
                         gbcolor = "#009858";
                         if(_this.car_use == "Traviz 2")
                         gbcolor = "#A671AD";
+                        if(_this.car_use == "Traviz 3")
+                        gbcolor = "#1A17E8";
                         if(_this.car_use == "Toyota Rush")
                         gbcolor = "#F19DB4";
                         if(_this.car_use == "")
@@ -1406,6 +1414,8 @@ var service = new Vue({
                         gbcolor = "#009858";
                         if(_this.car_use == "Traviz 2")
                         gbcolor = "#A671AD";
+                        if(_this.car_use == "Traviz 3")
+                        gbcolor = "#1A17E8";
                         if(_this.car_use == "Toyota Rush")
                         gbcolor = "#F19DB4";
                         if(_this.car_use == "")
@@ -1651,6 +1661,8 @@ var service = new Vue({
                                     gbcolor = "#009858";
                                     if(response.data[i].check1[0].car_use == "Traviz 2")
                                     gbcolor = "#A671AD";
+                                    if(response.data[i].check1[0].car_use == "Traviz 3")
+                                    gbcolor = "#1A17E8";
                                     if(response.data[i].check1[0].car_use == "Toyota Rush")
                                     gbcolor = "#F19DB4";
                                     if(response.data[i].check1[0].car_use == "")
@@ -1670,6 +1682,8 @@ var service = new Vue({
                                     gbcolor = "#009858";
                                     if(response.data[i].car_use == "Traviz 2")
                                     gbcolor = "#A671AD";
+                                    if(response.data[i].car_use == "Traviz 3")
+                                    gbcolor = "#1A17E8";
                                     if(response.data[i].car_use == "Toyota Rush")
                                     gbcolor = "#F19DB4";
                                     if(response.data[i].car_use == "")
@@ -1779,6 +1793,8 @@ var service = new Vue({
                     gbcolor = "#009858";
                     if(_this.check_car_use == "Traviz 2")
                     gbcolor = "#A671AD";
+                    if(_this.check_car_use == "Traviz 3")
+                    gbcolor = "#1A17E8";
                     if(_this.check_car_use == "Toyota Rush")
                     gbcolor = "#F19DB4";
                     if(_this.check_car_use == "")
@@ -2130,6 +2146,8 @@ var service = new Vue({
                         gbcolor = "#009858";
                         if(_this.car_use == "Traviz 2")
                         gbcolor = "#A671AD";
+                        if(_this.car_use == "Traviz 3")
+                        gbcolor = "#1A17E8";
                         if(_this.car_use == "Toyota Rush")
                         gbcolor = "#F19DB4";
                         if(_this.car_use == "")
@@ -2284,6 +2302,8 @@ var service = new Vue({
                     gbcolor = "#009858";
                     if(_this.car_use == "Traviz 2")
                     gbcolor = "#A671AD";
+                    if(_this.car_use == "Traviz 3")
+                    gbcolor = "#1A17E8";
                     if(_this.car_use == "Toyota Rush")
                     gbcolor = "#F19DB4";
                     if(_this.car_use == "")
@@ -2460,6 +2480,8 @@ var service = new Vue({
                     gbcolor = "#009858";
                     if(_this.car_use == "Traviz 2")
                     gbcolor = "#A671AD";
+                    if(_this.car_use == "Traviz 3")
+                    gbcolor = "#1A17E8";
                     if(_this.car_use == "Toyota Rush")
                     gbcolor = "#F19DB4";
                     if(_this.car_use == "")
@@ -2565,12 +2587,14 @@ var service = new Vue({
             '<button type="button" role="button" tabindex="0" class="SwalBtn2 customSwalBtn">' + '”Request Review” and “Content of Request”' + '</button>' + 
             '<button type="button" role="button" tabindex="0" class="SwalBtn3 customSwalBtn">' + 'Cancel' + '</button>';
 
-            if(this.status == "0")
+            if(this.status == "0" || this.status == "1")
             {
-                buttons = "Which do you want to export?" +
-                "<br>" +
-                '<button type="button" role="button" tabindex="0" class="SwalBtn1 customSwalBtn">' + 'Only “Content of Request”' + '</button>' +
-                '<button type="button" role="button" tabindex="0" class="SwalBtn3 customSwalBtn">' + 'Cancel' + '</button>';
+                // buttons = "Which do you want to export?" +
+                // "<br>" +
+                // '<button type="button" role="button" tabindex="0" class="SwalBtn1 customSwalBtn">' + 'Only “Content of Request”' + '</button>' +
+                // '<button type="button" role="button" tabindex="0" class="SwalBtn3 customSwalBtn">' + 'Cancel' + '</button>';
+                service.export_service_full('');
+                return;
             }
 
             Swal.fire({
@@ -3510,6 +3534,8 @@ var app = new Vue({
                                 gbcolor = "#009858";
                                 if(response.data[i].check1[0].car_use == "Traviz 2")
                                 gbcolor = "#A671AD";
+                                if(response.data[i].check1[0].car_use == "Traviz 3")
+                                gbcolor = "#1A17E8";
                                 if(response.data[i].check1[0].car_use == "Toyota Rush")
                                 gbcolor = "#F19DB4";
                                 if(response.data[i].check1[0].car_use == "")
@@ -3529,6 +3555,8 @@ var app = new Vue({
                                 gbcolor = "#009858";
                                 if(response.data[i].car_use == "Traviz 2")
                                 gbcolor = "#A671AD";
+                                if(response.data[i].car_use == "Traviz 3")
+                                gbcolor = "#1A17E8";
                                 if(response.data[i].car_use == "Toyota Rush")
                                 gbcolor = "#F19DB4";
                                 if(response.data[i].car_use == "")
@@ -5446,12 +5474,14 @@ $(document).on("click", "#btn_export", function () {
     '<button type="button" role="button" tabindex="0" class="SwalBtn2_feliix customSwalBtn">' + '”Request Review” and “Content of Request”' + '</button>' + 
     '<button type="button" role="button" tabindex="0" class="SwalBtn3_feliix customSwalBtn">' + 'Cancel' + '</button>';
 
-    if(service_feliix.status == "0")
+    if(service_feliix.status == "0" || service_feliix.status == "1")
     {
-        buttons = "Which do you want to export?" +
-        "<br>" +
-        '<button type="button" role="button" tabindex="0" class="SwalBtn1_feliix customSwalBtn">' + 'Only “Content of Request”' + '</button>' +
-        '<button type="button" role="button" tabindex="0" class="SwalBtn3_feliix customSwalBtn">' + 'Cancel' + '</button>';
+        // buttons = "Which do you want to export?" +
+        // "<br>" +
+        // '<button type="button" role="button" tabindex="0" class="SwalBtn1_feliix customSwalBtn">' + 'Only “Content of Request”' + '</button>' +
+        // '<button type="button" role="button" tabindex="0" class="SwalBtn3_feliix customSwalBtn">' + 'Cancel' + '</button>';
+        service_feliix.export_service_full('');
+        return;
     }
 
     Swal.fire({
