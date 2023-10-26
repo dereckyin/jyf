@@ -1460,7 +1460,7 @@ try {
 
                             <tr v-for='(it, index) in items'>
                                 <td class="table__item">
-                                    <div class="agenda__text">
+                                    <div class="agenda__text" style="text-align: center;">
                                         {{ it.schedule }}
                                     </div>
                                 </td>
@@ -1479,14 +1479,14 @@ try {
                                         {{ it.purpose }}
                                     </div>
                                 </td>
-                                <td>
+                                <td class="table__item">
                                     <i class="fas fa-arrow-alt-circle-up" @click="set_up(index, it.id)"></i>
                                     <i class="fas fa-arrow-alt-circle-down" @click="set_down(index, it.id)"></i>
                                     <i class="fas fa-edit" @click="edit(it.id)"></i>
                                     <i class="fas fa-trash-alt" @click="del(it.id)"></i>
                                 </td>
                             </tr>
-
+ 
                         </table>
                     </div>
 
