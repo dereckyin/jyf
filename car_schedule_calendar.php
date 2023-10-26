@@ -1459,16 +1459,16 @@ try {
                             </tr>
 
                             <tr v-for='(it, index) in items'>
-                                <td>
+                                <td class="agenda__text">
                                     {{ it.schedule }}
                                 </td>
-                                <td>
+                                <td class="agenda__text">
                                     {{ it.company }}
                                 </td>
-                                <td>
+                                <td class="agenda__text">
                                     {{ it.address }}
                                 </td>
-                                <td>
+                                <td class="agenda__text">
                                     {{ it.purpose }}
                                 </td>
                                 <td>
