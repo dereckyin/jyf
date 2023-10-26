@@ -1459,17 +1459,25 @@ try {
                             </tr>
 
                             <tr v-for='(it, index) in items'>
-                                <td class="agenda__text">
-                                    {{ it.schedule }}
+                                <td class="table__item">
+                                    <div class="agenda__text">
+                                        {{ it.schedule }}
+                                    </div>
                                 </td>
-                                <td class="agenda__text">
-                                    {{ it.company }}
+                                <td class="table__item">
+                                    <div class="agenda__text">
+                                        {{ it.company }}
+                                    </div>
                                 </td>
-                                <td class="agenda__text">
-                                    {{ it.address }}
+                                <td class="table__item">
+                                    <div class="agenda__text">
+                                        {{ it.address }}
+                                    </div>
                                 </td>
-                                <td class="agenda__text">
-                                    {{ it.purpose }}
+                                <td class="table__item">
+                                    <div class="agenda__text">
+                                        {{ it.purpose }}
+                                    </div>
                                 </td>
                                 <td>
                                     <i class="fas fa-arrow-alt-circle-up" @click="set_up(index, it.id)"></i>
