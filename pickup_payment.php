@@ -1041,6 +1041,9 @@ header( 'location:index.php' );
                                 Remark
                             </li>
                             <li>
+                                Small Receipt Number
+                            </li>
+                            <li>
                                 <cht>提貨日期</cht>
                                 Date Pickup
                             </li>
@@ -1062,6 +1065,7 @@ header( 'location:index.php' );
                             <li>{{ item.quantity }}</li>
                             <li>{{ item.supplier }}</li>
                             <li>{{ item.remark }}</li>
+                            <li><input type="text" v-model="item.receipt_number"></li>
                             <li><input type="date" v-model="item.org_pick_date"></li>
                             <li><input type="text" v-model="item.pick_person"></li>
                             <li><input type="text" v-model="item.pick_note"></li>
@@ -1129,6 +1133,9 @@ header( 'location:index.php' );
                                 Remark
                             </li>
                             <li>
+                                Small Receipt Number
+                            </li>
+                            <li>
                                 <cht>提貨日期</cht>
                                 Date Pickup
                             </li>
@@ -1140,6 +1147,9 @@ header( 'location:index.php' );
                                 <cht>補充說明</cht>
                                 Notes
                             </li>
+                            <li>
+                                Checker
+                            </li>
                         </ul>
 
                         <ul v-for="(item, j) in record">
@@ -1150,9 +1160,11 @@ header( 'location:index.php' );
                             <li>{{ item.quantity }}</li>
                             <li>{{ item.supplier }}</li>
                             <li>{{ item.remark }}</li>
+                            <li>{{ item.receipt_number }}</li>
                             <li>{{ item.org_pick_date }}</li>
                             <li>{{ item.pick_person }}</li>
                             <li>{{ item.pick_note }}</li>
+                            <li>{{ item.checker }}</li>
                         </ul>
 
                     </div>
@@ -1161,6 +1173,10 @@ header( 'location:index.php' );
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-warning">Cancel
                         <cht>取消</cht>
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary"
+                            @click="checker_confirm">Check Correct
+                        <cht>確認正確</cht>
                     </button>
                 </div>
 

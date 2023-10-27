@@ -68,6 +68,9 @@ $user_id = $decoded->data->id;
             $pick_date = ($detail_array[$i]['org_pick_date'] == '') ? "" : $detail_array[$i]['org_pick_date'];
             $pick_note = ($detail_array[$i]['pick_note'] == '') ? "" : $detail_array[$i]['pick_note'];
             $pick_person = ($detail_array[$i]['pick_person'] == '') ? "" : $detail_array[$i]['pick_person'];
+
+            $receipt_number = ($detail_array[$i]['receipt_number'] == '') ? "" : $detail_array[$i]['receipt_number'];
+            $checker = ($detail_array[$i]['checker'] == '') ? "" : $detail_array[$i]['checker'];
             
             $query = "UPDATE receive_record  
             SET
@@ -76,7 +79,9 @@ $user_id = $decoded->data->id;
             pick_person = '" . $pick_person . "',
             pick_user = '" . $user . "',
             pick_time = now(),
-            real_pick_time = '" . str_replace('-', '/', $pick_date) . "'
+            real_pick_time = '" . str_replace('-', '/', $pick_date) . "',
+            receipt_number = '" . $receipt_number . "',
+            checker = '" . $checker . "'
             WHERE id = " . $rid;
 
             $stmt = $conn->prepare($query);

@@ -463,7 +463,7 @@ function GetExportRecord($id, $db){
 }
 
 function GetMeasureDetailRecord($id, $db){
-    $query = "SELECT rd.detail_id, rc.id, rc.date_receive, rc.customer, rc.description, rc.quantity, rc.supplier, rc.remark, rd.cust cust_id, case when coalesce(cp.customer, '')  <> '' then coalesce(cp.customer, '') when (SELECT coalesce(customer, '') FROM measure_detail WHERE id = " . $id . ") <> '' then (SELECT coalesce(customer, '') FROM measure_detail WHERE id =  " . $id . ") end cust, pick_date, pick_person, pick_note, pick_time, pick_user, taiwan_pay
+    $query = "SELECT rd.detail_id, rc.id, rc.date_receive, rc.customer, rc.description, rc.quantity, rc.supplier, rc.remark, rd.cust cust_id, case when coalesce(cp.customer, '')  <> '' then coalesce(cp.customer, '') when (SELECT coalesce(customer, '') FROM measure_detail WHERE id = " . $id . ") <> '' then (SELECT coalesce(customer, '') FROM measure_detail WHERE id =  " . $id . ") end cust, pick_date, pick_person, pick_note, pick_time, pick_user, taiwan_pay, receipt_number, checker
                 FROM measure_record_detail rd
                     left JOIN receive_record rc ON
                     rd.record_id = rc.id
@@ -497,6 +497,8 @@ function GetMeasureDetailRecord($id, $db){
         $pick_time = $row['pick_time'];
         $pick_user = $row['pick_user'];
         $taiwan_pay = $row['taiwan_pay'];
+        $receipt_number = $row['receipt_number'];
+        $checker = $row['checker'];
 
         $merged_results[] = array(
             "id" => $id,
@@ -516,7 +518,8 @@ function GetMeasureDetailRecord($id, $db){
             "pick_user" => $pick_user,
             "measure_id" => $measure_id,
             "taiwan_pay" => $taiwan_pay,
-          
+            "receipt_number" => $receipt_number,
+            "checker" => $checker,
         );
     }
 

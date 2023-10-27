@@ -425,6 +425,11 @@ var app = new Vue({
         this.getMeasures();
       },
 
+      checker_confirm: function()
+      {
+
+      },
+
       seperate_record: function(){
 
         var selected_cnt = 0;
