@@ -1169,7 +1169,7 @@ var app = new Vue({
 
         deposit_remark: function(row) {
           if(row.type != 2)
-            return;
+            row.remark = '';
           else
             row.remark = 'Deposit to Feliix Inc Account';
         },
