@@ -80,8 +80,7 @@ $user_id = $decoded->data->id;
             pick_user = '" . $user . "',
             pick_time = now(),
             real_pick_time = '" . str_replace('-', '/', $pick_date) . "',
-            receipt_number = '" . $receipt_number . "',
-            checker = '" . $checker . "'
+            receipt_number = '" . $receipt_number . "'
             WHERE id = " . $rid;
 
             $stmt = $conn->prepare($query);

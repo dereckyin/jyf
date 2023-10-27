@@ -530,7 +530,7 @@ header( 'location:index.php' );
                                 <?php
 }
 ?>
-                                <button @click="item_record(item.record)" data-toggle="modal"
+                                <button @click="item_record_checker(item.record, item.checked)" data-toggle="modal"
                                         data-target="#record_modal_detail" v-if="item.pickup_status != ''">Detail
                                 </button>
                             </td>
@@ -1174,7 +1174,7 @@ header( 'location:index.php' );
                     <button type="button" data-dismiss="modal" class="btn btn-warning">Cancel
                         <cht>取消</cht>
                     </button>
-                    <button type="button" data-dismiss="modal" class="btn btn-secondary"
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary" v-if="checker == '0'"
                             @click="checker_confirm">Check Correct
                         <cht>確認正確</cht>
                     </button>
@@ -1233,7 +1233,7 @@ header( 'location:index.php' );
 
                         <ul v-for="(item, j) in payment">
                             <li>
-                                <select v-model="item.type">
+                                <select v-model="item.type" @change="deposit_remark(item)">
                                     <option value="1">Cash 現金</option>
                                     <option value="2">Deposit 存款</option>
                                     <option value="3">Check 支票</option>

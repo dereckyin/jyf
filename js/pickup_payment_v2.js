@@ -38,6 +38,8 @@ let mainState = {
     payment: [],
     payment_record: [],
 
+    checker: "",
+
     contactor: [],
 
     perPage_loading:0,
@@ -444,7 +446,7 @@ var app = new Vue({
         try {
           let res = await axios({
             method: 'post',
-            url: 'api/pickup_set_record.php',
+            url: 'api/pickup_set_record_checker.php',
             data: form_data,
             headers: {
               "Content-Type": "multipart/form-data",
@@ -1155,6 +1157,13 @@ var app = new Vue({
           }
         },
 
+        deposit_remark: function(row) {
+          if(row.type != 2)
+            return;
+          else
+            row.remark = 'Deposit to Feliix Inc Account';
+        },
+
         getRecords: function(keyword) {
       
             axios.get('api/pickup_get_measure_ph.php')
@@ -1170,7 +1179,12 @@ var app = new Vue({
 
         item_record: function(item) {
           this.record = this.shallowCopy(item);
+          
+        },
 
+        item_record_checker: function(item, checker) {
+          this.record = this.shallowCopy(item);
+          this.checker = checker;
         },
 
         item_encode: function(item) {

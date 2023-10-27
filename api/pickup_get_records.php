@@ -264,10 +264,16 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
         $record = GetMeasureDetailRecord($row['id'], $db);
         // if andy record with taiwan_pay = 1 then ture
         $is_taiwan_pay = "0";
+
+        $is_checker = 0;
+
         for($i = 0; $i < count($record); $i++){
             if($record[$i]['taiwan_pay'] == 1){
                 $is_taiwan_pay = "1";
             }
+
+            if($record[$i]['checker'] != "")
+                $is_checker = 1;
         }
 
         $record_cust = GetMeasurePersonRecord($row['id'], $db);
@@ -307,6 +313,7 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
             "charge" => $charge,
            "record" => $record,
            "taiwan_pay" => $is_taiwan_pay,
+           "checked" => $is_checker,
            "encode" => $encode,
            "encode_status" => $encode_status,
            "pickup_status" => $pickup_status,
