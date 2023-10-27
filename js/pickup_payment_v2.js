@@ -1154,7 +1154,17 @@ var app = new Vue({
           {
             row.remark = '';
             row.change = '';
+
+            if(row.type != 2)
+            {
+              row.remark = '';
+              row.change = '';
+            }
+            else
+              row.remark = 'Deposit to Feliix Inc Account';
           }
+
+          
         },
 
         deposit_remark: function(row) {
