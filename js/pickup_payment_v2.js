@@ -425,9 +425,40 @@ var app = new Vue({
         this.getMeasures();
       },
 
-      checker_confirm: function()
+      checker_confirm: async function()
       {
+        let _this = this;
 
+        var form_data = new FormData();
+  
+        form_data.append('record', JSON.stringify(this.record));
+         form_data.append('encode_status', '');
+ 
+        let token = localStorage.getItem("accessToken");
+
+        if(this.submit == true)
+          return;
+
+        this.submit = true;
+  
+        try {
+          let res = await axios({
+            method: 'post',
+            url: 'api/pickup_set_record.php',
+            data: form_data,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+        });
+          
+        } catch (err) {
+          console.log(err)
+          alert('error')
+        }
+
+        this.submit = false;
+
+        this.getMeasures();
       },
 
       seperate_record: function(){
