@@ -38,6 +38,8 @@ let mainState = {
     payment: [],
     payment_record: [],
 
+    checker: "",
+
     contactor: [],
 
     perPage_loading:0,
@@ -422,6 +424,42 @@ var app = new Vue({
       {
         this.measure_to_edit = [];
         $('#edit_record_modal').modal('hide');
+        this.getMeasures();
+      },
+
+      checker_confirm: async function()
+      {
+        let _this = this;
+
+        var form_data = new FormData();
+  
+        form_data.append('record', JSON.stringify(this.record));
+         form_data.append('encode_status', '');
+ 
+        let token = localStorage.getItem("accessToken");
+
+        if(this.submit == true)
+          return;
+
+        this.submit = true;
+  
+        try {
+          let res = await axios({
+            method: 'post',
+            url: 'api/pickup_set_record_checker.php',
+            data: form_data,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+        });
+          
+        } catch (err) {
+          console.log(err)
+          alert('error')
+        }
+
+        this.submit = false;
+
         this.getMeasures();
       },
 
@@ -1116,7 +1154,24 @@ var app = new Vue({
           {
             row.remark = '';
             row.change = '';
+
+            if(row.type != 2)
+            {
+              row.remark = '';
+              row.change = '';
+            }
+            else
+              row.remark = 'Deposit to Feliix Inc Account';
           }
+
+          
+        },
+
+        deposit_remark: function(row) {
+          if(row.type != 2)
+            row.remark = '';
+          else
+            row.remark = 'Deposit to Feliix Inc Account';
         },
 
         getRecords: function(keyword) {
@@ -1134,7 +1189,12 @@ var app = new Vue({
 
         item_record: function(item) {
           this.record = this.shallowCopy(item);
+          
+        },
 
+        item_record_checker: function(item, checker) {
+          this.record = this.shallowCopy(item);
+          this.checker = checker;
         },
 
         item_encode: function(item) {
