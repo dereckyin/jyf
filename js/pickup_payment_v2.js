@@ -1755,7 +1755,8 @@ var app = new Vue({
 
             for(i=0; i<favorite.length; i++)
             {
-                if(this.IsPicked(favorite[i]))
+              let is_picked = await this.IsPicked(this.measure_id);
+                if(is_picked)
                 {
                     Swal.fire({
                         title: 'Warning',
