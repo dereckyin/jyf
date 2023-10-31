@@ -247,7 +247,7 @@ var app = new Vue({
       
           },
 
-        save_measure() {
+        async save_measure() {
             let _this = this;
             if (!this.validateMeasure()) {
                 Swal.fire({
@@ -258,6 +258,19 @@ var app = new Vue({
           
                   return;
             }
+
+            let is_picked = await this.IsPicked(this.measure_id);
+            if(is_picked)
+            {
+                Swal.fire({
+                    title: 'Warning',
+                    text: 'The selected measurement record already generated its pickup/payment records, so this measurement record is not allowed to edit anymore. Please also refresh the webpage.',
+                    type: 'warning',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+            
 
             if(this.submit == true)
                 return;
@@ -894,15 +907,55 @@ var app = new Vue({
 
         },
 
+        async IsPicked(id)  {
+            let _this = this;
+      
+            const params = {
+                id: id,
+            
+            };
+      
+            let token = localStorage.getItem("accessToken");
+      
+            try {
+              let res = await axios.get("api/measure_is_picked.php", {
+                params,
+                headers: { Authorization: `Bearer ${token}` },
+              });
+              
+                if(res.data.length > 0)
+                    return true;
+                else
+                    return false;
+
+            } catch (err) {
+              console.log(err)
+              alert('error')
+            }
+        },
+
         async showReceiveRecords () {
             
             var favorite = [];
             var favorite_container = [];
-         
+
+            
             for (i = 0; i < this.loading_records.length; i++) 
             {
               if(this.loading_records[i].is_checked == 1)
               {
+                let is_picked = await this.IsPicked(this.loading_records[i].id);
+                if(is_picked)
+                {
+                    Swal.fire({
+                        title: 'Warning',
+                        text: 'The selected measurement record already generated its pickup/payment records, so this measurement record is not allowed to edit anymore. Please also refresh the webpage.',
+                        type: 'warning',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+                
                 favorite.push(this.loading_records[i].id);
                 favorite_container.push(this.loading_records[i].container_number);
                 this.measure_container = this.loading_records[i].container;
@@ -1046,7 +1099,7 @@ var app = new Vue({
             }
         },
 
-        save_measurement: function() {
+        save_measurement: async function() {
             if (this.validateMeasure()) {
 
                 var form_Data = new FormData();
@@ -1074,6 +1127,21 @@ var app = new Vue({
                 if(favorite.length < 1 || customer.length < 1)
                 {
                     return;
+                }
+
+                for(i=0; i<favorite.length; i++)
+                {
+                    let is_picked = await this.IsPicked(favorite[i]);
+                    if(is_picked)
+                    {
+                        Swal.fire({
+                            title: 'Warning',
+                            text: 'The selected measurement record already generated its pickup/payment records, so this measurement record is not allowed to edit anymore. Please also refresh the webpage.',
+                            type: 'warning',
+                            confirmButtonText: 'OK'
+                        });
+                        return;
+                    }
                 }
 
                 let _this = this;

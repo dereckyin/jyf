@@ -1286,7 +1286,7 @@ ALTER TABLE car_calendar_main ADD COLUMN `requestor` varchar(1024) COLLATE utf8m
 
 -- 20231027
 ALTER TABLE receive_record
-ADD COLUMN `receipt_number` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ADD COLUMN `receipt_number` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
 
 ALTER TABLE receive_record
 ADD COLUMN `checker` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';

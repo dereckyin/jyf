@@ -1702,6 +1702,33 @@ var app = new Vue({
           this.getMeasures();
         },
 
+        async IsPicked(id)  {
+          let _this = this;
+    
+          const params = {
+              id: id,
+          
+          };
+    
+          let token = localStorage.getItem("accessToken");
+    
+          try {
+            let res = await axios.get("api/measure_is_picked.php", {
+              params,
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            
+              if(res.data.length > 0)
+                  return true;
+              else
+                  return false;
+
+          } catch (err) {
+            console.log(err)
+            alert('error')
+          }
+      },
+
         pickup: async function(keyword) {
           var favorite = [];
 
@@ -1726,7 +1753,19 @@ var app = new Vue({
             }
               
 
-              
+            for(i=0; i<favorite.length; i++)
+            {
+                if(this.IsPicked(favorite[i]))
+                {
+                    Swal.fire({
+                        title: 'Warning',
+                        text: 'The selected measurement record already generated its pickup/payment records, so this measurement record is not allowed to generate again. Please also refresh the webpage.',
+                        type: 'warning',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+            }
 
               this.submit = true;
 
