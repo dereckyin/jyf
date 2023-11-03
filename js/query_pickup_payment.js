@@ -262,7 +262,8 @@ var app = new Vue({
 
       query: function() {
 
-          
+        let _this = this;
+
         var date_start = window.document.getElementById('date_start').value;
         var date_end = window.document.getElementById('date_end').value;
         var customer = window.document.getElementById('customer').value;
@@ -281,6 +282,8 @@ var app = new Vue({
 
         //     return;
         // }
+
+        this.is_submit = true;
         
         var form_Data = new FormData();
 
@@ -332,7 +335,7 @@ var app = new Vue({
                 console.log(response)
             })
             .finally(function() {
-              // this.is_submit = false;
+              _this.is_submit = false;
               });
 
     },

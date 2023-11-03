@@ -369,7 +369,7 @@ header( 'location:index.php' );
                 </ul>
             </div>
 
-            <div class="btnbox"><a class="btn" @click="query()" style="color:white;">查詢
+            <div class="btnbox"><a class="btn" @click="query()" :style="[is_submit ? { 'color': 'yellow' } : {'color': 'white' }]">查詢
                 <eng>Query</eng>
             </a><a class="btn orange" @click="print()" style="color:white; display: none;">匯出
                 <eng>Print</eng>
