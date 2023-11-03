@@ -47,6 +47,10 @@ if(!empty($sold_to)) {
     $solds = explode("||", $sold_to);
 }
 
+// trim $search string
+$search = ltrim($search);
+$search = rtrim($search);
+
 if($jwt){
  
     try {
