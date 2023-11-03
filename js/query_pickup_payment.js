@@ -283,6 +283,9 @@ var app = new Vue({
         //     return;
         // }
 
+        if(this.is_submit == true)
+          return;
+
         this.is_submit = true;
         
         var form_Data = new FormData();
