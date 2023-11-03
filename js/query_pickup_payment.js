@@ -107,6 +107,7 @@ let mainState = {
     search: "",
 
     payment_measure : [],
+    is_submit: false,
 };
 
 var app = new Vue({
@@ -260,11 +261,32 @@ var app = new Vue({
     methods: {
 
       query: function() {
+
+        let _this = this;
+
         var date_start = window.document.getElementById('date_start').value;
         var date_end = window.document.getElementById('date_end').value;
         var customer = window.document.getElementById('customer').value;
         var supplier = window.document.getElementById('supplier').value;
         var goods_num = window.document.getElementById('goods_num').value;
+
+        // if all empty the return?
+        // if(date_start == "" && date_end == "" && customer == "" && supplier == "" && goods_num == "")
+        // { 
+        //     Swal.fire({
+        //     title: 'Warning',
+        //     text: 'No Result Found!!',
+        //     type: 'warning',
+        //     confirmButtonText: 'OK'
+        //     });
+
+        //     return;
+        // }
+
+        if(this.is_submit == true)
+          return;
+
+        this.is_submit = true;
         
         var form_Data = new FormData();
 
@@ -273,6 +295,7 @@ var app = new Vue({
         form_Data.append('container_number', customer)
         form_Data.append('sold_to', supplier)
         form_Data.append('dr', goods_num)
+
 
         const token = sessionStorage.getItem('token');
 
@@ -288,8 +311,18 @@ var app = new Vue({
             })
             .then(function(response) {
                 //handle success
-                console.log(response.data);
+                //console.log(response.data);
                 app.receive_records = response.data;
+
+                if(response.data.length == 0)
+                { 
+                  Swal.fire({
+                  title: 'Warning',
+                  text: 'No Result Found!!',
+                  type: 'warning',
+                  confirmButtonText: 'OK'
+              });
+              }
 
                 app.c_filter = '';
                 app.s_filter = '';
@@ -303,7 +336,10 @@ var app = new Vue({
             .catch(function(response) {
                 //handle error
                 console.log(response)
-            });
+            })
+            .finally(function() {
+              _this.is_submit = false;
+              });
 
     },
 

@@ -40,10 +40,16 @@ if(!empty($container_number)) {
     $containers = explode("||", $container_number);
 }
 
+$solds = [];
+
 if(!empty($sold_to)) {
     $sold_to = rtrim($sold_to, '||');
     $solds = explode("||", $sold_to);
 }
+
+// trim $search string
+$search = ltrim($search);
+$search = rtrim($search);
 
 if($jwt){
  
@@ -52,13 +58,57 @@ if($jwt){
         $decoded = JWT::decode($jwt, $key, array('HS256'));
 
         // get data with group_id first
-        $query = "
-            SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
+        $query = "SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
                 FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
             WHERE  group_id <> 0 and pick_group.status = 2 and group_id IN (
             
-                select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-                WHERE group_id <> 0 and pick_group.status = 2 ";
+                select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id ";
+                
+        if($date_end != '' && $date_start != '')
+        {
+            $query .= " left join measure_ph on measure_detail.measure_id = measure_ph.id ";
+        }
+
+        if($container_number != '')
+        {
+            $query .= " left join loading on loading.measure_num = measure_detail.measure_id ";
+        }
+
+        if(count($solds) > 0)
+        {
+            $query .= " left join measure_record_detail on measure_record_detail.detail_id = measure_detail.id ";
+            $query .= " left join receive_record on receive_record.id = measure_record_detail.record_id ";
+            $query .= " left join contactor_ph on contactor_ph.id = measure_record_detail.cust ";
+        }
+
+        $query .= " WHERE group_id <> 0 and pick_group.status = 2 "; 
+
+        if($search != '')
+        {
+            $query .= " and encode = '" . $search . "' ";
+        }
+
+        if($date_end != '' && $date_start != '')
+        {
+            $query .= " and measure_ph.date_arrive <= '" . $date_end . "' and measure_ph.date_arrive >= '" . $date_start . "' ";
+        }
+
+        if($container_number != '')
+        {
+            $query .= " and container_number in ('" . implode("','", $containers) . "') ";
+        }
+
+        if(count($solds) > 0)
+        {
+            $query .= " and ( contactor_ph.customer in ('" . implode("','", $solds) . "')  ";
+
+            foreach($solds as $sold)
+            {
+                $query .= " or measure_detail.customer like '%" . $sold . "%' ";
+            }
+
+            $query .= " ) ";
+        }   
 
         $query .= ") order by group_id desc";
 
@@ -124,10 +174,56 @@ if($jwt){
         }
 
         // get data without group_id 
-        $query = "
-            SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
+        $query = "SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
                 FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-            WHERE  group_id = 0 and pick_group.status = 2 ";
+            ";
+
+            if($date_end != '' && $date_start != '')
+        {
+            $query .= " left join measure_ph on measure_detail.measure_id = measure_ph.id ";
+        }
+
+        if($container_number != '')
+        {
+            $query .= " left join loading on loading.measure_num = measure_detail.measure_id ";
+        }
+
+        if(count($solds) > 0)
+        {
+            $query .= " left join measure_record_detail on measure_record_detail.detail_id = measure_detail.id ";
+            $query .= " left join receive_record on receive_record.id = measure_record_detail.record_id ";
+            $query .= " left join contactor_ph on contactor_ph.id = measure_record_detail.cust ";
+        }
+
+        $query .= " WHERE group_id = 0 and pick_group.status = 2 "; 
+
+        if($search != '')
+        {
+            $query .= " and encode = '" . $search . "' ";
+        }
+
+        if($date_end != '' && $date_start != '')
+        {
+            $query .= " and measure_ph.date_arrive <= '" . $date_end . "' and measure_ph.date_arrive >= '" . $date_start . "' ";
+        }
+
+        if($container_number != '')
+        {
+            $query .= " and container_number in ('" . implode("','", $containers) . "') ";
+        }
+
+        if(count($solds) > 0)
+        {
+            $query .= " and ( contactor_ph.customer in ('" . implode("','", $solds) . "')  ";
+
+            foreach($solds as $sold)
+            {
+                $query .= " or measure_detail.customer like '%" . $sold . "%' ";
+            }
+
+            $query .= " ) ";
+        }   
+
 
         $query .= " order by group_id desc";
 
@@ -154,7 +250,7 @@ if($jwt){
                 "measure_detail_id" => $measure_detail_id,
             );
         }
-
+/*
         if($date_end != '' && $date_start != '')
         {
             $merged_results = array_filter($merged_results, function($a) use ($date_start, $date_end) {
@@ -172,7 +268,7 @@ if($jwt){
                 return $in_value;
             });
         }
-/*
+
         if($date_start != '')
         {
             $merged_results = array_filter($merged_results, function($a) use ($date_start) {
@@ -190,7 +286,7 @@ if($jwt){
                 return $in_value;
             });
         }
-*/
+
         if(isset($solds))
         {
             $merged_results = array_filter($merged_results, function($a) use ($solds) {
@@ -259,6 +355,8 @@ if($jwt){
             });
         
         }
+
+        */
 
         // response in json format
         echo json_encode($merged_results);
