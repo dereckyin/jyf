@@ -272,7 +272,7 @@ header( 'location:index.php' );
             font-size: 13px;
         }
 
-        #panelchecked thead:first-of-type tr th:nth-last-of-type(2), #panelchecked thead:first-of-type tr th:nth-last-of-type(3) {
+        #panelchecked thead:first-of-type tr th:nth-last-of-type(1), #panelchecked thead:first-of-type tr th:nth-last-of-type(2) {
             background-color: rgba(250, 250, 210, 1);
         }
 
