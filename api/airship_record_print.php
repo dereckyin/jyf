@@ -140,8 +140,10 @@ if($date_type == "f")
             }
         }
 
-        // order 
-        $query = $query . " order by ss.date_receive  ";
+        if($date_type == "f")
+            $query = $query . " order by ss.flight_date  ";
+        else
+            $query = $query . " order by ss.date_receive  ";
 
         if (!empty($_POST['size'])) {
             $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);

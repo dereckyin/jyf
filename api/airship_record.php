@@ -180,6 +180,10 @@ if($date_type == "f")
             // order by
             $query = $query . " order by ss.sn, ss.date_receive  ";
         }
+        else if($date_type == "f")
+        {
+            $query = $query . " order by ss.flight_date  ";
+        }
         else
         {
             // order by
