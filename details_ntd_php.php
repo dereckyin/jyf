@@ -280,15 +280,15 @@ header( 'location:index.php' );
             min-width: 170px;
         }
 
-        #panelchecked thead tr th:nth-of-type(9), #panelchecked thead tr th:nth-of-type(13) {
+        #panelchecked thead tr th:nth-of-type(10), #panelchecked thead tr th:nth-of-type(14) {
             min-width: 260px;
         }
 
-        #panelchecked thead tr th:nth-of-type(3), #panelchecked thead tr th:nth-of-type(6), #panelchecked thead tr th:nth-of-type(8), #panelchecked thead tr th:nth-of-type(10), #panelchecked thead tr th:nth-of-type(12) {
+        #panelchecked thead tr th:nth-of-type(4), #panelchecked thead tr th:nth-of-type(7), #panelchecked thead tr th:nth-of-type(9), #panelchecked thead tr th:nth-of-type(11), #panelchecked thead tr th:nth-of-type(13) {
             min-width: 140px;
         }
 
-        #panelchecked thead tr th:nth-last-of-type(1) {
+        #panelchecked thead tr th:nth-of-type(1) {
             min-width: 100px;
         }
 
@@ -300,14 +300,14 @@ header( 'location:index.php' );
             height: 30px;
         }
 
-        #panelchecked tbody tr td:nth-last-of-type(3) > input[type='date'] {
+        #panelchecked tbody tr td:nth-last-of-type(2) > input[type='date'] {
             width: 160px;
             height: 32.8px;
             border-radius: 5px;
             border: 1px solid rgb(153, 153, 153);
         }
 
-        #panelchecked tbody tr td:nth-last-of-type(2) > input[type='text'] {
+        #panelchecked tbody tr td:nth-last-of-type(1) > input[type='text'] {
             width: 200px;
             height: 32.8px;
             border-radius: 5px;
@@ -719,6 +719,10 @@ header( 'location:index.php' );
                 <thead class="thead-light">
 
                 <tr>
+                    <th class="text-nowrap">
+                        <cht>功能</cht>
+                        Actions
+                    </th>
 
                     <th class="text-nowrap">
                         <cht>客戶名</cht>
@@ -794,11 +798,6 @@ header( 'location:index.php' );
                         <cht>廠商名稱</cht>
                         Payee
                     </th>
-
-                    <th class="text-nowrap">
-                        <cht>功能</cht>
-                        Actions
-                    </th>
                 </tr>
 
                 </thead>
@@ -807,6 +806,38 @@ header( 'location:index.php' );
 
                     <template v-for="item in items">
                         <tr :class="[(item.status == '-1' ? 'deleted' : '')]">
+                            <td :rowspan="item.details.length" class="text-nowrap" v-show="item.status !== '-1'">
+
+                            <?php
+                                if($decoded->data->status_1 == "1")
+                                {
+                            ?>
+
+                                <button v-if="item.is_edited == 1" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                                        aria-expanded="true" aria-controls="collapseOne" v-on:click="edit(item)"><i
+                                        class="fas fa-edit"></i>
+                                </button>
+
+                                <button v-if="item.is_edited == 1" v-on:click="deleteRecord(item.id)"><i
+                                        class="fas fa-times"></i>
+                                </button>
+                            <?php
+                                }
+                            ?>
+
+                            <?php
+                                if($decoded->data->status_1 != "1")
+                                {
+                            ?>
+                                <button v-show="item.is_edited == 1" @click="editRow(item)">修改</button>
+                                <button v-show="item.is_edited == 0" @click="confirmRow(item)">確認</button>
+                                <button v-show="item.is_edited == 0" @click="cancelRow(item)">取消</button>
+                            <?php
+                                }
+                            ?>
+
+                            </td>
+
                             <td :rowspan="item.details.length">{{ item.client_name }}</td>
                             <td :rowspan="item.details.length">{{ item.payee_name }}</td>
                             <td :rowspan="item.details.length">{{ item.amount }}</td>
@@ -848,38 +879,8 @@ header( 'location:index.php' );
                             }
                             ?>
                             </td>
-                            <td :rowspan="item.details.length" class="text-nowrap" v-show="item.status !== '-1'">
-                            
-                            <?php
-                                if($decoded->data->status_1 == "1")
-                                {
-                            ?>
-                            
-                                <button v-if="item.is_edited == 1" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                                        aria-expanded="true" aria-controls="collapseOne" v-on:click="edit(item)"><i
-                                        class="fas fa-edit"></i>
-                                </button>
-
-                                <button v-if="item.is_edited == 1" v-on:click="deleteRecord(item.id)"><i
-                                        class="fas fa-times"></i>
-                                </button>
-                            <?php
-                                }
-                            ?>
-
-                            <?php
-                                if($decoded->data->status_1 != "1")
-                                {
-                            ?>
-                                <button v-show="item.is_edited == 1" @click="editRow(item)">修改</button>
-                                <button v-show="item.is_edited == 0" @click="confirmRow(item)">確認</button>
-                                <button v-show="item.is_edited == 0" @click="cancelRow(item)">取消</button>
-                            <?php
-                                }
-                            ?>
-
-                            </td>
                         </tr>
+
 
                         <tr v-if="index !== 0" v-for="(it, index) in item.details" :class="[(item.status == '-1' ? 'deleted' : '')]">
                             <td v-if="index !== 0">{{ it.receive_date }}</td>

@@ -144,6 +144,27 @@ if($date_type == "p")
     }
 }
 
+if($date_type == "f")
+{
+    if($space == "s")
+    {
+        $query = $query . " and ss.flight_date = '' ";
+        $query_cnt = $query_cnt . " and ss.flight_date >= '' ";
+    }
+    else
+    {
+        if($start_date!='') {
+            $query = $query . " and ss.flight_date >= '$start_date' ";
+            $query_cnt = $query_cnt . " and ss.flight_date >= '$start_date' ";
+        }
+
+        if($end_date!='') {
+            $query = $query . " and ss.flight_date <= '$end_date" . "' ";
+            $query_cnt = $query_cnt . " and ss.flight_date <= '$end_date" . "' ";
+        }
+    }
+}
+
 
 
         if (!empty($_GET['page'])) {
