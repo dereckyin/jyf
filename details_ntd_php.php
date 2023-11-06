@@ -806,7 +806,7 @@ header( 'location:index.php' );
 
                     <template v-for="item in items">
                         <tr :class="[(item.status == '-1' ? 'deleted' : '')]">
-                            <td :rowspan="item.details.length" class="text-nowrap" v-show="item.status !== '-1'">
+                            <td :rowspan="item.details.length" class="text-nowrap" v-if="item.status !== '-1'">
 
                             <?php
                                 if($decoded->data->status_1 == "1")
@@ -837,6 +837,8 @@ header( 'location:index.php' );
                             ?>
 
                             </td>
+
+                            <td :rowspan="item.details.length" class="text-nowrap" v-if="item.status == '-1'"></td>
 
                             <td :rowspan="item.details.length">{{ item.client_name }}</td>
                             <td :rowspan="item.details.length">{{ item.payee_name }}</td>

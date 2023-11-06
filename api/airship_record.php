@@ -174,22 +174,21 @@ if($date_type == "f")
             }
         }
 
-
+        $ord = " order by ss.date_receive ";
         if($date_type == "s")
-        {
-            // order by
-            $query = $query . " order by ss.sn, ss.date_receive  ";
-        }
-        else if($date_type == "f")
-        {
-            $query = $query . " order by ss.flight_date  ";
-        }
-        else
-        {
-            // order by
-            $query = $query . " order by  ss.date_receive  ";
-        }
+            $ord = " order by ss.sn, ss.date_receive  ";
         
+        if($date_type == "f")
+            $ord = " order by ss.flight_date  ";
+        
+        if($date_type == "p")
+            $ord = " order by ss.pay_date  ";
+        
+        if($date_type == "r")
+            $ord = " order by ss.date_receive  ";
+
+        $query = $query . $ord;
+    
 
         if (!empty($_GET['size'])) {
             $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);
