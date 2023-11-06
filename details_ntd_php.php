@@ -948,14 +948,14 @@ header( 'location:index.php' );
                 <tfoot class="thead-light">
 
                 <tr>
-                    <th colspan="2">Total</th>
+                    <th colspan="3">Total</th>
                     <th style="text-align: right;">{{ amt_tw !== undefined ? Number(amt_tw).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</th>
                     <th colspan="2"></th>
                     <th style="text-align: right;">{{ amt_php !== undefined ? Number(amt_php).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</th>
                     <th colspan="4"></th>
                     <th style="text-align: right;">{{ amt_total !== undefined ? Number(amt_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</th>
                     <th style="text-align: right;">{{ amt_over !== undefined ? Number(amt_over).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</th>
-                    <th colspan="4"></th>
+                    <th colspan="3"></th>
                 </tr>
 
                 </tfoot>
