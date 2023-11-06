@@ -1157,6 +1157,7 @@ header( 'location:index.php' );
                     <option value="">抵達客人住址時間 Time Delivery Arrived</option>
                     <option value="r">收件日期 Date Received</option>
                     <option value="p">付款日期 Date Paid</option>
+                    <option value="f">班機日期 Flight Date</option>
                     <option value="s">編號 #</option>
                 </select>
                     <input type="date" v-model="start_date">&nbsp; to &nbsp;<input type="date" v-model="end_date">

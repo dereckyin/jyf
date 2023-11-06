@@ -104,9 +104,6 @@ header( 'location:index.php' );
             display: none;
         }
 
-    </style>
-
-    <style>
         .header {
             background-color: rgb(30, 107, 168);
             height: 70px;
@@ -275,7 +272,7 @@ header( 'location:index.php' );
             font-size: 13px;
         }
 
-        #panelchecked thead:first-of-type tr th:nth-last-of-type(2), #panelchecked thead:first-of-type tr th:nth-last-of-type(3) {
+        #panelchecked thead:first-of-type tr th:nth-last-of-type(1), #panelchecked thead:first-of-type tr th:nth-last-of-type(2) {
             background-color: rgba(250, 250, 210, 1);
         }
 
@@ -283,15 +280,15 @@ header( 'location:index.php' );
             min-width: 170px;
         }
 
-        #panelchecked thead tr th:nth-of-type(9), #panelchecked thead tr th:nth-of-type(13) {
+        #panelchecked thead tr th:nth-of-type(10), #panelchecked thead tr th:nth-of-type(14) {
             min-width: 260px;
         }
 
-        #panelchecked thead tr th:nth-of-type(3), #panelchecked thead tr th:nth-of-type(6), #panelchecked thead tr th:nth-of-type(8), #panelchecked thead tr th:nth-of-type(10), #panelchecked thead tr th:nth-of-type(12) {
+        #panelchecked thead tr th:nth-of-type(4), #panelchecked thead tr th:nth-of-type(7), #panelchecked thead tr th:nth-of-type(9), #panelchecked thead tr th:nth-of-type(11), #panelchecked thead tr th:nth-of-type(13) {
             min-width: 140px;
         }
 
-        #panelchecked thead tr th:nth-last-of-type(1) {
+        #panelchecked thead tr th:nth-of-type(1) {
             min-width: 100px;
         }
 
@@ -303,14 +300,14 @@ header( 'location:index.php' );
             height: 30px;
         }
 
-        #panelchecked tbody tr td:nth-last-of-type(3) > input[type='date'] {
+        #panelchecked tbody tr td:nth-last-of-type(2) > input[type='date'] {
             width: 160px;
             height: 32.8px;
             border-radius: 5px;
             border: 1px solid rgb(153, 153, 153);
         }
 
-        #panelchecked tbody tr td:nth-last-of-type(2) > input[type='text'] {
+        #panelchecked tbody tr td:nth-last-of-type(1) > input[type='text'] {
             width: 200px;
             height: 32.8px;
             border-radius: 5px;
@@ -320,6 +317,32 @@ header( 'location:index.php' );
         #panelchecked tfoot tr th {
 
             background-color: #e9ecef;
+        }
+
+        header {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #1E6BA8;
+            color: #FFF;
+            padding: 10px;
+            box-shadow: 2px 2px 2px rgb(0 0 0 / 40%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header a.menu {
+            margin-left: 25px;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        header a.menu span {
+            color: #FFFFFF;
         }
 
     </style>
@@ -338,32 +361,39 @@ header( 'location:index.php' );
 
 <div id="app">
 
-    <div style="background: rgb(30, 107, 168); padding: 0.5vh; height: 70px; display: flex; align-items: center; justify-content: space-between;">
-        
+    <!-- header -->
+    <header>
         <?php
-            if($decoded->data->status_1 == "1")
-        {
-        ?>
-        <a @click="logout()" style="margin-left: 25px; font-size: 25px;">
-            <span style="color: rgb(255, 255, 255); cursor: pointer">☰</span>
-        </a>
-        <?php
-        }
-        ?>
+            if($decoded->data->status_1 == 1 || $decoded->data->status_2 == 1)
+            {
+         ?>
 
-<?php
-            if($decoded->data->status_1 != "1")
-        {
-        ?>
-        <a href="main.php" style="margin-left: 25px; font-size: 25px; text-decoration: none;">
-            <span style="color: rgb(255, 255, 255); cursor: pointer">☰</span>
-        </a>
+            <a href="main.php" class="menu"><span>&#9776;</span></a>
+
         <?php
-        }
-        ?>
+             }
+         ?>
+
+
+        <?php
+            if($decoded->data->status_1 == 0 && $decoded->data->status_2 == 0)
+            {
+         ?>
+
+            <a @click="logout()" class="menu"><span>&#9776;</span></a>
+
+        <?php
+             }
+         ?>
+
+
         <div>
+            <a class="nav_link" href="car_schedule_calendar.php">
+                <eng>Car Schedule</eng>
+            </a>
+
             <?php
-                if($decoded->data->status_1 == "1")
+                        if($decoded->data->status_1)
             {
             ?>
             <a class="nav_link" href="attendance_v2.php">
@@ -377,31 +407,43 @@ header( 'location:index.php' );
             <a class="nav_link" href="salary_recorder.php">
                 <eng>Salary Recorder</eng>
             </a>
+
             <a class="nav_link" href="expense_recorder.php">
                 <eng>Expense Recorder</eng>
             </a>
+
             <a class="nav_link" href="details_ntd_php.php">
                 <eng>NTD~PHP</eng>
             </a>
+
+            <?php
+                        }
+                    ?>
+            <?php
+                        if($decoded->data->status_2)
+            {
+            ?>
             <a class="nav_link" href="expense_recorder_v2.php">
                 <eng>Expense Recorder2</eng>
             </a>
+            <?php
+                        }
+             ?>
+
             <button data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
                     aria-controls="collapseOne" class=""
                     style="border: none; margin-right: 25px; font-weight: 700; font-size: x-large; background-color: rgb(30, 107, 168); color: rgb(255, 255, 255);">
                 <i aria-hidden="true" class="fas fa-plus-square fa-lg"></i>
             </button>
-            <?php
-                }
-            ?>
 
-           
-            
+
         </div>
-    </div>
+    </header>
+    <!-- header end -->
 
 
-    <div style="margin-top:2.5vh; margin-left:1.5vw; margin-bottom:3vh;">
+
+    <div style="margin-top: 92px; margin-left:1.5vw; margin-bottom:3vh;">
 
 
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="width:98.5%;">
@@ -677,6 +719,10 @@ header( 'location:index.php' );
                 <thead class="thead-light">
 
                 <tr>
+                    <th class="text-nowrap">
+                        <cht>功能</cht>
+                        Actions
+                    </th>
 
                     <th class="text-nowrap">
                         <cht>客戶名</cht>
@@ -752,11 +798,6 @@ header( 'location:index.php' );
                         <cht>廠商名稱</cht>
                         Payee
                     </th>
-
-                    <th class="text-nowrap">
-                        <cht>功能</cht>
-                        Actions
-                    </th>
                 </tr>
 
                 </thead>
@@ -765,6 +806,40 @@ header( 'location:index.php' );
 
                     <template v-for="item in items">
                         <tr :class="[(item.status == '-1' ? 'deleted' : '')]">
+                            <td :rowspan="item.details.length" class="text-nowrap" v-if="item.status !== '-1'">
+
+                            <?php
+                                if($decoded->data->status_1 == "1")
+                                {
+                            ?>
+
+                                <button v-if="item.is_edited == 1" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                                        aria-expanded="true" aria-controls="collapseOne" v-on:click="edit(item)"><i
+                                        class="fas fa-edit"></i>
+                                </button>
+
+                                <button v-if="item.is_edited == 1" v-on:click="deleteRecord(item.id)"><i
+                                        class="fas fa-times"></i>
+                                </button>
+                            <?php
+                                }
+                            ?>
+
+                            <?php
+                                if($decoded->data->status_1 != "1")
+                                {
+                            ?>
+                                <button v-show="item.is_edited == 1" @click="editRow(item)">修改</button>
+                                <button v-show="item.is_edited == 0" @click="confirmRow(item)">確認</button>
+                                <button v-show="item.is_edited == 0" @click="cancelRow(item)">取消</button>
+                            <?php
+                                }
+                            ?>
+
+                            </td>
+
+                            <td :rowspan="item.details.length" class="text-nowrap" v-if="item.status == '-1'"></td>
+
                             <td :rowspan="item.details.length">{{ item.client_name }}</td>
                             <td :rowspan="item.details.length">{{ item.payee_name }}</td>
                             <td :rowspan="item.details.length">{{ item.amount }}</td>
@@ -806,38 +881,8 @@ header( 'location:index.php' );
                             }
                             ?>
                             </td>
-                            <td :rowspan="item.details.length" class="text-nowrap" v-show="item.status !== '-1'">
-                            
-                            <?php
-                                if($decoded->data->status_1 == "1")
-                                {
-                            ?>
-                            
-                                <button v-if="item.is_edited == 1" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                                        aria-expanded="true" aria-controls="collapseOne" v-on:click="edit(item)"><i
-                                        class="fas fa-edit"></i>
-                                </button>
-
-                                <button v-if="item.is_edited == 1" v-on:click="deleteRecord(item.id)"><i
-                                        class="fas fa-times"></i>
-                                </button>
-                            <?php
-                                }
-                            ?>
-
-                            <?php
-                                if($decoded->data->status_1 != "1")
-                                {
-                            ?>
-                                <button v-show="item.is_edited == 1" @click="editRow(item)">修改</button>
-                                <button v-show="item.is_edited == 0" @click="confirmRow(item)">確認</button>
-                                <button v-show="item.is_edited == 0" @click="cancelRow(item)">取消</button>
-                            <?php
-                                }
-                            ?>
-
-                            </td>
                         </tr>
+
 
                         <tr v-if="index !== 0" v-for="(it, index) in item.details" :class="[(item.status == '-1' ? 'deleted' : '')]">
                             <td v-if="index !== 0">{{ it.receive_date }}</td>
@@ -903,14 +948,14 @@ header( 'location:index.php' );
                 <tfoot class="thead-light">
 
                 <tr>
-                    <th colspan="2">Total</th>
+                    <th colspan="3">Total</th>
                     <th style="text-align: right;">{{ amt_tw !== undefined ? Number(amt_tw).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</th>
                     <th colspan="2"></th>
                     <th style="text-align: right;">{{ amt_php !== undefined ? Number(amt_php).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</th>
                     <th colspan="4"></th>
                     <th style="text-align: right;">{{ amt_total !== undefined ? Number(amt_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</th>
                     <th style="text-align: right;">{{ amt_over !== undefined ? Number(amt_over).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</th>
-                    <th colspan="4"></th>
+                    <th colspan="3"></th>
                 </tr>
 
                 </tfoot>

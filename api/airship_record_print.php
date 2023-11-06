@@ -117,6 +117,22 @@ if($date_type == "p")
         }
 }
 
+
+if($date_type == "f")
+{
+    if($start_date!='') {
+        $query = $query . " and ss.flight_date >= '$start_date' ";
+        //$query_cnt = $query_cnt . " and ss.flight_date >= '$start_date' ";
+    }
+
+    if($end_date!='') {
+        $query = $query . " and ss.flight_date <= '$end_date" . "' ";
+        //$query_cnt = $query_cnt . " and ss.flight_date <= '$end_date" . "' ";
+    }
+}
+
+
+
         if (!empty($_POST['page'])) {
             $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
             if (false === $page) {
@@ -124,8 +140,21 @@ if($date_type == "p")
             }
         }
 
-        // order 
-        $query = $query . " order by ss.date_receive  ";
+        $ord = " order by ss.date_receive ";
+        if($date_type == "s")
+            $ord = " order by ss.sn, ss.date_receive  ";
+        
+        if($date_type == "f")
+            $ord = " order by ss.flight_date  ";
+        
+        if($date_type == "p")
+            $ord = " order by ss.pay_date  ";
+        
+        if($date_type == "r")
+            $ord = " order by ss.date_receive  ";
+
+        $query = $query . $ord;
+
 
         if (!empty($_POST['size'])) {
             $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);
