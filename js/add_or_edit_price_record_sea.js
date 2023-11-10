@@ -229,7 +229,7 @@ var app = new Vue({
       if (category == "Cash on Hand" || category == "Petty" || category == "GCash Cash In") 
         this.operation_type = "1";  // Cash In
 
-      if (category == "Cash Expenses" || category == "Cash Expenses Petty" || category == "Prepaid Load" || category == "Change for Customer" || category == "Helper Fees" || category == "Other" || category == "Lalamove Fee" || category == "Salary Petty" || category == "GCash Cash Out") 
+      if (category == "Cash Expenses" || category == "Cash Expenses Petty" || category == "Prepaid Load" || category == "Change for Customer" || category == "Helper Fees" || category == "Other" || category == "Lalamove Fee" || category == "Salary Petty" || category == "Gas")
         this.operation_type = "2";  // Cash Out
 
   },
