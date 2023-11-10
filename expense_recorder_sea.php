@@ -353,8 +353,8 @@ try {
                                     <option>Cash Expenses</option>
                                     <option>Cash on Hand </option>
                                     <option>Change for Customer</option>
+                                    <option>Gas</option>
                                     <option>GCash Cash In</option>
-                                    <option>GCash Cash Out</option>
                                     <option>Helper Fees</option>
                                     <option>Lalamove Fee</option>
                                     <option>Other</option>
@@ -617,8 +617,8 @@ try {
             <option>Cash Expenses</option>
             <option>Cash on Hand </option>
             <option>Change for Customer</option>
+            <option>Gas</option>
             <option>GCash Cash In</option>
-            <option>GCash Cash Out</option>
             <option>Helper Fees</option>
             <option>Lalamove Fee</option>
             <option>Other</option>
@@ -627,6 +627,7 @@ try {
             <option>Salary Petty</option>
             <option disabled>___________________</option>
             <option>Cash Expenses Petty</option>
+            <option>GCash Cash Out</option>
             <option>Receipt</option>
         </select>
 
