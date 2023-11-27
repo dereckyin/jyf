@@ -2540,16 +2540,16 @@ function logMail($sender, $content)
 
 function SetupMail($mail, $conf)
 {
-    $conf = new Conf_Feliix();
+    $conf_feliix = new Conf_Feliix();
 
     $mail->SMTPDebug  = 0;
     $mail->SMTPAuth   = true;
     $mail->SMTPSecure = "ssl";
     $mail->Port       = 465;
     $mail->SMTPKeepAlive = true;
-    $mail->Host       = $conf::$mail_host;
-    $mail->Username   = $conf::$mail_username;
-    $mail->Password   = $conf::$mail_password;
+    $mail->Host       = $conf_feliix::$mail_host;
+    $mail->Username   = $conf_feliix::$mail_username;
+    $mail->Password   = $conf_feliix::$mail_password;
 
 
     // $mail->SMTPDebug  = 0;
