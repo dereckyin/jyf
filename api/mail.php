@@ -2540,6 +2540,8 @@ function logMail($sender, $content)
 
 function SetupMail($mail, $conf)
 {
+    $conf = new Conf_Feliix();
+
     $mail->SMTPDebug  = 0;
     $mail->SMTPAuth   = true;
     $mail->SMTPSecure = "ssl";
