@@ -2547,9 +2547,9 @@ function SetupMail($mail, $conf)
     $mail->SMTPSecure = "ssl";
     $mail->Port       = 465;
     $mail->SMTPKeepAlive = true;
-    $mail->Host       = $conf_feliix::$mail_host;
-    $mail->Username   = $conf_feliix::$mail_username;
-    $mail->Password   = $conf_feliix::$mail_password;
+    $mail->Host       = $conf_feliix::$mail_Host;
+    $mail->Username   = $conf_feliix::$mail_Username;
+    $mail->Password   = $conf_feliix::$mail_Password;
 
 
     // $mail->SMTPDebug  = 0;
