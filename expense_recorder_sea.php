@@ -101,9 +101,6 @@ try {
             display:none;
         }
 
-    </style>
-
-    <style>
         div.record_color {
             display: flex;
             align-items: center;
@@ -145,10 +142,7 @@ try {
             right: 0;
             margin: auto;
         }
-        
-    </style>
 
-<style>
         a.nav_link {
             color: #FFFFFF;
             font-weight: bold;
@@ -163,6 +157,32 @@ try {
         a.nav_link:last-of-type {
             border-right: none;
             margin-right: 90px;
+        }
+
+        header {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #1E6BA8;
+            color: #FFF;
+            padding: 10px;
+            box-shadow: 2px 2px 2px rgb(0 0 0 / 40%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header a.menu {
+            margin-left: 25px;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        header a.menu span {
+            color: #FFFFFF;
         }
     </style>
 
@@ -179,45 +199,48 @@ try {
 
 
 <div id="app">
-<div style="background: #1E6BA8; padding: 0.5vh; height:70px; display: flex; align-items: center; justify-content: space-between;">
+    <!-- header -->
+    <header>
+        <a href="main.php" class="menu"><span>&#9776;</span></a>
 
-    <a href="main.php" style="margin-left:25px; font-size: 25px; cursor: pointer;" ><span style="color: #FFFFFF;">&#9776;</span></a>
+        <div>
+            <a class="nav_link" href="car_schedule_calendar.php">
+                <eng>Car Schedule</eng>
+            </a>
 
-    <div>
-                    <?php
+            <?php
                         if($decoded->data->sea_expense)
-                        {
-                    ?>
-                    <a class="nav_link" href="attendance_sea_v2.php">
-                        <eng>Attendance</eng>
-                    </a>
+            {
+            ?>
+            <a class="nav_link" href="attendance_sea_v2.php">
+                <eng>Attendance</eng>
+            </a>
 
-                    <a class="nav_link" href="staff_list_sea.php">
-                        <eng>Staff List</eng>
-                    </a>
+            <a class="nav_link" href="staff_list_sea.php">
+                <eng>Staff List</eng>
+            </a>
 
-                    <a class="nav_link" href="salary_recorder_sea.php">
-                        <eng>Salary Recorder</eng>
-                    </a>
+            <a class="nav_link" href="salary_recorder_sea.php">
+                <eng>Salary Recorder</eng>
+            </a>
 
-                    <a class="nav_link" href="expense_recorder_sea.php">
-                        <eng>Expense Recorder</eng>
-                    </a>
-                    <?php
+            <a class="nav_link" href="expense_recorder_sea.php">
+                <eng>Expense Recorder</eng>
+            </a>
+            <?php
                         }
                     ?>
-                    <?php
+            <?php
                         if($decoded->data->sea_expense_v2)
-                        {
-                    ?>
-                    <a class="nav_link" href="expense_recorder_sea_v2.php">
-                        <eng>Expense Recorder2</eng>
-                    </a>
-                    <?php
+            {
+            ?>
+            <a class="nav_link" href="expense_recorder_sea_v2.php">
+                <eng>Expense Recorder2</eng>
+            </a>
+            <?php
                         }
                     ?>
-
-<?php
+                    <?php
                         if($decoded->data->gcash_expense_sea)
             {
             ?>
@@ -227,7 +250,7 @@ try {
             <?php
                         }
                     ?>
-<?php
+                    <?php
                         if($decoded->data->gcash_expense_sea_2)
             {
             ?>
@@ -237,18 +260,19 @@ try {
             <?php
                         }
                     ?>
+
             <button :class="[is_viewer == '1'? 'hide' : '']"
                     style="border: none; margin-right: 25px; font-weight:700; font-size:x-large; background-color:#1E6BA8; color: #FFFFFF;"
                     data-toggle="collapse" data-parent="#accordion" href="#collapseOne" @click="reset()"
                     aria-expanded="true" aria-controls="collapseOne"><i class="fas fa-plus-square fa-lg"></i></button>
+
         </div>
-
-</div>
-
-
+    </header>
+    <!-- header end -->
 
 
-<div style="margin-top:2.5vh; margin-left:1.5vw; margin-bottom:3vh;">
+
+<div style="margin-top: 92px; margin-left:1.5vw; margin-bottom:3vh;">
 
 
 

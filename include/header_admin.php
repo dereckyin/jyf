@@ -259,6 +259,10 @@ if ( isset( $jwt ) ) {
         <cht>GCash 支出記錄表 2</cht>
     </a>";
         ?>
+
+    <a href="car_schedule_calendar.php">Car Schedule
+        <cht>車輛行程</cht>
+    </a>
         
     </nav>
 </div>

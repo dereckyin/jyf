@@ -85,6 +85,8 @@ if($user_exists && password_verify($password, $user->password) && $cap == 1 && (
            "sea_expense_v2" => $user->sea_expense_v2,
            "gcash_expense_sea" => $user->gcash_expense_sea,
            "gcash_expense_sea_2" => $user->gcash_expense_sea_2,
+           "sea_feliix" => $user->sea_feliix,
+           "parts_feliix" => $user->parts_feliix,
        )
     );
 

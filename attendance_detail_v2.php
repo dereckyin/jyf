@@ -296,9 +296,35 @@ header( 'location:index.php' );
 <div class="bodybox">
     <!-- header -->
     <header>
-        <a href="main.php" class="menu"><span>&#9776;</span></a>
+        <?php
+            if($decoded->data->status_1 == 1 || $decoded->data->status_2 == 1)
+            {
+         ?>
+
+            <a href="main.php" class="menu"><span>&#9776;</span></a>
+
+        <?php
+             }
+         ?>
+
+
+        <?php
+            if($decoded->data->status_1 == 0 && $decoded->data->status_2 == 0)
+            {
+         ?>
+
+            <a @click="logout()" class="menu"><span>&#9776;</span></a>
+
+        <?php
+             }
+         ?>
+
 
         <div>
+            <a class="nav_link" href="car_schedule_calendar.php">
+                <eng>Car Schedule</eng>
+            </a>
+
             <?php
                         if($decoded->data->status_1)
             {
@@ -339,6 +365,7 @@ header( 'location:index.php' );
         </div>
     </header>
     <!-- header end -->
+
     <div id='app' class="mainContent">
         <!-- Blocks -->
 

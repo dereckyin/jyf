@@ -299,11 +299,15 @@ header( 'location:index.php' );
         <a href="main.php" class="menu"><span>&#9776;</span></a>
 
         <div>
+            <a class="nav_link" href="car_schedule_calendar.php">
+                <eng>Car Schedule</eng>
+            </a>
+
             <?php
                         if($decoded->data->sea_expense)
             {
             ?>
-            <a class="nav_link" href="attendance_sea.php">
+            <a class="nav_link" href="attendance_sea_v2.php">
                 <eng>Attendance</eng>
             </a>
 
@@ -327,6 +331,26 @@ header( 'location:index.php' );
             ?>
             <a class="nav_link" href="expense_recorder_sea_v2.php">
                 <eng>Expense Recorder2</eng>
+            </a>
+            <?php
+                        }
+                    ?>
+                    <?php
+                        if($decoded->data->gcash_expense_sea)
+            {
+            ?>
+            <a class="nav_link" href="gcash_expense_recorder_sea.php">
+                <eng>GCash Recorder</eng>
+            </a>
+            <?php
+                        }
+                    ?>
+                    <?php
+                        if($decoded->data->gcash_expense_sea_2)
+            {
+            ?>
+            <a class="nav_link" href="gcash_expense_recorder_sea_2.php">
+                <eng>GCash Recorder 2</eng>
             </a>
             <?php
                         }

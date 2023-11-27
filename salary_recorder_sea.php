@@ -102,9 +102,6 @@ try {
             display: none;
         }
 
-    </style>
-
-    <style>
         div.record_color {
             display: flex;
             align-items: center;
@@ -161,6 +158,32 @@ try {
             margin: auto;
         }
 
+        header {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #1E6BA8;
+            color: #FFF;
+            padding: 10px;
+            box-shadow: 2px 2px 2px rgb(0 0 0 / 40%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header a.menu {
+            margin-left: 25px;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        header a.menu span {
+            color: #FFFFFF;
+        }
+
     </style>
 
     <script src="js/jquery-3.4.1.min.js"></script>
@@ -176,44 +199,49 @@ try {
 
 
 <div id="app">
-    <div style="background: #1E6BA8; padding: 0.5vh; height:70px; display: flex; align-items: center; justify-content: space-between;">
 
-        <a href="main.php" style="margin-left:25px; font-size: 25px; cursor: pointer;"><span style="color: #FFFFFF;">&#9776;</span></a>
+    <!-- header -->
+    <header>
+        <a href="main.php" class="menu"><span>&#9776;</span></a>
 
         <div>
-                    <?php
+            <a class="nav_link" href="car_schedule_calendar.php">
+                <eng>Car Schedule</eng>
+            </a>
+
+            <?php
                         if($decoded->data->sea_expense)
-                        {
-                    ?>
-                    <a class="nav_link" href="attendance_sea_v2.php">
-                        <eng>Attendance</eng>
-                    </a>
+            {
+            ?>
+            <a class="nav_link" href="attendance_sea_v2.php">
+                <eng>Attendance</eng>
+            </a>
 
-                    <a class="nav_link" href="staff_list_sea.php">
-                        <eng>Staff List</eng>
-                    </a>
+            <a class="nav_link" href="staff_list_sea.php">
+                <eng>Staff List</eng>
+            </a>
 
-                    <a class="nav_link" href="salary_recorder_sea.php">
-                        <eng>Salary Recorder</eng>
-                    </a>
+            <a class="nav_link" href="salary_recorder_sea.php">
+                <eng>Salary Recorder</eng>
+            </a>
 
-                    <a class="nav_link" href="expense_recorder_sea.php">
-                        <eng>Expense Recorder</eng>
-                    </a>
-                    <?php
+            <a class="nav_link" href="expense_recorder_sea.php">
+                <eng>Expense Recorder</eng>
+            </a>
+            <?php
                         }
                     ?>
-                    <?php
+            <?php
                         if($decoded->data->sea_expense_v2)
-                        {
-                    ?>
-                    <a class="nav_link" href="expense_recorder_sea_v2.php">
-                        <eng>Expense Recorder2</eng>
-                    </a>
-                    <?php
+            {
+            ?>
+            <a class="nav_link" href="expense_recorder_sea_v2.php">
+                <eng>Expense Recorder2</eng>
+            </a>
+            <?php
                         }
                     ?>
-<?php
+                    <?php
                         if($decoded->data->gcash_expense_sea)
             {
             ?>
@@ -233,16 +261,19 @@ try {
             <?php
                         }
                     ?>
+
             <button :class="[is_viewer == '1'? 'hide' : '']"
-                    style="border: none; margin-right: 25px; font-weight:700; font-size:x-large; background-color:#1E6BA8; color: #FFFFFF;"
-                    data-toggle="collapse" data-parent="#accordion" href="#collapseOne" @click="reset()"
-                    aria-expanded="true" aria-controls="collapseOne"><i class="fas fa-plus-square fa-lg"></i></button>
+             style="border: none; margin-right: 25px; font-weight:700; font-size:x-large; background-color:#1E6BA8; color: #FFFFFF;"
+             data-toggle="collapse" data-parent="#accordion" href="#collapseOne" @click="reset()"
+             aria-expanded="true" aria-controls="collapseOne"><i class="fas fa-plus-square fa-lg"></i></button>
+
         </div>
+    </header>
+    <!-- header end -->
 
-    </div>
 
 
-    <div style="margin-top:2.5vh; margin-left:1.5vw; margin-bottom:3vh;">
+    <div style="margin-top: 92px; margin-left:1.5vw; margin-bottom:3vh;">
 
 
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="width:98.5%;">

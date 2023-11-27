@@ -30,6 +30,9 @@ let mainState = {
     airship:0,
     airship_read:0,
 
+    sea_feliix: 0,
+    parts_feliix: 0,
+
         // paging
     page: 1,
     //perPage: 10,
@@ -246,6 +249,10 @@ var app = new Vue({
             formData.append('sea_expense_v2', this.record.sea_expense_v2)
             formData.append('gcash_expense_sea', this.record.gcash_expense_sea)
             formData.append('gcash_expense_sea_2', this.record.gcash_expense_sea_2)
+
+            formData.append('sea_feliix', this.record.sea_feliix)
+            formData.append('parts_feliix', this.record.parts_feliix)
+
             formData.append('is_admin', this.record.is_admin)
             formData.append('crud', "del");
             formData.append('id', id);
@@ -527,6 +534,28 @@ var app = new Vue({
             }
         },
 
+        updateSeaFeliix: function(event) {
+          console.log("sea_feliix");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.sea_feliix = 1;
+            } else {
+                this.sea_feliix = 0;
+            }
+        },
+
+        updatePartsFeliix: function(event) {
+          console.log("parts_feliix");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.parts_feliix = 1;
+            } else {
+                this.parts_feliix = 0;
+            }
+        },
+
         updateIsAdmin: function(event) {
           console.log("updateIsAdmin");
             let checked = event.target.checked;
@@ -626,6 +655,28 @@ var app = new Vue({
             }
         },
 
+        updateEditSeaFeliix: function(event) {
+          console.log("updateEditSeaExpense2");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.record.sea_feliix = 1;
+            } else {
+                this.record.sea_feliix = 0;
+            }
+        },
+
+        updateEditPartsFeliix: function(event) {
+          console.log("updateEditSeaExpense2");
+            let checked = event.target.checked;
+            let value = event.target.value;
+            if (checked) {
+                this.record.parts_feliix = 1;
+            } else {
+                this.record.parts_feliix = 0;
+            }
+        },
+
         cancelReceiveRecord: function(event) {
             console.log("cancel edit receive_record!")
 
@@ -669,6 +720,10 @@ var app = new Vue({
             formData.append('sea_expense_v2', this.record.sea_expense_v2)
             formData.append('gcash_expense_sea', this.record.gcash_expense_sea)
             formData.append('gcash_expense_sea_2', this.record.gcash_expense_sea_2)
+
+            formData.append('sea_feliix', this.record.sea_feliix)
+            formData.append('parts_feliix', this.record.parts_feliix)
+
             formData.append('is_admin', this.record.is_admin)
            
             formData.append('crud', "update");
@@ -765,6 +820,10 @@ var app = new Vue({
             formData.append('sea_expense_v2', this.sea_expense_v2)
             formData.append('gcash_expense_sea', this.gcash_expense_sea)
             formData.append('gcash_expense_sea_2', this.gcash_expense_sea_2)
+
+            formData.append('sea_feliix', this.sea_feliix)
+            formData.append('parts_feliix', this.parts_feliix)
+
             formData.append('is_admin', this.is_admin)
             formData.append('crud', "insert");
             formData.append('id', '');
@@ -819,6 +878,10 @@ var app = new Vue({
             this.sea_expense_v2 = 0;
             this.gcash_expense_sea = 0;
             this.gcash_expense_sea_2 = 0;
+
+            this.sea_feliix = 0;
+            this.parts_feliix = 0;
+
             this.is_admin = '';
             this.isEditing = false;
             this.record = {};

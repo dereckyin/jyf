@@ -92,13 +92,10 @@ foreach ($batch_nums as $num)
     while ($row = mysqli_fetch_array($result)){
         if (isset($row)){
 
-            if (in_array($row['customer'],$key))
-            {
+            if (in_array(strtolower($row['customer']), $key)) {
                 continue;
-            }
-            else
-            {
-                array_push($key, $row['customer']);
+            } else {
+                array_push($key, strtolower($row['customer']));
             }
 
             $subquery = "SELECT lo.shipping_mark, lo.actual_weight, lo.container_number, lo.seal, lo.so, lo.ship_company, lo.ship_boat, lo.neck_cabinet, lo.shipper, lo.broker, lo.date_sent, lo.etd_date, lo.ob_date, lo.eta_date, lo.date_arrive, rr.date_receive, rr.customer, rr.description, rr.quantity, rr.supplier, rr.kilo, rr.cuft, rr.taiwan_pay, rr.courier_pay, rr.courier_money, rr.remark, lo.estimate_weight  FROM loading lo LEFT JOIN receive_record rr ON lo.id = rr.batch_num where  rr.status = '' AND lo.status = '' and batch_num = $num and rr.date_receive <> '' and rr.customer = ? ORDER BY rr.date_receive  ";
@@ -250,6 +247,9 @@ foreach ($batch_nums as $num)
 
     $sheet->getStyle('A' . ($i + 3) . ':' . 'A' . ($i + 18))->getFont()->setBold(true);
     $sheet->getStyle('A' . ($i + 3) . ':' . 'B' . ($i + 18))->applyFromArray($styleArray);
+
+    $invalidCharacters = array('*', ':', '/', '\\', '?', '[', ']');
+    $container = str_replace($invalidCharacters, '', $container);
 
     $sheet->setTitle($container . " ");
 

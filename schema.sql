@@ -1213,3 +1213,83 @@ ADD COLUMN `ratio` decimal(10, 2) default 0.0;
 -- 20230804
 ALTER TABLE airship_records
 ADD COLUMN `sn` int default 0;
+
+
+-- 20230911 car schedule calendar
+CREATE TABLE IF NOT EXISTS `car_calendar_main` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `schedule_Name` varchar(200) COLLATE utf8mb4_unicode_ci  default '',
+  `date_use` timestamp NULL DEFAULT NULL,
+  `color` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `text_color` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `car_use` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `driver` varchar(200) COLLATE utf8mb4_unicode_ci  default '',
+  `helper` varchar(200) COLLATE utf8mb4_unicode_ci  default '',
+  `time_out` timestamp NULL DEFAULT NULL,
+  `time_in` timestamp NULL DEFAULT NULL,
+  `notes` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `items` JSON,
+  `is_enabled` bool default false,
+  `status` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `approve_at` timestamp NULL DEFAULT NULL,
+  `created_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `updated_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `deleted_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `approve_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20230915 car access control
+CREATE TABLE IF NOT EXISTS `access_control` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `car_access1` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `car_access2` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+insert into access_control(`car_access1`, `car_access2`) values('', '');
+
+-- 20230911 car schedule check
+CREATE TABLE IF NOT EXISTS `car_calendar_check` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `sid` bigint(20) unsigned NOT NULL,
+  `kind` varchar(10) COLLATE utf8mb4_unicode_ci  default '',
+  `date_use` timestamp NULL DEFAULT NULL,
+  `car_use` varchar(1024) COLLATE utf8mb4_unicode_ci  default '',
+  `driver` varchar(200) COLLATE utf8mb4_unicode_ci  default '',
+  `time_out` timestamp NULL DEFAULT NULL,
+  `time_in` timestamp NULL DEFAULT NULL,
+  `is_enabled` bool default false,
+  `status` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `approve_at` timestamp NULL DEFAULT NULL,
+  `created_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `updated_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `deleted_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  `approve_by` varchar(100) COLLATE utf8mb4_unicode_ci  default '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+ALTER TABLE car_calendar_check ADD COLUMN feliix INT DEFAULT 0;
+
+-- 20231011
+ALTER TABLE user ADD COLUMN sea_feliix INT DEFAULT 0;
+
+ALTER TABLE user ADD COLUMN parts_feliix INT DEFAULT 0;
+
+ALTER TABLE car_calendar_main ADD COLUMN `requestor` varchar(1024) COLLATE utf8mb4_unicode_ci  default '';
+
+-- 20231027
+ALTER TABLE receive_record
+ADD COLUMN `receipt_number` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE receive_record
+ADD COLUMN `checker` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE receive_record
+ADD COLUMN `checker_time` timestamp NULL;
