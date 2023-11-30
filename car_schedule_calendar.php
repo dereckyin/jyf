@@ -149,6 +149,20 @@ try {
             margin-right: 30px;
         }
 
+        ul.color_introduction {
+            display: flex;
+            list-style: none;
+            padding: 0 5vw;
+            justify-content: space-around;
+        }
+
+        ul.color_introduction > li > span {
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+            transform: translateY(6px);
+        }
+        
         .add {
             display: flex;
             justify-content: center;
@@ -432,6 +446,35 @@ try {
     <input type="month" class="form-control" id="edate">
     <button class="btn btn-primary" onclick="app.getInitial()">Filter Schedules</button>
 </div>
+
+<ul class="color_introduction">
+
+    <li>
+        <span style="background-color: #FECC28;"></span> : Alphard
+    </li>
+
+    <li>
+        <span style="background-color: #4EB5BB;"></span> : Avanza
+    </li>
+
+    <li>
+        <span style="background-color: #009858;"></span> : Traviz 1
+    </li>
+
+    <li>
+        <span style="background-color: #A671AD;"></span> : Traviz 2
+    </li>
+
+    <li>
+        <span style="background-color: #1A17E8;"></span> : Traviz 3
+    </li>
+
+    <li>
+        <span style="background-color: #F19DB4;"></span> : Toyota Rush
+    </li>
+
+</ul>
+
 
 <div id='calendar'></div>
 
