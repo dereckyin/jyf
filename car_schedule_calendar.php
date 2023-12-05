@@ -59,19 +59,19 @@ try {
         Car Schedule
     </title>
 
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+   <link rel="stylesheet" href="css/bootstrap/4.5.0/bootstrap.min.css">
+    <link rel="stylesheet" href="css/fontawesome/v5.7.0/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
+    <link href="css/bootstrap-select.min.css"
           rel="stylesheet">
 
           <link rel="stylesheet" href="css/vue-select.css" type="text/css">
-    <link href='https://unpkg.com/fullcalendar@5.1.0/main.min.css' rel='stylesheet'/>
+    <link href='css/fullcalendar@5.1.0/main.min.css' rel='stylesheet'/>
     
 
-    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script defer src="js/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="js/bootstrap/4.5.0/bootstrap.min.js"></script>
+    <script defer src="js/bootstrap4-toggle@3.6.1/bootstrap4-toggle.min.js"></script>
 
     <style>
 
@@ -149,6 +149,20 @@ try {
             margin-right: 30px;
         }
 
+        ul.color_introduction {
+            display: flex;
+            list-style: none;
+            padding: 0 5vw;
+            justify-content: space-around;
+        }
+
+        ul.color_introduction > li > span {
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+            transform: translateY(6px);
+        }
+        
         .add {
             display: flex;
             justify-content: center;
@@ -432,6 +446,35 @@ try {
     <input type="month" class="form-control" id="edate">
     <button class="btn btn-primary" onclick="app.getInitial()">Filter Schedules</button>
 </div>
+
+<ul class="color_introduction">
+
+    <li>
+        <span style="background-color: #FECC28;"></span> : Alphard
+    </li>
+
+    <li>
+        <span style="background-color: #4EB5BB;"></span> : Avanza
+    </li>
+
+    <li>
+        <span style="background-color: #009858;"></span> : Traviz 1
+    </li>
+
+    <li>
+        <span style="background-color: #A671AD;"></span> : Traviz 2
+    </li>
+
+    <li>
+        <span style="background-color: #1A17E8;"></span> : Traviz 3
+    </li>
+
+    <li>
+        <span style="background-color: #F19DB4;"></span> : Toyota Rush
+    </li>
+
+</ul>
+
 
 <div id='calendar'></div>
 
@@ -1568,12 +1611,12 @@ try {
 }
 </script>
 
-<script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> 
+<script defer src="js/npm/sweetalert2@9.js"></script>
+<script src="js/npm/vue/dist/vue.js"></script> 
 <script src="js/vue-select.js"></script>
 <script defer src="js/axios.min.js"></script>
 <script defer src="js/car_schedule_calender.js?v=<?php uniqid(); ?>"></script>
 <script src="js/moment.js"></script>
-<script defer src='https://unpkg.com/fullcalendar@5.1.0/main.min.js'></script>
+<script defer src='js/fullcalendar@5.1.0/main.min.js'></script>
 <script defer src='https://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
 </html>
