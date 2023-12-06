@@ -29,6 +29,25 @@ $user->username = $username;
 $user->email = $email;
 $user->password = $password;
 
+$user->status = 0;
+$user->phili = 0;
+$user->status_1 = 0;
+$user->status_2 = 0;
+$user->taiwan_read = 0;
+$user->phili_read = 0;
+$user->report1 = 0;
+$user->report2 = 0;
+$user->airship = 0;
+$user->airship_read = 0;
+$user->sea_expense = 0;
+$user->sea_expense_v2 = 0;
+$user->gcash_expense_sea = 0;
+$user->gcash_expense_sea_2 = 0;
+$user->sea_feliix = 0;
+$user->parts_feliix = 0;
+$user->is_admin = 0;
+
+
 // recaptchar
 if(isset($_POST['g_recaptcha_response'])){
   $captcha=$_POST['g_recaptcha_response'];
