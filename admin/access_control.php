@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/easy-sidebar.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
     <link rel="stylesheet" href="../css/vue-select.css" type="text/css">
-    <link rel="stylesheet" href="css/fontawesome/v5.7.0/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/fontawesome/v5.7.0/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
 
 
@@ -164,11 +164,11 @@ include 'menu.php';
     </div>
 </div>
 
-<script src="js/npm/vue/dist/vue.js"></script> 
+<script src="../js/npm/vue/dist/vue.js"></script> 
 <script src="../js/axios.min.js"></script> 
 <script defer src="../admin/js/access_control.js"></script>
 <script src="../js/vue-select.js"></script>
-<script defer src="js/npm/sweetalert2@9.js"></script>
+<script defer src="../js/npm/sweetalert2@9.js"></script>
 
 
 
