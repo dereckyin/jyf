@@ -2086,6 +2086,9 @@ var service = new Vue({
             this.notes = this.org_schedule.notes;
             this.items = JSON.parse(this.org_schedule.items);
             this.creator = this.org_schedule.creator;
+            
+
+            this.editing = false;
      
         },
 
@@ -2744,6 +2747,8 @@ var service = new Vue({
             this.item_purpose = "";
             this.items = [];
             this.id = -1;
+
+            this.editing = false;
 
             this.schedule_Creator = "";
         },
