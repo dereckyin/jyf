@@ -59,19 +59,19 @@ try {
         Car Schedule
     </title>
 
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+   <link rel="stylesheet" href="css/bootstrap/4.5.0/bootstrap.min.css">
+    <link rel="stylesheet" href="css/fontawesome/v5.7.0/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
+    <link href="css/bootstrap-select.min.css"
           rel="stylesheet">
 
           <link rel="stylesheet" href="css/vue-select.css" type="text/css">
-    <link href='https://unpkg.com/fullcalendar@5.1.0/main.min.css' rel='stylesheet'/>
+    <link href='css/fullcalendar@5.1.0/main.min.css' rel='stylesheet'/>
     
 
-    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script defer src="js/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="js/bootstrap/4.5.0/bootstrap.min.js"></script>
+    <script defer src="js/bootstrap4-toggle@3.6.1/bootstrap4-toggle.min.js"></script>
 
     <style>
 
@@ -849,7 +849,6 @@ try {
                                 <td style="padding-bottom: 10pt;"><input type="time" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="sc_tb_appointtime"></td>
                                 <td style="padding-bottom: 10pt;"><input type="time" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="sc_tb_endtime"></td>
                                 <td style="padding-bottom: 10pt;"><i class="fas fa-plus-circle" id="add_agenda"></i></td>
-
                             </tr>
 
 
@@ -1488,7 +1487,7 @@ try {
                                 <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_company" v-model="item_company" :disabled="!showing"></td>
                                 <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_address" v-model="item_address" :disabled="!showing"></td>
                                 <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_purpose" v-model="item_purpose" :disabled="!showing"></td>
-                                <td style="padding-bottom: 10pt;"><i class="fas fa-check-circle" v-if="editing" @click="save_item()"></i><i class="fas fa-plus-circle" v-if="!editing" id="add_agenda" @click="add_item"></i></td>
+                                <td style="padding-bottom: 10pt;"><i aria-hidden="true" class="fas fa-times-circle" style="color: indianred; padding-right:5pt;" v-if="editing"  @click="cancel_save_item()"></i><i class="fas fa-check-circle" v-if="editing" @click="save_item()"></i><i class="fas fa-plus-circle" v-if="!editing" id="add_agenda" @click="add_item"></i></td>
 
                             </tr>
 
@@ -1555,7 +1554,7 @@ try {
 
                     <button class="btn btn-secondary" style="width: 155px;" id="btn_service_withdraw"  v-if="creator == username && (status == '1' || status == '2') && !showing"  @click="service_status(0)">Withdraw Request</button>
 
-                    <button class="btn btn-danger" id="btn_service_delete" @click="service_delete(-1)" v-if="creator == username && (status == '1' || status == '2') && !showing">Delete</button>
+                    <button class="btn btn-danger" id="btn_service_delete" @click="service_delete(-1)" v-if="creator == username && (status == '0' || status == '1' || status == '2') && !showing">Delete</button>
 
                     <button class="btn btn-primary" id="btn_service_save" @click="service_save(0)"  v-if="(creator == username && status == '0' && showing) || id == 0">Save</button>
 
@@ -1611,12 +1610,12 @@ try {
 }
 </script>
 
-<script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> 
+<script defer src="js/npm/sweetalert2@9.js"></script>
+<script src="js/npm/vue/dist/vue.js"></script> 
 <script src="js/vue-select.js"></script>
 <script defer src="js/axios.min.js"></script>
 <script defer src="js/car_schedule_calender.js?v=<?php uniqid(); ?>"></script>
 <script src="js/moment.js"></script>
-<script defer src='https://unpkg.com/fullcalendar@5.1.0/main.min.js'></script>
+<script defer src='js/fullcalendar@5.1.0/main.min.js'></script>
 <script defer src='https://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
 </html>

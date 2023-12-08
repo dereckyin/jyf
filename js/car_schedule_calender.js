@@ -2086,6 +2086,9 @@ var service = new Vue({
             this.notes = this.org_schedule.notes;
             this.items = JSON.parse(this.org_schedule.items);
             this.creator = this.org_schedule.creator;
+            
+
+            this.editing = false;
      
         },
 
@@ -2225,6 +2228,19 @@ var service = new Vue({
             element.company = this.item_company;
             element.address = this.item_address;
             element.purpose = this.item_purpose;
+
+            this.item_schedule = "";
+            this.item_company = "";
+            this.item_address = "";
+            this.item_purpose = "";
+
+            this.editing = false;
+            this.e_id = 0;
+
+        },
+
+        cancel_save_item : function() {
+            if(this.showing == false) return;
 
             this.item_schedule = "";
             this.item_company = "";
@@ -2731,6 +2747,8 @@ var service = new Vue({
             this.item_purpose = "";
             this.items = [];
             this.id = -1;
+
+            this.editing = false;
 
             this.schedule_Creator = "";
         },
