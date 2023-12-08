@@ -2236,6 +2236,19 @@ var service = new Vue({
 
         },
 
+        cancel_save_item : function() {
+            if(this.showing == false) return;
+
+            this.item_schedule = "";
+            this.item_company = "";
+            this.item_address = "";
+            this.item_purpose = "";
+
+            this.editing = false;
+            this.e_id = 0;
+
+        },
+
         add_item: function() {
             if(this.showing == false) return;
 

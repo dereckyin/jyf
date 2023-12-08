@@ -849,7 +849,6 @@ try {
                                 <td style="padding-bottom: 10pt;"><input type="time" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="sc_tb_appointtime"></td>
                                 <td style="padding-bottom: 10pt;"><input type="time" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="sc_tb_endtime"></td>
                                 <td style="padding-bottom: 10pt;"><i class="fas fa-plus-circle" id="add_agenda"></i></td>
-
                             </tr>
 
 
@@ -1488,7 +1487,7 @@ try {
                                 <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_company" v-model="item_company" :disabled="!showing"></td>
                                 <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_address" v-model="item_address" :disabled="!showing"></td>
                                 <td style="padding-bottom: 10pt;"><input type="text" class="form-control" style="border:none; border-bottom: 1px solid black; border-radius: 0;" id="item_purpose" v-model="item_purpose" :disabled="!showing"></td>
-                                <td style="padding-bottom: 10pt;"><i class="fas fa-check-circle" v-if="editing" @click="save_item()"></i><i class="fas fa-plus-circle" v-if="!editing" id="add_agenda" @click="add_item"></i></td>
+                                <td style="padding-bottom: 10pt;"><i class="fas fa-check-circle" v-if="editing" @click="save_item()"></i><i aria-hidden="true" class="fas fa-times-circle" style="color: indianred; padding-left:5pt;" v-if="editing"  @click="cancel_save_item()"></i><i class="fas fa-plus-circle" v-if="!editing" id="add_agenda" @click="add_item"></i></td>
 
                             </tr>
 
@@ -1555,7 +1554,7 @@ try {
 
                     <button class="btn btn-secondary" style="width: 155px;" id="btn_service_withdraw"  v-if="creator == username && (status == '1' || status == '2') && !showing"  @click="service_status(0)">Withdraw Request</button>
 
-                    <button class="btn btn-danger" id="btn_service_delete" @click="service_delete(-1)" v-if="creator == username && (status == '1' || status == '2') && !showing">Delete</button>
+                    <button class="btn btn-danger" id="btn_service_delete" @click="service_delete(-1)" v-if="creator == username && (status == '0' || status == '1' || status == '2') && !showing">Delete</button>
 
                     <button class="btn btn-primary" id="btn_service_save" @click="service_save(0)"  v-if="(creator == username && status == '0' && showing) || id == 0">Save</button>
 
