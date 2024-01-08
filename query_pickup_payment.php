@@ -798,6 +798,9 @@ header( 'location:index.php' );
                                 Remark
                             </li>
                             <li>
+                                Small Receipt Number
+                            </li>
+                            <li>
                                 <cht>提貨日期</cht>
                                 Date Pickup
                             </li>
@@ -809,6 +812,9 @@ header( 'location:index.php' );
                                 <cht>補充說明</cht>
                                 Notes
                             </li>
+                            <li>
+                                Checker
+                            </li>
                         </ul>
 
                         <ul v-for="(item, j) in record">
@@ -819,9 +825,12 @@ header( 'location:index.php' );
                             <li>{{ item.quantity }}</li>
                             <li>{{ item.supplier }}</li>
                             <li>{{ item.remark }}</li>
+                            <li>{{ item.receipt_number }}</li>
                             <li>{{ item.org_pick_date }}</li>
                             <li>{{ item.pick_person }}</li>
                             <li>{{ item.pick_note }}</li>
+                            <li>{{ item.checker }}</li>
+                            
                         </ul>
 
                     </div>
