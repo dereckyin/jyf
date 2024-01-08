@@ -181,7 +181,7 @@ var service_feliix = new Vue({
         edit_servie_check1: false,
         edit_servie_check2: false,
 
-        
+        is_submit: false,
 
     },
 
@@ -322,7 +322,7 @@ var service_feliix = new Vue({
             this.sn = 0;
             this.showing = false;
 
-            
+            this.is_submit = false;
         },
 
         
@@ -429,6 +429,8 @@ var service_feliix = new Vue({
             // {
             //     this.check_driver = sc_content.check2[0].driver;
             // }
+
+            this.is_submit = false;
         },
 
         
@@ -810,6 +812,11 @@ var service_feliix = new Vue({
             return;
         }
 
+        if(this.is_submit == true)
+         return;
+
+        this.is_submit = true;
+
         var token = localStorage.getItem("token");
         var form_Data = new FormData();
 
@@ -883,6 +890,8 @@ var service_feliix = new Vue({
                     icon: "warning",
                     confirmButtonText: "OK",
                 });
+            }).finally(() => {
+                _this.is_submit = false;
             });
     },
 
@@ -1129,6 +1138,8 @@ var service = new Vue({
         edit_servie_check2: false,
 
         schedule_Creator: "",
+
+        is_submit: false,
 
     },
 
@@ -2450,6 +2461,8 @@ var service = new Vue({
             var token = localStorage.getItem("token");
             var form_Data = new FormData();
 
+            if(this.is_submit == true) return;
+            this.is_submit = true;
         
             form_Data.append("jwt", token);
             form_Data.append("id", this.id);
@@ -2591,6 +2604,9 @@ var service = new Vue({
                         icon: "warning",
                         confirmButtonText: "OK",
                     });
+                })
+                .finally(function () {
+                    _this.is_submit = false;
                 });
         },
 
