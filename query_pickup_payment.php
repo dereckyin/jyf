@@ -56,7 +56,7 @@ header( 'location:index.php' );
     <link rel="stylesheet" type="text/css" href="css/ui.css"/>
     <link rel="stylesheet" type="text/css" href="css/case.css"/>
     <link rel="stylesheet" type="text/css" href="css/mediaquires.css"/>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/jquery-ui/1.12.1/jquery-ui.css">
 
     <style type="text/css">
         hr {
@@ -798,6 +798,9 @@ header( 'location:index.php' );
                                 Remark
                             </li>
                             <li>
+                                Small Receipt Number
+                            </li>
+                            <li>
                                 <cht>提貨日期</cht>
                                 Date Pickup
                             </li>
@@ -809,6 +812,9 @@ header( 'location:index.php' );
                                 <cht>補充說明</cht>
                                 Notes
                             </li>
+                            <li>
+                                Checker
+                            </li>
                         </ul>
 
                         <ul v-for="(item, j) in record">
@@ -819,9 +825,12 @@ header( 'location:index.php' );
                             <li>{{ item.quantity }}</li>
                             <li>{{ item.supplier }}</li>
                             <li>{{ item.remark }}</li>
+                            <li>{{ item.receipt_number }}</li>
                             <li>{{ item.org_pick_date }}</li>
                             <li>{{ item.pick_person }}</li>
                             <li>{{ item.pick_note }}</li>
+                            <li>{{ item.checker }}</li>
+                            
                         </ul>
 
                     </div>
@@ -1052,7 +1061,7 @@ header( 'location:index.php' );
 <script src="js/axios.min.js"></script>
 <script src="js/vue.js"></script>
 <script src="js/a076d05399.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="js/npm/sweetalert2@9.js"></script>
 <script type="text/javascript" src="js/query_pickup_payment.js" defer></script>
 
 
