@@ -1195,7 +1195,7 @@ function get_schedule_file($id)
     $table->addCell(8500, ['borderSize' => 6])->addText($project_relevant);
     
     $table->addRow();
-    $table->addCell(2000, ['borderSize' => 6])->addText("Installer needed:", array('bold' => true));
+    $table->addCell(2000, ['borderSize' => 6])->addText("Technician needed:", array('bold' => true));
 
     // CONCAT installer_needed and installer_needed_other and remove duplicate
     //$installer_needed_other = str_replace(" ", "", $installer_needed_other);
