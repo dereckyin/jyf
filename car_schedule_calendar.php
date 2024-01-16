@@ -876,7 +876,7 @@ try {
                 <div class="form-inline row" id="install">
                     <div class="col-2 align-self-center" style="text-align: center;">
 
-                        <label>Installer needed</label>
+                        <label>Technician needed</label>
                     </div>
 
                     <div class="col-10">
