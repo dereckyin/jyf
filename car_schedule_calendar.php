@@ -473,6 +473,10 @@ try {
         <span style="background-color: #F19DB4;"></span> : Toyota Rush
     </li>
 
+    <li>
+        <span style="background-color: #000000;"></span> : Innova
+    </li>
+
 </ul>
 
 
@@ -566,6 +570,7 @@ try {
                                 <option value="Traviz 2">Traviz 2</option>
                                 <option value="Traviz 3">Traviz 3</option>
                                 <option value="Toyota Rush">Toyota Rush</option>
+                                <option value="Innova">Innova</option>
                             </Select>
 
                         </div>
@@ -1039,6 +1044,7 @@ try {
                             <option value="Traviz 2">Traviz 2</option>
                             <option value="Traviz 3">Traviz 3</option>
                             <option value="Toyota Rush">Toyota Rush</option>
+                            <option value="Innova">Innova</option>
                         </Select>
 
                     </div>
@@ -1255,6 +1261,7 @@ try {
                                 <option value="Traviz 2">Traviz 2</option>
                                 <option value="Traviz 3">Traviz 3</option>
                                 <option value="Toyota Rush">Toyota Rush</option>
+                                <option value="Innova">Innova</option>
                             </Select>
 
                         </div>
@@ -1384,6 +1391,7 @@ try {
                             <option value="Traviz 2">Traviz 2</option>
                             <option value="Traviz 3">Traviz 3</option>
                             <option value="Toyota Rush">Toyota Rush</option>
+                            <option value="Innova">Innova</option>
                         </Select>
 
                     </div>

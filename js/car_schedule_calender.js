@@ -527,6 +527,8 @@ var service_feliix = new Vue({
                     gbcolor = "#1A17E8";
                     if(_this.car_use == "Toyota Rush")
                     gbcolor = "#F19DB4";
+                    if(_this.car_use == "Innova")
+                    gbcolor = "#000000";
                     if(_this.car_use == "")
                     gbcolor = "#141415";
 
@@ -640,6 +642,8 @@ var service_feliix = new Vue({
                     gbcolor = "#1A17E8";
                     if(_this.check_car_use == "Toyota Rush")
                     gbcolor = "#F19DB4";
+                    if(_this.check_car_use == "Innova")
+                    gbcolor = "#000000";
                     if(_this.check_car_use == "")
                     gbcolor = "#141415";
                     
@@ -766,6 +770,8 @@ var service_feliix = new Vue({
                         gbcolor = "#1A17E8";
                         if(_this.car_use == "Toyota Rush")
                         gbcolor = "#F19DB4";
+                        if(_this.car_use == "Innova")
+                        gbcolor = "#000000";
                         if(_this.car_use == "")
                         gbcolor = "#141415";
 
@@ -1311,6 +1317,8 @@ var service = new Vue({
                         gbcolor = "#1A17E8";
                         if(_this.car_use == "Toyota Rush")
                         gbcolor = "#F19DB4";
+                        if(_this.car_use == "Innova")
+                        gbcolor = "#000000";
                         if(_this.car_use == "")
                         gbcolor = "#141415";
 
@@ -1429,6 +1437,8 @@ var service = new Vue({
                         gbcolor = "#1A17E8";
                         if(_this.car_use == "Toyota Rush")
                         gbcolor = "#F19DB4";
+                        if(_this.car_use == "Innova")
+                        gbcolor = "#000000";
                         if(_this.car_use == "")
                         gbcolor = "#141415";
 
@@ -1676,6 +1686,8 @@ var service = new Vue({
                                     gbcolor = "#1A17E8";
                                     if(response.data[i].check1[0].car_use == "Toyota Rush")
                                     gbcolor = "#F19DB4";
+                                    if(response.data[i].check1[0].car_use == "Innova")
+                                    gbcolor = "#000000";
                                     if(response.data[i].check1[0].car_use == "")
                                     gbcolor = "#141415";
     
@@ -1697,6 +1709,8 @@ var service = new Vue({
                                     gbcolor = "#1A17E8";
                                     if(response.data[i].car_use == "Toyota Rush")
                                     gbcolor = "#F19DB4";
+                                    if(response.data[i].car_use == "Innova")
+                                    gbcolor = "#000000";
                                     if(response.data[i].car_use == "")
                                     gbcolor = "#141415";
     
@@ -1808,6 +1822,8 @@ var service = new Vue({
                     gbcolor = "#1A17E8";
                     if(_this.check_car_use == "Toyota Rush")
                     gbcolor = "#F19DB4";
+                    if(_this.check_car_use == "Innova")
+                    gbcolor = "#000000";
                     if(_this.check_car_use == "")
                     gbcolor = "#141415";
                     
@@ -2164,6 +2180,8 @@ var service = new Vue({
                         gbcolor = "#1A17E8";
                         if(_this.car_use == "Toyota Rush")
                         gbcolor = "#F19DB4";
+                        if(_this.car_use == "Innova")
+                        gbcolor = "#000000";
                         if(_this.car_use == "")
                         gbcolor = "#141415";
 
@@ -2333,6 +2351,8 @@ var service = new Vue({
                     gbcolor = "#1A17E8";
                     if(_this.car_use == "Toyota Rush")
                     gbcolor = "#F19DB4";
+                    if(_this.car_use == "Innova")
+                    gbcolor = "#000000";
                     if(_this.car_use == "")
                     gbcolor = "#141415";
                     
@@ -2513,6 +2533,8 @@ var service = new Vue({
                     gbcolor = "#1A17E8";
                     if(_this.car_use == "Toyota Rush")
                     gbcolor = "#F19DB4";
+                    if(_this.car_use == "Innova")
+                    gbcolor = "#000000";
                     if(_this.car_use == "")
                     gbcolor = "#141415";
                     
@@ -3572,6 +3594,8 @@ var app = new Vue({
                                 gbcolor = "#1A17E8";
                                 if(response.data[i].check1[0].car_use == "Toyota Rush")
                                 gbcolor = "#F19DB4";
+                                if(response.data[i].check1[0].car_use == "Innova")
+                                gbcolor = "#000000";
                                 if(response.data[i].check1[0].car_use == "")
                                 gbcolor = "#141415";
 
@@ -3593,6 +3617,8 @@ var app = new Vue({
                                 gbcolor = "#1A17E8";
                                 if(response.data[i].car_use == "Toyota Rush")
                                 gbcolor = "#F19DB4";
+                                if(response.data[i].car_use == "Innova")
+                                gbcolor = "#000000";
                                 if(response.data[i].car_use == "")
                                 gbcolor = "#141415";
 
