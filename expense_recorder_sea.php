@@ -373,18 +373,18 @@ try {
 
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;" v-model="sub_category">
-                                    <option>Car Registration - L300 2</option>
                                     <option>Car Registration - Avanza Grey</option>
                                     <option>Car Registration - Alphard</option>
-                                    <option>Car Registration - Innova Grey</option>
-                                    <option>Car Registration - Travis 1</option>
-                                    <option>Car Registration - Travis 2</option>
-                                    <option>Car Maintenance - L300 2</option>
+                                    <option>Car Registration - Traviz 1</option>
+                                    <option>Car Registration - Traviz 2</option>
+                                    <option>Car Registration - Traviz 3</option>
+                                    <option>Car Registration - Toyota Rush</option>
                                     <option>Car Maintenance - Avanza Grey</option>
                                     <option>Car Maintenance - Alphard</option>
-                                    <option>Car Maintenance - Innova Grey</option>
-                                    <option>Car Maintenance - Travis 1</option>
-                                    <option>Car Maintenance - Travis 2</option>
+                                    <option>Car Maintenance - Traviz 1</option>
+                                    <option>Car Maintenance - Traviz 2</option>
+                                    <option>Car Maintenance - Traviz 3</option>
+                                    <option>Car Maintenance - Toyota Rush</option>
                                     <option>Office Expenses</option>
                                     <option>Other</option>
                                     <option>Receipt</option>
@@ -634,22 +634,26 @@ try {
 
         <select style="width:10vw; margin-left:1vw;" v-if="select_category == 'Cash Expenses'"
                 v-model="select_sub_category">
-                <option>Car Registration - L300 2</option>
                 <option>Car Registration - Avanza Grey</option>
                 <option>Car Registration - Alphard</option>
-                <option>Car Registration - Innova Grey</option>
-                <option>Car Registration - Travis 1</option>
-                <option>Car Registration - Travis 2</option>
-                <option>Car Maintenance - L300 2</option>
+                <option>Car Registration - Traviz 1</option>
+                <option>Car Registration - Traviz 2</option>
+                <option>Car Registration - Traviz 3</option>
+                <option>Car Registration - Toyota Rush</option>
                 <option>Car Maintenance - Avanza Grey</option>
                 <option>Car Maintenance - Alphard</option>
-                <option>Car Maintenance - Innova Grey</option>
-                <option>Car Maintenance - Travis 1</option>
-                <option>Car Maintenance - Travis 2</option>
+                <option>Car Maintenance - Traviz 1</option>
+                <option>Car Maintenance - Traviz 2</option>
+                <option>Car Maintenance - Traviz 3</option>
+                <option>Car Maintenance - Toyota Rush</option>
                 <option>Office Expenses</option>
                 <option>Other</option>
                 <option>Receipt</option>
                 <option disabled>_______________________________</option>
+                <option>Car Registration - L300 2</option>
+                <option>Car Registration - Innova Grey</option>
+                <option>Car Maintenance - L300 2</option>
+                <option>Car Maintenance - Innova Grey</option>
                 <option>Food</option>
                 <option>Rice</option>
                 <option>Gas - L300 1</option>
@@ -663,10 +667,10 @@ try {
                 <option>Water Purified</option>
                 <option>Car Registration - L300 1</option>
                 <option>Car Registration - Innova Black</option>
-                <option>Car Registration - Travis</option>
+                <option>Car Registration - Traviz</option>
                 <option>Car Maintenance - L300 1</option>
                 <option>Car Maintenance - Innova Black</option>
-                <option>Car Maintenance - Travis</option>
+                <option>Car Maintenance - Traviz</option>
         </select>
         
         <input type="text" v-model="keyword" style="width:15vw; margin-left:1vw;" placeholder="Searching Keyword Here">

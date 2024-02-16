@@ -367,11 +367,12 @@ try {
 
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;"v-model="sub_category">
-                                    <option>Gas Rush</option>
+                                    <option>Gas - Toyota Rush</option>
                                     <option>Gas - Avanza Grey</option>
                                     <option>Gas - Alphard</option>
-                                    <option>Gas - Travis 1</option>
-                                    <option>Gas - Travis 2</option>
+                                    <option>Gas - Traviz 1</option>
+                                    <option>Gas - Traviz 2</option>
+                                    <option>Gas - Traviz 3</option>
                                     <option>Office Expenses</option>
                                     <option>Parking Fee</option>
                                     <option>Prepaid Load</option>
@@ -615,11 +616,12 @@ try {
         <select style="width:10vw; margin-left:1vw;" v-if="select_category != 'Cash on Hand' && select_category != 'All'"
                 v-model="select_sub_category">
                 <option value=''>All</option>
-                    <option>Gas Rush</option>
+                    <option>Gas - Toyota Rush</option>
                     <option>Gas - Avanza Grey</option>
                     <option>Gas - Alphard</option>
-                    <option>Gas - Travis 1</option>
-                    <option>Gas - Travis 2</option>
+                    <option>Gas - Traviz 1</option>
+                    <option>Gas - Traviz 2</option>
+                    <option>Gas - Traviz 3</option>
                     <option>Office Expenses</option>
                     <option>Parking Fee</option>
                     <option>Prepaid Load</option>
