@@ -66,9 +66,9 @@ try {
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/hierarchy-select.min.css" type="text/css">
     <link rel="stylesheet" href="css/vue-select.css" type="text/css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    <link rel="stylesheet" href="css/fontawesome/v5.7.0/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
+    <link href="css/bootstrap-select.min.css"
           rel="stylesheet">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
 
@@ -190,7 +190,7 @@ try {
     <script src="js/bootstrap.min.js"></script>
     <script src="js/hierarchy-select.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script src="js/bootstrap4-toggle@3.6.1/bootstrap4-toggle.min.js"></script>
 
 
 </head>
@@ -367,11 +367,12 @@ try {
 
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;"v-model="sub_category">
-                                    <option>Gas Rush</option>
+                                    <option>Gas - Toyota Rush</option>
                                     <option>Gas - Avanza Grey</option>
                                     <option>Gas - Alphard</option>
-                                    <option>Gas - Travis 1</option>
-                                    <option>Gas - Travis 2</option>
+                                    <option>Gas - Traviz 1</option>
+                                    <option>Gas - Traviz 2</option>
+                                    <option>Gas - Traviz 3</option>
                                     <option>Office Expenses</option>
                                     <option>Parking Fee</option>
                                     <option>Prepaid Load</option>
@@ -615,11 +616,12 @@ try {
         <select style="width:10vw; margin-left:1vw;" v-if="select_category != 'Cash on Hand' && select_category != 'All'"
                 v-model="select_sub_category">
                 <option value=''>All</option>
-                    <option>Gas Rush</option>
+                    <option>Gas - Toyota Rush</option>
                     <option>Gas - Avanza Grey</option>
                     <option>Gas - Alphard</option>
-                    <option>Gas - Travis 1</option>
-                    <option>Gas - Travis 2</option>
+                    <option>Gas - Traviz 1</option>
+                    <option>Gas - Traviz 2</option>
+                    <option>Gas - Traviz 3</option>
                     <option>Office Expenses</option>
                     <option>Parking Fee</option>
                     <option>Prepaid Load</option>
@@ -2120,16 +2122,16 @@ try {
 
 
 </body>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+<script src="js/npm/vue/dist/vue.js"></script>
+<script src="js/npm/exif-js.js"></script>
 <!-- <script src="https://cdn.bootcss.com/moment.js/2.21.0/moment.js"></script> -->
 <script src="js/vue-select.js"></script>
 <script src="js/axios.min.js"></script> 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="js/npm/sweetalert2@9.js"></script>
 <script src="js/a076d05399.js"></script> 
-<script src="//unpkg.com/vue-i18n/dist/vue-i18n.js"></script>
-<script src="//unpkg.com/element-ui"></script>
-<script src="//unpkg.com/element-ui/lib/umd/locale/en.js"></script>
+<script src="js/vue-i18n/vue-i18n.global.min.js"></script>
+<script src="js/element-ui@2.15.14/index.js"></script>
+<script src="js/element-ui@2.15.14/en.js"></script>
 
 <script>
 
@@ -2153,7 +2155,7 @@ $(document).ready(function(){
 </script>
 
 <!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="js/element-ui@2.15.14/lib/index.js"></script>
 <script defer src="js/add_or_edit_price_record_sea_v2.js"></script>
 
 </html>
