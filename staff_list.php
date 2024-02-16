@@ -127,8 +127,8 @@ try {
     <!-- Bootstrap  -->
     <script src="js/bootstrap/popper.min.js"></script>
     <script src="js/bootstrap/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="js/npm/vue/dist/vue.js"></script>
+    <script src="js/npm/sweetalert2@9.js"></script>
     <script src="js/axios.min.js"></script>
     <script type="text/javascript" src="js/staff_list.js" defer></script>
 

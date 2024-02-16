@@ -50,9 +50,9 @@ try {
     <meta name="viewport" content="width=device-width, min-width=900, user-scalable=0, viewport-fit=cover"/>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="css/jquery-ui/1.12.1/jquery-ui.css">
+    <link rel="stylesheet" href="css/bootstrap/4.3.1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/datatables/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="js/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/default.css"/>
     <link rel="stylesheet" type="text/css" href="css/ui.css"/>
@@ -541,13 +541,13 @@ try {
 </div>
 <!-- The Modal -->
 <!-- Bootstrap  -->
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/npm/vue/dist/vue.js"></script>
 <script src="js/axios.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="js/jquery/1.12.4/jquery-1.12.4.js"></script>
+<script src="js/jquery/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="js/datatables/datatables.min.js"></script>
+<script src="js/npm/sweetalert2@9.js"></script>
+<script src="js/jquery/validate/jquery.validate.js"></script>
 <script type="text/javascript" src="js/send_email.js" defer></script>
 <script defer src="js/a076d05399.js"></script>
 </body>

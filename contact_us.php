@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, min-width=900, user-scalable=0, viewport-fit=cover"/>
 
 <!-- CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap/4.3.1/bootstrap.min.css">
 
 <link rel="stylesheet" type="text/css" href="css/default.css"/>
 <link rel="stylesheet" type="text/css" href="css/ui.css"/>
@@ -147,10 +147,10 @@ $(function(){
 </div>
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script> 
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script> 
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+<script src="js/npm/vue/dist/vue.js"></script> 
+<script src="js/axios/0.19.2/axios.js"></script> 
+<script src="js/jquery/1.12.4/jquery-1.12.4.js"></script> 
+<script src="js/jquery/ui/1.12.1/jquery-ui.js"></script> 
 <script type="text/javascript" src="js/contactus.js" defer></script> 
 
 

@@ -12,7 +12,7 @@
 <link rel="stylesheet" type="text/css" href="css/ui.css"/>
 <link rel="stylesheet" type="text/css" href="css/case.css"/>
 <link rel="stylesheet" type="text/css" href="css/mediaquires.css"/>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="css/jquery-ui/1.12.1/jquery-ui.css">
 
 <style type="text/css">
   hr {
@@ -216,11 +216,11 @@ $(function(){
 <!-- Bootstrap  -->
 <script src="js/bootstrap/popper.min.js"></script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> 
+<script src="js/npm/vue/dist/vue.js"></script> 
 <script src="js/axios.min.js"></script> 
 <script type="text/javascript" src="js/measure.js" defer></script> 
 
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+<script src="js/jquery/ui/1.12.1/jquery-ui.js"></script> 
 
 </body>
 </html>
