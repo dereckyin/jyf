@@ -172,9 +172,16 @@ var app = new Vue({
     methods: {
       B_change_C: function(){
         let row = this.group_b;
-        nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
+        
+        if(row.kilo_price == "" && row.kilo <= 45)
+            nkilo = 2000;
+        else
+            nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
 
-        ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
+        if(row.cuft_price == "" && row.cuft <= 4.5)
+            ncuft = 2000;
+        else
+            ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
         
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
@@ -183,9 +190,15 @@ var app = new Vue({
 
     B_change_D: function(){
       let row = this.group_b;
-        nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
+      if(row.kilo_price == "" && row.kilo <= 45)
+          nkilo = 2000;
+      else
+          nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
 
-        ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
+      if(row.cuft_price == "" && row.cuft <= 4.5)
+          ncuft = 2000;
+      else
+          ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
         
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
@@ -194,20 +207,39 @@ var app = new Vue({
 
       B_change_A: function(){
         let row = this.group_b;
-        nkilo = ((row.kilo == "" ? 0 : row.kilo) < 3000 ? 36.5 : 34.5) * (row.kilo == "" ? 0 : row.kilo);
+
+        // kilo <= 45 nkilo = 2000, kilo > 45 nkilo = kilo * 45, kilo > 300 nkilo = kilo * 42, kilo > 1000 nkilo = kilo * 40, kilo > 3000 nkilo = kilo * 38.5
+        nkilo = 0;
+        if(row.kilo != "")
+        {
+          if(row.kilo <= 45)
+              nkilo = 2000;
+          if(row.kilo > 45)
+              nkilo = 45 * row.kilo;
+          if(row.kilo >= 300)
+              nkilo = 42 * row.kilo;
+          if(row.kilo >= 1000)
+              nkilo = 40 * row.kilo;
+          if(row.kilo >= 3000)
+              nkilo = 38.5 * row.kilo;
+        }
         ncuft = (row.cuft == "" ? 0 : row.cuft)  * (row.cuft_price == "" ? 0 : row.cuft_price);
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
-        if(row.kilo != "")
-        {
-            num = parseFloat(row.kilo == "" ? 0 : row.kilo);
-            row.kilo_price = (num < 3000 ? 36.5 : 34.5).toLocaleString('en-US', {maximumFractionDigits:2});  
-        }
+        kilo_price = "";
+        if(row.kilo > 45)
+            kilo_price = 45;
+        if(row.kilo >= 300)
+            kilo_price = 42;
+        if(row.kilo >= 1000)
+            kilo_price = 40;
+        if(row.kilo >= 3000)
+            kilo_price = 38.5;
 
-        if(row.kilo == "")
-        {
-            row.kilo_price = "";  
-        }
+        if(kilo_price != "")
+            row.kilo_price = kilo_price.toLocaleString('en-US', {maximumFractionDigits:2});  
+        else
+            row.kilo_price = "";
 
         if(row.cuft == "" && row.cuft_price == "" && row.kilo == "" && row.kilo_price == "")
             row.charge = "";
@@ -218,20 +250,37 @@ var app = new Vue({
     B_change_B: function(){
       let row = this.group_b;
         nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
-        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 385 : 365) * (row.cuft == "" ? 0 : row.cuft);
+  
+        ncuft = 0;
+        if(row.cuft != "")
+        {
+          if(row.cuft > 4.5)
+              ncuft = 450 * row.cuft;
+          if(row.cuft >= 30)
+              ncuft = 430 * row.cuft;
+          if(row.cuft >= 100)
+              ncuft = 410 * row.cuft;
+          if(row.cuft >= 300)
+              ncuft = 395 * row.cuft;
+        }
       
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
-        if(row.cuft != "")
-        {
-            num = parseFloat(row.cuft == "" ? 0 : row.cuft);
-            row.cuft_price = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
-        }
+        cuft_price = "";
+        if(row.cuft > 4.5)
+            cuft_price = 450;
+        if(row.cuft >= 30)
+            cuft_price = 430;
+        if(row.cuft >= 100)
+            cuft_price = 410;
+        if(row.cuft >= 300)
+            cuft_price = 395;
 
-        if(row.cuft == "")
-        {
-            row.cuft_price = "";  
-        }
+        if(cuft_price != "")
+            row.cuft_price = cuft_price.toLocaleString('en-US', {maximumFractionDigits:2});
+        else
+            row.cuft_price = "";
+
 
         if(row.cuft == "" && row.cuft_price == "" && row.kilo == "" && row.kilo_price == "")
             row.charge = "";
@@ -241,9 +290,15 @@ var app = new Vue({
 
       A_change_C: function(){
         let row = this.group_a;
-        nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
+        if(row.kilo_price == "" && row.kilo <= 45)
+            nkilo = 2000;
+        else
+            nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
 
-        ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
+        if(row.cuft_price == "" && row.cuft <= 4.5)
+            ncuft = 2000;
+        else
+            ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
         
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
@@ -252,9 +307,15 @@ var app = new Vue({
 
     A_change_D: function(){
       let row = this.group_a;
-        nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
+      if(row.kilo_price == "" && row.kilo <= 45)
+          nkilo = 2000;
+      else
+          nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
 
-        ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
+      if(row.cuft_price == "" && row.cuft <= 4.5)
+          ncuft = 2000;
+      else
+          ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
         
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
@@ -263,20 +324,39 @@ var app = new Vue({
 
       A_change_A: function(){
         let row = this.group_a;
-        nkilo = ((row.kilo == "" ? 0 : row.kilo) < 3000 ? 36.5 : 34.5) * (row.kilo == "" ? 0 : row.kilo);
+        // kilo <= 45 nkilo = 2000, kilo > 45 nkilo = kilo * 45, kilo > 300 nkilo = kilo * 42, kilo > 1000 nkilo = kilo * 40, kilo > 3000 nkilo = kilo * 38.5
+        nkilo = 0;
+        if(row.kilo != "")
+        {
+          if(row.kilo <= 45)
+              nkilo = 2000;
+          if(row.kilo > 45)
+              nkilo = 45 * row.kilo;
+          if(row.kilo >= 300)
+              nkilo = 42 * row.kilo;
+          if(row.kilo >= 1000)
+              nkilo = 40 * row.kilo;
+          if(row.kilo >= 3000)
+              nkilo = 38.5 * row.kilo;
+        }
+
         ncuft = (row.cuft == "" ? 0 : row.cuft)  * (row.cuft_price == "" ? 0 : row.cuft_price);
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
-        if(row.kilo != "")
-        {
-            num = parseFloat(row.kilo == "" ? 0 : row.kilo);
-            row.kilo_price = (num < 3000 ? 36.5 : 34.5).toLocaleString('en-US', {maximumFractionDigits:2});  
-        }
+        kilo_price = "";
+        if(row.kilo > 45)
+            kilo_price = 45;
+        if(row.kilo >= 300)
+            kilo_price = 42;
+        if(row.kilo >= 1000)
+            kilo_price = 40;
+        if(row.kilo >= 3000)
+            kilo_price = 38.5;
 
-        if(row.kilo == "")
-        {
-            row.kilo_price = "";  
-        }
+        if(kilo_price != "")
+            row.kilo_price = kilo_price.toLocaleString('en-US', {maximumFractionDigits:2});  
+        else
+            row.kilo_price = "";
 
         if(row.cuft == "" && row.cuft_price == "" && row.kilo == "" && row.kilo_price == "")
             row.charge = "";
@@ -287,20 +367,37 @@ var app = new Vue({
     A_change_B: function(){
       let row = this.group_a;
         nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
-        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 385 : 365) * (row.cuft == "" ? 0 : row.cuft);
+
+        ncuft = 0;
+        if(row.cuft != "")
+        {
+          if(row.cuft > 4.5)
+              ncuft = 450 * row.cuft;
+          if(row.cuft >= 30)
+              ncuft = 430 * row.cuft;
+          if(row.cuft >= 100)
+              ncuft = 410 * row.cuft;
+          if(row.cuft >= 300)
+              ncuft = 395 * row.cuft;
+        }
+
+        cuft_price = "";
+        if(row.cuft > 4.5)
+            cuft_price = 450;
+        if(row.cuft >= 30)
+            cuft_price = 430;
+        if(row.cuft >= 100)
+            cuft_price = 410;
+        if(row.cuft >= 300)
+            cuft_price = 395;
       
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
-        if(row.cuft != "")
-        {
-            num = parseFloat(row.cuft == "" ? 0 : row.cuft);
-            row.cuft_price = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
-        }
+        if(cuft_price != "")
+            row.cuft_price = cuft_price.toLocaleString('en-US', {maximumFractionDigits:2});
+        else
+            row.cuft_price = "";
 
-        if(row.cuft == "")
-        {
-            row.cuft_price = "";  
-        }
 
         if(row.cuft == "" && row.cuft_price == "" && row.kilo == "" && row.kilo_price == "")
             row.charge = "";
@@ -310,9 +407,16 @@ var app = new Vue({
 
       change_C: function(){
         let row = this.measure_to_edit;
-        nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
+        
+        if(row.kilo_price == "" && row.kilo <= 45)
+            nkilo = 2000;
+        else
+            nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
 
-        ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
+        if(row.cuft_price == "" && row.cuft <= 4.5)
+            ncuft = 2000;
+        else
+            ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
         
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
@@ -321,9 +425,16 @@ var app = new Vue({
 
     change_D: function(){
       let row = this.measure_to_edit;
-        nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
+        
+      if(row.kilo_price == "" && row.kilo <= 45)
+            nkilo = 2000;
+        else
+            nkilo = (row.kilo_price == "" ? 0 : row.kilo_price) * (row.kilo == "" ? 0 : row.kilo);
 
-        ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
+        if(row.cuft_price == "" && row.cuft <= 4.5)
+            ncuft = 2000;
+        else
+            ncuft = (row.cuft_price == "" ? 0 : row.cuft_price) * (row.cuft == "" ? 0 : row.cuft);
         
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
@@ -332,20 +443,37 @@ var app = new Vue({
 
       change_A: function(){
         let row = this.measure_to_edit;
-        nkilo = ((row.kilo == "" ? 0 : row.kilo) < 3000 ? 36.5 : 34.5) * (row.kilo == "" ? 0 : row.kilo);
+        nkilo = 0;
+        if(row.kilo != "")
+        {
+          if(row.kilo <= 45)
+              nkilo = 2000;
+          if(row.kilo > 45)
+              nkilo = 45 * row.kilo;
+          if(row.kilo >= 300)
+              nkilo = 42 * row.kilo;
+          if(row.kilo >= 1000)
+              nkilo = 40 * row.kilo;
+          if(row.kilo >= 3000)
+              nkilo = 38.5 * row.kilo;
+        }
         ncuft = (row.cuft == "" ? 0 : row.cuft)  * (row.cuft_price == "" ? 0 : row.cuft_price);
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
-        if(row.kilo != "")
-        {
-            num = parseFloat(row.kilo == "" ? 0 : row.kilo);
-            row.kilo_price = (num < 3000 ? 36.5 : 34.5).toLocaleString('en-US', {maximumFractionDigits:2});  
-        }
+        kilo_price = "";
+        if(row.kilo > 45)
+            kilo_price = 45;
+        if(row.kilo >= 300)
+            kilo_price = 42;
+        if(row.kilo >= 1000)
+            kilo_price = 40;
+        if(row.kilo >= 3000)
+            kilo_price = 38.5;
 
-        if(row.kilo == "")
-        {
-            row.kilo_price = "";  
-        }
+        if(kilo_price != "")
+            row.kilo_price = kilo_price.toLocaleString('en-US', {maximumFractionDigits:2});  
+        else
+            row.kilo_price = "";
 
         if(row.cuft == "" && row.cuft_price == "" && row.kilo == "" && row.kilo_price == "")
             row.charge = "";
@@ -356,20 +484,35 @@ var app = new Vue({
     change_B: function(){
       let row = this.measure_to_edit;
         nkilo = (row.kilo == "" ? 0 : row.kilo)  * (row.kilo_price == "" ? 0 : row.kilo_price);
-        ncuft = ((row.cuft == "" ? 0 : row.cuft) < 300 ? 385 : 365) * (row.cuft == "" ? 0 : row.cuft);
+        ncuft = 0;
+        if(row.cuft != "")
+        {
+          if(row.cuft > 4.5)
+              ncuft = 450 * row.cuft;
+          if(row.cuft >= 30)
+              ncuft = 430 * row.cuft;
+          if(row.cuft >= 100)
+              ncuft = 410 * row.cuft;
+          if(row.cuft >= 300)
+              ncuft = 395 * row.cuft;
+        }
       
         row.charge = (ncuft > nkilo) ? ncuft.toFixed(2) : nkilo.toFixed(2);
 
-        if(row.cuft != "")
-        {
-            num = parseFloat(row.cuft == "" ? 0 : row.cuft);
-            row.cuft_price = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
-        }
+        cuft_price = "";
+        if(row.cuft > 4.5)
+            cuft_price = 450;
+        if(row.cuft >= 30)
+            cuft_price = 430;
+        if(row.cuft >= 100)
+            cuft_price = 410;
+        if(row.cuft >= 300)
+            cuft_price = 395;
 
-        if(row.cuft == "")
-        {
-            row.cuft_price = "";  
-        }
+        if(cuft_price != "")
+            row.cuft_price = cuft_price.toLocaleString('en-US', {maximumFractionDigits:2});
+        else
+            row.cuft_price = "";
 
         if(row.cuft == "" && row.cuft_price == "" && row.kilo == "" && row.kilo_price == "")
             row.charge = "";
@@ -767,7 +910,18 @@ var app = new Vue({
                 else
                 {
                   num = parseFloat(this.receive_records[i]['kilo'] == "" ? 0 : this.receive_records[i]['kilo']);
-                  this.receive_records[i]['kilo_price'] = (num < 3000 ? 36.5 : 34.5).toLocaleString('en-US', {maximumFractionDigits:2});  
+
+                  kilo_price = "";
+                if(num > 45)
+                    kilo_price = 45;
+                if(num >= 300)
+                    kilo_price = 42;
+                if(num >= 1000)
+                    kilo_price = 40;
+                if(num >= 3000)
+                    kilo_price = 38.5;
+                  
+                  this.receive_records[i]['kilo_price'] = (kilo_price == "" ? "" : kilo_price.toLocaleString('en-US', {maximumFractionDigits:2}));  
                 }
               }
         },
@@ -783,7 +937,19 @@ var app = new Vue({
                 else
                 {
                   num = parseFloat(this.receive_records[i]['cuft'] == "" ? 0 : this.receive_records[i]['cuft']);
-                  this.receive_records[i]['cuft_price'] = (num < 300 ? 385 : 365).toLocaleString('en-US', {maximumFractionDigits:2});  
+
+                  cuft_price = "";
+                  if(num > 4.5)
+                      cuft_price = 450;
+                  if(num >= 30)
+                      cuft_price = 430;
+                  if(num >= 100)
+                      cuft_price = 410;
+                  if(num >= 300)
+                      cuft_price = 395;
+
+                      
+                  this.receive_records[i]['cuft_price'] = (cuft_price == "" ? "" : cuft_price.toLocaleString('en-US', {maximumFractionDigits:2}));  
                 }
               }
         },
@@ -1347,11 +1513,54 @@ var app = new Vue({
           kilo_price = 0;
           cuft_price = 0;
 
-          item.kilo_price !== "" ? kilo_price = item.kilo_price : kilo_price = (item.kilo < 3000 ? 36.5 : 34.5);
-          item.cuft_price !== "" ? cuft_price = item.cuft_price : cuft_price = (item.cuft < 300 ? 385 : 365);
+          if(item.kilo_price !== "")
+            kilo_price = item.kilo_price;
+          else
+          {
+            if(item.kilo > 45)
+                kilo_price = 45;
+            if(item.kilo > 300)
+                kilo_price = 42;
+            if(item.kilo >= 1000)
+                kilo_price = 40;
+            if(item.kilo >= 3000)
+                kilo_price = 38.5;
+          }
 
-          nkilo = kilo_price * (item.kilo == "" ? 0 : item.kilo);
-          ncuft = cuft_price * (item.cuft == "" ? 0 : item.cuft);
+          if(item.cuft_price !== "")
+            cuft_price = item.cuft_price;
+          else
+          {
+            if(item.cuft > 4.5)
+                cuft_price = 450;
+            if(item.cuft > 30)
+                cuft_price = 430;
+            if(item.cuft >= 100)
+                cuft_price = 410;
+            if(item.cuft >= 300)
+                cuft_price = 395;
+          }
+
+          nkilo = 2000;
+          if(item.kilo > 45)
+              nkilo = 45 * item.kilo;
+          if(item.kilo > 300)
+              nkilo = 42 * item.kilo;
+          if(item.kilo >= 1000)
+              nkilo = 40 * item.kilo;
+          if(item.kilo >= 3000)
+              nkilo = 38.5 * item.kilo;
+
+          ncuft = 2000;
+            if(item.cuft > 4.5)
+                ncuft = 450 * item.cuft;
+            if(item.cuft > 30)
+                ncuft = 430 * item.cuft;
+            if(item.cuft >= 100)
+                ncuft = 410 * item.cuft;
+            if(item.cuft >= 300)
+                ncuft = 395 * item.cuft;
+
           charge = (ncuft > nkilo) ? Number(item.cuft).toFixed(2) + ' cuft @ ₱ ' + Number(item.cuft_price).toFixed(2) : Number(item.kilo).toFixed(2) + ' kilo @ ₱ ' + Number(item.kilo_price).toFixed(2);
           this.exp_discription = charge;
 
