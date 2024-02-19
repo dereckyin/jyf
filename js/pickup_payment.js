@@ -227,6 +227,8 @@ var app = new Vue({
         ncuft = 0;
         if(row.cuft != "")
         {
+          if(row.cuft <= 4.5)
+              ncuft = 2000;
           if(row.cuft > 4.5)
               ncuft = 450 * row.cuft;
           if(row.cuft >= 30)
@@ -344,6 +346,8 @@ var app = new Vue({
         ncuft = 0;
         if(row.cuft != "")
         {
+          if(row.cuft <= 4.5)
+              ncuft = 2000;
           if(row.cuft > 4.5)
               ncuft = 450 * row.cuft;
           if(row.cuft >= 30)
@@ -460,6 +464,8 @@ var app = new Vue({
         ncuft = 0;
         if(row.cuft != "")
         {
+          if(row.cuft <= 4.5)
+              ncuft = 2000;
           if(row.cuft > 4.5)
               ncuft = 450 * row.cuft;
           if(row.cuft >= 30)
