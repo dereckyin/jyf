@@ -570,7 +570,7 @@ try {
                                 <option value="Traviz 2">Traviz 2</option>
                                 <option value="Traviz 3">Traviz 3</option>
                                 <option value="Toyota Rush">Toyota Rush</option>
-                                <option value="Innova">Innova</option>
+                                <option value="Innova" disabled>Innova -- Temporarily Disabled</option>
                             </Select>
 
                         </div>
@@ -1044,7 +1044,7 @@ try {
                             <option value="Traviz 2">Traviz 2</option>
                             <option value="Traviz 3">Traviz 3</option>
                             <option value="Toyota Rush">Toyota Rush</option>
-                            <option value="Innova">Innova</option>
+                            <option value="Innova" disabled>Innova -- Temporarily Disabled</option>
                         </Select>
 
                     </div>
@@ -1261,7 +1261,7 @@ try {
                                 <option value="Traviz 2">Traviz 2</option>
                                 <option value="Traviz 3">Traviz 3</option>
                                 <option value="Toyota Rush">Toyota Rush</option>
-                                <option value="Innova">Innova</option>
+                                <option value="Innova" disabled>Innova -- Temporarily Disabled</option>
                             </Select>
 
                         </div>
@@ -1391,7 +1391,7 @@ try {
                             <option value="Traviz 2">Traviz 2</option>
                             <option value="Traviz 3">Traviz 3</option>
                             <option value="Toyota Rush">Toyota Rush</option>
-                            <option value="Innova">Innova</option>
+                            <option value="Innova" disabled>Innova -- Temporarily Disabled</option>
                         </Select>
 
                     </div>
