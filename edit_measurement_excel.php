@@ -231,8 +231,28 @@ foreach ($result as $measure)
         $sheet->setCellValue('E' . $i, $rec["quantity"]);
         $sheet->setCellValue('F' . $i, $measure["kilo"]);
         $sheet->setCellValue('G' . $i, $measure["cuft"]);
-        $sheet->setCellValue('H' . $i, $measure["kilo"] == "" ? "" : ($measure["kilo"] < 3000 ? 36.5 : 34.5));
-        $sheet->setCellValue('I' . $i, $measure["cuft"] == "" ? "" : ($measure["cuft"] < 300 ? 385 : 365));
+        
+        $kilo_price = "";
+        if($measure["kilo"] > 45)
+            $kilo_price = 45;
+        if($measure["kilo"] >= 300)
+            $kilo_price = 42;
+        if($measure["kilo"] >= 1000)
+            $kilo_price = 40;
+        if($measure["kilo"] >= 3000)
+            $kilo_price = 38.5;
+        $sheet->setCellValue('H' . $i, $measure["kilo"] == "" ? "" : $kilo_price);
+
+        $cuft_price = "";
+        if($measure["cuft"] > 4.5)
+            $cuft_price = 450;
+        if($measure["cuft"] >= 30)
+            $cuft_price = 430;
+        if($measure["cuft"] >= 100)
+            $cuft_price = 410;
+        if($measure["cuft"] >= 300)
+            $cuft_price = 395;
+        $sheet->setCellValue('I' . $i, $measure["cuft"] == "" ? "" : $cuft_price);
         $sheet->setCellValue('J' . $i, $measure["charge"]);
         $sheet->setCellValue('K' . $i, $rec["supplier"]);
         $sheet->setCellValue('L' . $i, $rec["remark"]);
