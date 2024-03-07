@@ -1567,7 +1567,16 @@ var app = new Vue({
             if(item.cuft >= 300)
                 ncuft = 395 * item.cuft;
 
-          charge = (ncuft > nkilo) ? Number(item.cuft).toFixed(2) + ' cuft @ ₱ ' + Number(item.cuft_price).toFixed(2) : Number(item.kilo).toFixed(2) + ' kilo @ ₱ ' + Number(item.kilo_price).toFixed(2);
+                // charge = Number(item.cuft).toFixed(2) + ' cuft @ ₱ ' + Number(item.cuft_price).toFixed(2);
+
+                // if(item.kilo * item.kilo_price == item.charge)
+                //   charge = Number(item.kilo).toFixed(2) + ' kilo @ ₱ ' + Number(item.kilo_price).toFixed(2);
+          if(Math.abs(item.charge - item.kilo * item.kilo_price) >= Math.abs(item.charge - item.cuft * item.cuft_price))
+            charge = Number(item.cuft).toFixed(2) + ' cuft @ ₱ ' + Number(item.cuft_price).toFixed(2);
+          else
+            charge = Number(item.kilo).toFixed(2) + ' kilo @ ₱ ' + Number(item.kilo_price).toFixed(2);
+
+         // charge = (ncuft > nkilo) ? Number(item.cuft).toFixed(2) + ' cuft @ ₱ ' + Number(item.cuft_price).toFixed(2) : Number(item.kilo).toFixed(2) + ' kilo @ ₱ ' + Number(item.kilo_price).toFixed(2);
           this.exp_discription = charge;
 
           this.exp_discription_org = charge;
