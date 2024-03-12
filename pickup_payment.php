@@ -426,7 +426,8 @@ header( 'location:index.php' );
                 </div>
 
                 <div v-show="filter == '' || filter == 'D'">
-           
+                    <input type="date" v-model="search_date">
+         
                     <input type="text" v-model="search" placeholder="Search for DR" style="width: 160px; margin-right: 10px;">
                     <button @click="getMeasures('search')">Search</button>
                 </div>

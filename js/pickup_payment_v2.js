@@ -78,6 +78,7 @@ let mainState = {
     submit : false,
 
     search: "",
+    search_date: "",
 
     payment_measure : [],
 
@@ -2098,12 +2099,26 @@ var app = new Vue({
             let _this = this;
 
             if(search !== 'search')
+            {
               this.search = "";
+              this.search_date = "";
+            }
 
             if(this.filter == "D"  || this.filter == '')
             {
+
+              if(this.search_date != "" && this.search != "")
+              {
+                  Swal.fire({
+                    title: 'Warning',
+                    text: 'User is only allowed to input either date or DR # to proceed the action of searching.',
+                    type: 'warning',
+                    confirmButtonText: 'OK'
+                });
+                return;
+              }
               
-              axios.get('api/pickup_get_records_page.php?keyword=' + this.filter + '&page=' + this.page + '&size=' + this.perPage.id + '&search=' + this.search + '&container=' + this.container)
+              axios.get('api/pickup_get_records_page.php?keyword=' + this.filter + '&page=' + this.page + '&size=' + this.perPage.id + '&search=' + this.search + '&search_date=' + this.search_date + '&container=' + this.container)
                 .then(function(response) {
                     console.log(response.data);
                     _this.receive_records = response.data;
