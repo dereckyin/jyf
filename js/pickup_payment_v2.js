@@ -132,7 +132,7 @@ var app = new Vue({
 
       page() {
         if(this.filter == 'D' || this.filter == ''){
-          this.getMeasures();
+          this.getMeasures('search');
         }
       }
     },
