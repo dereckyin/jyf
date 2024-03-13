@@ -29,7 +29,10 @@ $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 $keyword = (isset($_GET['keyword']) ? $_GET['keyword'] : "");
 $search = (isset($_GET['search']) ? $_GET['search'] : "");
+$search_date = (isset($_GET['search_date']) ? $_GET['search_date'] : "");
 $container = (isset($_GET['container']) ? $_GET['container'] : "");
+
+$search_date = str_replace('/', '-', $search_date);
 
 // if jwt is not empty
 if($jwt){
@@ -40,8 +43,9 @@ if($jwt){
 
         // get data with group_id first
         $query = "
-            SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
+            SELECT distinct pick_group.id, pick_group.group_id, pick_group.measure_detail_id
                 FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
+                left join payment on payment.detail_id = pick_group.measure_detail_id
             WHERE  group_id <> 0 and pick_group.status = 0 and group_id IN (
             
                 select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id left join loading  on loading.measure_num = measure_detail.measure_id
@@ -62,8 +66,22 @@ if($jwt){
         if($search != '')
             $query .= " AND (measure_detail.encode = '$search' ) ";
 
+        if($search_date != '')
+            $query .= " AND (payment.payment_date = '$search_date' ) ";
+
         if($container != '')
             $query .= " AND (trim(loading.container_number) = '$container' ) ";
+
+        if($search_date != '')
+        {
+            $query .= " union
+            select group_id FROM pick_group 
+            LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id 
+            left join measure_record_detail on measure_record_detail.detail_id = measure_detail.id
+            left join receive_record on receive_record.id = measure_record_detail.record_id
+            WHERE group_id <> 0 and pick_group.status = 0 and receive_record.pick_date = '$search_date' ";
+        }
+
 
         $query .= ") order by group_id desc";
 
@@ -79,8 +97,11 @@ if($jwt){
         
         // get data without group_id 
         $query = "
-            SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
-                FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id left join loading  on loading.measure_num = measure_detail.measure_id
+            SELECT distinct pick_group.id, pick_group.group_id, pick_group.measure_detail_id
+                FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id left join loading  on loading.measure_num = measure_detail.measure_id 
+                left join payment on payment.detail_id = measure_detail.id
+                left join measure_record_detail on measure_record_detail.detail_id = measure_detail.id
+                left join receive_record on receive_record.id = measure_record_detail.record_id
             WHERE  group_id = 0 and pick_group.status = 0 ";
 
         if($keyword == 'N')
@@ -97,6 +118,9 @@ if($jwt){
 
         if($search != '')
             $query .= " AND (measure_detail.encode = '$search' ) ";
+
+        if($search_date != '')
+            $query .= " AND (payment.payment_date = '$search_date' or receive_record.pick_date = '$search_date') ";
 
         if($container != '')
             $query .= " AND (trim(loading.container_number) = '$container' ) ";
@@ -292,7 +316,11 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
 (SELECT GROUP_CONCAT(container_number separator ', ') FROM loading WHERE loading.measure_num = measure_detail.measure_id) container_number, days, way, kilo_unit, kilo_amount, kilo_remark, cuft_unit, cuft_amount, cuft_remark
                 FROM measure_detail
          
-            WHERE  measure_detail.id = " . $measure_detail_id . "
+            WHERE  measure_detail.id = " . $measure_detail_id . " ";
+
+
+
+    $query .= "
 
             AND measure_detail.`status` = ''
   
