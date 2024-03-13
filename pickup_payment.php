@@ -284,6 +284,16 @@ header( 'location:index.php' );
             align-items: center;
         }
 
+        div.block > .listheader input[type='date'] {
+            order: 1px solid #999;
+            border-radius: 5px;
+            background-color: #fff;
+            padding: 5px;
+            vertical-align: middle;
+            width: 160px;
+            margin-right: 10px;
+        }
+
         #export_modal .tablebox.s02 textarea{
             height: auto;
         }
