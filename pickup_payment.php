@@ -285,7 +285,7 @@ header( 'location:index.php' );
         }
 
         div.block > .listheader input[type='date'] {
-            order: 1px solid #999;
+            border: 1px solid #999;
             border-radius: 5px;
             background-color: #fff;
             padding: 5px;
