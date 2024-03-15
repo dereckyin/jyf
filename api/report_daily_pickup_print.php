@@ -122,6 +122,13 @@ if($jwt){
                     "error" => $e->getMessage()
                 ));
             }
+
+            $right_style = array(
+                'alignment' => array(
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+                    'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                )
+            );
             
             // response in json format
             $styleArray = array(
@@ -163,6 +170,7 @@ if($jwt){
                         if($i > 2)
                         {
                             $sheet->mergeCells('A' . $a . ':A' . ($i -1));
+                            $sheet->getStyle('A' . $a . ':A' . ($i -1))->applyFromArray($right_style);
                         }
                         $a = $i;
                     }
@@ -172,6 +180,7 @@ if($jwt){
                         if($i > 2)
                         {
                             $sheet->mergeCells('B' . $b . ':B' . ($i -1));
+                            $sheet->getStyle('B' . $b . ':B' . ($i -1))->applyFromArray($right_style);
                         }
                         $b = $i;
                     }
