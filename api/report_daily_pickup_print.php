@@ -60,12 +60,12 @@ if($jwt){
                     
                 $merged_results = array();
 
-                $query = "select distinct pick_date, measure_detail.customer, encode, 0 customer_count, 0 encode_count  FROM pick_group 
+                $query = "select distinct pick_date, TRIM(measure_detail.customer) customer, encode, 0 customer_count, 0 encode_count  FROM pick_group 
                 LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id 
                 left join measure_record_detail on measure_record_detail.detail_id = measure_detail.id
                 left join receive_record on receive_record.id = measure_record_detail.record_id
                 WHERE  pick_group.status = 0 and receive_record.pick_date >= '$date_start' and receive_record.pick_date <= '$date_end'
-                order by pick_date, measure_detail.customer";
+                order by pick_date, TRIM(measure_detail.customer)";
             
 
                 $stmt = $db->prepare( $query );
@@ -198,19 +198,19 @@ if($jwt){
 
                 if($a > 2)
                 {
-                    if($i > 2)
+                    if($i > 2 && $a < $i-1)
                     {
-                        $sheet->mergeCells('A' . $a . ':A' . ($i -2));
-                        $sheet->getStyle('A' . $a . ':A' . ($i -2))->applyFromArray($right_style);
+                        $sheet->mergeCells('A' . $a . ':A' . ($i -1));
+                        $sheet->getStyle('A' . $a . ':A' . ($i -1))->applyFromArray($right_style);
                     }
                 }
        
                 if($b > 2)
                 {
-                    if($i > 2)
+                    if($i > 2 && $b < $i-1)
                     {
-                        $sheet->mergeCells('B' . $b . ':B' . ($i -2));
-                        $sheet->getStyle('B' . $b . ':B' . ($i -2))->applyFromArray($right_style);
+                        $sheet->mergeCells('B' . $b . ':B' . ($i -1));
+                        $sheet->getStyle('B' . $b . ':B' . ($i -1))->applyFromArray($right_style);
                     }
                 }
                   

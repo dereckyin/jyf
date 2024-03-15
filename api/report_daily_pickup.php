@@ -44,12 +44,12 @@ if($jwt){
         // response in json format
         http_response_code(200);
 
-        $query = "select distinct pick_date, measure_detail.customer, encode, 0 customer_count, 0 encode_count  FROM pick_group 
+        $query = "select distinct pick_date, TRIM(measure_detail.customer) customer, encode, 0 customer_count, 0 encode_count  FROM pick_group 
         LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id 
         left join measure_record_detail on measure_record_detail.detail_id = measure_detail.id
         left join receive_record on receive_record.id = measure_record_detail.record_id
         WHERE  pick_group.status = 0 and receive_record.pick_date >= '$date_start' and receive_record.pick_date <= '$date_end'
-        order by pick_date, measure_detail.customer";
+        order by pick_date, TRIM(measure_detail.customer)";
        
 
         $stmt = $db->prepare( $query );
