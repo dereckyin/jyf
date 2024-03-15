@@ -153,9 +153,29 @@ if($jwt){
             
                 $i = 2;
 
+                $a = 0;
+                $b = 0;
 
                 foreach($result as $rec)
                 {
+                    if($rec['encode_count'] != 0)
+                    {
+                        if($i > 2)
+                        {
+                            $sheet->mergeCells('A' . $a . ':A' . ($i -1));
+                        }
+                        $a = $i;
+                    }
+
+                    if($rec['customer_count'] != 0)
+                    {
+                        if($i > 2)
+                        {
+                            $sheet->mergeCells('B' . $b . ':B' . ($i -1));
+                        }
+                        $b = $i;
+                    }
+                
                     $sheet->setCellValue('A' . $i, $rec["pick_date"]);
                     $sheet->getColumnDimension('A')->setWidth(20);
                     $sheet->setCellValue('B' . $i, $rec["customer"]);
