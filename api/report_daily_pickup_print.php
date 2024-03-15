@@ -154,7 +154,7 @@ if($jwt){
                 $i = 2;
 
 
-                foreach($measure["loading"] as $rec)
+                foreach($result as $rec)
                 {
                     $sheet->setCellValue('A' . $i, $rec["pick_date"]);
                     $sheet->setCellValue('B' . $i, $rec["customer"]);
