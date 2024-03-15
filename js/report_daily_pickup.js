@@ -350,7 +350,7 @@ var app = new Vue({
           var first = new Date();
           var yyyy = today.getFullYear();
   
-          first = yyyy + "-" + "01-01";
+          first = yyyy + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-01";
           end = yyyy + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + today.getDate();
 
           _this.date_start = first;
