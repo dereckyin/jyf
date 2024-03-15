@@ -280,8 +280,6 @@ var app = new Vue({
           form_Data.append("jwt", token);
           form_Data.append('date_start', this.date_start);
           form_Data.append('date_end', this.date_end);
-          form_Data.append('type', this.fil_category);
-          form_Data.append('space', this.space);
     
           axios({
             method: "post",
@@ -294,7 +292,7 @@ var app = new Vue({
                     const link = document.createElement('a');
                     link.href = url;
                    
-                      link.setAttribute('download', 'Report Container AC.xlsx');
+                      link.setAttribute('download', 'Report Daily Pickup.xlsx');
                    
                     document.body.appendChild(link);
                     link.click();
