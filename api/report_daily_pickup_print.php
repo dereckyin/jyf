@@ -196,6 +196,24 @@ if($jwt){
                     $i++;
                 }
 
+                if($a > 2)
+                {
+                    if($i > 2)
+                    {
+                        $sheet->mergeCells('A' . $a . ':A' . ($i -2));
+                        $sheet->getStyle('A' . $a . ':A' . ($i -2))->applyFromArray($right_style);
+                    }
+                }
+       
+                if($b > 2)
+                {
+                    if($i > 2)
+                    {
+                        $sheet->mergeCells('B' . $b . ':B' . ($i -2));
+                        $sheet->getStyle('B' . $b . ':B' . ($i -2))->applyFromArray($right_style);
+                    }
+                }
+                  
                 $sheet->getStyle('A' . $i . ':' . 'C' . $i)->getFont()->setBold(true);
                 //$sheet->getStyle('A'. $i. ':' . 'J' . $i)->applyFromArray($styleArray);
 
