@@ -157,11 +157,11 @@ if($jwt){
                 foreach($result as $rec)
                 {
                     $sheet->setCellValue('A' . $i, $rec["pick_date"]);
-                    $sheet->getColumnDimension('D')->setWidth(12);
+                    $sheet->getColumnDimension('A')->setWidth(20);
                     $sheet->setCellValue('B' . $i, $rec["customer"]);
-                    $sheet->getColumnDimension('D')->setWidth(50);
+                    $sheet->getColumnDimension('B')->setWidth(120);
                     $sheet->setCellValue('C' . $i, $rec["encode"]);
-                    $sheet->getColumnDimension('D')->setWidth(12);
+                    $sheet->getColumnDimension('C')->setWidth(20);
 
                     $sheet->getStyle('A'. $i. ':' . 'C' . $i)->applyFromArray($styleArray);
                     $i++;
