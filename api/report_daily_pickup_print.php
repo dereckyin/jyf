@@ -160,17 +160,17 @@ if($jwt){
                     $sheet->setCellValue('B' . $i, $rec["customer"]);
                     $sheet->setCellValue('C' . $i, $rec["encode"]);
 
-                    $sheet->getStyle('A'. $i. ':' . 'I' . $i)->applyFromArray($styleArray);
+                    $sheet->getStyle('A'. $i. ':' . 'C' . $i)->applyFromArray($styleArray);
                     $i++;
                 }
 
-                $sheet->getStyle('A' . $i . ':' . 'H' . $i)->getFont()->setBold(true);
+                $sheet->getStyle('A' . $i . ':' . 'C' . $i)->getFont()->setBold(true);
                 //$sheet->getStyle('A'. $i. ':' . 'J' . $i)->applyFromArray($styleArray);
 
                 $i = $i + 2;
 
-                $sheet->getStyle('A1:' . 'H1')->getFont()->setBold(true);
-                $sheet->getStyle('A1:' . 'H' . --$i)->applyFromArray($styleArray);
+                $sheet->getStyle('A1:' . 'C1')->getFont()->setBold(true);
+                $sheet->getStyle('A1:' . 'C' . --$i)->applyFromArray($styleArray);
 
             
 
