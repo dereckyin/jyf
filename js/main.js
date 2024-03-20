@@ -188,11 +188,15 @@ let mainState = {
 
     group1_cuft:0.0,
     group2_cuft:0.0,
+    group3_cuft:0.0,
+
     group1_kilo:0.0,
     group2_kilo:0.0,
+    group3_kilo:0.0,
 
     group1_ids:[],
     group2_ids:[],
+    group3_ids:[],
 
 };
 
@@ -285,8 +289,10 @@ var app = new Vue({
 
         this.group1_kilo = 0.0;
         this.group2_kilo = 0.0;
+        this.group3_kilo = 0.0;
         this.group1_cuft = 0.0;
         this.group2_cuft = 0.0;
+        this.group3_cuft = 0.0;
 
         for(let i=0; i<this.receive_records.length; i++)
         {   
@@ -314,6 +320,13 @@ var app = new Vue({
                 this.group2_kilo += parseFloat(this.receive_records[i].kilo);
                 this.group2_cuft += parseFloat(this.receive_records[i].cuft);
                 this.group2_ids.push(this.receive_records[i].id);
+            }
+
+            if(this.receive_records[i].flag == '3')
+            {
+                this.group3_kilo += parseFloat(this.receive_records[i].kilo);
+                this.group3_cuft += parseFloat(this.receive_records[i].cuft);
+                this.group3_ids.push(this.receive_records[i].id);
             }
         }
 
@@ -2042,10 +2055,6 @@ var app = new Vue({
         async change_group() {
             let _this = this;
 
-            this.group1_kilo = 0.0;
-            this.group2_kilo = 0.0;
-            this.group1_cuft = 0.0;
-            this.group2_cuft = 0.0;
 
             var group_ids = [];
          
@@ -2058,13 +2067,20 @@ var app = new Vue({
                 }
             }
 
-            await this.save_group_data(group_ids, this.group1_ids, this.group2_ids, '1');
+            await this.save_group_data(group_ids, this.group1_ids, this.group2_ids, this.group3_ids, '1');
 
             this.group_name = "";
             this.edit_group = false;
 
             this.group1_ids = [];
             this.group2_ids = [];
+
+            this.group1_kilo = 0.0;
+            this.group2_kilo = 0.0;
+            this.group1_cuft = 0.0;
+            this.group2_cuft = 0.0;
+            this.group3_kilo = 0.0;
+            this.group3_cuft = 0.0;
 
             for (i = 0; i < this.receive_records.length; i++) 
             {
@@ -2080,6 +2096,58 @@ var app = new Vue({
                     this.group2_kilo += parseFloat(this.receive_records[i].kilo);
                     this.group2_cuft += parseFloat(this.receive_records[i].cuft);
                     this.group2_ids.push(this.receive_records[i].id);
+                }
+
+                if(this.receive_records[i].flag == '3')
+                {
+                    this.group3_kilo += parseFloat(this.receive_records[i].kilo);
+                    this.group3_cuft += parseFloat(this.receive_records[i].cuft);
+                    this.group3_ids.push(this.receive_records[i].id);
+                }
+            }
+        },
+
+        async change_group_2() {
+            let _this = this;
+
+            var group_ids = [];
+         
+            for (i = 0; i < this.receive_records.length; i++) 
+            {
+                if(this.receive_records[i].flag == '2' || this.receive_records[i].flag == '3')
+                {
+                    this.receive_records[i].flag = '2'
+                    group_ids.push(this.receive_records[i].id);
+                }
+            }
+
+            await this.save_group_data(group_ids, this.group1_ids, this.group2_ids, this.group3_ids, '2');
+
+            this.group_name = "";
+            this.edit_group = false;
+
+            this.group2_ids = [];
+            this.group3_ids = [];
+
+            this.group2_kilo = 0.0;
+            this.group3_kilo = 0.0;
+            this.group2_cuft = 0.0;
+            this.group3_cuft = 0.0;
+
+            for (i = 0; i < this.receive_records.length; i++) 
+            {
+                if(this.receive_records[i].flag == '2')
+                {
+                    this.group2_kilo += parseFloat(this.receive_records[i].kilo);
+                    this.group2_cuft += parseFloat(this.receive_records[i].cuft);
+                    this.group2_ids.push(this.receive_records[i].id);
+                }
+
+                if(this.receive_records[i].flag == '3')
+                {
+                    this.group3_kilo += parseFloat(this.receive_records[i].kilo);
+                    this.group3_cuft += parseFloat(this.receive_records[i].cuft);
+                    this.group3_ids.push(this.receive_records[i].id);
                 }
             }
         },
@@ -2100,11 +2168,6 @@ var app = new Vue({
         async save_group() {
             var group_ids = [];
 
-            this.group1_kilo = 0.0;
-            this.group2_kilo = 0.0;
-            this.group1_cuft = 0.0;
-            this.group2_cuft = 0.0;
-
             for (i = 0; i < this.receive_records.length; i++) 
             {
               if(this.receive_records[i].is_checked == 1)
@@ -2123,13 +2186,21 @@ var app = new Vue({
 
             }
 
-            await this.save_group_data(group_ids, this.group1_ids, this.group2_ids, this.group_name);
+            await this.save_group_data(group_ids, this.group1_ids, this.group2_ids, this.group3_ids, this.group_name);
 
             this.group_name = "";
             this.edit_group = false;
 
             this.group1_ids = [];
             this.group2_ids = [];
+            this.group3_ids = [];
+
+            this.group1_kilo = 0.0;
+            this.group2_kilo = 0.0;
+            this.group3_kilo = 0.0;
+            this.group1_cuft = 0.0;
+            this.group2_cuft = 0.0;
+            this.group3_cuft = 0.0;
 
             for (i = 0; i < this.receive_records.length; i++) 
             {
@@ -2146,11 +2217,19 @@ var app = new Vue({
                     this.group2_cuft += parseFloat(this.receive_records[i].cuft);
                     this.group2_ids.push(this.receive_records[i].id);
                 }
+
+                if(this.receive_records[i].flag == '3')
+                {
+                    this.group3_kilo += parseFloat(this.receive_records[i].kilo);
+                    this.group3_cuft += parseFloat(this.receive_records[i].cuft);
+                    this.group3_ids.push(this.receive_records[i].id);
+                
+                }
             }
         },
 
 
-        save_group_data(group_ids, group1_ids, group2_ids, group_name) {
+        save_group_data(group_ids, group1_ids, group2_ids, group3_ids, group_name) {
             let _this = this;
 
                 if(this.submit == true)
@@ -2162,6 +2241,7 @@ var app = new Vue({
             form_Data.append('group_ids', group_ids)
             form_Data.append('group1_ids', group1_ids)
             form_Data.append('group2_ids', group2_ids)
+            form_Data.append('group3_ids', group3_ids)
             form_Data.append('group_name', group_name)
       
             const token = sessionStorage.getItem('token');

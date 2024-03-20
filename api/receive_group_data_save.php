@@ -55,6 +55,7 @@ require_once "db.php";
             $group_ids = isset($_POST['group_ids']) ? $_POST['group_ids'] : "";
             $group1_ids = isset($_POST['group1_ids']) ? $_POST['group1_ids'] : "";
             $group2_ids = isset($_POST['group2_ids']) ? $_POST['group2_ids'] : "";
+            $group3_ids = isset($_POST['group3_ids']) ? $_POST['group3_ids'] : "";
             $group_name = isset($_POST['group_name']) ? $_POST['group_name'] : "";
 
             if($group_name == '1')
@@ -133,6 +134,43 @@ require_once "db.php";
                     }
                 }
                 
+            }
+
+            if($group_name == '3')
+            {
+                if($group3_ids != '')
+                {
+                    $sql = "update receive_record set flag = ''  where id in ($group3_ids)";
+                    
+                    $query = $conn->query($sql);
+            
+                    if($query){
+                        http_response_code(200);
+                        echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa")));
+                    }
+                    else{
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " Error uploading, Please use laptop to upload again."));
+                        die();
+                    }
+                }
+
+                if($group_ids != '')
+                {
+                    $sql = "update receive_record set flag = '3'  where id in ($group_ids)";
+
+                    $query = $conn->query($sql);
+
+                    if($query){
+                        http_response_code(200);
+                        echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa")));
+                    }
+                    else{
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " Error uploading, Please use laptop to upload again."));
+                        die();
+                    }
+                }
             }
                
           break;

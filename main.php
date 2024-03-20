@@ -320,6 +320,13 @@ try {
             max-width: 144px;
         }
 
+        div.tablebox.s03 ul li:nth-of-type(2),
+        div.tablebox.s03 ul li:nth-of-type(4),
+        div.tablebox.s03 ul li:nth-of-type(6) {
+            width: 21.3%;
+        }
+
+
         button.quick_move{
             position: fixed;
             width: 50px;
@@ -337,6 +344,10 @@ try {
 
         div.tablebox.s02 > ul.group2{
             background-color: #CCFFCC;
+        }
+
+        div.tablebox.s02 > ul.group3{
+            background-color: #C0ACC5;
         }
 
 
@@ -791,7 +802,7 @@ if($taiwan_read == "0")
                                     備註
                                 </li>
                             </ul>
-                            <ul v-for='(receive_record, index) in displayedPosts' :class="[receive_record.flag=='1' ? 'group1': (receive_record.flag=='2' ? 'group2': '')]">
+                            <ul v-for='(receive_record, index) in displayedPosts' :class="[receive_record.flag=='1' ? 'group1': (receive_record.flag=='2' ? 'group2': (receive_record.flag=='3' ? 'group3': ''))]">
                                 <li>
                                     <input type="checkbox" name="record_id" class="alone" :value="receive_record.index" :true-value="1" v-model:checked="receive_record.is_checked">
                                 </li>
@@ -850,10 +861,13 @@ if($taiwan_read == "0")
                         <div class="tablebox s03">
                             <ul>
                                 <li>第一群 總和</li>
-                                <li style="width: 38%;">重量 <span>{{ Math.round((group1_kilo + Number.EPSILON) * 100) / 100 }}</span>, 材積 <span>{{ Math.round((group1_cuft + Number.EPSILON) * 100) / 100 }}</span>
+                                <li>重量 <span>{{ Math.round((group1_kilo + Number.EPSILON) * 100) / 100 }}</span>, 材積 <span>{{ Math.round((group1_cuft + Number.EPSILON) * 100) / 100 }}</span>
                                 </li>
                                 <li>第二群 總和</li>
                                 <li>重量 <span>{{ Math.round((group2_kilo + Number.EPSILON) * 100) / 100 }}</span>, 材積 <span>{{ Math.round((group2_cuft + Number.EPSILON) * 100) / 100 }}</span>
+                                </li>
+                                <li>第三群 總和</li>
+                                <li>重量 <span>{{ Math.round((group3_kilo + Number.EPSILON) * 100) / 100 }}</span>, 材積 <span>{{ Math.round((group3_cuft + Number.EPSILON) * 100) / 100 }}</span>
                                 </li>
                             </ul>
                             <ul>
@@ -863,7 +877,11 @@ if($taiwan_read == "0")
                                 <li>Group 2 Total</li>
                                 <li>Kilo <span>{{ Math.round((group2_kilo + Number.EPSILON) * 100) / 100 }}</span>, Cuft <span>{{ Math.round((group2_cuft + Number.EPSILON) * 100) / 100 }}</span>
                                 </li>
+                                <li>Group 3 Total</li>
+                                <li>Kilo <span>{{ Math.round((group3_kilo + Number.EPSILON) * 100) / 100 }}</span>, Cuft <span>{{ Math.round((group3_cuft + Number.EPSILON) * 100) / 100 }}</span>
+                                </li>
                             </ul>
+                          
                         </div>
 
                         <div class="btnbox" id="flag_bottom"  v-if="edit_group == false">
@@ -901,8 +919,14 @@ if($taiwan_read == "0")
                             <a class="btn small" style="color:white;" @click="group('2')">第二群
                                 <p>Group 2</p>
                             </a>
+                            <a class="btn small" style="color:white;" @click="group('3')">第三群
+                                <p>Group 3</p>
+                            </a>
                             <a class="btn small" style="color: white;" @click="change_group('2')">第二群變第一群
                                 <p>Group 2 into 1</p>
+                            </a>
+                            <a class="btn small" style="color: white;" @click="change_group_2()">第三群變第二群
+                                <p>Group 3 into 2</p>
                             </a>
 <?php
 }
