@@ -320,6 +320,13 @@ try {
             max-width: 144px;
         }
 
+        div.tablebox.s03 ul li:nth-of-type(2),
+        div.tablebox.s03 ul li:nth-of-type(4),
+        div.tablebox.s03 ul li:nth-of-type(6) {
+            width: 21.3%;
+        }
+
+
         button.quick_move{
             position: fixed;
             width: 50px;
