@@ -265,22 +265,22 @@ function SendMail($detail) {
 
     $content .= $detail[0]['supplier'];
 
-    if($detail[0]['mail_note'] != ''){
-        $content .= '</td>
-        </tr>
+    // if($detail[0]['mail_note'] != ''){
+    //     $content .= '</td>
+    //     </tr>
 
-        <tr>
-            <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; font-size: 14px; width: 280px; font-weight: 600;">
-                <eng style="font-size: 16px;">
-                    Notes
-                </eng>
-                <br>
-                補充說明
-            </td>
-            <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; width: 440px; font-size: 16px;">';
+    //     <tr>
+    //         <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; font-size: 14px; width: 280px; font-weight: 600;">
+    //             <eng style="font-size: 16px;">
+    //                 Notes
+    //             </eng>
+    //             <br>
+    //             補充說明
+    //         </td>
+    //         <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; width: 440px; font-size: 16px;">';
         
-            $content .= $detail[0]['mail_note'];
-    }
+    //         $content .= $detail[0]['mail_note'];
+    // }
 
     $content .= '</td>
         </tr>
