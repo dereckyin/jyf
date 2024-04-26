@@ -265,22 +265,22 @@ function SendMail($detail) {
 
     $content .= $detail[0]['supplier'];
 
-    if($detail[0]['mail_note'] != ''){
-        $content .= '</td>
-        </tr>
+    // if($detail[0]['mail_note'] != ''){
+    //     $content .= '</td>
+    //     </tr>
 
-        <tr>
-            <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; font-size: 14px; width: 280px; font-weight: 600;">
-                <eng style="font-size: 16px;">
-                    Notes
-                </eng>
-                <br>
-                補充說明
-            </td>
-            <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; width: 440px; font-size: 16px;">';
+    //     <tr>
+    //         <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; font-size: 14px; width: 280px; font-weight: 600;">
+    //             <eng style="font-size: 16px;">
+    //                 Notes
+    //             </eng>
+    //             <br>
+    //             補充說明
+    //         </td>
+    //         <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; width: 440px; font-size: 16px;">';
         
-            $content .= $detail[0]['mail_note'];
-    }
+    //         $content .= $detail[0]['mail_note'];
+    // }
 
     $content .= '</td>
         </tr>
@@ -361,14 +361,23 @@ function SendMail($detail) {
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    $mail->SMTPDebug  = 0;
+    // $mail->SMTPDebug  = 0;
+    // $mail->SMTPAuth   = true;
+    // $mail->SMTPSecure = "ssl";
+    // $mail->Port       = 465;
+    // $mail->SMTPKeepAlive = true;
+    // $mail->Host       = $conf::$mail_Host;
+    // $mail->Username   = $conf::$mail_Username;
+    // $mail->Password   = $conf::$mail_Password;
+
+        $mail->SMTPDebug  = 0;
     $mail->SMTPAuth   = true;
-    $mail->SMTPSecure = "ssl";
-    $mail->Port       = 465;
+    $mail->SMTPSecure = "tls";
+    $mail->Port       = 587;
     $mail->SMTPKeepAlive = true;
-    $mail->Host       = $conf::$mail_Host;
-    $mail->Username   = $conf::$mail_Username;
-    $mail->Password   = $conf::$mail_Password;
+    $mail->Host       = 'smtp.ethereal.email';
+    $mail->Username   = 'jermey.wilkinson@ethereal.email';
+    $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
 
     $mail->IsHTML(true);
     //$mail->AddAddress('dereckyin@gmail.com', 'dereckyin');
