@@ -361,23 +361,14 @@ function SendMail($detail) {
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_Host;
-    // $mail->Username   = $conf::$mail_Username;
-    // $mail->Password   = $conf::$mail_Password;
-
-        $mail->SMTPDebug  = 0;
+    $mail->SMTPDebug  = 0;
     $mail->SMTPAuth   = true;
-    $mail->SMTPSecure = "tls";
-    $mail->Port       = 587;
+    $mail->SMTPSecure = "ssl";
+    $mail->Port       = 465;
     $mail->SMTPKeepAlive = true;
-    $mail->Host       = 'smtp.ethereal.email';
-    $mail->Username   = 'jermey.wilkinson@ethereal.email';
-    $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
+    $mail->Host       = $conf::$mail_Host;
+    $mail->Username   = $conf::$mail_Username;
+    $mail->Password   = $conf::$mail_Password;
 
     $mail->IsHTML(true);
     //$mail->AddAddress('dereckyin@gmail.com', 'dereckyin');
