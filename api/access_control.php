@@ -12,6 +12,7 @@ $action = (isset($_POST['action']) ?  $_POST['action'] : 1);
 
 $car_access1 = (isset($_POST['car_access1']) ?  $_POST['car_access1'] : '');
 $car_access2 = (isset($_POST['car_access2']) ?  $_POST['car_access2'] : '');
+$innova = (isset($_POST['innova']) ?  $_POST['innova'] : '');
 
 
 include_once 'config/core.php';
@@ -38,7 +39,7 @@ if (!isset($jwt)) {
     if ($action == 1) {
         //select all
         try {
-            $query = "SELECT car_access1, car_access2 from access_control where id = 1";
+            $query = "SELECT car_access1, car_access2, innova from access_control where id = 1";
 
             $stmt = $db->prepare($query);
             $stmt->execute();
@@ -73,6 +74,48 @@ if (!isset($jwt)) {
             $stmt->bindParam(':id', $id);
             $stmt->bindParam(':car_access1', $car_access1);
             $stmt->bindParam(':car_access2', $car_access2);
+          
+
+            try {
+                // execute the query, also check if query was successful
+                if ($stmt->execute()) {
+                    return true;
+                } else {
+                    $arr = $stmt->errorInfo();
+                    error_log($arr[2]);
+                    return false;
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                return false;
+            }
+
+            http_response_code(200);
+            echo json_encode(array($arr));
+            echo json_encode(array("message" => " Update success at " . date("Y-m-d") . " " . date("h:i:sa")));
+        } // if decode fails, it means jwt is invalid
+        catch (Exception $e) {
+
+            http_response_code(401);
+
+            echo json_encode(array("message" => "Access denied."));
+        }
+    }    else if ($action == 4 && $innova != '') {
+        //update
+        try {
+            $query = "UPDATE access_control
+                        set innova = :innova
+                        where id = :id";
+
+            // prepare the query
+            $stmt = $db->prepare($query);
+
+            // bind the values
+            $id = 1;
+
+            // bind the values
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':innova', $innova);
           
 
             try {

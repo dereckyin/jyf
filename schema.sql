@@ -1252,6 +1252,7 @@ CREATE TABLE IF NOT EXISTS `access_control` (
 
 insert into access_control(`car_access1`, `car_access2`) values('', '');
 
+
 -- 20230911 car schedule check
 CREATE TABLE IF NOT EXISTS `car_calendar_check` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -1293,3 +1294,6 @@ ADD COLUMN `checker` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
 
 ALTER TABLE receive_record
 ADD COLUMN `checker_time` timestamp NULL;
+
+-- 20240502
+ALTER TABLE access_control ADD COLUMN innova INT DEFAULT 0;
