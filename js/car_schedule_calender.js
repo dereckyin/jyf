@@ -44,6 +44,7 @@ var project = new Vue({
 
         add_project_id : 0,
         add_stage_id : 0,
+
   
     },
     created() {
@@ -183,11 +184,14 @@ var service_feliix = new Vue({
 
         is_submit: false,
 
+        innova: false,
+
     },
 
     created() {
         this.getAccess();
         this.getUserName();
+        this.getInnovaStatus();
     },
 
     watch: {
@@ -241,6 +245,27 @@ var service_feliix = new Vue({
     },
 
     methods: {
+        getInnovaStatus: function() {
+            let _this = this;
+      
+            let token = localStorage.getItem('accessToken');
+      
+            axios
+              .get('api/car_use_switcher.php', { headers: { "Authorization": `Bearer ${token}` }, params: { car: 'Innova' } })
+              .then(
+                (res) => {
+                    _this.innova = res.data.Innova;
+                  
+                },
+                (err) => {
+                  alert(err.response);
+                },
+              )
+              .finally(() => {
+      
+              });
+          },
+
         getAccess: function() {
             let _this = this;
     
@@ -1147,11 +1172,13 @@ var service = new Vue({
 
         is_submit: false,
 
+        innova: false,
     },
 
     created() {
         this.getAccess();
         this.getUserName();
+        this.getInnovaStatus();
     },
 
     watch: {
@@ -1208,6 +1235,27 @@ var service = new Vue({
     },
 
     methods: {
+        getInnovaStatus: function() {
+            let _this = this;
+      
+            let token = localStorage.getItem('accessToken');
+      
+            axios
+              .get('api/car_use_switcher.php', { headers: { "Authorization": `Bearer ${token}` }, params: { car: 'Innova' } })
+              .then(
+                (res) => {
+                    _this.innova = res.data.Innova;
+                  
+                },
+                (err) => {
+                  alert(err.response);
+                },
+              )
+              .finally(() => {
+      
+              });
+          },
+          
         getAccess: function() {
             let _this = this;
     
@@ -2943,6 +2991,8 @@ var app = new Vue({
     
     },
     methods: {
+        
+
         getUsers() {
   
             let _this = this;

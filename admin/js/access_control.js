@@ -8,6 +8,8 @@ var app = new Vue({
  
     payees: [],
 
+    innova: false,
+
   },
 
   created() {
@@ -44,6 +46,8 @@ var app = new Vue({
                 return el != "";
               });
          
+              if (kind === 3 || kind === undefined)
+            _this.innova = res.data[0]["innova"] != -1 ? true : false;
 
           },
           (err) => {
@@ -51,6 +55,41 @@ var app = new Vue({
           }
         )
         .finally(() => {});
+    },
+
+    save_innova: function() {
+      var form_Data = new FormData();
+      let _this = this;
+
+      form_Data.append("action", 4);
+      form_Data.append("innova", this.innova == false ? -1 : 0);
+ 
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        url: "../api/access_control.php",
+        data: form_Data,
+      })
+        .then(function(response) {
+          //handle success
+          Swal.fire({
+            text: "Update Success.",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+
+          _this.reset();
+        })
+        .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(response),
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        });
     },
 
     getPayees: function() {

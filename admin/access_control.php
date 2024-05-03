@@ -159,6 +159,27 @@ include 'menu.php';
                         <a class="btn" @click="save(2)">Save</a>
                     </div>
                 </div>
+
+                <div class="box-content">
+                    <ul>
+                        <li style="list-style: none;"><b>Innova Control</b></li>
+                        <br>
+                        <li style="list-style: none;">
+                            <div>
+                                
+                                <!-- chekcbox -->
+                                <input type="checkbox" id="innova" v-model="innova">
+                                <label for="innova">Need Innova approval</label>
+
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(3)">Cancel</a>
+                        <a class="btn" @click="save_innova()">Save</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
