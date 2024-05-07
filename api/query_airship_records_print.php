@@ -129,49 +129,49 @@ if(!empty($date_start)) {
     $date_start = str_replace('/', '-', $date_start);
 
     $query = $query . " and r.date_receive >= '$date_start' ";
-    $query_cnt = $query_cnt . " and r.date_receive >= '$date_start' ";
+    // $query_cnt = $query_cnt . " and r.date_receive >= '$date_start' ";
 }
 
 if(!empty($date_end)) {
     $date_end = str_replace('/', '-', $date_end);
 
     $query = $query . " and r.date_receive <= '$date_end' ";
-    $query_cnt = $query_cnt . " and r.date_receive <= '$date_end' ";
+    // $query_cnt = $query_cnt . " and r.date_receive <= '$date_end' ";
 }
 
 if(!empty($pay_start)) {
     $pay_start = str_replace('/', '-', $pay_start);
 
     $query = $query . " and r.pay_date >= '$pay_start' ";
-    $query_cnt = $query_cnt . " and r.pay_date >= '$pay_start' ";
+    // $query_cnt = $query_cnt . " and r.pay_date >= '$pay_start' ";
 }
 
 if(!empty($pay_end)) {
     $pay_end = str_replace('/', '-', $pay_end);
 
     $query = $query . " and r.pay_date <= '$pay_end' ";
-    $query_cnt = $query_cnt . " and r.pay_date <= '$pay_end' ";
+    // $query_cnt = $query_cnt . " and r.pay_date <= '$pay_end' ";
 }
 
 if(!empty($flight_start)) {
     $flight_start = str_replace('/', '-', $flight_start);
 
     $query = $query . " and r.flight_date >= '$flight_start' ";
-    $query_cnt = $query_cnt . " and r.flight_date >= '$flight_start' ";
+    // $query_cnt = $query_cnt . " and r.flight_date >= '$flight_start' ";
 }
 
 if(!empty($flight_end)) {
     $flight_end = str_replace('/', '-', $flight_end);
 
     $query = $query . " and r.flight_date <= '$flight_end' ";
-    $query_cnt = $query_cnt . " and r.flight_date <= '$flight_end' ";
+    // $query_cnt = $query_cnt . " and r.flight_date <= '$flight_end' ";
 }
 
 if(!empty($arrive_start)) {
     $arrive_start = str_replace('/', '-', $arrive_start);
 
     $query = $query . " and r.date_arrive >= '$arrive_start' ";
-    $query_cnt = $query_cnt . " and r.date_arrive >= '$arrive_start' ";
+    // $query_cnt = $query_cnt . " and r.date_arrive >= '$arrive_start' ";
 }
 
 if(!empty($arrive_end)) {
@@ -180,29 +180,29 @@ if(!empty($arrive_end)) {
     $arrive_end = $arrive_end . "T23:59:59 ";
 
     $query = $query . " and r.date_arrive <= '$arrive_end' ";
-    $query_cnt = $query_cnt . " and r.date_arrive <= '$arrive_end' ";
+    // $query_cnt = $query_cnt . " and r.date_arrive <= '$arrive_end' ";
 }
 
 
 
 if(!empty($description)) {
     $query = $query . " and r.description like '%$description%' ";
-    $query_cnt = $query_cnt . " and r.description like '%$description%' ";
+    // $query_cnt = $query_cnt . " and r.description like '%$description%' ";
 }
 
 if(!empty($remark)) {
     $query = $query . " and r.remark like '%$remark%' ";
-    $query_cnt = $query_cnt . " and r.remark like '%$remark%' ";
+    // $query_cnt = $query_cnt . " and r.remark like '%$remark%' ";
 }
 
 if(!empty($sup_str)) {
     $query = $query . " and ($sup_str) ";
-    $query_cnt = $query_cnt . " and ($sup_str) ";
+    // $query_cnt = $query_cnt . " and ($sup_str) ";
 }
 
 if(!empty($cus_str)) {
     $query = $query . " and ($cus_str) ";
-    $query_cnt = $query_cnt . " and ($cus_str) ";
+    // $query_cnt = $query_cnt . " and ($cus_str) ";
 }
 
 if($sort == 'd') 
