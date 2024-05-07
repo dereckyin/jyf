@@ -199,7 +199,7 @@ var app = new Vue({
     methods: {
 
         getCustomers: function() {
-            axios.get('api/query_receive_customer.php')
+            axios.get('api/query_airship_customer.php')
             .then(function(response) {
                 console.log(response.data);
                 app.c_options = response.data;
@@ -210,7 +210,7 @@ var app = new Vue({
         },
 
         getSuppliers: function() {
-            axios.get('api/query_receive_supplier.php')
+            axios.get('api/query_airship_supplier.php')
             .then(function(response) {
                 console.log(response.data);
                 app.s_options = response.data;
