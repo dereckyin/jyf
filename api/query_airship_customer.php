@@ -49,11 +49,9 @@ if($jwt){
             $merged_results = array();
 
             if($keyword != "")
-              $query = "select distinct customer name from airship_records where status <> -1 and customer like '%$keyword%' UNION
-                      SELECT distinct customer name from contactor where status = '' and customer like '%$keyword%' ";
+              $query = "select distinct customer name from airship_records where status <> -1 and customer like '%$keyword%' ";
             else
-                $query = "select distinct customer name from airship_records where status <> -1 UNION
-                      SELECT distinct customer name from contactor where status = '' ";
+                $query = "select distinct customer name from airship_records where status <> -1  ";
       
               // prepare the query
               $stmt = $db->prepare($query);
