@@ -195,6 +195,10 @@ if ( isset( $jwt ) ) {
         <a href="query_receive.php">收貨記錄查詢
             <eng>Query For Receiving Records</eng>
         </a>
+
+        <a href="query_airship_records.php">空運記錄查詢
+            <eng>Query For Airship Records</eng>
+        </a>
  
         <dl class="sub">
             <dt><a class="after-micons">查詢
