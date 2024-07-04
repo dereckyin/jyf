@@ -465,6 +465,8 @@ var app = new Vue({
         formData.append('ar', item.ar)
         formData.append('amount', item.amount)
         formData.append('payment_date', item.payment_date)
+        formData.append('kilo', item.kilo)
+        formData.append('cuft', item.cuft)
         formData.append('note', item.note)
         formData.append('status', item.status)
         formData.append('rate', item.rate)

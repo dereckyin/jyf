@@ -307,8 +307,18 @@ header( 'location:index.php' );
                             <li>{{ receive_record.customer }}</li>
                             <li>{{ receive_record.description }}</li>
                             <li>{{ receive_record.quantity }}</li>
-                            <li>{{ receive_record.kilo }}</li>
-                            <li>{{ receive_record.cuft }}</li>
+                            <li>
+                                <div v-show="receive_record.is_edited == 1">
+                                    <label> {{receive_record.kilo}}</label>
+                                </div>
+                                <input type="number" name="kilo" v-show="receive_record.is_edited == 0" v-model="receive_record.kilo">
+                            </li>
+                            <li>
+                                <div v-show="receive_record.is_edited == 1">
+                                    <label> {{receive_record.cuft}}</label>
+                                </div>
+                                <input type="number" name="cuft" v-show="receive_record.is_edited == 0" v-model="receive_record.cuft">
+                            </li>
                             <li>{{ receive_record.supplier }}</li>
                             <li><p v-html="receive_record.remark.replace(/(?:\r\n|\r|\n)/g, '&nbsp')"></p></li>
                             <li>{{ receive_record.date_arrive }}</li>
