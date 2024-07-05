@@ -214,29 +214,31 @@ switch ($method) {
                 
             }
 
-            if($kilo != "" || $cuft != "")
-            {
-                $query = "update receive_record set kilo = " . $kilo . ", cuft = ". $cuft . " where id = " . $record_id;
-                $stmt = $conn->prepare($query);
+        }
 
-                try {
-                    // execute the query, also check if query was successful
-                    if (!$stmt->execute()) {
-                        $conn->rollback();
-                        http_response_code(501);
-                        echo json_encode("Failure4 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
-                        die();
-                    }
-                } catch (Exception $e) {
-                    error_log($e->getMessage());
+
+        // if($kilo != "" || $cuft != "")
+        // {
+            $query = "update receive_record set kilo = " . $kilo . ", cuft = ". $cuft . " where id = " . $record_id;
+            $stmt = $conn->prepare($query);
+
+            try {
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
                     $conn->rollback();
                     http_response_code(501);
-                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    echo json_encode("Failure4 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
                     die();
                 }
-
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                $conn->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
             }
-        }
+
+        // }
         
 
         $conn->commit();
