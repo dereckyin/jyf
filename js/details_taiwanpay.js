@@ -57,6 +57,9 @@ let mainState = {
     status: '',
     rate: '',
 
+    cuft: '',
+    kilo: '',
+
 };
 
 var app = new Vue({
@@ -372,6 +375,9 @@ var app = new Vue({
           this.status = '';
           this.rate = '';
 
+          this.cuft = '';
+          this.kilo = '';
+
           item['is_edited'] = 1; 
           this.is_modifying = false;
 
@@ -394,6 +400,8 @@ var app = new Vue({
           this.status = item['status'];
           this.rate = item['rate'];
       
+          this.cuft = item['cuft'];
+          this.kilo = item['kilo'];
 
           console.log(item);
       },
@@ -428,6 +436,9 @@ var app = new Vue({
         formData.append('note', item.note)
         formData.append('status', '1')
         formData.append('rate', item.rate)
+
+        formData.append('cuft', item.cuft)
+        formData.append('kilo', item.kilo)
 
         const token = sessionStorage.getItem('token');
 
@@ -465,6 +476,8 @@ var app = new Vue({
         formData.append('ar', item.ar)
         formData.append('amount', item.amount)
         formData.append('payment_date', item.payment_date)
+        formData.append('kilo', item.kilo)
+        formData.append('cuft', item.cuft)
         formData.append('note', item.note)
         formData.append('status', item.status)
         formData.append('rate', item.rate)
