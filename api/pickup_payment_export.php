@@ -671,7 +671,8 @@ if($assist_by == 'Ana')
     $TextRun->addImage('https://storage.googleapis.com/feliiximg/1656033523_s_ana.png', array('width' => 50, 'height' => 50));
 if($assist_by == 'Merryl')
     $TextRun->addImage('https://storage.googleapis.com/feliiximg/1656033523_s_merryl.png', array('width' => 50, 'height' => 50));
-
+if($assist_by == 'Mharitess')
+    $TextRun->addImage('https://storage.googleapis.com/feliiximg/1724208516_Mharitess.jpg', array('width' => 50, 'height' => 50));
 
 
 if($adv == 'Y')
