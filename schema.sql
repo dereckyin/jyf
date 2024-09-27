@@ -1297,3 +1297,13 @@ ADD COLUMN `checker_time` timestamp NULL;
 
 -- 20240502
 ALTER TABLE access_control ADD COLUMN innova INT DEFAULT 0;
+
+-- 20240927
+ALTER table measure_detail
+ADD COLUMN `cust_type` varchar(1) DEFAULT '';
+
+ALTER table measure_detail
+ADD COLUMN `warehouse_cuft` varchar(64) DEFAULT '';
+
+ALTER table measure_detail
+ADD COLUMN `warehouse_kilo` varchar(64) DEFAULT '';

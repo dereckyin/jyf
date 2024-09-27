@@ -310,6 +310,18 @@ header( 'location:index.php' );
             background-color: rgba(7, 220, 237, 0.8);
             z-index: 999;
         }
+
+        td.twpay {
+            background: pink;
+        }
+
+        td.fb {
+            background: rgba(7, 220, 237, 0.5);
+        }
+
+        td.twpay_fb {
+            background: linear-gradient(90deg, pink 50%, rgba(7, 220, 237, 0.5) 50%);
+        }
     </style>
 
 
@@ -529,7 +541,9 @@ header( 'location:index.php' );
                                 <input type="checkbox" name="record_id" true-value="1" class="alone" value=""
                                        v-model="row.is_checked">
                             </td>
-                            <td :style="[item.taiwan_pay == '1' ? {'background-color': 'pink'} : '']">
+
+                            <!-- 如果這個 measure_detail 是台灣付，則下方的<td>會改套用 class="twpay"；如果這個 measure_detail 是 Facebook Customer，則下方的<td>會套用 class="fb"；如果這個 measure_detail 既是台灣付 又是 Facebook Customer，則下方的<td>會套用 class="twpay_fb" -->
+                            <td :class="[item.taiwan_pay == '1' && item.cust_type == 'F' ? 'twpay_fb' : item.taiwan_pay == '1' && item.cust_type == '' ? 'twpay' : item.taiwan_pay != '1' && item.cust_type == 'F' ? 'fb' : '']">
                                 <div v-for='(rs, k) in item.record'>{{rs.pick_date}}</div>
                                 <?php
                 if($phili_read == "0")
@@ -722,7 +736,8 @@ header( 'location:index.php' );
 
                         <ul>
                             <li>By Kilo</li>
-                            <li>{{ item.kilo }}</li>
+                            <!-- 下面的 li 會改放成 input，讓使用者可以修改 重量資料 -->
+                            <li><input type="text" v-model="item.warehouse_kilo" @change="change_kilo(item)"></li>
                             <li><input type="text" v-model="item.kilo_unit" @change="change_unit(item)"></li>
                             <li><input type="text" v-model="item.kilo_amount" @change="change_amount(item)"></li>
                             <li><input type="text" v-model="item.kilo_remark"></li>
@@ -730,7 +745,8 @@ header( 'location:index.php' );
 
                         <ul>
                             <li>By Cuft</li>
-                            <li>{{ item.cuft }}</li>
+                            <!-- 下面的 li 會改放成 input，讓使用者可以修改 重量資料 -->
+                            <li><input type="text" v-model="item.warehouse_cuft" @change="change_cuft(item)"></li>
                             <li><input type="text" v-model="item.cuft_unit" @change="change_unit(item)"></li>
                             <li><input type="text" v-model="item.cuft_amount" @change="change_amount(item)"></li>
                             <li><input type="text" v-model="item.cuft_remark"></li>
@@ -985,14 +1001,19 @@ header( 'location:index.php' );
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h5 class="modal-title">OR
-                        <cht>單號</cht>
+                    <h5 class="modal-title">OR and Customer Category
+                        <cht>單號 和 客戶類別</cht>
                     </h5>
                 </div>
 
                 <!-- Modal body -->
                 <div class="modal-body">
                     <input type="text" style="width: 100%;" v-model="item.encode">
+
+                    <select style="width: 100%; margin-top: 10px;" v-model="item.cust_type">
+                        <option value="">Non-Special Customer</option>
+                        <option value="F">Facebook Customer</option>
+                    </select>
                 </div>
 
                 <div class="modal-footer">

@@ -1415,12 +1415,44 @@ var app = new Vue({
             }
           
 
-            row.kilo_amount = isNaN((days * row.kilo_unit * row.kilo).toFixed(2)) ? 0 : (days * row.kilo_unit * row.kilo).toFixed(2);
-            row.cuft_amount = isNaN((days * row.cuft_unit * row.cuft).toFixed(2)) ? 0 : (days * row.cuft_unit * row.cuft).toFixed(2);
+            row.kilo_amount = isNaN((days * row.kilo_unit * row.warehouse_kilo).toFixed(2)) ? 0 : (days * row.kilo_unit * row.warehouse_kilo).toFixed(2);
+            row.cuft_amount = isNaN((days * row.cuft_unit * row.warehouse_cuft).toFixed(2)) ? 0 : (days * row.cuft_unit * row.warehouse_cuft).toFixed(2);
 
             app.$forceUpdate();
 
       },
+
+      change_kilo: function(row) {
+        if(row.days == '')
+          return;
+
+        days = Math.floor(row.days);
+
+        
+        if(isNaN(days))
+            return;
+
+            row.kilo_amount = isNaN((days * row.kilo_unit * row.warehouse_kilo).toFixed(2)) ? 0 : (days * row.kilo_unit * row.warehouse_kilo).toFixed(2);
+
+        app.$forceUpdate();
+
+  },
+
+  change_cuft: function(row) {
+    if(row.days == '')
+      return;
+
+    days = Math.floor(row.days);
+
+    
+    if(isNaN(days))
+        return;
+
+        row.cuft_amount = isNaN((days * row.cuft_unit * row.warehouse_cuft).toFixed(2)) ? 0 : (days * row.cuft_unit * row.warehouse_cuft).toFixed(2);
+
+    app.$forceUpdate();
+
+},
 
       change_unit: function(row) {
         if(row.days == '')
@@ -1432,8 +1464,8 @@ var app = new Vue({
         if(isNaN(days))
             return;
 
-            row.kilo_amount = isNaN((days * row.kilo_unit * row.kilo).toFixed(2)) ? 0 : (days * row.kilo_unit * row.kilo).toFixed(2);
-            row.cuft_amount = isNaN((days * row.cuft_unit * row.cuft).toFixed(2)) ? 0 : (days * row.cuft_unit * row.cuft).toFixed(2);
+            row.kilo_amount = isNaN((days * row.kilo_unit * row.warehouse_kilo).toFixed(2)) ? 0 : (days * row.kilo_unit * row.warehouse_kilo).toFixed(2);
+            row.cuft_amount = isNaN((days * row.cuft_unit * row.warehouse_cuft).toFixed(2)) ? 0 : (days * row.cuft_unit * row.warehouse_cuft).toFixed(2);
 
         app.$forceUpdate();
 
@@ -1441,12 +1473,14 @@ var app = new Vue({
 
   change_amount: function(row) {
 
-        row.kilo_amount = isNaN(Number(row.kilo_amount)) ? 0.00 : Number(row.kilo_amount).toFixed(2);
-        row.cuft_amount = isNaN(Number(row.cuft_amount)) ? 0.00 : Number(row.cuft_amount).toFixed(2);
+    row.kilo_amount = isNaN(Number(row.kilo_amount)) ? 0.00 : Number(row.kilo_amount).toFixed(2);
+    row.cuft_amount = isNaN(Number(row.cuft_amount)) ? 0.00 : Number(row.cuft_amount).toFixed(2);
 
-    app.$forceUpdate();
+app.$forceUpdate();
 
 },
+
+
 
       async get_export(detail_id) {
         let _this = this;
@@ -1687,6 +1721,7 @@ var app = new Vue({
           var form_data = new FormData();
           form_data.append('id', this.item.id);
           form_data.append('encode', this.item.encode);
+          form_data.append('cust_type', this.item.cust_type);
           form_data.append('encode_status', '');
    
           let token = localStorage.getItem("accessToken");
@@ -1722,6 +1757,9 @@ var app = new Vue({
           form_data.append('cuft_amount', this.item.cuft_amount);
           form_data.append('kilo_remark', this.item.kilo_remark);
           form_data.append('cuft_remark', this.item.cuft_remark);
+          form_data.append('cust_type', this.item.cust_type);
+          form_data.append('warehouse_cuft', this.item.warehouse_cuft);
+          form_data.append('warehouse_kilo', this.item.warehouse_kilo);
    
           let token = localStorage.getItem("accessToken");
     
@@ -1913,6 +1951,7 @@ var app = new Vue({
           var form_data = new FormData();
           form_data.append('id', this.item.id);
           form_data.append('encode', this.item.encode);
+          form_data.append('cust_type', this.item.cust_type);
           form_data.append('encode_status', 'C');
    
           let token = localStorage.getItem("accessToken");

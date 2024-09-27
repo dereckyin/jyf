@@ -229,6 +229,7 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
             SELECT distinct 0 as is_checked, measure_detail.id, kilo, cuft, kilo_price, cuft_price, charge, encode, encode_status, pickup_status, payment_status, DATE_FORMAT(measure_detail.crt_time, '%Y/%m/%d') crt_time, 
             (SELECT date_arrive FROM measure_ph WHERE measure_detail.measure_id = measure_ph.id) date_arrive,
 (SELECT GROUP_CONCAT(container_number separator ', ') FROM loading WHERE loading.measure_num = measure_detail.measure_id) container_number, days, way, kilo_unit, kilo_amount, kilo_remark, cuft_unit, cuft_amount, cuft_remark
+            ,cust_type ,warehouse_cuft, warehouse_kilo
                 FROM measure_detail
          
             WHERE  measure_detail.id = " . $measure_detail_id . "
@@ -291,6 +292,16 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
         $cuft_amount = $row['cuft_amount'] == "" ? "" : $row['cuft_amount'];
         $cuft_remark = $row['cuft_remark'] == "" ? "" : $row['cuft_remark'];
 
+        $cust_type = $row['cust_type'] == "" ? "" : $row['cust_type'];
+        $warehouse_cuft = $row['warehouse_cuft'] == "" ? "" : $row['warehouse_cuft'];
+        $warehouse_kilo = $row['warehouse_kilo'] == "" ? "" : $row['warehouse_kilo'];
+
+        if($warehouse_cuft == "")
+            $warehouse_cuft = $cuft;
+
+        if($warehouse_kilo == "")
+            $warehouse_kilo = $kilo;
+
         $warehouse_fee = "";
 
         if($way == "kilo")
@@ -333,6 +344,10 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
                 "cuft_unit" => $cuft_unit,
                 "cuft_amount" => $cuft_amount,
                 "cuft_remark" => $cuft_remark,
+
+                "cust_type" => $cust_type,
+                "warehouse_cuft" => $warehouse_cuft,
+                "warehouse_kilo" => $warehouse_kilo,
 
                 "warehouse_fee" => $warehouse_fee,
         );
