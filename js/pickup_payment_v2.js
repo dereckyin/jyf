@@ -1658,18 +1658,18 @@ app.$forceUpdate();
           {
               if(item.way == "kilo")
               {
-                warehouse_charge = Number(item.kilo).toFixed(2) + ' kilo @ ₱ ' + Number(item.kilo_unit).toFixed(2);
+                warehouse_charge = Number(item.warehouse_kilo).toFixed(2) + ' kilo @ ₱ ' + Number(item.kilo_unit).toFixed(2);
               }
 
               if(item.way == "cuft")
               {
-                warehouse_charge = Number(item.cuft).toFixed(2) + ' cuft @ ₱ ' + Number(item.cuft_unit).toFixed(2);
+                warehouse_charge = Number(item.warehouse_cuft).toFixed(2) + ' cuft @ ₱ ' + Number(item.cuft_unit).toFixed(2);
               }
           }
 
           if(warehouse_charge !== "")
           {
-            this.exp_discription = this.exp_discription + '\n' + warehouse_charge + ' Warehouse Fee';
+            this.exp_discription = this.exp_discription + '\n' + warehouse_charge + ' Warehouse Fee, ' + item.days + ' day(s)';
           }
 
           if(this.export_record.length > 0)
