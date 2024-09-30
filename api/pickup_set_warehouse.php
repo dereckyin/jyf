@@ -63,6 +63,10 @@ $user_id = $decoded->data->id;
         $kilo_remark = (isset($_POST['kilo_remark']) ?  $_POST['kilo_remark'] : "");
         $cuft_remark = (isset($_POST['cuft_remark']) ?  $_POST['cuft_remark'] : "");
 
+        $cust_type = (isset($_POST['cust_type']) ?  $_POST['cust_type'] : "");
+        $warehouse_cuft = (isset($_POST['warehouse_cuft']) ?  $_POST['warehouse_cuft'] : "");
+        $warehouse_kilo = (isset($_POST['warehouse_kilo']) ?  $_POST['warehouse_kilo'] : "");
+
         $conn->begin_transaction();
 
 
@@ -76,7 +80,10 @@ $user_id = $decoded->data->id;
                 kilo_amount = '" . $kilo_amount . "',
                 cuft_amount = '" . $cuft_amount . "',
                 kilo_remark = '" . $kilo_remark . "',
-                cuft_remark = '" . $cuft_remark . "'
+                cuft_remark = '" . $cuft_remark . "',
+                cust_type = '" . $cust_type . "',
+                warehouse_cuft = '" . $warehouse_cuft . "',
+                warehouse_kilo = '" . $warehouse_kilo . "'
             WHERE id = " . $id;
 
         $stmt = $conn->prepare($query);

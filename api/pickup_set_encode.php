@@ -55,6 +55,7 @@ $user_id = $decoded->data->id;
     
         $id = (isset($_POST['id']) ?  $_POST['id'] : "");
         $encode = (isset($_POST['encode']) ?  $_POST['encode'] : "");
+        $cust_type = (isset($_POST['cust_type']) ?  $_POST['cust_type'] : "");
         $encode_status = (isset($_POST['encode_status']) ?  $_POST['encode_status'] : "");
 
         $conn->begin_transaction();
@@ -64,6 +65,7 @@ $user_id = $decoded->data->id;
         $query = "UPDATE measure_detail
             SET
             encode = '" . $encode . "',
+            cust_type = '" . $cust_type . "',
             encode_status = '" . $encode_status . "'
             WHERE id = " . $id;
 
