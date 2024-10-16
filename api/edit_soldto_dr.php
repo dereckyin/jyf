@@ -57,135 +57,135 @@ if($jwt){
         // decode jwt
         $decoded = JWT::decode($jwt, $key, array('HS256'));
 
-        // get data with group_id first
-        $query = "SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
-                FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
-            WHERE  group_id <> 0 and pick_group.status = 2 and group_id IN (
+        // // get data with group_id first
+        // $query = "SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
+        //         FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
+        //     WHERE  group_id <> 0 and pick_group.status = 2 and group_id IN (
             
-                select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id ";
+        //         select group_id FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id ";
                 
-        if($date_end != '' && $date_start != '')
-        {
-            $query .= " left join measure_ph on measure_detail.measure_id = measure_ph.id ";
-        }
-
-        if($container_number != '')
-        {
-            $query .= " left join loading on loading.measure_num = measure_detail.measure_id ";
-        }
-
-        if(count($solds) > 0)
-        {
-            $query .= " left join measure_record_detail on measure_record_detail.detail_id = measure_detail.id ";
-            $query .= " left join receive_record on receive_record.id = measure_record_detail.record_id ";
-            $query .= " left join contactor_ph on contactor_ph.id = measure_record_detail.cust ";
-        }
-
-        $query .= " WHERE group_id <> 0 and pick_group.status = 2 "; 
-
-        if($search != '')
-        {
-            $query .= " and encode = '%" . $search . "%' ";
-        }
-
-        if($date_end != '' && $date_start != '')
-        {
-            $query .= " and measure_ph.date_arrive <= '" . $date_end . "' and measure_ph.date_arrive >= '" . $date_start . "' ";
-        }
+        // if($date_end != '' && $date_start != '')
+        // {
+        //     $query .= " left join measure_ph on measure_detail.measure_id = measure_ph.id ";
+        // }
 
         // if($container_number != '')
         // {
-        //     $query .= " and container_number in ('" . implode("','", $containers) . "') ";
+        //     $query .= " left join loading on loading.measure_num = measure_detail.measure_id ";
         // }
 
-        if($container_number != '')
-        {
-            $query .= " and ( ";
-            foreach($containers as $container)
-            {
-                $query .= " container_number like '%" . $container . "%' ";
-                $query .= " or ";
-            }
+        // if(count($solds) > 0)
+        // {
+        //     $query .= " left join measure_record_detail on measure_record_detail.detail_id = measure_detail.id ";
+        //     $query .= " left join receive_record on receive_record.id = measure_record_detail.record_id ";
+        //     $query .= " left join contactor_ph on contactor_ph.id = measure_record_detail.cust ";
+        // }
 
-            // remove last or
-            $query = substr($query, 0, -3);
-            $query .= " ) ";
-        }
+        // $query .= " WHERE group_id <> 0 and pick_group.status = 2 "; 
 
-        if(count($solds) > 0)
-        {
-            $query .= " and ( contactor_ph.customer in ('" . implode("','", $solds) . "')  ";
+        // if($search != '')
+        // {
+        //     $query .= " and encode = '%" . $search . "%' ";
+        // }
 
-            foreach($solds as $sold)
-            {
-                $query .= " or measure_detail.customer like '%" . $sold . "%' ";
-            }
+        // if($date_end != '' && $date_start != '')
+        // {
+        //     $query .= " and measure_ph.date_arrive <= '" . $date_end . "' and measure_ph.date_arrive >= '" . $date_start . "' ";
+        // }
 
-            $query .= " ) ";
-        }   
+        // // if($container_number != '')
+        // // {
+        // //     $query .= " and container_number in ('" . implode("','", $containers) . "') ";
+        // // }
 
-        $query .= ") order by group_id desc";
+        // if($container_number != '')
+        // {
+        //     $query .= " and ( ";
+        //     foreach($containers as $container)
+        //     {
+        //         $query .= " container_number like '%" . $container . "%' ";
+        //         $query .= " or ";
+        //     }
 
-        $stmt = $db->prepare($query);
-        $stmt->execute();
+        //     // remove last or
+        //     $query = substr($query, 0, -3);
+        //     $query .= " ) ";
+        // }
+
+        // if(count($solds) > 0)
+        // {
+        //     $query .= " and ( contactor_ph.customer in ('" . implode("','", $solds) . "')  ";
+
+        //     foreach($solds as $sold)
+        //     {
+        //         $query .= " or measure_detail.customer like '%" . $sold . "%' ";
+        //     }
+
+        //     $query .= " ) ";
+        // }   
+
+        // $query .= ") order by group_id desc";
+
+        // $stmt = $db->prepare($query);
+        // $stmt->execute();
     
         $merged_results = [];
         
-        $pre_group_id = 0;
-        $pre_id = 0;
-        $id = 0;
-        $items = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        // $pre_group_id = 0;
+        // $pre_id = 0;
+        // $id = 0;
+        // $items = [];
+        // while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     
-            if($row['group_id'] != $pre_group_id && $pre_group_id != 0)
-            {
-                $merged_results[] = array( 
-                    "is_checked" => 0,
-                    "id" => $pre_id,
-                    "order" => $pre_id,
-                    "group_id" => 0,
-                    "measure" => UniformPaymentStatus($items),
-                    "ar" => GetAr($items),
-                    "ar_amount" => GetArAmount($items),
-                    "payments" => GetPayments($items),
-                    "measure_detail_id" => $measure_detail_id,
-                );
+        //     if($row['group_id'] != $pre_group_id && $pre_group_id != 0)
+        //     {
+        //         $merged_results[] = array( 
+        //             "is_checked" => 0,
+        //             "id" => $pre_id,
+        //             "order" => $pre_id,
+        //             "group_id" => 0,
+        //             "measure" => UniformPaymentStatus($items),
+        //             "ar" => GetAr($items),
+        //             "ar_amount" => GetArAmount($items),
+        //             "payments" => GetPayments($items),
+        //             "measure_detail_id" => $measure_detail_id,
+        //         );
 
-                $items = [];
-                $pre_group_id = $row['group_id'];
-                $pre_id = $row['id'];
-            }
+        //         $items = [];
+        //         $pre_group_id = $row['group_id'];
+        //         $pre_id = $row['id'];
+        //     }
 
-            $id = $row['id'];
-            $group_id = $row['group_id'];
-            $pre_group_id = $row['group_id'];
-            $pre_id = $row['id'];
-            $measure_detail_id = $row['measure_detail_id'];
+        //     $id = $row['id'];
+        //     $group_id = $row['group_id'];
+        //     $pre_group_id = $row['group_id'];
+        //     $pre_id = $row['id'];
+        //     $measure_detail_id = $row['measure_detail_id'];
 
-            if(!existsInArray($measure_detail_id, $items))
-            {
-                $mes = GetMeasureDetail($measure_detail_id, $group_id, $db);
-                if(!empty($mes))
-                {
-                    $items = array_merge($items, $mes);
-                }
-            }
-        }
+        //     if(!existsInArray($measure_detail_id, $items))
+        //     {
+        //         $mes = GetMeasureDetail($measure_detail_id, $group_id, $db);
+        //         if(!empty($mes))
+        //         {
+        //             $items = array_merge($items, $mes);
+        //         }
+        //     }
+        // }
 
-        if($id != 0)
-        {
-            $merged_results[] = array( 
-                "is_checked" => 0,
-                "id" => $id,
-                "order" => $id,
-                "group_id" => 0,
-                "measure" => UniformPaymentStatus($items),
-                "ar" => GetAr($items),
-                "ar_amount" => GetArAmount($items),
-                "payments" => GetPayments($items),
-                "measure_detail_id" => $measure_detail_id,
-            );
-        }
+        // if($id != 0)
+        // {
+        //     $merged_results[] = array( 
+        //         "is_checked" => 0,
+        //         "id" => $id,
+        //         "order" => $id,
+        //         "group_id" => 0,
+        //         "measure" => UniformPaymentStatus($items),
+        //         "ar" => GetAr($items),
+        //         "ar_amount" => GetArAmount($items),
+        //         "payments" => GetPayments($items),
+        //         "measure_detail_id" => $measure_detail_id,
+        //     );
+        // }
 
         // get data without group_id 
         $query = "SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
@@ -209,11 +209,11 @@ if($jwt){
             $query .= " left join contactor_ph on contactor_ph.id = measure_record_detail.cust ";
         }
 
-        $query .= " WHERE group_id = 0 and pick_group.status = 2 "; 
+        $query .= " WHERE pick_group.status = 2 "; 
 
         if($search != '')
         {
-            $query .= " and encode = '%" . $search . "%' ";
+            $query .= " and encode like '%" . $search . "%' ";
         }
 
         if($date_end != '' && $date_start != '')
@@ -278,7 +278,7 @@ if($jwt){
                 "measure_detail_id" => $measure_detail_id,
             );
         }
-
+/*
         if($date_end != '' && $date_start != '')
         {
             $merged_results = array_filter($merged_results, function($a) use ($date_start, $date_end) {
@@ -383,7 +383,7 @@ if($jwt){
             });
         
         }
-
+*/
         
 
         // response in json format
