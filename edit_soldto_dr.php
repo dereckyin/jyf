@@ -314,7 +314,6 @@ header( 'location:index.php' );
             Edit Sold To and DR Number for Pickup and Payment Records
             <br><cht>編輯提貨與付款記錄的 Sold To 和單號</cht>
         </h6>
-x
         <div class="block">
             <div class="tablebox V s01">
                 <ul>
