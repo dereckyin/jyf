@@ -2170,7 +2170,7 @@ var app = new Vue({
         {
             item.is_checked = 0;
             item.encode_edit = item.encode;
-            item.record_cust_edit = item.record_cust;
+            item.record_cust_edit = JSON.parse(JSON.stringify(item.record_cust));
         },
 
         async save_item(item)
