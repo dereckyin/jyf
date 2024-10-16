@@ -85,7 +85,7 @@ if($jwt){
 
         if($search != '')
         {
-            $query .= " and encode = '" . $search . "' ";
+            $query .= " and encode = '%" . $search . "%' ";
         }
 
         if($date_end != '' && $date_start != '')
@@ -93,9 +93,23 @@ if($jwt){
             $query .= " and measure_ph.date_arrive <= '" . $date_end . "' and measure_ph.date_arrive >= '" . $date_start . "' ";
         }
 
+        // if($container_number != '')
+        // {
+        //     $query .= " and container_number in ('" . implode("','", $containers) . "') ";
+        // }
+
         if($container_number != '')
         {
-            $query .= " and container_number in ('" . implode("','", $containers) . "') ";
+            $query .= " and ( ";
+            foreach($containers as $container)
+            {
+                $query .= " container_number like '%" . $container . "%' ";
+                $query .= " or ";
+            }
+
+            // remove last or
+            $query = substr($query, 0, -3);
+            $query .= " ) ";
         }
 
         if(count($solds) > 0)
@@ -199,7 +213,7 @@ if($jwt){
 
         if($search != '')
         {
-            $query .= " and encode = '" . $search . "' ";
+            $query .= " and encode = '%" . $search . "%' ";
         }
 
         if($date_end != '' && $date_start != '')
@@ -207,9 +221,23 @@ if($jwt){
             $query .= " and measure_ph.date_arrive <= '" . $date_end . "' and measure_ph.date_arrive >= '" . $date_start . "' ";
         }
 
+        // if($container_number != '')
+        // {
+        //     $query .= " and container_number in ('" . implode("','", $containers) . "') ";
+        // }
+
         if($container_number != '')
         {
-            $query .= " and container_number in ('" . implode("','", $containers) . "') ";
+            $query .= " and ( ";
+            foreach($containers as $container)
+            {
+                $query .= " container_number like '%" . $container . "%' ";
+                $query .= " or ";
+            }
+
+            // remove last or
+            $query = substr($query, 0, -3);
+            $query .= " ) ";
         }
 
         if(count($solds) > 0)
@@ -250,7 +278,7 @@ if($jwt){
                 "measure_detail_id" => $measure_detail_id,
             );
         }
-/*
+
         if($date_end != '' && $date_start != '')
         {
             $merged_results = array_filter($merged_results, function($a) use ($date_start, $date_end) {
@@ -287,7 +315,7 @@ if($jwt){
             });
         }
 
-        if(isset($solds))
+        if($sold_to != '')
         {
             $merged_results = array_filter($merged_results, function($a) use ($solds) {
                 $in_value = false;
@@ -315,7 +343,7 @@ if($jwt){
         
         }
 
-        if(isset($containers))
+        if($container_number != '')
         {
             $merged_results = array_filter($merged_results, function($a) use ($containers) {
                 $in_value = false;
@@ -356,7 +384,7 @@ if($jwt){
         
         }
 
-        */
+        
 
         // response in json format
         echo json_encode($merged_results);
