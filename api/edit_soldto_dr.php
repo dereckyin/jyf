@@ -188,7 +188,7 @@ if($jwt){
         // }
 
         // get data without group_id 
-        $query = "SELECT pick_group.id, pick_group.group_id, pick_group.measure_detail_id
+        $query = "SELECT distinct pick_group.id, pick_group.group_id, pick_group.measure_detail_id
                 FROM pick_group LEFT JOIN measure_detail ON pick_group.measure_detail_id = measure_detail.id
             ";
 
