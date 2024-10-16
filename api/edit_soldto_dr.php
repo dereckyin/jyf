@@ -272,9 +272,9 @@ if($jwt){
                 "order" => $row['id'],
                 "group_id" => $group_id,
                 "measure" => $items,
-                "ar" => GetAr($items),
-                "ar_amount" => GetArAmount($items),
-                "payments" => GetPayments($items),
+                // "ar" => GetAr($items),
+                // "ar_amount" => GetArAmount($items),
+                // "payments" => GetPayments($items),
                 "measure_detail_id" => $measure_detail_id,
             );
         }
