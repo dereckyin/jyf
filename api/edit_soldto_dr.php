@@ -209,7 +209,7 @@ if($jwt){
             $query .= " left join contactor_ph on contactor_ph.id = measure_record_detail.cust ";
         }
 
-        $query .= " WHERE pick_group.status = 2 "; 
+        $query .= " WHERE 1=1 "; 
 
         if($search != '')
         {
