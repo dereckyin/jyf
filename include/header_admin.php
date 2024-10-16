@@ -219,6 +219,7 @@ if ( isset( $jwt ) ) {
         <a class='after-micons' href='create_measurement_v2.php'>Measurement <cht>丈量</cht></a>
         <a class='after-micons' href='pickup_payment.php'>Pickup and Payment <cht>提貨與付款</cht></a>
         <a class='after-micons' href='query_pickup_payment.php'>Query For Archived Pickup and Payment Records <cht>已歸檔提貨與付款記錄查詢</cht></a>
+        <a class='after-micons' href='edit_soldto_dr.php'>Edit Sold To and DR <cht>修改 Sold To 和單號</cht></a>
         <a class='after-micons' href='report_daily_pickup.php'>Daily Pickup Report <cht>每日提貨報表</cht></a>
         <dl class='sub'>
             <dt>
