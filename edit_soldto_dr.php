@@ -466,11 +466,11 @@ x
                                 <div v-for='(rs, k) in item.record'>{{rs.pick_date}}</div>
 
                                 <button @click="item_record(item.record)" data-toggle="modal"
-                                        data-target="#record_modal_detail" v-if="item.pickup_status != ''">Detail
+                                        data-target="#record_modal_detail">Detail
                                 </button>
                             </td>
                             <td>
-                                <span v-for='(cust, j) in item.record_cust'>{{ cust['cust'] }}</span>
+                                <span v-for='(cust, j) in item.record_cust' v-if="item.is_checked != 1">{{ cust['cust'] }}</span>
                                 <template v-if="item.is_checked == 1" v-for='(cust_edit, j) in item.record_cust_edit'>
                                     <input type="text" v-model="cust_edit['cust']">
                                 </template>
@@ -486,7 +486,7 @@ x
                             <td>{{ item.cuft }}{{ item.cuft == '' ? '' : '@' + (item.cuft_price) }}</td>
                             <td>{{ item.charge }}</td>
                             <td>
-                                <div>{{ item.encode }}</div>
+                                <div v-if="item.is_checked != 1">{{ item.encode }}</div>
                                 <input type="text" v-model="item.encode_edit" v-if="item.is_checked == 1">
 
                             </td>
