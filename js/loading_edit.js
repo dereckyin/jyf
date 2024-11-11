@@ -1617,7 +1617,11 @@ var app = new Vue({
 
             this.resetError();
 
+            $(".mask").toggle();
+
             await this.getLoadingRecords();
+
+            $(".mask").toggle();
 
             this.isEditing = false;
             this.receive_records = [];
