@@ -919,16 +919,16 @@ var app = new Vue({
             };
         },
 
-        getReceiveRecords: function(id) {
+        getReceiveRecords: async function (id) {
           console.log("getReceiveRecords");
           if(id == "")
             return;
-            axios.get('api/loading.php?record=' + id)
+            await axios.get('api/loading.php?record=' + id)
                 .then(function(response) {
                     console.log(response.data);
                     app.receive_records = response.data;
 
-
+                    $(".mask").toggle();
 
                     //this.r_kilo = 0.0;
                     //this.n_kilo = 0.0;
@@ -1326,11 +1326,13 @@ var app = new Vue({
             app.resetForm();
         },
 
-        editReceiveRecord: function(event) {
+        editReceiveRecord: async function(event) {
             console.log("editReceiveRecord")
 
             if(!this.isEditing)
                 return;
+
+            $(".mask").toggle();
 
             this.record.date_sent = document.querySelector("input[id=date_sent]").value;
             this.record.etd_date = document.querySelector("input[id=etd_date]").value;
@@ -1416,7 +1418,7 @@ var app = new Vue({
 
                 const token = sessionStorage.getItem('token');
 
-                axios({
+                await axios({
                         method: 'post',
                         headers: {
                             'Content-Type': 'multipart/form-data',
@@ -1459,6 +1461,7 @@ var app = new Vue({
                             //    app.record_tofix['eta_date_his'] += ',' + app.record.eta_date; 
 
                             app.isEditing = false;
+                            $(".mask").toggle();
                     
                     })
                     .catch(function(response) {
@@ -1736,7 +1739,7 @@ var app = new Vue({
           console.log("Zoom", this.selectedImage);
         },
 
-        editRecord() {
+        async editRecord() {
           console.log("editRecord");
             var favorite = [];
             this.resetError();
@@ -1755,11 +1758,12 @@ var app = new Vue({
                 //$(window).scrollTop(0);
                 return;
             }
+
+            $(".mask").toggle();
+
             this.record_tofix = app.loading_records.find(element => element.id == favorite);
             this.record = this.shallowCopy(app.loading_records.find(element => element.id == favorite));
-            this.isEditing = true;
             
-
             if(this.record.date_sent != "")
             {
                 $('#date_sent').datepicker();
@@ -1817,7 +1821,9 @@ var app = new Vue({
 
             //console.log(this.record.date_receive);
             // $( "#upddate" ).value = this.record.date_receive;
-            this.getReceiveRecords(this.record.id);
+            await this.getReceiveRecords(this.record.id);
+
+            this.isEditing = true;
 
             this.unCheckCheckbox();
 

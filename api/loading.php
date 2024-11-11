@@ -1302,72 +1302,82 @@ switch ($method) {
                     }
                 }
 
+                mysqli_begin_transaction($conn);
 
-                $sql = "update receive_record set batch_num = 0,
-                                                      mdf_time = now(),
-                                                      mdf_user = '$user'
-                                            where batch_num = $id";
-                $query = $conn->query($sql);
+                try{
+                    $sql = "update receive_record set batch_num = 0,
+                                                        mdf_time = now(),
+                                                        mdf_user = '$user'
+                                                where batch_num = $id";
+                    $query = $conn->query($sql);
 
-                $sql = "update receive_record set batch_num = $id,
-                                                      mdf_time = now(),
-                                                      mdf_user = '$user',
-                                                      flag = ''
-                                            where id in($record)";
-                $query = $conn->query($sql);
+                    $sql = "update receive_record set batch_num = $id,
+                                                        mdf_time = now(),
+                                                        mdf_user = '$user',
+                                                        flag = ''
+                                                where id in($record)";
+                    $query = $conn->query($sql);
 
-                $sql = "SELECT date_sent, etd_date, ob_date, eta_date, date_arrive FROM loading_date_history  where loading_id=$id";
-                $result = mysqli_query($conn, $sql);
+                    $sql = "SELECT date_sent, etd_date, ob_date, eta_date, date_arrive FROM loading_date_history  where loading_id=$id";
+                    $result = mysqli_query($conn, $sql);
 
-                // die if SQL statement failed
-                while ($row = mysqli_fetch_array($result)) {
-                    $date_sent_ary = explode(",", $row['date_sent']);
-                    $etd_date_ary = explode(",", $row['etd_date']);
-                    $ob_date_ary = explode(",", $row['ob_date']);
-                    $eta_date_ary = explode(",", $row['eta_date']);
-                    $date_arrive_ary = explode(",", $row['date_arrive']);
+                    // die if SQL statement failed
+                    while ($row = mysqli_fetch_array($result)) {
+                        $date_sent_ary = explode(",", $row['date_sent']);
+                        $etd_date_ary = explode(",", $row['etd_date']);
+                        $ob_date_ary = explode(",", $row['ob_date']);
+                        $eta_date_ary = explode(",", $row['eta_date']);
+                        $date_arrive_ary = explode(",", $row['date_arrive']);
+                    }
+
+                    if (!in_array($date_sent, $date_sent_ary)) {
+                        array_push($date_sent_ary, $date_sent);
+                    }
+
+                    if (!in_array($etd_date, $etd_date_ary)) {
+                        array_push($etd_date_ary, $etd_date);
+                    }
+
+                    if (!in_array($ob_date, $ob_date_ary)) {
+                        array_push($ob_date_ary, $ob_date);
+                    }
+
+                    if (!in_array($eta_date, $eta_date_ary)) {
+                        array_push($eta_date_ary, $eta_date);
+                    }
+
+                    if (!in_array($date_arrive, $date_arrive_ary)) {
+                        array_push($date_arrive_ary, $date_arrive);
+                    }
+
+                    $date_sent_str = ltrim(implode(",", $date_sent_ary), ",");
+                    $etd_date_str = ltrim(implode(",", $etd_date_ary), ",");
+                    $ob_date_str = ltrim(implode(",", $ob_date_ary), ",");
+                    $eta_date_str = ltrim(implode(",", $eta_date_ary), ",");
+                    $date_arrive_str = ltrim(implode(",", $date_arrive_ary), ",");
+
+
+                    $sql = "update loading_date_history set date_sent = '$date_sent_str',
+                                                        etd_date = '$etd_date_str',
+                                                        ob_date = '$ob_date_str',
+                                                        eta_date = '$eta_date_str',
+                                                        date_arrive = '$date_arrive_str'
+                                                where loading_id = $id";
+                    $query = $conn->query($sql);
+
+                    $sql = "update measure_ph set date_arrive = '$date_arrive' where id = (select measure_num from loading where id = $id  and measure_num <> 0)";
+                    $query = $conn->query($sql);
+
+                    $sql = "update loading set date_arrive = '$date_arrive' where measure_num in (select * from (select measure_num from loading where id = $id and measure_num <> 0) as t)";
+                    $query = $conn->query($sql);
+                } catch (Exception $e) {
+                    mysqli_rollback($conn);
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
                 }
 
-                if (!in_array($date_sent, $date_sent_ary)) {
-                    array_push($date_sent_ary, $date_sent);
-                }
-
-                if (!in_array($etd_date, $etd_date_ary)) {
-                    array_push($etd_date_ary, $etd_date);
-                }
-
-                if (!in_array($ob_date, $ob_date_ary)) {
-                    array_push($ob_date_ary, $ob_date);
-                }
-
-                if (!in_array($eta_date, $eta_date_ary)) {
-                    array_push($eta_date_ary, $eta_date);
-                }
-
-                if (!in_array($date_arrive, $date_arrive_ary)) {
-                    array_push($date_arrive_ary, $date_arrive);
-                }
-
-                $date_sent_str = ltrim(implode(",", $date_sent_ary), ",");
-                $etd_date_str = ltrim(implode(",", $etd_date_ary), ",");
-                $ob_date_str = ltrim(implode(",", $ob_date_ary), ",");
-                $eta_date_str = ltrim(implode(",", $eta_date_ary), ",");
-                $date_arrive_str = ltrim(implode(",", $date_arrive_ary), ",");
-
-
-                $sql = "update loading_date_history set date_sent = '$date_sent_str',
-                                                      etd_date = '$etd_date_str',
-                                                      ob_date = '$ob_date_str',
-                                                      eta_date = '$eta_date_str',
-                                                      date_arrive = '$date_arrive_str'
-                                            where loading_id = $id";
-                $query = $conn->query($sql);
-
-                $sql = "update measure_ph set date_arrive = '$date_arrive' where id = (select measure_num from loading where id = $id  and measure_num <> 0)";
-                $query = $conn->query($sql);
-
-                $sql = "update loading set date_arrive = '$date_arrive' where measure_num in (select * from (select measure_num from loading where id = $id and measure_num <> 0) as t)";
-                $query = $conn->query($sql);
+                mysqli_commit($conn);
 
                 UpdateLoadingDateArriveHistory($date_arrive, $id, $conn);
 

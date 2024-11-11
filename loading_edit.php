@@ -283,7 +283,7 @@ header( 'location:index.php' );
 <body>
 <div class="bodybox">
     <div class="mask" style="display:none"
-         onclick="(function(){ $('.mask').toggle(); $('#webcam').toggle(); HideCam(); $('#photoModal').toggle(); return false;})();return false;">
+         onclick="(function(){  $('#webcam').toggle(); HideCam(); $('#photoModal').toggle(); return false;})();return false;">
     </div>
     <!-- header -->
     <header></header>
@@ -398,6 +398,7 @@ header( 'location:index.php' );
                     <a class="btn small" @click="cancelReceiveRecord($event)" v-if="this.isEditing == true">取消
                         <eng>Cancel</eng>
                     </a>
+
                 </div>
             </div>
 
@@ -746,9 +747,15 @@ header( 'location:index.php' );
                     <a class="btn small" v-if="isEditing == true" @click="toggleCheckbox();">全選 / 全取消
                         <eng>All/Undo</eng>
                     </a>
+
+                    <a class="btn small" @click="cancelReceiveRecord($event)" v-if="this.isEditing == true">取消
+                        <eng>Cancel</eng>
+                    </a>
+
                     <a class="btn small" v-if="isEditing == true" @click="editReceiveRecord()">儲存
                         <eng>Save</eng>
                     </a>
+                    
                 </div>
             </div>
         </div>
