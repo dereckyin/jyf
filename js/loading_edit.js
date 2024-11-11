@@ -951,9 +951,9 @@ var app = new Vue({
                 });
         },
 
-        getLoadingRecords: function(keyword) {
+        getLoadingRecords: async function(keyword) {
           console.log("getLoadingRecords");
-            axios.get('api/loading.php?loading=1')
+            await axios.get('api/loading.php?loading=1')
                 .then(function(response) {
                     console.log(response.data);
                     app.loading_records = response.data;
@@ -1575,7 +1575,7 @@ var app = new Vue({
                 });
         },
 
-        resetForm: function() {
+        resetForm: async function() {
           console.log("resetForm");
             this.shipping_mark = '';
             this.estimate_weight = 0.0;
@@ -1594,7 +1594,7 @@ var app = new Vue({
             this.date_arrive = '';
             this.broker.name = '';
             this.remark = '';
-            this.isEditing = false;
+            
             this.record = {};
 
             
@@ -1617,7 +1617,9 @@ var app = new Vue({
 
             this.resetError();
 
-            this.getLoadingRecords();
+            await this.getLoadingRecords();
+
+            this.isEditing = false;
             this.receive_records = [];
         },
 

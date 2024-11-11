@@ -364,7 +364,7 @@ header( 'location:index.php' );
                         </ul>
                         <ul v-for='(record, index) in displayedLoading'>
                             <li>
-                                <input type="checkbox" name="record_id" class="alone" :value="record.index"
+                                <input type="checkbox" name="record_id" class="alone" :value="record.index"  v-show="isEditing == false"
                                        :true-value="1" v-model:checked="record.is_checked">
                             </li>
                             <li>{{ record.container_number }}</li>
@@ -385,17 +385,17 @@ header( 'location:index.php' );
                 </div>
 
                 <div class="btnbox">
-                    <a class="btn small" @click="editRecord();" v-if="this.isEditing == false">修改
+                    <a class="btn small" @click="editRecord();" v-if="isEditing == false">修改
                         <eng>Edit</eng>
                     </a>
-                    <a class="btn small" @click="deleteRecord();" v-if="this.isEditing == false">刪除
+                    <a class="btn small" @click="deleteRecord();" v-if="isEditing == false">刪除
                         <eng>Delete</eng>
                     </a>
-                    <a class="btn orange small" @click="deleteAllRecord();" v-if="this.isEditing == false">特殊刪除
+                    <a class="btn orange small" @click="deleteAllRecord();" v-if="isEditing == false">特殊刪除
                         <eng>Special Delete</eng>
                     </a>
 
-                    <a class="btn small" @click="cancelReceiveRecord($event)" v-if="this.isEditing == true">取消
+                    <a class="btn small" @click="cancelReceiveRecord($event)" v-if="isEditing == true">取消
                         <eng>Cancel</eng>
                     </a>
 
@@ -748,7 +748,7 @@ header( 'location:index.php' );
                         <eng>All/Undo</eng>
                     </a>
 
-                    <a class="btn small" @click="cancelReceiveRecord($event)" v-if="this.isEditing == true">取消
+                    <a class="btn small" @click="cancelReceiveRecord($event)" v-if="isEditing == true">取消
                         <eng>Cancel</eng>
                     </a>
 
