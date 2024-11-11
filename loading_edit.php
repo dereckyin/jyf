@@ -395,8 +395,7 @@ header( 'location:index.php' );
                         <eng>Special Delete</eng>
                     </a>
 
-                    <a class="btn small" @click="cancelReceiveRecord($event)" v-if="isEditing == true">取消
-                        <eng>Cancel</eng>
+                    <a class="btn small" @click="cancelReceiveRecord($event)" v-if="isEditing == true">取消修改  <eng>Cancel Editing</eng>
                     </a>
 
                 </div>
@@ -748,8 +747,7 @@ header( 'location:index.php' );
                         <eng>All/Undo</eng>
                     </a>
 
-                    <a class="btn small" @click="cancelReceiveRecord($event)" v-if="isEditing == true">取消
-                        <eng>Cancel</eng>
+                    <a class="btn small" @click="cancelReceiveRecord($event)" v-if="isEditing == true">取消修改  <eng>Cancel Editing</eng>
                     </a>
 
                     <a class="btn small" v-if="isEditing == true" @click="editReceiveRecord()">儲存
