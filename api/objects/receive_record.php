@@ -37,6 +37,52 @@ class ReceiveRecord{
         $this->conn = $db;
     }
 
+function getLongestCommonPrefixes($strings) {
+    $groups = [];
+
+    foreach ($strings as $string) {
+        $foundGroup = false;
+
+        foreach ($groups as &$group) {
+            $commonPrefix = $this->findLongestCommonPrefix([$group[0], $string]);
+            if (!empty($commonPrefix)) {
+                $group[] = $string;
+                $foundGroup = true;
+                break;
+            }
+        }
+
+        if (!$foundGroup) {
+            $groups[] = [$string];
+        }
+    }
+
+    $result = [];
+    foreach ($groups as $group) {
+        $prefix = $this->findLongestCommonPrefix($group);
+        if (!empty($prefix)) {
+            $result[] = $prefix;
+        }
+    }
+
+    return $result;
+}
+
+function findLongestCommonPrefix($strings) {
+    if (empty($strings)) return '';
+    
+    $prefix = $strings[0];
+
+    foreach ($strings as $string) {
+        while (strpos($string, $prefix) !== 0) {
+            $prefix = mb_substr($prefix, 0, -1);
+            if ($prefix === '') return '';
+        }
+    }
+
+    return $prefix;
+}
+
     function UpdateReceiveRecordById($id){
       $query = "UPDATE " . $this->table_name . "
                 SET
@@ -618,6 +664,11 @@ class ReceiveRecord{
       
             $cust = explode("||", $customer);
 
+            // trim each element in the array
+            //$cust = array_map('trim', $cust);
+
+            //$cust_arry = $this->getLongestCommonPrefixes($cust);
+
             foreach ($cust as &$value) {
                 $value = addslashes(trim($value));
                 $cus_str .= " r.customer like '" . $value . "%' ESCAPE '|' or ";
@@ -631,6 +682,11 @@ class ReceiveRecord{
             $supplier = rtrim($supplier, '||');
     
             $sup = explode("||", $supplier);
+
+            // trim each element in the array
+            //$sup = array_map('trim', $sup);
+
+            //$sup_arry = $this->getLongestCommonPrefixes($sup);
 
             foreach ($sup as &$value) {
                 $value = addslashes(trim($value));
@@ -661,7 +717,7 @@ class ReceiveRecord{
                         r.real_payment_time,
                         COALESCE(ld.eta_date, '') eta_date_his,
                         COALESCE(ld.date_arrive, '') date_arrive_his,
-                        (select GROUP_CONCAT(encode, '') from measure_detail md left join measure_record_detail mrd on md.id = mrd.detail_id where mrd.record_id = r.id) as dr,
+                        '' as dr,
                         '' pic, r.photo, r.picname
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id
@@ -723,7 +779,7 @@ class ReceiveRecord{
                         r.real_payment_time,
                         COALESCE(ld.eta_date, '') eta_date_his,
                         COALESCE(ld.date_arrive, '') date_arrive_his,
-                        (select GROUP_CONCAT(encode, '') from measure_detail md left join measure_record_detail mrd on md.id = mrd.detail_id where mrd.record_id = r.id) as dr,
+                        '' dr,
                         '' pic, r.photo, r.picname
                         FROM receive_record r LEFT JOIN loading l 
                         ON r.batch_num = l.id
