@@ -620,7 +620,7 @@ class ReceiveRecord{
 
             foreach ($cust as &$value) {
                 $value = addslashes(trim($value));
-                $cus_str .= " r.customer like '%" . $value . "%' ESCAPE '|' or ";
+                $cus_str .= " r.customer like '" . $value . "%' ESCAPE '|' or ";
             }
 
             $cus_str = rtrim($cus_str, 'or ');
@@ -634,7 +634,7 @@ class ReceiveRecord{
 
             foreach ($sup as &$value) {
                 $value = addslashes(trim($value));
-                $sup_str .= " r.supplier like '%" . $value . "%'  ESCAPE '|' or ";
+                $sup_str .= " r.supplier like '" . $value . "%'  ESCAPE '|' or ";
 
             }
 

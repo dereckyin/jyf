@@ -84,6 +84,15 @@
             display: block;
         }
 
+        .bodybox .mask {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            top: 0;
+            z-index: 1;
+            display: none;
+        }
 
     </style>
 
@@ -99,6 +108,9 @@
 
 <body>
 <div class="bodybox">
+<div class="mask" style="display:none"
+         onclick="(function(){   return false;})();return false;">
+    </div>
     <!-- header -->
     <header>
     </header>
