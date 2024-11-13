@@ -363,7 +363,7 @@ $(function(){
 
       if(count > 50)
       {
-        alert('請選擇50個以內的寄貨人，目前選了' + count + '個');
+        alert('請選擇50個以內的寄貨人，目前選了' + count + '個\nDue to system workload, please select 50 or below suppliers for query. Now you already selected ' + count + ' suppliers.');
         return;
       }
 
@@ -393,7 +393,7 @@ $(function(){
 
       if(count > 50)
       {
-        alert('請選擇50個以內的收件人，目前選了' + count + '個');
+        alert('請選擇50個以內的收件人，目前選了' + count + '個\nDue to system workload, please select 50 or below companies/customers for query. Now you already selected ' + count + ' companies/customers.');
         return;
       }
 
