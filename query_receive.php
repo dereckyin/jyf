@@ -352,11 +352,21 @@ $(function(){
 
       var checkboxes = document.querySelector("#s_contact").querySelectorAll('input');
 
+      var count = 0;
       for (var i = 0, element; element = checkboxes[i]; i++) {
         if(element.checked)
+        {
           containers += element.value + "||";
-          //work with element
+          count++;
+        }
       }
+
+      if(count > 50)
+      {
+        alert('請選擇50個以內的寄貨人');
+        return;
+      }
+
 
       document.getElementsByName('supplier')[0].value = containers;
 
@@ -371,10 +381,20 @@ $(function(){
 
       var checkboxes = document.querySelector("#c_contact").querySelectorAll('input');
 
+      // do not over 50 checkboxes checked
+      var count = 0;
       for (var i = 0, element; element = checkboxes[i]; i++) {
         if(element.checked)
+        {
           containers += element.value + "||";
-          //work with element
+          count++;
+        }
+      }
+
+      if(count > 50)
+      {
+        alert('請選擇50個以內的收件人');
+        return;
       }
 
       document.getElementsByName('customer')[0].value = containers;
