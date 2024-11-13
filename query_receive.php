@@ -363,7 +363,7 @@ $(function(){
 
       if(count > 50)
       {
-        alert('請選擇50個以內的寄貨人');
+        alert('請選擇50個以內的寄貨人，目前選了' + count + '個');
         return;
       }
 
@@ -393,7 +393,7 @@ $(function(){
 
       if(count > 50)
       {
-        alert('請選擇50個以內的收件人');
+        alert('請選擇50個以內的收件人，目前選了' + count + '個');
         return;
       }
 
