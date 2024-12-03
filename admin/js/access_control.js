@@ -10,6 +10,8 @@ var app = new Vue({
 
     innova: false,
 
+    editable:[],
+
   },
 
   created() {
@@ -48,6 +50,11 @@ var app = new Vue({
          
               if (kind === 3 || kind === undefined)
             _this.innova = res.data[0]["innova"] != -1 ? true : false;
+
+              if (kind === 4 || kind === undefined)
+                _this.editable = res.data[0]["editable"].split(",").filter(function (el) {
+                  return el != "";
+                });
 
           },
           (err) => {
@@ -130,6 +137,7 @@ var app = new Vue({
       form_Data.append("action", 3);
       form_Data.append("car_access1", this.car_access1.toString());
       form_Data.append("car_access2", this.car_access2.toString());
+      form_Data.append("editable", this.editable.toString());
    
       axios({
         method: "post",
