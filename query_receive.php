@@ -34,6 +34,16 @@ p {
   padding:0;
 }
 
+.bodybox .mask {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    z-index: 1;
+    display: none;
+}
+
 
 </style>
 
@@ -49,6 +59,9 @@ $(function(){
 
 <body>
 <div class="bodybox"> 
+<div class="mask" style="display:none"
+         onclick="(function(){ return false;})();return false;">
+    </div>
   <!-- header -->
   <header> 
   </header>
@@ -339,11 +352,21 @@ $(function(){
 
       var checkboxes = document.querySelector("#s_contact").querySelectorAll('input');
 
+      var count = 0;
       for (var i = 0, element; element = checkboxes[i]; i++) {
         if(element.checked)
+        {
           containers += element.value + "||";
-          //work with element
+          count++;
+        }
       }
+
+      if(count > 50)
+      {
+        alert('請選擇50個以內的寄貨人，目前選了' + count + '個\nDue to system workload, please select 50 or below suppliers for query. Now you already selected ' + count + ' suppliers.');
+        return;
+      }
+
 
       document.getElementsByName('supplier')[0].value = containers;
 
@@ -358,10 +381,20 @@ $(function(){
 
       var checkboxes = document.querySelector("#c_contact").querySelectorAll('input');
 
+      // do not over 50 checkboxes checked
+      var count = 0;
       for (var i = 0, element; element = checkboxes[i]; i++) {
         if(element.checked)
+        {
           containers += element.value + "||";
-          //work with element
+          count++;
+        }
+      }
+
+      if(count > 50)
+      {
+        alert('請選擇50個以內的收件人，目前選了' + count + '個\nDue to system workload, please select 50 or below companies/customers for query. Now you already selected ' + count + ' companies/customers.');
+        return;
       }
 
       document.getElementsByName('customer')[0].value = containers;

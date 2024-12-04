@@ -275,7 +275,10 @@ var app = new Vue({
               return result;
           },
 
-        query: function() {
+        query: async function() {
+
+            $(".mask").toggle();
+
             var date_start = window.document.getElementById('date_start').value;
             var date_end = window.document.getElementById('date_end').value;
 
@@ -316,7 +319,7 @@ var app = new Vue({
             const token = sessionStorage.getItem('token');
 
 
-            axios({
+            await axios({
                     method: 'post',
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -334,15 +337,20 @@ var app = new Vue({
                     app.s_keyword = '';
                     app.c_keyword = '';
 
+                    $(".mask").toggle();
+
                 })
                 .catch(function(response) {
                     //handle error
                     console.log(response)
+
+                    $(".mask").toggle();
                 });
 
         },
 
-        print: function() {
+        print: async function() {
+            $(".mask").toggle();
             var token = localStorage.getItem("token");
 
             var date_start = window.document.getElementById('date_start').value;
@@ -383,7 +391,7 @@ var app = new Vue({
             form_Data.append('remark', '')
             form_Data.append('sort', sort)
 
-            axios({
+            await axios({
                     method: 'post',
                     url: 'api/query_airship_records_print.php',
                     data: form_Data,
@@ -404,9 +412,12 @@ var app = new Vue({
                     app.s_keyword = '';
                     app.c_keyword = '';
 
+                    $(".mask").toggle();
+
                 })
                 .catch(function(response) {
                     //handle error
+                    $(".mask").toggle();
                     console.log(response)
                 });
         },
