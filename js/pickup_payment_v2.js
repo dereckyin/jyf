@@ -1830,7 +1830,7 @@ app.$forceUpdate();
           form_data.append('encode_status', '');
    
           let token = localStorage.getItem("accessToken");
-    
+
           try {
             let res = await axios({
               method: 'post',
