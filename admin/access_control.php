@@ -180,30 +180,6 @@ include 'menu.php';
                         <a class="btn" @click="save_innova()">Save</a>
                     </div>
                 </div>
-
-                <div class="box-content">
-                    <ul>
-                        <li><b>Make Editable for Pickup/Payment webpage</b></li>
-                        <br>
-                        <li>
-                            <div>
-                                
-                                <v-select v-model="editable"
-                                                :options="payees"
-                                                attach
-                                                chips
-                                                label="payeeName"
-                                                multiple></v-select>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <div class="btnbox">
-                        <a class="btn" @click="cancel(4)">Cancel</a>
-                        <a class="btn" @click="save(4)">Save</a>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>

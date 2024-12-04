@@ -37,56 +37,6 @@ class ReceiveRecord{
         $this->conn = $db;
     }
 
-    function getLongestCommonPrefixes($strings) {
-        $groups = [];
-    
-    
-        foreach ($strings as $string) {
-            $foundGroup = false;
-    
-            foreach ($groups as &$group) {
-    
-                $commonPrefix = $this->findLongestCommonPrefixForTwoStrings($group, $string);
-                if (!empty($commonPrefix) && $commonPrefix === $group) {
-                    $foundGroup = true;
-                    break;
-                }
-                if(!empty($commonPrefix) && $commonPrefix === $string) {
-                    $foundGroup = true;
-                    $group = $string;
-                    break;
-                }
-            }
-    
-            if (!$foundGroup) {
-                $groups[] = $string;
-            }
-        }
-    
-        return $groups;
-    }
-    
-    
-    function findLongestCommonPrefixForTwoStrings($str1, $str2) {
-        $minLength = min(mb_strlen($str1, 'UTF-8'), mb_strlen($str2, 'UTF-8'));
-        $prefix = '';
-    
-        for ($i = 0; $i < $minLength; $i++) {
-            $char1 = mb_substr($str1, $i, 1, 'UTF-8');
-            $char2 = mb_substr($str2, $i, 1, 'UTF-8');
-            
-            if ($char1 === $char2) {
-                $prefix .= $char1;
-            } else {
-                break;
-            }
-        }
-    
-        return $prefix;
-    }
-
-
-
     function UpdateReceiveRecordById($id){
       $query = "UPDATE " . $this->table_name . "
                 SET
@@ -668,14 +618,9 @@ class ReceiveRecord{
       
             $cust = explode("||", $customer);
 
-            // trim each element in the array
-            $cust = array_map('trim', $cust);
-
-            $cust_arry = $this->getLongestCommonPrefixes($cust);
-
-            foreach ($cust_arry as &$value) {
+            foreach ($cust as &$value) {
                 $value = addslashes(trim($value));
-                $cus_str .= " r.customer like '" . $value . "%' ESCAPE '|' or ";
+                $cus_str .= " r.customer like '%" . $value . "%' ESCAPE '|' or ";
             }
 
             $cus_str = rtrim($cus_str, 'or ');
@@ -687,14 +632,9 @@ class ReceiveRecord{
     
             $sup = explode("||", $supplier);
 
-            // trim each element in the array
-            $sup = array_map('trim', $sup);
-
-            $sup_arry = $this->getLongestCommonPrefixes($sup);
-
-            foreach ($sup_arry as &$value) {
+            foreach ($sup as &$value) {
                 $value = addslashes(trim($value));
-                $sup_str .= " r.supplier like '" . $value . "%'  ESCAPE '|' or ";
+                $sup_str .= " r.supplier like '%" . $value . "%'  ESCAPE '|' or ";
 
             }
 
@@ -823,55 +763,6 @@ class ReceiveRecord{
 
         while($row = $stmt->fetch(PDO::FETCH_ASSOC))
             $merged_results[] = $row;
-        
-        // $filteredData = array();
-        
-        // if (!empty($cust)) {
-        //     foreach ($merged_results as $data) {
-        //         $remove = false;
-                
-        //         // loop $cust and check if $customer starts with any of them
-        //         foreach ($cust as $cs) {
-        //             if (strpos($data['customer'], $cs) === 0) {
-        //                 $remove = true;
-        //                 break;
-        //             }
-        //         }
-                
-        //         if ($remove) {
-        //             // remove customer
-        //         } else {
-        //             $filteredData[] = $data;
-        //         }
-        //     }
-        // } else {
-        //     $filteredData = $merged_results;
-        // }
-        
-        // $filteredSup = array();
-        
-        // if (!empty($sup)) {
-        //     foreach ($filteredData as $data) {
-        //         $remove = false;
-                
-        //         // loop $sup and check if $supplier starts with any of them
-        //         foreach ($sup as $sp) {
-        //             if (strpos($data['supplier'], $sp) === 0) {
-        //                 $remove = true;
-        //                 break;
-        //             }
-        //         }
-                
-        //         if ($remove) {
-        //             // remove supplier
-        //         } else {
-        //             $filteredSup[] = $data;
-        //         }
-        //     }
-        // } else {
-        //     $filteredSup = $filteredData;
-        // }
-
 
         // iterate through the array of objects
         for($i =0; $i < count($merged_results); $i++) {

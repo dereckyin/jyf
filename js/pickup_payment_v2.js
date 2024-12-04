@@ -103,9 +103,6 @@ let mainState = {
     container_numbers: [],
     container: "",
 
-    editable: false,
-    measure: {},
-
 };
 
 var app = new Vue({
@@ -119,7 +116,6 @@ var app = new Vue({
       //this.getContactors();
       this.load_measurement();
       this.getMeasures();
-      this.getAccess();
     },
 
 
@@ -175,34 +171,6 @@ var app = new Vue({
     },
 
     methods: {
-
-      getAccess: function() {
-        let _this = this;
-
-
-        axios({
-            method: 'get',
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            url: 'api/editable_access_control.php',
-            data: {}
-        })
-        .then(function(response) {
-            //handle success
-            _this.editable = response.data.editable;
-
-        })
-        .catch(function(response) {
-            //handle error
-            Swal.fire({
-            text: JSON.stringify(response),
-            icon: 'error',
-            confirmButtonText: 'OK'
-            })
-        });
-    },
-
       B_change_C: function(){
         let row = this.group_b;
         
@@ -629,78 +597,6 @@ var app = new Vue({
           let res = await axios({
             method: 'post',
             url: 'api/pickup_set_record_checker.php',
-            data: form_data,
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-        });
-          
-        } catch (err) {
-          console.log(err)
-          alert('error')
-        }
-
-        this.submit = false;
-
-        this.getMeasures();
-      },
-
-      
-      editable_record: async function()
-      {
-        let _this = this;
-
-        var form_data = new FormData();
-  
-        form_data.append('id', this.measure.id);
- 
-        let token = localStorage.getItem("accessToken");
-
-        if(this.submit == true)
-          return;
-
-        this.submit = true;
-  
-        try {
-          let res = await axios({
-            method: 'post',
-            url: 'api/pickup_set_record_editable.php',
-            data: form_data,
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-        });
-          
-        } catch (err) {
-          console.log(err)
-          alert('error')
-        }
-
-        this.submit = false;
-
-        this.getMeasures();
-      },
-
-      
-      editable_payment: async function()
-      {
-        let _this = this;
-
-        var form_data = new FormData();
-  
-        form_data.append('measure', JSON.stringify(this.payment_measure));
- 
-        let token = localStorage.getItem("accessToken");
-
-        if(this.submit == true)
-          return;
-
-        this.submit = true;
-  
-        try {
-          let res = await axios({
-            method: 'post',
-            url: 'api/pickup_set_payment_editable.php',
             data: form_data,
             headers: {
               "Content-Type": "multipart/form-data",
@@ -1466,11 +1362,11 @@ var app = new Vue({
 
         item_record: function(item) {
           this.record = this.shallowCopy(item);
+          
         },
 
-        item_record_checker: function(item, checker, measure) {
+        item_record_checker: function(item, checker) {
           this.record = this.shallowCopy(item);
-          this.measure = this.shallowCopy(measure);
           this.checker = checker;
         },
 
@@ -1483,7 +1379,6 @@ var app = new Vue({
           this.item = this.shallowCopy(item);
 
         },
-
 
         change_days: function(row) {
             if(row.days == '')

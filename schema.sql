@@ -1307,11 +1307,3 @@ ADD COLUMN `warehouse_cuft` varchar(64) DEFAULT '';
 
 ALTER table measure_detail
 ADD COLUMN `warehouse_kilo` varchar(64) DEFAULT '';
-
-
-CREATE INDEX receive_record_customer_idx ON receive_record (customer);
-CREATE INDEX receive_record_supplier_idx ON receive_record (supplier);
-
--- 20241203
-ALTER TABLE access_control
-ADD COLUMN `editable` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '';

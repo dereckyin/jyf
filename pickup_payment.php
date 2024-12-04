@@ -555,7 +555,7 @@ header( 'location:index.php' );
                                 <?php
 }
 ?>
-                                <button @click="item_record_checker(item.record, item.checked, item)" data-toggle="modal"
+                                <button @click="item_record_checker(item.record, item.checked)" data-toggle="modal"
                                         data-target="#record_modal_detail" v-if="item.pickup_status != ''">Detail
                                 </button>
                             </td>
@@ -1211,7 +1211,6 @@ header( 'location:index.php' );
                             @click="checker_confirm">Check Correct
                         <cht>確認正確</cht>
                     </button>
-                    <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="editable_record()" v-if="measure.pickup_status != '' && editable == true">Make Editable <cht>變為可編輯</cht></button>
                 </div>
 
             </div>
@@ -1414,9 +1413,6 @@ header( 'location:index.php' );
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-warning">Cancel
                         <cht>取消</cht>
-                    </button>
-                    <button type="button" data-dismiss="modal" class="btn btn-secondary" @click="editable_payment()" v-if="record.payment_status != '' && editable == true">Make Editable
-                        <cht>變為可編輯</cht>
                     </button>
                 </div>
 

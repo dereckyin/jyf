@@ -12,7 +12,6 @@ $action = (isset($_POST['action']) ?  $_POST['action'] : 1);
 
 $car_access1 = (isset($_POST['car_access1']) ?  $_POST['car_access1'] : '');
 $car_access2 = (isset($_POST['car_access2']) ?  $_POST['car_access2'] : '');
-$editable = (isset($_POST['editable']) ?  $_POST['editable'] : '');
 $innova = (isset($_POST['innova']) ?  $_POST['innova'] : '');
 
 
@@ -40,7 +39,7 @@ if (!isset($jwt)) {
     if ($action == 1) {
         //select all
         try {
-            $query = "SELECT car_access1, car_access2, innova, editable from access_control where id = 1";
+            $query = "SELECT car_access1, car_access2, innova from access_control where id = 1";
 
             $stmt = $db->prepare($query);
             $stmt->execute();
@@ -59,8 +58,7 @@ if (!isset($jwt)) {
         try {
             $query = "UPDATE access_control
                         set car_access1 = :car_access1, 
-                            car_access2 = :car_access2,
-                            editable = :editable
+                            car_access2 = :car_access2
                         where id = :id";
 
             // prepare the query
@@ -71,13 +69,12 @@ if (!isset($jwt)) {
 
             $car_access1 = htmlspecialchars(strip_tags($car_access1));
             $car_access2 = htmlspecialchars(strip_tags($car_access2));
-            $editable = htmlspecialchars(strip_tags($editable));
 
             // bind the values
             $stmt->bindParam(':id', $id);
             $stmt->bindParam(':car_access1', $car_access1);
             $stmt->bindParam(':car_access2', $car_access2);
-            $stmt->bindParam(':editable', $editable);
+          
 
             try {
                 // execute the query, also check if query was successful
