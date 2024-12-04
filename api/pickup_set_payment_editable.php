@@ -53,34 +53,40 @@ $user_id = $decoded->data->id;
     
         case 'POST':
     
-        $id = (isset($_POST['id']) ?  $_POST['id'] : "");
+        $measure = (isset($_POST['measure']) ?  $_POST['measure'] : []);
+        $measure_array = json_decode($measure, true);
 
         $conn->begin_transaction();
 
 
-        // for loading
-        $query = "UPDATE measure_detail
-            SET
-            payment_status = ''
-            WHERE id = " . $id;
+        foreach ($measure_array as $key => $value) {
+            $id = $value['id'];
 
-        $stmt = $conn->prepare($query);
+            // for loading
+            $query = "UPDATE measure_detail
+                SET
+                payment_status = ''
+                WHERE id = " . $id;
 
-        try {
-            // execute the query, also check if query was successful
-            if (!$stmt->execute()) {
+            $stmt = $conn->prepare($query);
+
+            try {
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
+                    $conn->rollback();
+                    http_response_code(501);
+                    echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
                 $conn->rollback();
                 http_response_code(501);
-                echo json_encode("Failure2 at " . date("Y-m-d") . " " . date("h:i:sa") . " " . mysqli_errno($conn));
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
             }
-        } catch (Exception $e) {
-            error_log($e->getMessage());
-            $conn->rollback();
-            http_response_code(501);
-            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-            die();
         }
+    
             
         $conn->commit();
     }

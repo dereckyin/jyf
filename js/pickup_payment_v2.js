@@ -688,7 +688,7 @@ var app = new Vue({
 
         var form_data = new FormData();
   
-        form_data.append('id', this.detail_id);
+        form_data.append('measure', JSON.stringify(this.payment_measure));
  
         let token = localStorage.getItem("accessToken");
 
