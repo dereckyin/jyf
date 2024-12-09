@@ -1315,3 +1315,10 @@ CREATE INDEX receive_record_supplier_idx ON receive_record (supplier);
 -- 20241203
 ALTER TABLE access_control
 ADD COLUMN `editable` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20241209
+UPDATE contactor
+SET customer = TRIM(customer), supplier = TRIM(supplier);
+
+UPDATE receive_record
+SET customer = TRIM(customer), supplier = TRIM(supplier);
