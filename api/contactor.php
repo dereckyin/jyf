@@ -150,6 +150,9 @@ else
             $crud = stripslashes($_POST["crud"]);
             $id = stripslashes($_POST["id"]);
 
+            $customer = trim($customer);
+            $supplier = trim($supplier);
+
             switch ($crud) 
             {
               case 'insert':

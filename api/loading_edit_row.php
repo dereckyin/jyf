@@ -49,6 +49,9 @@ $taiwan_pay = stripslashes($_POST["taiwan_pay"]);
 $courier_money = stripslashes($_POST["courier_money"]);
 $remark = stripslashes($_POST["remark"]);
 
+$customer = trim($customer);
+$supplier = trim($supplier);
+
 $receive_record->date_receive = $date_receive;
 $receive_record->customer = $customer;
 $receive_record->email_customer = $email_customer;

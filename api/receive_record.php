@@ -461,6 +461,7 @@ function sendMail($email, $date, $customer,  $desc, $amount, $supplier, $pic_mai
 
             $date_receive = trim($date_receive);
             $customer = trim($customer);
+            $supplier = trim($supplier);
 
             switch ($crud) 
             {

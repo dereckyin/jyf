@@ -662,6 +662,16 @@ class ReceiveRecord{
         $cus_str = "";
         $sup_str = "";
 
+        $c_prefix = "%";
+        // $customer string contains '||', then it is a prefix search
+        if($customer != "" && strpos($customer, '||') !== false) {
+            $c_prefix = "";
+        }
+
+        $p_prefix = "%";
+        if($supplier != "" && strpos($supplier, '||') !== false) {
+            $p_prefix = "";
+        }
 
         if(!empty($customer)) {
             $customer = rtrim($customer, '||');
@@ -675,7 +685,7 @@ class ReceiveRecord{
 
             foreach ($cust_arry as &$value) {
                 $value = addslashes(trim($value));
-                $cus_str .= " r.customer like '" . $value . "%' ESCAPE '|' or ";
+                $cus_str .= " r.customer like '" . $c_prefix . $value . "%' ESCAPE '|' or ";
             }
 
             $cus_str = rtrim($cus_str, 'or ');
@@ -694,7 +704,7 @@ class ReceiveRecord{
 
             foreach ($sup_arry as &$value) {
                 $value = addslashes(trim($value));
-                $sup_str .= " r.supplier like '" . $value . "%'  ESCAPE '|' or ";
+                $sup_str .= " r.supplier like '" . $p_prefix . $value . "%'  ESCAPE '|' or ";
 
             }
 
