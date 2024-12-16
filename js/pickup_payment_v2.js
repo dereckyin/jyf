@@ -1451,9 +1451,9 @@ var app = new Vue({
             row.remark = 'Deposit to Feliix Inc Account';
         },
 
-        getRecords: function(keyword) {
+        getRecords: async function(keyword) {
       
-            axios.get('api/pickup_get_measure_ph.php')
+          await axios.get('api/pickup_get_measure_ph.php')
                 .then(function(response) {
                     console.log(response.data);
                     app.loading_records = response.data;
@@ -2146,6 +2146,11 @@ app.$forceUpdate();
                 favorite.push(this.loading_records[i].id);
             }
 
+            for (i = 0; i < this.loading_records.length; i++) 
+            {
+              this.loading_records[i].is_checked = 0;
+            }
+
             if(favorite.length == 0)
             {
               Swal.fire({
@@ -2173,12 +2178,10 @@ app.$forceUpdate();
                 }
             }
 
-              this.submit = true;
-
             await this.add_pickup(favorite.join(","));
 
-     
-
+            this.submit = true;
+            
             this.load_measurement();
             this.getMeasures();
         },
