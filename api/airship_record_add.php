@@ -86,7 +86,9 @@ $details_array = json_decode($details, true);
 $details_php = (isset($_POST['details_php']) ?  $_POST['details_php'] : '[]');
 $details_php_array = json_decode($details_php, true);
 
-
+// remove space
+$customer = trim($customer);
+$supplier = trim($supplier);
 
 $id = $id == '' ? 0 : $id;
 
