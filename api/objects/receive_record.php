@@ -684,7 +684,7 @@ class ReceiveRecord{
             $cust_arry = $this->getLongestCommonPrefixes($cust);
 
             foreach ($cust_arry as &$value) {
-                $value = addslashes($value);
+                $value = addslashes(trim($value));
                 $cus_str .= " r.customer like '" . $c_prefix . $value . "%' ESCAPE '|' or ";
             }
 
@@ -703,7 +703,7 @@ class ReceiveRecord{
             $sup_arry = $this->getLongestCommonPrefixes($sup);
 
             foreach ($sup_arry as &$value) {
-                $value = addslashes($value);
+                $value = addslashes(trim($value));
                 $sup_str .= " r.supplier like '" . $p_prefix . $value . "%'  ESCAPE '|' or ";
 
             }
