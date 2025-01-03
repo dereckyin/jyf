@@ -80,7 +80,7 @@ if($jwt){
                 }
     
                 foreach ($cust as &$value) {
-                    $value = addslashes(trim($value));
+                    $value = addslashes($value);
                     $cus_str .= " r.customer like '" . $c_prefix . $value . "%' ESCAPE '|' or ";
                 }
     
@@ -99,7 +99,7 @@ if($jwt){
                 }
     
                 foreach ($sup as &$value) {
-                    $value = addslashes(trim($value));
+                    $value = addslashes($value);
                     $sup_str .= " r.supplier like '" . $p_prefix . $value . "%'  ESCAPE '|' or ";
     
                 }
