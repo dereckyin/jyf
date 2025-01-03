@@ -1322,3 +1322,8 @@ SET customer = TRIM(customer), supplier = TRIM(supplier);
 
 UPDATE receive_record
 SET customer = TRIM(customer), supplier = TRIM(supplier);
+
+-- 20250103
+UPDATE airship_records
+SET customer = TRIM(customer), supplier = TRIM(supplier);
+

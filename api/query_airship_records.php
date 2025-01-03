@@ -69,29 +69,38 @@ if($jwt){
             $cus_str = "";
             $sup_str = "";
     
-    
+            $c_prefix = "%";
             if(!empty($customer)) {
                 $customer = rtrim($customer, '||');
           
                 $cust = explode("||", $customer);
+
+                if($customer != "" && strpos($customer, '||') !== false) {
+                    $c_prefix = "";
+                }
     
                 foreach ($cust as &$value) {
                     $value = addslashes(trim($value));
-                    $cus_str .= " r.customer like '" . $value . "%' ESCAPE '|' or ";
+                    $cus_str .= " r.customer like '" . $c_prefix . $value . "%' ESCAPE '|' or ";
                 }
     
                 $cus_str = rtrim($cus_str, 'or ');
       
             }
     
+            $p_prefix = "%";
             if(!empty($supplier)) {
                 $supplier = rtrim($supplier, '||');
         
                 $sup = explode("||", $supplier);
+
+                if($supplier != "" && strpos($supplier, '||') !== false) {
+                    $p_prefix = "";
+                }
     
                 foreach ($sup as &$value) {
                     $value = addslashes(trim($value));
-                    $sup_str .= " r.supplier like '" . $value . "%'  ESCAPE '|' or ";
+                    $sup_str .= " r.supplier like '" . $p_prefix . $value . "%'  ESCAPE '|' or ";
     
                 }
     
