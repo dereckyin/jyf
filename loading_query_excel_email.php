@@ -332,7 +332,7 @@ foreach ($batch_nums as $num)
     // excel title less than 31 characters
     if(mb_strlen($container) > 30)
         $container = mb_substr($container, 0, 30);
-    $sheet->setTitle($container . " ");
+    $sheet->setTitle($container);
 
     $page++;
 }
