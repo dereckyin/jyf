@@ -490,6 +490,14 @@ var app = new Vue({
                         _this.charge_total += parseFloat(app.receive_records[i].charge);
 
                         _this.total_total += parseFloat(app.receive_records[i].charge_kilo) + parseFloat(app.receive_records[i].charge_cuft);
+
+                        _this.taiwan_ar_total += parseFloat(app.receive_records[i].taiwan_charge);
+                        _this.taiwan_charge_total += parseFloat(app.receive_records[i].taiwan_complete_charge);
+                        _this.taiwan_total_total += parseFloat(app.receive_records[i].taiwan_charge) - parseFloat(app.receive_records[i].taiwan_complete_charge);
+
+                        _this.philippines_ar_total += parseFloat(app.receive_records[i].philippine_charge_kilo) + parseFloat(app.receive_records[i].philippine_charge_cuft);
+                        _this.philippines_charge_total += parseFloat(app.receive_records[i].philippine_complete_charge);
+                        _this.philippines_total_total += parseFloat(app.receive_records[i].philippine_ar);
                     }
 
                     console.log(_this.ar_total)
