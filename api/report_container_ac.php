@@ -85,6 +85,9 @@ if($jwt){
             $taiwan_complete_charge = 0;
             $philippine_complete_charge = 0;
 
+            $taiwan_incomplete_charge = 0;
+            $philippine_incomplete_charge = 0;
+
             $taiwan_ar = 0;
             $philippine_ar = 0;
             $taiwan_courier = 0;
@@ -96,7 +99,12 @@ if($jwt){
                     $taiwan_charge_kilo += $item['total_charge_kilo'];
                     $taiwan_charge_cuft += $item['total_charge_cuft'];
                     $taiwan_charge += $item['total_charge'];
-                    $taiwan_complete_charge += $item['total_amount'];
+
+                    if($item['payment_status'] == 'C')
+                        $taiwan_complete_charge += $item['total_amount'];
+                    else
+                        $taiwan_incomplete_charge += $item['total_charge'];
+
                     $taiwan_ar += $item['total_ar'];
                     $taiwan_courier += $item['courier'];
                 }
@@ -105,6 +113,12 @@ if($jwt){
                     $philippine_charge_kilo += $item['total_charge_kilo'];
                     $philippine_charge_cuft += $item['total_charge_cuft'];
                     $philippine_charge += $item['total_charge'];
+
+                    if($item['payment_status'] == 'C')
+                        $philippine_complete_charge += $item['total_amount'];
+                    else
+                        $philippine_incomplete_charge += $item['total_charge'];
+
                     $philippine_complete_charge += $item['total_complete_charge'];
                     $philippine_ar += $item['total_ar'];
                 }
@@ -130,6 +144,10 @@ if($jwt){
                 "philippine_charge" => $philippine_charge,
                 "taiwan_complete_charge" => $taiwan_complete_charge,
                 "philippine_complete_charge" => $philippine_complete_charge,
+                
+                "taiwan_incomplete_charge" => $taiwan_incomplete_charge,
+                "philippine_incomplete_charge" => $philippine_incomplete_charge,
+
                 "taiwan_ar" => $taiwan_ar,
                 "philippine_ar" => $philippine_ar,
                 "taiwan_courier" => $taiwan_courier,

@@ -526,9 +526,9 @@ header( 'location:index.php' );
                                         <td rowspan="2">₱ {{ Number(item.charge_kilo) + Number(item.charge_cuft) !== undefined ? Number(Number(item.charge_kilo) + Number(item.charge_cuft)).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
 
                                         <!-- PH Pay 菲律賓付 的應收總金額、已收金額、未收金額 -->
-                                        <td>₱ {{ item.philippine_charge_kilo + item.philippine_charge_cuft !== undefined ? Number(item.philippine_charge_kilo + item.philippine_charge_cuft).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
+                                        <td>₱ {{ item.philippine_charge !== undefined ? Number(item.philippine_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
                                         <td>₱ {{ item.philippine_complete_charge !== undefined ? Number(item.philippine_complete_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                        <td>₱ {{ item.philippine_ar !== undefined ? Number(item.philippine_ar).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
+                                        <td>₱ {{ item.philippine_incomplete_charge !== undefined ? Number(item.philippine_incomplete_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
 
                                         <td rowspan="2">
                                             <div class="remarks">{{item.notes}}</div>
@@ -538,9 +538,9 @@ header( 'location:index.php' );
 
                                     <tr>
                                         <!-- TW Pay 台灣付 的應收總金額、已收金額、未收金額 -->
-                                        <td>NTD {{ item.taiwan_charge !== undefined ? Number(item.taiwan_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
+                                        <td>₱ {{ item.taiwan_charge !== undefined ? Number(item.taiwan_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
                                         <td>NTD {{ item.taiwan_complete_charge !== undefined ? Number(item.taiwan_complete_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}<br/>(Cost: ₱ {{ item.taiwan_courier !== undefined ? Number(item.taiwan_courier).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }})</td>
-                                        <td>NTD {{ item.taiwan_charge - item.taiwan_complete_charge !== undefined ? Number(item.taiwan_charge - item.taiwan_complete_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
+                                        <td>₱ {{ item.taiwan_incomplete_charge !== undefined ? Number(item.taiwan_incomplete_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
                                     </tr>
                                 </template>
                             </tbody>
@@ -560,9 +560,9 @@ header( 'location:index.php' );
                             </tr>
 
                             <tr>
-                                <td>NTD {{ taiwan_ar_total != undefined ? Number(taiwan_ar_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
+                                <td>₱ {{ taiwan_ar_total != undefined ? Number(taiwan_ar_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
                                 <td>NTD {{ taiwan_charge_total !== undefined ? Number(taiwan_charge_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                <td>NTD {{ taiwan_total_total !== undefined ? Number(taiwan_total_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
+                                <td>₱ {{ taiwan_total_total !== undefined ? Number(taiwan_total_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
                             </tr>
                             </tfoot>
                             
