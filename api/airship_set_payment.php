@@ -863,7 +863,7 @@ function addMultiLineText($cell, $text)
 
     // add text line together
     foreach ($strArr as $v) {
-        $cell->addText($v);
+        $cell->addText(htmlspecialchars($v));
     }
     
 }
