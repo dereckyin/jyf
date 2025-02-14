@@ -72,58 +72,6 @@ if($jwt){
             $items = [];
             $items = GetLoadingDetail($db, $row["id"]);
 
-            $taiwan_pay = [];
-            $taiwan_pay = GetTaiwanPayDetail($db, $row["id"]);
-
-            $taiwan_charge_kilo = 0;
-            $philippine_charge_kilo = 0;
-            $taiwan_charge_cuft = 0;
-            $philippine_charge_cuft = 0;
-            $taiwan_charge = 0;
-            $philippine_charge = 0;
-
-            $taiwan_complete_charge = 0;
-            $philippine_complete_charge = 0;
-
-            $taiwan_incomplete_charge = 0;
-            $philippine_incomplete_charge = 0;
-
-            $taiwan_ar = 0;
-            $philippine_ar = 0;
-            $taiwan_courier = 0;
-
-            foreach($taiwan_pay as $item)
-            {
-                if($item['taiwan_pay'] == 'taiwan_pay')
-                {
-                    $taiwan_charge_kilo += $item['total_charge_kilo'];
-                    $taiwan_charge_cuft += $item['total_charge_cuft'];
-                    $taiwan_charge += $item['total_charge'];
-
-                    if($item['payment_status'] == 'C')
-                        $taiwan_complete_charge += $item['total_amount'];
-                    else
-                        $taiwan_incomplete_charge += $item['total_charge'];
-
-                    $taiwan_ar += $item['total_ar'];
-                    $taiwan_courier += $item['courier'];
-                }
-                else
-                {
-                    $philippine_charge_kilo += $item['total_charge_kilo'];
-                    $philippine_charge_cuft += $item['total_charge_cuft'];
-                    $philippine_charge += $item['total_charge'];
-
-                    if($item['payment_status'] == 'C')
-                        $philippine_complete_charge += $item['total_amount'];
-                    else
-                        $philippine_incomplete_charge += $item['total_charge'];
-
-                    $philippine_complete_charge += $item['total_complete_charge'];
-                    $philippine_ar += $item['total_ar'];
-                }
-            }
-
             $id = $row["id"];
             $charge_kilo = $row["charge_kilo"];
             $charge_cuft = $row["charge_cuft"];
@@ -136,21 +84,6 @@ if($jwt){
                 "id" => $id,
                 "charge_kilo" => $charge_kilo,
                 "charge_cuft" => $charge_cuft,
-                "taiwan_charge_kilo" => $taiwan_charge_kilo,
-                "philippine_charge_kilo" => $philippine_charge_kilo,
-                "taiwan_charge_cuft" => $taiwan_charge_cuft,
-                "philippine_charge_cuft" => $philippine_charge_cuft,
-                "taiwan_charge" => $taiwan_charge,
-                "philippine_charge" => $philippine_charge,
-                "taiwan_complete_charge" => $taiwan_complete_charge,
-                "philippine_complete_charge" => $philippine_complete_charge,
-                
-                "taiwan_incomplete_charge" => $taiwan_incomplete_charge,
-                "philippine_incomplete_charge" => $philippine_incomplete_charge,
-
-                "taiwan_ar" => $taiwan_ar,
-                "philippine_ar" => $philippine_ar,
-                "taiwan_courier" => $taiwan_courier,
                 "loading" => $items,
                 "charge" => $charge,
                 "ar" => $ar,
@@ -426,95 +359,6 @@ where mp.id =  ($id)";
 
     return $merged_results;
 
-}
-
-function GetTaiwanPayDetail($conn, $id){
-    $sql = "select md.id, md.charge, md.payment_status, rr.taiwan_pay, p.courier, tpr.amount, 
-        IF(abs(charge - (md.kilo * md.kilo_price)) > abs(charge - (md.cuft * md.cuft_price)), 0, charge) charge_kilo, 
-        IF(abs(md.charge - (md.kilo * md.kilo_price)) <= abs(md.charge - (md.cuft * md.cuft_price)), 0, charge) charge_cuft,
-        if(md.payment_status = 'C', md.charge, 0) complete_charge,
-        md.charge - if(md.payment_status = 'C', md.charge, 0) ar
-    from measure_ph mp 
-        left join measure_detail md on md.measure_id = mp.id and md.status <> -1
-        left join payment p on p.detail_id = md.id and p.status <> -1
-        left join measure_record_detail mrd on mrd.detail_id = md.id and mrd.status <> -1
-        left join receive_record rr on mrd.record_id = rr.id and rr.status <> 'D'
-        left join taiwan_pay_record tpr on tpr.record_id = rr.id 
-    where mp.id =  ($id)
-    order by md.id";
-    
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-
-    $merged_results = [];
-    $records_by_id = [];
-
-    // Collect records by md.id
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $measure_detail_id = $row['id'];
-        $records_by_id[$measure_detail_id][] = $row;
-    }
-
-    // Separate records into taiwan_pay_records and philippine_pay_records
-    $taiwan_pay_records = [];
-    $philippine_pay_records = [];
-
-    foreach ($records_by_id as $measure_detail_id => $records) {
-        $all_taiwan_pay = true;
-        $total_charge = 0;
-        $total_amount = 0;
-        $total_charge_kilo = 0;
-        $total_charge_cuft = 0;
-        $total_complete_charge = 0;
-        $total_ar = 0;
-
-        foreach ($records as $record) {
-            $total_charge = $record['charge'];
-            $total_amount = $record['amount'];
-            $total_charge_kilo = $record['charge_kilo'];
-            $total_charge_cuft = $record['charge_cuft'];
-            $total_complete_charge = $record['complete_charge'];
-            $total_ar = $record['ar'];
-            if ($record['taiwan_pay'] != 1) {
-                $all_taiwan_pay = false;
-            }
-        }
-
-        // Determine payment status and categorize accordingly
-        $payment_status = $records[0]['payment_status']; // Assuming same payment status for all
-
-        if ($all_taiwan_pay) {
-            $taiwan_pay_records[] = [
-                "measure_detail_id" => $measure_detail_id,
-                "total_charge" => $total_charge,
-                "total_amount" => $total_amount,
-                "total_charge_kilo" => $total_charge_kilo,
-                "total_charge_cuft" => $total_charge_cuft,
-                "payment_status" => $payment_status,
-                "courier" => $records[0]['courier'],
-                "taiwan_pay" => 'taiwan_pay',
-                "total_complete_charge" => $total_complete_charge,
-                "total_ar" => $total_ar
-            ];
-        } else {
-            $philippine_pay_records[] = [
-                "measure_detail_id" => $measure_detail_id,
-                "total_charge" => $total_charge,
-                "total_amount" => $total_amount,
-                "total_charge_kilo" => $total_charge_kilo,
-                "total_charge_cuft" => $total_charge_cuft,
-                "payment_status" => $payment_status,
-                "courier" => $records[0]['courier'],
-                "taiwan_pay" => 'philippine_pay',
-                "total_complete_charge" => $total_complete_charge,
-                "total_ar" => $total_ar
-            ];
-        }
-    }
-
-    // Combine taiwan_pay_records and philippine_pay_records and return
-    $merged_results = array_merge($taiwan_pay_records, $philippine_pay_records);
-    return $merged_results;
 }
 
 
