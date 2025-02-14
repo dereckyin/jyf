@@ -246,22 +246,22 @@ if($full == '1' && $status > 0)
 
     $table2->addRow();
     $table2->addCell(2000, ['borderSize' => 6])->addText("Date:", array('bold' => true));
-    $table2->addCell(8500, ['borderSize' => 6])->addText($check_date_use);
+    $table2->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($check_date_use));
 
     $table2->addRow();
     $table2->addCell(2000, ['borderSize' => 6])->addText("Time:", array('bold' => true));
     $TextRun = $table2->addCell(8500, ['borderSize' => 6])->addTextRun();
-    $TextRun->addText($check_tout);
+    $TextRun->addText(htmlspecialchars($check_tout));
     $TextRun->addText(" to ");
-    $TextRun->addText($check_tin);
+    $TextRun->addText(htmlspecialchars($check_tin));
 
     $table2->addRow();
     $table2->addCell(2000, ['borderSize' => 6])->addText("Assigned Car:", array('bold' => true));
-    $table2->addCell(8500, ['borderSize' => 6])->addText($check_car_use);
+    $table2->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($check_car_use));
     
     $table2->addRow();
     $table2->addCell(2000, ['borderSize' => 6])->addText("Assigned Driver:", array('bold' => true));
-    $table2->addCell(8500, ['borderSize' => 6])->addText($check_driver);
+    $table2->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($check_driver));
 
     $section->addText("");
     $section->addText("");
@@ -310,27 +310,27 @@ $cell->addText("Content of Request", array('bold' => true, 'size' => 12), array(
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Project:", array('bold' => true));
-$table->addCell(8500, ['borderSize' => 6])->addText($title);
+$table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($title));
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Date:", array('bold' => true));
-$table->addCell(8500, ['borderSize' => 6])->addText($start_time);
+$table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($start_time));
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Related Project:", array('bold' => true));
-$table->addCell(8500, ['borderSize' => 6])->addText($related_project);
+$table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($related_project));
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Sales Executive:", array('bold' => true));
-$table->addCell(8500, ['borderSize' => 6])->addText($sales_executive);
+$table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($sales_executive));
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Project_in_charge:", array('bold' => true));
-$table->addCell(8500, ['borderSize' => 6])->addText($project_in_charge);
+$table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($project_in_charge));
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Relevant Persons:", array('bold' => true));
-$table->addCell(8500, ['borderSize' => 6])->addText($project_relevant);
+$table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($project_relevant));
 
 // CONCAT installer_needed and installer_needed_other and remove duplicate
 //$installer_needed_other = str_replace(" ", "", $installer_needed_other);
@@ -346,7 +346,7 @@ $merged_installer = str_replace("  ", " ", $merged_installer);
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Technician needed:", array('bold' => true));
-$table->addCell(8500, ['borderSize' => 6])->addText($merged_installer);
+$table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($merged_installer));
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Things to Bring:", array('bold' => true));
@@ -414,10 +414,10 @@ $table1->addCell(2600, ['borderSize' => 6])->addText("End Time",  ['bold' => tru
 
 
     $table1->addRow();
-    $table1->addCell(2600, ['borderSize' => 6])->addText($location,  [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(2600, ['borderSize' => 6])->addText($agenda, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(2600, ['borderSize' => 6])->addText($appoint_time, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(2600, ['borderSize' => 6])->addText($end_time, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($location),  [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($agenda), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($appoint_time), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($end_time), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
 
 while($row = $stmt->fetch(PDO::FETCH_ASSOC)) 
 {
@@ -427,10 +427,10 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
     $end_time = $row['end_time'];
 
     $table1->addRow();
-    $table1->addCell(2600, ['borderSize' => 6])->addText($location, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(2600, ['borderSize' => 6])->addText($agenda, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(2600, ['borderSize' => 6])->addText($appoint_time, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(2600, ['borderSize' => 6])->addText($end_time, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($location), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($agenda), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($appoint_time), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($end_time), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
 
 }
 
@@ -577,7 +577,7 @@ else
 
         // add text line together
         foreach ($strArr as $v) {
-            $cell->addText($v);
+            $cell->addText(htmlspecialchars($v));
         }
        
     }

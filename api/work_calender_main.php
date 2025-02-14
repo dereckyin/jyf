@@ -1162,7 +1162,7 @@ function get_schedule_file($id)
     // Adding an empty Section to the document...
     $section = $phpWord->addSection();
     // Adding Text element to the Section having font styled by default...
-    $section->addText($weekday . ", " . $start_time . " Schedule");
+    $section->addText(htmlspecialchars($weekday . ", " . $start_time . " Schedule");
     
     $section->addText("");
     
@@ -1176,23 +1176,23 @@ function get_schedule_file($id)
     
     $table->addRow();
     $table->addCell(2000, ['borderSize' => 6])->addText("Date:", array('bold' => true));
-    $table->addCell(8500, ['borderSize' => 6])->addText($start_time);
+    $table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($start_time));
     
     $table->addRow();
     $table->addCell(2000, ['borderSize' => 6])->addText("Project:", array('bold' => true));
-    $table->addCell(8500, ['borderSize' => 6])->addText($title);
+    $table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($title));
     
     $table->addRow();
     $table->addCell(2000, ['borderSize' => 6])->addText("Sales Executive:", array('bold' => true));
-    $table->addCell(8500, ['borderSize' => 6])->addText($sales_executive);
+    $table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($sales_executive));
     
     $table->addRow();
     $table->addCell(2000, ['borderSize' => 6])->addText("project_in_charge:", array('bold' => true));
-    $table->addCell(8500, ['borderSize' => 6])->addText($project_in_charge);
+    $table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($project_in_charge));
     
     $table->addRow();
     $table->addCell(2000, ['borderSize' => 6])->addText("project_relevant:", array('bold' => true));
-    $table->addCell(8500, ['borderSize' => 6])->addText($project_relevant);
+    $table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($project_relevant));
     
     $table->addRow();
     $table->addCell(2000, ['borderSize' => 6])->addText("Technician needed:", array('bold' => true));
@@ -1209,7 +1209,7 @@ function get_schedule_file($id)
 
     $merged_installer = str_replace("  ", " ", $merged_installer);
 
-    $table->addCell(8500, ['borderSize' => 6])->addText($merged_installer);
+    $table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($merged_installer));
     
     $table->addRow();
     $table->addCell(2000, ['borderSize' => 6])->addText("Things to Bring:", array('bold' => true));
@@ -1277,10 +1277,10 @@ function get_schedule_file($id)
     
     
     $table1->addRow();
-    $table1->addCell(2600, ['borderSize' => 6])->addText($location,  [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(2600, ['borderSize' => 6])->addText($agenda, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(2600, ['borderSize' => 6])->addText($appoint_time, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(2600, ['borderSize' => 6])->addText($end_time, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($location),  [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($agenda), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($appoint_time), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($end_time), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
     
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) 
     {
@@ -1290,10 +1290,10 @@ function get_schedule_file($id)
         $end_time = $row['end_time'];
     
         $table1->addRow();
-        $table1->addCell(2600, ['borderSize' => 6])->addText($location, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-        $table1->addCell(2600, ['borderSize' => 6])->addText($agenda, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-        $table1->addCell(2600, ['borderSize' => 6])->addText($appoint_time, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-        $table1->addCell(2600, ['borderSize' => 6])->addText($end_time, [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+        $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($location), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+        $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($agenda), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+        $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($appoint_time), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+        $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($end_time), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
     
     }
     
@@ -1388,7 +1388,7 @@ function addMultiLineText($cell, $text)
 
     // add text line together
     foreach ($strArr as $v) {
-        $cell->addText($v);
+        $cell->addText(htmlspecialchars($v));
     }
     
 }
