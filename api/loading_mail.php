@@ -381,7 +381,7 @@ function SendMail($detail) {
     
  
     $mail->SetFrom("servictoryshipment@gmail.com", "Feliix Shipping");
-    $mail->AddReplyTo("servictoryshipment@gmail.com", "Feliix Shipping");
+    $mail->AddReplyTo("feliixshipment@gmail.com", "Feliix Shipping");
    
     $mail->Subject = "[Feliix Shipping] Hello, your shipment is on the way";
    
