@@ -35,9 +35,12 @@ $space = (isset($_POST['space']) ?  $_POST['space'] : '');
 
 // if jwt is not empty
 if($jwt){
+
+    $d_start = new DateTime($date_start);
+    $d_end = new DateTime($date_end);
  
-    $date_start = str_replace('-', '/', $date_start);
-    $date_end = str_replace('-', '/', $date_end);
+    $date_start = $d_start->format('Y/m/d');
+    $date_end = $d_end->format('Y/m/d');
     // if decode succeed, show user details
     try {
  
