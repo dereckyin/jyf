@@ -56,6 +56,14 @@ let mainState = {
     charge_total: 0,
     total_total: 0,
 
+    taiwan_ar_total: 0,
+    taiwan_charge_total: 0,
+    taiwan_total_total: 0,
+
+    philippines_ar_total: 0,
+    philippines_charge_total: 0,
+    philippines_total_total: 0,
+
     // fil
     fil_start_date: "",
     fil_end_date: "",
@@ -386,7 +394,7 @@ var app = new Vue({
         },
 
         ini_query: function() {
-         
+         $(".mask").toggle();
           var form_Data = new FormData();
           const token = sessionStorage.getItem('token');
           let _this = this;
@@ -422,6 +430,14 @@ var app = new Vue({
                       _this.charge_total += parseFloat(app.receive_records[i].charge);
 
                       _this.total_total += parseFloat(app.receive_records[i].charge_kilo) + parseFloat(app.receive_records[i].charge_cuft);
+                      
+                      _this.philippines_ar_total += parseFloat(app.receive_records[i].philippine_charge);
+                      _this.philippines_charge_total += parseFloat(app.receive_records[i].philippine_complete_charge);
+                      _this.philippines_total_total += parseFloat(app.receive_records[i].philippine_incomplete_charge);
+
+                      _this.taiwan_ar_total += parseFloat(app.receive_records[i].taiwan_charge);
+                      _this.taiwan_charge_total += parseFloat(app.receive_records[i].taiwan_complete_charge);
+                      _this.taiwan_total_total += parseFloat(app.receive_records[i].taiwan_incomplete_charge);
                   }
 
                   console.log(_this.ar_total)
@@ -430,12 +446,15 @@ var app = new Vue({
               .catch(function(response) {
                   //handle error
                   console.log(response)
+              })
+              .finally(function() {
+                $(".mask").toggle();
               });
 
       },
 
         query: function(space) {
-         
+          $(".mask").toggle();
             var form_Data = new FormData();
             const token = sessionStorage.getItem('token');
             let _this = this;
@@ -471,6 +490,14 @@ var app = new Vue({
                         _this.charge_total += parseFloat(app.receive_records[i].charge);
 
                         _this.total_total += parseFloat(app.receive_records[i].charge_kilo) + parseFloat(app.receive_records[i].charge_cuft);
+
+                        _this.philippines_ar_total += parseFloat(app.receive_records[i].philippine_charge);
+                      _this.philippines_charge_total += parseFloat(app.receive_records[i].philippine_complete_charge);
+                      _this.philippines_total_total += parseFloat(app.receive_records[i].philippine_incomplete_charge);
+
+                      _this.taiwan_ar_total += parseFloat(app.receive_records[i].taiwan_charge);
+                      _this.taiwan_charge_total += parseFloat(app.receive_records[i].taiwan_complete_charge);
+                      _this.taiwan_total_total += parseFloat(app.receive_records[i].taiwan_incomplete_charge);
                     }
 
                     console.log(_this.ar_total)
@@ -479,6 +506,9 @@ var app = new Vue({
                 .catch(function(response) {
                     //handle error
                     console.log(response)
+                })
+                .finally(function() {
+                  $(".mask").toggle();
                 });
 
         },
