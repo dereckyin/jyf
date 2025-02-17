@@ -432,7 +432,7 @@ where mp.id =  ($id)";
 }
 
 function GetTaiwanPayDetail($conn, $id){
-    $sql = "select md.id, md.charge, md.payment_status, rr.taiwan_pay, p.courier, tpr.amount, 
+    $sql = "select md.id, md.charge, md.payment_status, rr.taiwan_pay, p.id payment_id, p.courier, tpr.amount, 
         IF(abs(charge - (md.kilo * md.kilo_price)) > abs(charge - (md.cuft * md.cuft_price)), 0, charge) charge_kilo, 
         IF(abs(md.charge - (md.kilo * md.kilo_price)) <= abs(md.charge - (md.cuft * md.cuft_price)), 0, charge) charge_cuft,
         if(md.payment_status = 'C', md.charge, 0) complete_charge,
@@ -472,6 +472,8 @@ function GetTaiwanPayDetail($conn, $id){
         $total_ar = 0;
         $total_courier = 0;
 
+        $payment = [];
+
         foreach ($records as $record) {
             $total_charge = $record['charge'];
             $total_amount = $record['amount'];
@@ -479,11 +481,20 @@ function GetTaiwanPayDetail($conn, $id){
             $total_charge_cuft = $record['charge_cuft'];
             $total_complete_charge = $record['complete_charge'];
             $total_ar = $record['ar'];
-            $total_courier += $record['courier'];
+            // add payment_id and courier to payment array if payment_id not existed
+            if (!in_array($record['payment_id'], array_column($payment, 'payment_id'))) {
+                $payment[] = [
+                    "payment_id" => $record['payment_id'],
+                    "courier" => $record['courier']
+                ];
+            }
+
             if ($record['taiwan_pay'] != 1) {
                 $all_taiwan_pay = false;
             }
         }
+
+        $total_courier = array_sum(array_column($payment, 'courier'));
 
         // Determine payment status and categorize accordingly
         $payment_status = $records[0]['payment_status']; // Assuming same payment status for all
