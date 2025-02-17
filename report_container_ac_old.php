@@ -397,108 +397,74 @@ header( 'location:index.php' );
                         <!-- <div class="searchblock" style="float:left;">搜尋<input type="text"></div> -->
                     </div>
 
-                    <!-- 新表格 -->
                     <div class="tablebox s02">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>
-                                    <eng>Date Sent</eng>
-                                    結關日期
-                                </th>
-                                <th>
-                                    <eng>Date C/R</eng>
-                                    到倉日期
-                                </th>
-                                <th>
-                                    <eng>Container Number</eng>
-                                    櫃號
-                                </th>
-                                <th>
-                                    <eng>A/R (By Kilo)</eng>
-                                    應收帳款(根據重量)
-                                </th>
-                                <th>
-                                    <eng>A/R (By Cuft)</eng>
-                                    應收帳款(根據材積)
-                                </th>
-                                <th>
-                                    <eng>A/R</eng>
-                                    應收帳款
-                                </th>
-                                <th>
-                                    <eng>A/R</eng>
-                                    PH Pay 菲律賓付<br>
-                                    TW Pay 台灣付
-                                </th>
-                                <th>
-                                    <eng>Amount Received</eng>
-                                    已收金額
-                                </th>
-                                <th>
-                                    <eng>Remaining A/R</eng>
-                                    未收金額
-                                </th>
-                                <th>
-                                    <eng>Remarks</eng>
-                                    備註
-                                </th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                                <template v-for='(item, index) in displayedPosts'>
-                                    <tr>
-                                        <td rowspan="2" style="border-left: 2px solid #94BABB;"><p v-for='(it, index) in item.loading'>{{it.date_sent}}</p></td>
-                                        <td rowspan="2"><p v-for='(it, index) in item.loading'>{{it.date_arrive}}</p></td>
-                                        <td rowspan="2"><p v-for='(it, index) in item.loading'>{{it.container_number}}</p></td>
-                                        <td rowspan="2">₱ {{ item.charge_kilo !== undefined ? Number(item.charge_kilo).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                        <td rowspan="2">₱ {{ item.charge_cuft !== undefined ? Number(item.charge_cuft).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                        <td rowspan="2">₱ {{ Number(item.charge_kilo) + Number(item.charge_cuft) !== undefined ? Number(Number(item.charge_kilo) + Number(item.charge_cuft)).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-
-                                        <!-- PH Pay 菲律賓付 的應收總金額、已收金額、未收金額 -->
-                                        <td>₱ {{ item.philippine_charge !== undefined ? Number(item.philippine_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                        <td>₱ {{ item.philippine_complete_charge !== undefined ? Number(item.philippine_complete_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                        <td>₱ {{ item.philippine_incomplete_charge !== undefined ? Number(item.philippine_incomplete_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-
-                                        <td rowspan="2">
-                                            <div class="remarks">{{item.notes}}</div>
-                                            <i class="fas fa-edit" aria-hidden="true" @click="update_remark(item)"></i>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <!-- TW Pay 台灣付 的應收總金額、已收金額、未收金額 -->
-                                        <td>₱ {{ item.taiwan_charge !== undefined ? Number(item.taiwan_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                        <td>NTD {{ item.taiwan_complete_charge !== undefined ? Number(item.taiwan_complete_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}<br/>(Cost: ₱ {{ item.taiwan_courier !== undefined ? Number(item.taiwan_courier).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }})</td>
-                                        <td>₱ {{ item.taiwan_incomplete_charge !== undefined ? Number(item.taiwan_incomplete_charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                    </tr>
-                                </template>
-                            </tbody>
-
-                            <tfoot>
-                            <tr class="total">
-                                <td rowspan="2" style="border-bottom-left-radius: 9px; border-left: 2px solid #94BABB;">Total</td>
-                                <td rowspan="2"></td>
-                                <td rowspan="2">{{ container_total }}</td>
-                                <td rowspan="2"></td>
-                                <td rowspan="2"></td>
-                                <td rowspan="2">₱ {{ total_total !== undefined ? Number(total_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                <td>₱ {{ philippines_ar_total != undefined ? Number(philippines_ar_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                <td>₱ {{ philippines_charge_total !== undefined ? Number(philippines_charge_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                <td>₱ {{ philippines_total_total !== undefined ? Number(philippines_total_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                <td rowspan="2"></td>
-                            </tr>
-
-                            <tr>
-                                <td>₱ {{ taiwan_ar_total != undefined ? Number(taiwan_ar_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                <td>NTD {{ taiwan_charge_total !== undefined ? Number(taiwan_charge_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                                <td>₱ {{ taiwan_total_total !== undefined ? Number(taiwan_total_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</td>
-                            </tr>
-                            </tfoot>
-                            
-                        </table>
+                        <!-- <table class="table table-hover table-striped table-sm table-bordered" id="showUser1" ref="showUser1"> -->
+                        <ul class="header">
+                            <li>
+                                <eng>Date Sent</eng>
+                                結關日期
+                            </li>
+                            <li>
+                                <eng>Date C/R</eng>
+                                到倉日期
+                            </li>
+                            <li>
+                                <eng>Container Number</eng>
+                                櫃號
+                            </li>
+                            <li>
+                                <eng>A/R (By Kilo)</eng>
+                                應收帳款(根據重量)
+                            </li>
+                            <li>
+                                <eng>A/R (By Cuft)</eng>
+                                應收帳款(根據材積)
+                            </li>
+                            <li>
+                                <eng>A/R</eng>
+                                應收帳款
+                            </li>
+                            <li>
+                                <eng>Amount Received</eng>
+                                已收金額
+                            </li>
+                            <li>
+                                <eng>Remaining A/R</eng>
+                                未收金額
+                            </li>
+                            <li>
+                                <eng>Remarks</eng>
+                                備註
+                            </li>
+                        </ul>
+                        <ul v-for='(item, index) in displayedPosts'>
+                            <li><p v-for='(it, index) in item.loading'>{{it.date_sent}}</template></li>
+                            <li><p v-for='(it, index) in item.loading'>{{it.date_arrive}}</template></li>
+                            <li><p v-for='(it, index) in item.loading'>{{it.container_number}}</template></li>
+                            <li>₱ {{ item.charge_kilo !== undefined ? Number(item.charge_kilo).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ item.charge_cuft !== undefined ? Number(item.charge_cuft).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ Number(item.charge_kilo) + Number(item.charge_cuft) !== undefined ? Number(Number(item.charge_kilo) + Number(item.charge_cuft)).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ item.charge !== undefined ? Number(item.charge).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ item.ar !== undefined ? Number(item.ar).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>
+                                <div class="remarks">{{item.notes}}</div>
+                                <i class="fas fa-edit" aria-hidden="true" @click="update_remark(item)"></i>
+                            </li>
+                        </ul>
+                     
+                        <ul class="total">
+                            <li>Total</li>
+                            <li></li>
+                            <li>{{ container_total }}</li>
+                            <li></li>
+                            <li></li>
+                            <li>₱ {{ total_total !== undefined ? Number(total_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ charge_total !== undefined ? Number(charge_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li>₱ {{ ar_total !== undefined ? Number(ar_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</li>
+                            <li></li>
+                        </ul>
                     </div>
+
 
                 </div>
             </div>
