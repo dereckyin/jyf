@@ -470,6 +470,7 @@ function GetTaiwanPayDetail($conn, $id){
         $total_charge_cuft = 0;
         $total_complete_charge = 0;
         $total_ar = 0;
+        $total_courier = 0;
 
         foreach ($records as $record) {
             $total_charge = $record['charge'];
@@ -478,6 +479,7 @@ function GetTaiwanPayDetail($conn, $id){
             $total_charge_cuft = $record['charge_cuft'];
             $total_complete_charge = $record['complete_charge'];
             $total_ar = $record['ar'];
+            $total_courier += $record['courier'];
             if ($record['taiwan_pay'] != 1) {
                 $all_taiwan_pay = false;
             }
@@ -494,7 +496,7 @@ function GetTaiwanPayDetail($conn, $id){
                 "total_charge_kilo" => $total_charge_kilo,
                 "total_charge_cuft" => $total_charge_cuft,
                 "payment_status" => $payment_status,
-                "courier" => $records[0]['courier'],
+                "courier" => $total_courier,
                 "taiwan_pay" => 'taiwan_pay',
                 "total_complete_charge" => $total_complete_charge,
                 "total_ar" => $total_ar
@@ -507,7 +509,7 @@ function GetTaiwanPayDetail($conn, $id){
                 "total_charge_kilo" => $total_charge_kilo,
                 "total_charge_cuft" => $total_charge_cuft,
                 "payment_status" => $payment_status,
-                "courier" => $records[0]['courier'],
+                "courier" => $total_courier,
                 "taiwan_pay" => 'philippine_pay',
                 "total_complete_charge" => $total_complete_charge,
                 "total_ar" => $total_ar
