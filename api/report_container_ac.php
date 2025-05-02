@@ -474,9 +474,14 @@ function GetTaiwanPayDetail($conn, $id){
 
         $payment = [];
 
+        $distinct_charges = array_unique(array_column($records, 'charge'));
+        $distinct_amounts = array_unique(array_column($records, 'amount'));
+
         foreach ($records as $record) {
-            $total_charge = $record['charge'];
-            $total_amount = $record['amount'];
+            // sum of $distinct_charges and $distinct_amounts
+            $total_charge = array_sum($distinct_charges);
+            $total_amount = array_sum($distinct_amounts);
+            
             $total_charge_kilo = $record['charge_kilo'];
             $total_charge_cuft = $record['charge_cuft'];
             $total_complete_charge = $record['complete_charge'];
