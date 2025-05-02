@@ -288,6 +288,10 @@ header( 'location:index.php' );
             margin: -8px;
         }
 
+        td.twpay {
+            background: pink;
+        }
+
     </style>
 
 
@@ -462,7 +466,7 @@ header( 'location:index.php' );
 
                     <template v-for='(row, i) in receive_records'>
                         <tr v-for='(item, j) in row.measure'>
-                            <td>
+                            <td :class="item.taiwan_pay == '1' && item.cust_type == '' ? 'twpay' : ''">
                                 <div v-for='(rs, k) in item.record'>{{rs.pick_date}}</div>
                                 <?php
                 if($phili_read == "0")
@@ -902,6 +906,7 @@ header( 'location:index.php' );
                                     <option value="3">Check 支票</option>
                                     <option value="4">Taiwan Pay 台灣付款</option>
                                     <option value="5">Advance Payment 預付款</option>
+                                    <option value="6">Gcash</option>
                                 </select>
 
                             </li>
@@ -1012,6 +1017,7 @@ header( 'location:index.php' );
                                 {{ item.type == 3 ? "Check 支票" : "" }}
                                 {{ item.type == 4 ? "Taiwan Pay 台灣付款" : "" }}
                                 {{ item.type == 5 ? "Advance Payment 預付款" : "" }}
+                                {{ item.type == 6 ? "Gcash" : "" }}
                             </li>
                             <li>
                                 {{ item.issue_date }}

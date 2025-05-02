@@ -1057,6 +1057,7 @@ header( 'location:index.php' );
                                     <option value="3">Check 支票</option>
                                     <option value="4">Taiwan Pay 台灣付款</option>
                                     <option value="5">Advance Payment 預付款</option>
+                                    <option value="6">Gcash</option>
                                 </select>
 
                             </li>
@@ -1167,6 +1168,7 @@ header( 'location:index.php' );
                                 {{ item.type == 3 ? "Check 支票" : "" }}
                                 {{ item.type == 4 ? "Taiwan Pay 台灣付款" : "" }}
                                 {{ item.type == 5 ? "Advance Payment 預付款" : "" }}
+                                {{ item.type == 6 ? "Gcash" : "" }}
                             </li>
                             <li>
                                 {{ item.issue_date }}
