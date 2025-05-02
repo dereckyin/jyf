@@ -443,6 +443,21 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
         $date_arrive = $row['date_arrive'] == "" ? "" : $row['date_arrive'];
 
         $record = GetMeasureDetailRecord($row['id'], $db);
+
+         // if andy record with taiwan_pay = 1 then ture
+         $is_taiwan_pay = "0";
+
+         $is_checker = 0;
+ 
+         for($i = 0; $i < count($record); $i++){
+             if($record[$i]['taiwan_pay'] == 1){
+                 $is_taiwan_pay = "1";
+             }
+ 
+             if($record[$i]['checker'] != "")
+                 $is_checker = 1;
+         }
+
         $record_cust = GetMeasurePersonRecord($row['id'], $db);
 
         $payment = GetPaymentRecord($row['id'], $group_id, $db);
@@ -487,6 +502,8 @@ function GetMeasureDetail($measure_detail_id, $group_id, $db){
             "cuft_price" => $cuft_price,
             "charge" => $charge,
            "record" => $record,
+           "taiwan_pay" => $is_taiwan_pay,
+           "checked" => $is_checker,
            "encode" => $encode,
            "encode_status" => $encode_status,
            "pickup_status" => $pickup_status,
@@ -617,7 +634,7 @@ function GetMeasurePersonRecord($id, $db){
 }
 
 function GetMeasureDetailRecord($id, $db){
-    $query = "SELECT rd.detail_id, rc.id, rc.date_receive, rc.customer, rc.description, rc.quantity, rc.supplier, rc.remark, rd.cust cust_id, case when coalesce(cp.customer, '')  <> '' then coalesce(cp.customer, '') when (SELECT coalesce(customer, '') FROM measure_detail WHERE id = " . $id . ") <> '' then (SELECT coalesce(customer, '') FROM measure_detail WHERE id =  " . $id . ") end cust, pick_date, pick_person, pick_note, pick_time, pick_user, rc.receipt_number, rc.checker
+    $query = "SELECT rd.detail_id, rc.id, rc.date_receive, rc.customer, rc.description, rc.quantity, rc.supplier, rc.remark, rd.cust cust_id, case when coalesce(cp.customer, '')  <> '' then coalesce(cp.customer, '') when (SELECT coalesce(customer, '') FROM measure_detail WHERE id = " . $id . ") <> '' then (SELECT coalesce(customer, '') FROM measure_detail WHERE id =  " . $id . ") end cust, pick_date, pick_person, pick_note, pick_time, pick_user, taiwan_pay, rc.receipt_number, rc.checker
                 FROM measure_record_detail rd
                     left JOIN receive_record rc ON
                     rd.record_id = rc.id
@@ -650,6 +667,7 @@ function GetMeasureDetailRecord($id, $db){
         $pick_note = $row['pick_note'];
         $pick_time = $row['pick_time'];
         $pick_user = $row['pick_user'];
+        $taiwan_pay = $row['taiwan_pay'];
         $receipt_number = $row['receipt_number'];
         $checker = $row['checker'];
 
@@ -670,6 +688,7 @@ function GetMeasureDetailRecord($id, $db){
             "pick_time" => $pick_time,
             "pick_user" => $pick_user,
             "measure_id" => $measure_id,
+            "taiwan_pay" => $taiwan_pay,
             "receipt_number" => $receipt_number,
             "checker" => $checker,
         );
